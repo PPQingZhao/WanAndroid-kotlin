@@ -1,5 +1,4 @@
 @file:Suppress("UnstableApiUsage")
-
 pluginManagement {
     repositories {
         google()
@@ -25,5 +24,6 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 rootProject.name = "WanAndroid-kotlin"
 
 include(
-    ":app"
+    ":app",
+    ":library-theme",
 )

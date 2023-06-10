@@ -2,7 +2,7 @@
 
 plugins {
     alias(libs.plugins.kotlin.android)
-    id("com.android.application") version (libs.versions.androidGradlePlugin)
+    id("com.android.library") version (libs.versions.androidGradlePlugin)
 //    id("kotlin-kapt")
 }
 
@@ -11,11 +11,8 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.pp.wanandroid_kotlin"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get().toString()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -47,6 +44,4 @@ dependencies {
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
-
-    implementation(projects.libraryTheme)
 }
