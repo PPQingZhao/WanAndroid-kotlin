@@ -1,0 +1,67 @@
+[versions]
+compileSdk = "33"
+minSdk = "21"
+targetSdk = "33"
+versionCode = "1"
+versionName = "1.0.0"
+androidGradlePlugin = "7.3.0-rc01"
+kotlin = "1.7.10"
+#######################################################################################################
+[libraries]
+# test
+junit = "junit:junit:4.13.2"
+ext-junit = "androidx.test.ext:junit:1.1.3"
+espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
+#androidx
+appcompat = "androidx.appcompat:appcompat:1.4.1"
+paging3 = "androidx.paging:paging-runtime-ktx:3.0.0-alpha05"
+viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+# kotlin
+kotlin-core = "androidx.core:core-ktx:1.7.0"
+
+#ui
+material = "com.google.android.material:material:1.5.0"
+flexbox = "com.google.android:flexbox:2.0.1"
+exoplayer = "com.google.android.exoplayer:exoplayer:2.13.2"
+swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+photoView = "com.github.chrisbanes:PhotoView:2.1.4"
+constraintlayout = "androidx.constraintlayout:constraintlayout:2.1.3"
+
+#DataStore
+datastore = "androidx.datastore:datastore-preferences:1.0.0"
+
+#okhttp3
+logging = "com.squareup.okhttp3:logging-interceptor:3.9.1"
+
+#阿里路由
+arouter-api = "com.alibaba:arouter-api:1.5.2"
+arouter-compiler = "com.alibaba:arouter-compiler:1.5.2"
+#retrofit2
+retrofit2 = "com.squareup.retrofit2:retrofit:2.9.0"
+retrofit2-converter-gson = "com.squareup.retrofit2:converter-gson:2.9.0"
+#retrofit2-adapter-rxjava = "com.squareup.retrofit2:adapter-rxjava2:2.5.0"
+#leakcanary-android
+leakcanary = "com.squareup.leakcanary:leakcanary-android:2.9.1"
+#glide
+glide = "com.github.bumptech.glide:glide:4.6.1"
+glide-compiler = "com.github.bumptech.glide:compiler:4.6.1"
+
+#database room
+room-runtime = "androidx.room:room-runtime:2.3.0"
+room-compiler = "androidx.room:room-compiler:2.3.0"
+#workmanager
+work-runtime = "androidx.work:work-runtime-ktx:2.7.1"
+
+[bundles]
+#retrofit2 = ["retrofit2", "retrofit2-converter-gson", "retrofit2-adapter-rxjava"]
+retrofit2 = ["retrofit2", "retrofit2-converter-gson"]
+
+#########################################################################################################
+[plugins]
+#android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+#android-library = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+# 控制 module 编译 application 或者 library
+android-module = { id = "com.android.library", version.ref = "androidGradlePlugin" }
+#android-module = { id = "com.android.application", version.ref = "androidGradlePlugin" }
