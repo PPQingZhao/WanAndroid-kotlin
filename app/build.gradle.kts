@@ -3,11 +3,11 @@
 plugins {
     alias(libs.plugins.kotlin.android)
     id("com.android.application") version (libs.versions.androidGradlePlugin)
-//    id("kotlin-kapt")
+    id("kotlin-kapt")
 }
 
 android {
-    namespace = "com.pp.wanandroid_kotlin"
+    namespace = "com.pp.wanandroid"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -36,6 +36,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    dataBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -48,5 +52,5 @@ dependencies {
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
 
-    implementation(projects.libraryTheme)
+    implementation(projects.libraryCommon)
 }

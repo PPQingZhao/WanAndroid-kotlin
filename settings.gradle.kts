@@ -1,4 +1,13 @@
 @file:Suppress("UnstableApiUsage")
+
+include(":library-common")
+
+
+include(":library-base")
+
+
+include(":library-mvvm")
+
 pluginManagement {
     repositories {
         google()

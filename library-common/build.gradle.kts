@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pp.theme"
+    namespace = "com.pp.common"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -42,9 +42,9 @@ dependencies {
 
     implementation(libs.kotlin.core.get())
     implementation(libs.appcompat.get())
-    implementation(libs.material.get())
-    implementation(libs.constraintlayout.get())
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
+
+    api(projects.libraryBase)
 }
