@@ -1,4 +1,4 @@
-package com.pp.library_base.base
+package com.pp.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,11 @@ import com.pp.theme.ViewTreeAppThemeViewModel
 abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleFragment<VB, VM>() {
 
-    fun requireTheme(): DynamicTheme {
+    /**
+     * fragment主题默认与宿主activity主题相同
+     * 可重写该函数,自定义主题
+     */
+    open fun requireTheme(): DynamicTheme {
         return (requireActivity() as ThemeActivity<*, *>).mThemeViewModel
     }
 

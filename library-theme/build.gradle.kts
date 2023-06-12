@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.kotlin.core.get())
     implementation(libs.appcompat.get())
     implementation(libs.material.get())
-    implementation(libs.constraintlayout.get())
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())

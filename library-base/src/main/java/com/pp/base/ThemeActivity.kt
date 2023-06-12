@@ -1,4 +1,4 @@
-package com.pp.library_base.base
+package com.pp.base
 
 import android.content.res.Resources
 import android.os.Build

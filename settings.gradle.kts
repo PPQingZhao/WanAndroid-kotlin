@@ -1,13 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-include(":library-common")
-
-
-include(":library-base")
-
-
-include(":library-mvvm")
-
 pluginManagement {
     repositories {
         google()
@@ -34,5 +26,9 @@ rootProject.name = "WanAndroid-kotlin"
 
 include(
     ":app",
+    ":library-common",
     ":library-theme",
+    ":library-network",
+    ":library-mvvm",
+    ":library-base",
 )
