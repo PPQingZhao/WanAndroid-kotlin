@@ -22,7 +22,7 @@ enableFeaturePreview("VERSION_CATALOGS")
 // After: implementation(projects.featureAlbum)
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-rootProject.name = "WanAndroid-kotlin"
+rootProject.name = "WanAndroid"
 
 include(
     ":app",
