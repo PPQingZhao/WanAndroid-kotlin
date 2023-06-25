@@ -40,11 +40,11 @@ android {
 
 dependencies {
 
-    implementation(libs.kotlin.core.get())
-    implementation(libs.appcompat.get())
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
 
+    debugApi(libs.leakcanary.get())
+    api(libs.kotlin.core.get())
     api(projects.libraryBase)
 }

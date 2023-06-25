@@ -1,17 +1,16 @@
-package com.pp.wanandroid
+package com.pp.main
 
-import android.view.LayoutInflater
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
-import com.pp.wanandroid.databinding.ActivityMainBinding
+import com.pp.main.databinding.ActivityMainBinding
 
 class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
-
     override val mBinding: ActivityMainBinding by lazy {
-        ActivityMainBinding.inflate(LayoutInflater.from(this))
+        ActivityMainBinding.inflate(layoutInflater)
     }
 
     override fun getModelClazz(): Class<ThemeViewModel> {
         return ThemeViewModel::class.java
     }
+
 }

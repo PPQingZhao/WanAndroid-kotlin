@@ -11,7 +11,7 @@ android {
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.pp.wanandroid_kotlin"
+        applicationId = "com.pp.wanandroid"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = libs.versions.versionCode.get().toInt()
@@ -44,10 +44,10 @@ android {
 
 dependencies {
 
-    implementation(libs.kotlin.core.get())
-    testImplementation(libs.junit.get())
-    androidTestImplementation(libs.ext.junit.get())
-    androidTestImplementation(libs.espresso.core.get())
-
     implementation(projects.libraryCommon)
+    implementation(projects.moduleMain)
+
+    if ("com.android.library" == libs.plugins.android.module.get().pluginId) {
+    }
+
 }

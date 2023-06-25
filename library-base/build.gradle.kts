@@ -48,4 +48,5 @@ dependencies {
 
     api(projects.libraryMvvm)
     api(projects.libraryTheme)
+    api(projects.libraryUi)
 }
