@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-
 pluginManagement {
     repositories {
         google()
@@ -34,4 +33,6 @@ include(
     ":library-base",
     ":library-ui",
     ":module-main",
+    ":skin-blue",
+    ":skin-black",
 )

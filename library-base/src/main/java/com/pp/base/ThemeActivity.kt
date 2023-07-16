@@ -2,14 +2,13 @@ package com.pp.base
 
 import android.content.res.Resources
 import android.os.Build
-import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
 import com.pp.mvvm.LifecycleActivity
-import com.pp.theme.DynamicTheme
-import com.pp.theme.DynamicThemeDataBinding
+import com.pp.theme.DynamicThemeProvider
 
 /**
  * theme activity
@@ -17,27 +16,15 @@ import com.pp.theme.DynamicThemeDataBinding
 abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleActivity<VB, VM>() {
 
-    val mThemeViewModel by lazy { getDynamicThemeDataBinding().mThemeViewModel }
-    private var dynamicThemeDataBinding: DynamicThemeDataBinding? = null
-    private fun getDynamicThemeDataBinding(): DynamicThemeDataBinding {
-        if (null == dynamicThemeDataBinding) {
-            dynamicThemeDataBinding = DynamicThemeDataBinding(mBinding, window)
-        }
-        return dynamicThemeDataBinding!!
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        getDynamicThemeDataBinding().binding(this)
-    }
+    val mThemeViewModel by lazy { DynamicThemeProvider.create(this, mBinding) }
 
     override fun onApplyThemeResource(theme: Resources.Theme?, resid: Int, first: Boolean) {
         super.onApplyThemeResource(theme, resid, first)
-
-//        Log.e("TAG", "onApplyThemeResource")
+//        Log.e("TAG", "onApplyThemeResource  resid: $resid")
         theme?.apply {
-            getDynamicThemeDataBinding().mThemeViewModel.setTheme(this)
+            mThemeViewModel.setTheme(this)
         }
+
     }
 
     override fun onAttachedToWindow() {

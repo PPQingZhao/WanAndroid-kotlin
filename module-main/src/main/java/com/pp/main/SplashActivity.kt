@@ -24,7 +24,6 @@ class SplashActivity : ThemeActivity<ActivitySplashBinding, ThemeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        requireLightStatusBar(false)
 
         Handler(Looper.myLooper()!!).postDelayed({
             MainActivity.start(this)

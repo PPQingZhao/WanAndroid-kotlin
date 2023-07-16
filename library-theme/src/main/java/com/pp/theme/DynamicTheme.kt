@@ -1,5 +1,6 @@
 package com.pp.theme
 
+//noinspection SuspiciousImport
 import android.R
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
@@ -11,7 +12,7 @@ import androidx.lifecycle.MutableLiveData
 /**
  * 动态主题
  */
-class DynamicTheme {
+open class DynamicTheme {
 
     val windowBackground = MutableLiveData<Drawable?>()
     val colorPrimary = MutableLiveData<ColorStateList>()
@@ -22,7 +23,6 @@ class DynamicTheme {
     val editTextColor = MutableLiveData<ColorStateList>()
     val progressTint = MutableLiveData<ColorStateList>()
     val secondaryProgressTint = MutableLiveData<ColorStateList>()
-    val colorControlActivated = MutableLiveData<ColorStateList>()
     val colorButtonNormal = MutableLiveData<ColorStateList>()
 
     @CallSuper
@@ -42,7 +42,6 @@ class DynamicTheme {
             editTextColor to R.attr.editTextColor,
             progressTint to R.attr.progressTint,
             secondaryProgressTint to R.attr.secondaryProgressTint,
-            colorControlActivated to R.attr.colorControlActivated,
             colorButtonNormal to R.attr.colorButtonNormal,
         )
 

@@ -16,15 +16,12 @@ fun releaseTime(): String {
 }
 
 android {
-    namespace = "com.pp.wanandroid"
+    namespace = "com.pp.skin_black"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
-        applicationId = "com.pp.wanandroid"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = libs.versions.versionCode.get().toInt()
-        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -52,11 +49,8 @@ android {
 
     applicationVariants.all {
         outputs.all {
-            val projectName = rootProject.name
-            val releaseTime = releaseTime()
-            val versionName = defaultConfig.versionName
-            val buildType = buildType.name
-            val customOutPutFile = "${projectName}_${releaseTime}_${versionName}_${buildType}.apk"
+            val projectName = project.name
+            val customOutPutFile = "${projectName}.skin"
             outputFile.renameTo(File(customOutPutFile))
         }
     }
@@ -68,18 +62,11 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
-
     dataBinding {
         enable = true
     }
 }
 
 dependencies {
-
-    implementation(projects.libraryCommon)
-    implementation(projects.moduleMain)
-
-    if ("com.android.library" == libs.plugins.android.module.get().pluginId) {
-    }
-
+    api(libs.material.get())
 }
