@@ -1,5 +1,7 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
+import kotlin.io.println
+
 plugins {
     alias(libs.plugins.android.module)
     alias(libs.plugins.kotlin.android)
@@ -26,6 +28,16 @@ android {
             )
         }
     }
+/*
+
+    applicationVariants.all {
+        this@all.outputs.all {
+            val apkName = this.baseName.split("-")[0]
+            val customOutPutFile = "${apkName}.skin"
+            outputFile.renameTo(File(customOutPutFile))
+        }
+//        println("${rootDir.absolutePath}/apk/${buildType.name}")
+    }
 
     //配置皮肤包
     flavorDimensionList.add("skin")
@@ -36,21 +48,22 @@ android {
             dimension = "skin"
         }
 
-//        create("skinBlue") {
-//            applicationId = "com.pp.skin_blue"
-//            dimension = "skin"
-//        }
+        create("skinBlue") {
+            applicationId = "com.pp.skin_blue"
+            dimension = "skin"
+        }
 
         if ("com.android.application" == libs.plugins.android.module.get().pluginId) {
             defaultConfig.applicationId = applicationId
         }
     }
+*/
 
     // 方便开发时预览不同皮肤效果
     sourceSets {
         var theme = "default"
 //        theme = "black"
-//        theme = "blue"
+        theme = "blue"
         when (theme) {
             "black" -> get("main").res.srcDir("src/skinBlack/resources")
             "blue" -> get("main").res.srcDir("src/skinBlue/resources")
@@ -68,6 +81,10 @@ android {
     dataBinding {
         enable = true
     }
+}
+
+android{
+
 }
 
 dependencies {

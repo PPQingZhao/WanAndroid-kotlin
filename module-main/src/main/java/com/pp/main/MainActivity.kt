@@ -57,7 +57,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
                     File.separator + "wanandroid" +
                     File.separator + "theme" +
                     File.separator + "skin" +
-                    File.separator + "skin-blue.skin"
+                    File.separator + "skinBlue.skin"
         Log.e("TAG", "skin: " + File(skinPath).exists())
         try {
             val assetManager = AssetManager::class.java.newInstance()
