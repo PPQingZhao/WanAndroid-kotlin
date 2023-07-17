@@ -1,6 +1,10 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
 import kotlin.io.println
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     alias(libs.plugins.android.module)
@@ -19,6 +23,17 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            val signedProperties = Properties()
+            signedProperties.load(FileInputStream(rootProject.file("local.properties")))
+            storeFile = file(signedProperties.getProperty("storeFile"))
+            storePassword = signedProperties.getProperty("storePassword")
+            keyAlias = signedProperties.getProperty("keyAlias")
+            keyPassword = signedProperties.getProperty("keyPassword")
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -28,6 +43,21 @@ android {
             )
         }
     }
+
+    // 方便开发时预览不同皮肤效果
+//    sourceSets {
+//        var theme = "default"
+//        if ("com.android.application" == libs.plugins.android.module.get().pluginId) {
+////        theme = "black"
+////        theme = "blue"
+//        }
+//        when (theme) {
+//            "black" -> get("main").res.srcDir("src/skinBlack/resources")
+//            "blue" -> get("main").res.srcDir("src/skinBlue/resources")
+//            else -> get("main").res.srcDir("src/main/res-skin")
+//        }
+//    }
+
 /*
 
     applicationVariants.all {
@@ -42,34 +72,23 @@ android {
     //配置皮肤包
     flavorDimensionList.add("skin")
     productFlavors {
-        var applicationId = ""
         create("skinBlack") {
-            applicationId = "com.pp.skin_black"
+//            defaultConfig.applicationId = "com.pp.skin_black"
+//            android.namespace = "com.pp.skin_black"
+            signingConfig = signingConfigs.get("release")
             dimension = "skin"
         }
 
         create("skinBlue") {
-            applicationId = "com.pp.skin_blue"
+            signingConfig = signingConfigs.get("release")
+//            defaultConfig.applicationId = "com.pp.skin_blue"
+//            android.namespace = "com.pp.skin_blue"
             dimension = "skin"
         }
 
-        if ("com.android.application" == libs.plugins.android.module.get().pluginId) {
-            defaultConfig.applicationId = applicationId
-        }
     }
-*/
 
-    // 方便开发时预览不同皮肤效果
-    sourceSets {
-        var theme = "default"
-//        theme = "black"
-        theme = "blue"
-        when (theme) {
-            "black" -> get("main").res.srcDir("src/skinBlack/resources")
-            "blue" -> get("main").res.srcDir("src/skinBlue/resources")
-            else -> get("main").res.srcDir("src/main/res-skin")
-        }
-    }
+*/
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -83,7 +102,7 @@ android {
     }
 }
 
-android{
+android {
 
 }
 

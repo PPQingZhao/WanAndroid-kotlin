@@ -70,8 +70,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
                 Resources(assetManager, resources.displayMetrics, resources.configuration)
 
             val themeId =
-                skinResources.getIdentifier("Theme.Dynamic", "style", "com.pp.skin_blue")
-            Log.e("TAG","themeId: $themeId")
+                skinResources.getIdentifier("Theme.Dynamic", "style", "com.pp.skin")
+            Log.e("TAG","themeId: $themeId     ${com.pp.skin.R.style.Theme_Dynamic}")
             val newTheme = skinResources.newTheme()
             newTheme.applyStyle(themeId, true)
             mThemeViewModel.setTheme(newTheme)
