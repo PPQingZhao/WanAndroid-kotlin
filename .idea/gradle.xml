@@ -17,11 +17,10 @@
             <option value="$PROJECT_DIR$/library-common" />
             <option value="$PROJECT_DIR$/library-mvvm" />
             <option value="$PROJECT_DIR$/library-network" />
+            <option value="$PROJECT_DIR$/library-skin" />
             <option value="$PROJECT_DIR$/library-theme" />
             <option value="$PROJECT_DIR$/library-ui" />
             <option value="$PROJECT_DIR$/module-main" />
-            <option value="$PROJECT_DIR$/skin-black" />
-            <option value="$PROJECT_DIR$/skin-blue" />
           </set>
         </option>
       </GradleProjectSettings>

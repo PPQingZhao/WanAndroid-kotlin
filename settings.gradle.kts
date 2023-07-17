@@ -32,7 +32,6 @@ include(
     ":library-mvvm",
     ":library-base",
     ":library-ui",
+    ":library-skin",
     ":module-main",
-    ":skin-blue",
-    ":skin-black",
 )

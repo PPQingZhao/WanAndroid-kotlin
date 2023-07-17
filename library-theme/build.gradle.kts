@@ -45,4 +45,6 @@ dependencies {
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
+
+    api(projects.librarySkin)
 }
