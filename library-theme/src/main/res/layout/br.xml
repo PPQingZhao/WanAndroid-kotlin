@@ -5,7 +5,7 @@
 
         <variable
             name="dynamicThemeViewModel"
-            type="com.pp.theme.DynamicTheme" />
+            type="com.pp.theme.AppDynamicTheme" />
     </data>
 
     <View

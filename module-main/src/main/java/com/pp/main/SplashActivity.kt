@@ -7,6 +7,8 @@ import android.os.Looper
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
 import com.pp.main.databinding.ActivitySplashBinding
+import com.pp.theme.AppDynamicTheme
+import com.pp.theme.DynamicTheme
 
 /**
  * 启动页

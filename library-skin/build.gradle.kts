@@ -45,18 +45,18 @@ android {
     }
 
     // 方便开发时预览不同皮肤效果
-//    sourceSets {
-//        var theme = "default"
-//        if ("com.android.application" == libs.plugins.android.module.get().pluginId) {
-////        theme = "black"
-////        theme = "blue"
-//        }
-//        when (theme) {
-//            "black" -> get("main").res.srcDir("src/skinBlack/resources")
-//            "blue" -> get("main").res.srcDir("src/skinBlue/resources")
-//            else -> get("main").res.srcDir("src/main/res-skin")
-//        }
-//    }
+    sourceSets {
+        var theme = "default"
+        if ("com.android.library" == libs.plugins.android.module.get().pluginId) {
+//        theme = "black"
+//            theme = "blue"
+        }
+        when (theme) {
+            "black" -> get("main").res.srcDir("src/skinBlack/res")
+            "blue" -> get("main").res.srcDir("src/skinBlue/res")
+            else -> get("main").res.srcDir("src/main/res-skin")
+        }
+    }
 
 /*
 

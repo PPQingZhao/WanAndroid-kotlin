@@ -9,7 +9,7 @@ object ViewTreeAppThemeViewModel {
 
     operator fun get(view: View): DynamicTheme? {
         var found = view.getTag(R.id.view_tree_dynamic_theme_view_model)
-        if (found != null) return found as DynamicTheme
+        if (found != null) return found as AppDynamicTheme
         var parent = view.parent
         while (found == null && parent is View) {
             val parentView = parent as View

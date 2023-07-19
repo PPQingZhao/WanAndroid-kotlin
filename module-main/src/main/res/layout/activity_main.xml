@@ -5,7 +5,7 @@
 
         <variable
             name="dynamicThemeViewModel"
-            type="com.pp.theme.DynamicTheme" />
+            type="com.pp.theme.AppDynamicTheme" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
