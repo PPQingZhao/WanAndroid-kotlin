@@ -21,6 +21,7 @@
             <option value="$PROJECT_DIR$/library-theme" />
             <option value="$PROJECT_DIR$/library-ui" />
             <option value="$PROJECT_DIR$/module-main" />
+            <option value="$PROJECT_DIR$/module-user" />
           </set>
         </option>
       </GradleProjectSettings>
