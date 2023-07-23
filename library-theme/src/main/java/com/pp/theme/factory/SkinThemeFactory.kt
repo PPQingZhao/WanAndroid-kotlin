@@ -31,8 +31,12 @@ class SkinThemeFactory : Factory<Theme?> {
         defPackage: String,
     ) {
         this.skinPath = skinPath
-        this.displayMetrics = displayMetrics
-        this.configuration = configuration
+        this.displayMetrics = DisplayMetrics().apply {
+            setTo(displayMetrics)
+        }
+        this.configuration = Configuration().apply {
+            setTo(configuration)
+        }
         this.themeName = themeName
         this.defPackage = defPackage
     }

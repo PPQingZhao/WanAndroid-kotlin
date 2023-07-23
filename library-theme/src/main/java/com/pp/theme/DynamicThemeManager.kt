@@ -3,21 +3,21 @@ package com.pp.theme
 import android.content.res.Resources.Theme
 import com.pp.theme.factory.Factory
 
-open class DynamicThemeManager<DTheme : DynamicTheme> {
+class DynamicThemeManager<DTheme : DynamicTheme> {
 
     private var mDynamicTheme: DTheme
 
-    constructor(dynamicTheme: DTheme) {
+    private constructor(dynamicTheme: DTheme) {
         this.mDynamicTheme = dynamicTheme
     }
 
-    fun apply(factory: Factory<Theme>): DTheme {
+    fun applyTheme(factory: Factory<Theme>): DTheme {
         return mDynamicTheme.apply {
             applyTheme(factory.create())
         }
     }
 
-    fun apply(resTheme: Theme): DTheme {
+    fun applyTheme(resTheme: Theme): DTheme {
         return mDynamicTheme.apply {
             applyTheme(resTheme)
         }

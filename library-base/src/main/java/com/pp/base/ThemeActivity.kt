@@ -15,20 +15,18 @@ import com.pp.theme.DynamicTheme
 abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleActivity<VB, VM>() {
 
-    open fun <DTheme : DynamicTheme> getDynamicTheme(): DTheme? {
-        return null
-    }
+    abstract fun  getDynamicTheme(): DynamicTheme?
 
     override fun onApplyThemeResource(theme: Resources.Theme?, resid: Int, first: Boolean) {
         super.onApplyThemeResource(theme, resid, first)
 //        Log.e("TAG", "onApplyThemeResource  resid: $resid")
         theme?.apply {
-            getDynamicTheme<DynamicTheme>()?.applyTheme(this)
+            getDynamicTheme()?.applyTheme(this)
         }
     }
 
     override fun onSetVariable(binding: VB, viewModel: VM): Boolean {
-        getDynamicTheme<DynamicTheme>()?.apply {
+        getDynamicTheme()?.apply {
             binding.setVariable(BR.dynamicThemeViewModel, this)
         }
         return super.onSetVariable(binding, viewModel)

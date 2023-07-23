@@ -15,6 +15,9 @@ import com.pp.theme.DynamicTheme
  */
 @SuppressLint("CustomSplashScreen")
 class SplashActivity : ThemeActivity<ActivitySplashBinding, ThemeViewModel>() {
+    override fun getDynamicTheme(): DynamicTheme? {
+        return null
+    }
 
     override val mBinding: ActivitySplashBinding by lazy {
         ActivitySplashBinding.inflate(layoutInflater)
