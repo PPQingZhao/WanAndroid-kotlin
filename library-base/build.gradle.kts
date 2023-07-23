@@ -54,4 +54,7 @@ dependencies {
     api(projects.libraryMvvm)
     api(projects.libraryTheme)
     api(projects.libraryUi)
+
+    api(libs.paging3)
+    api(libs.datastore)
 }

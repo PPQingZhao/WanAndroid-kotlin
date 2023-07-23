@@ -1,29 +1,29 @@
-package com.pp.module_user.routerservice
+package com.pp.user.routerservice
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.pp.module_user.manager.UserManager
 import com.pp.router_service.IUserService
 import com.pp.router_service.RouterServiceImpl
 
 @Route(path = RouterServiceImpl.User.SERVICE_USER)
 class UserServiceImpl : IUserService {
+
     override fun getToken(): LiveData<String?> {
-        TODO("Not yet implemented")
+        return UserManager.getToken()
     }
 
     override fun getNickName(): LiveData<String?> {
-        TODO("Not yet implemented")
+        return UserManager.getNickName()
     }
-
     override fun getHeadIcon(): LiveData<String?> {
-        TODO("Not yet implemented")
+        return UserManager.getHeadIcon()
     }
 
     override fun getMotto(): LiveData<String?> {
-        TODO("Not yet implemented")
+        return UserManager.getMotto()
     }
-
 
     override fun init(context: Context?) {
     }
