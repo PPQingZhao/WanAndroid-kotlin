@@ -27,6 +27,11 @@ android {
         versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["AROUTER_MODULE_NAME"] = project.name
+            }
+        }
     }
 
     signingConfigs {
@@ -80,6 +85,7 @@ dependencies {
     implementation(projects.moduleMain)
 
     if ("com.android.library" == libs.plugins.android.module.get().pluginId) {
+        implementation(projects.moduleUser)
     }
 
 }

@@ -15,6 +15,11 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["AROUTER_MODULE_NAME"] = project.name
+            }
+        }
     }
 
     buildTypes {

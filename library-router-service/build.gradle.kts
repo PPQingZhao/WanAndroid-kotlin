@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pp.common"
+    namespace = "com.pp.router_service"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -15,6 +15,7 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
         javaCompileOptions {
             annotationProcessorOptions {
                 arguments["AROUTER_MODULE_NAME"] = project.name
@@ -44,18 +45,6 @@ android {
 }
 
 dependencies {
-
-    testImplementation(libs.junit.get())
-    androidTestImplementation(libs.ext.junit.get())
-    androidTestImplementation(libs.espresso.core.get())
-
-    // 路由
     implementation(libs.arouter.api)
     kapt(libs.arouter.compiler)
-
-    debugApi(libs.leakcanary.get())
-    api(libs.kotlin.core.get())
-    api(projects.libraryBase)
-    api(projects.libraryRouterService)
-    api(projects.libraryDatabase)
 }

@@ -6,6 +6,7 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven("https://maven.aliyun.com/repository/public")
     }
 }
 dependencyResolutionManagement {
@@ -34,6 +35,8 @@ include(
     ":library-base",
     ":library-ui",
     ":library-skin",
+    ":library-router-service",
+    ":library-database",
     ":module-main",
-    ":module-user"
+    ":module-user",
 )

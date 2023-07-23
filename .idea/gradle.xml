@@ -15,8 +15,10 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/library-base" />
             <option value="$PROJECT_DIR$/library-common" />
+            <option value="$PROJECT_DIR$/library-database" />
             <option value="$PROJECT_DIR$/library-mvvm" />
             <option value="$PROJECT_DIR$/library-network" />
+            <option value="$PROJECT_DIR$/library-router-service" />
             <option value="$PROJECT_DIR$/library-skin" />
             <option value="$PROJECT_DIR$/library-theme" />
             <option value="$PROJECT_DIR$/library-ui" />
@@ -26,5 +28,6 @@
         </option>
       </GradleProjectSettings>
     </option>
+    <option name="offlineMode" value="true" />
   </component>
 </project>

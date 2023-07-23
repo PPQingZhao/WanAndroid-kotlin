@@ -15,6 +15,11 @@ android {
         targetSdk = libs.versions.targetSdk.get().toInt()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["AROUTER_MODULE_NAME"] = project.name
+            }
+        }
     }
 
     buildTypes {
@@ -39,6 +44,10 @@ android {
 }
 
 dependencies {
+
+    // 路由
+    implementation(libs.arouter.api)
+    kapt(libs.arouter.compiler)
 
     api(projects.libraryCommon)
 }

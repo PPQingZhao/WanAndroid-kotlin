@@ -1,5 +1,4 @@
-@file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
-
+@Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.kotlin.android)
     id("com.android.library") version (libs.versions.androidGradlePlugin)
@@ -7,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pp.common"
+    namespace = "com.pp.database"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -32,8 +31,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility(JavaVersion.VERSION_1_8)
+        targetCompatibility(JavaVersion.VERSION_1_8)
     }
     kotlinOptions {
         jvmTarget = "1.8"
@@ -44,18 +43,17 @@ android {
 }
 
 dependencies {
-
     testImplementation(libs.junit.get())
     androidTestImplementation(libs.ext.junit.get())
     androidTestImplementation(libs.espresso.core.get())
 
-    // 路由
     implementation(libs.arouter.api)
     kapt(libs.arouter.compiler)
 
-    debugApi(libs.leakcanary.get())
-    api(libs.kotlin.core.get())
-    api(projects.libraryBase)
-    api(projects.libraryRouterService)
-    api(projects.libraryDatabase)
+    implementation(projects.libraryRouterService)
+
+    api(libs.room.runtime)
+    kapt(libs.room.compiler)
+
+
 }
