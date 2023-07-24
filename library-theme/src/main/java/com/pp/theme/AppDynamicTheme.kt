@@ -24,6 +24,7 @@ open class AppDynamicTheme : DynamicTheme {
     val progressTint = MutableLiveData<ColorStateList>()
     val secondaryProgressTint = MutableLiveData<ColorStateList>()
     val colorButtonNormal = MutableLiveData<ColorStateList>()
+    val colorControlActivated = MutableLiveData<ColorStateList>()
 
     @CallSuper
     @SuppressLint("ResourceType", "Recycle")
@@ -43,6 +44,7 @@ open class AppDynamicTheme : DynamicTheme {
             progressTint to R.attr.progressTint,
             secondaryProgressTint to R.attr.secondaryProgressTint,
             colorButtonNormal to R.attr.colorButtonNormal,
+            colorControlActivated to R.attr.colorControlActivated,
         )
 
         val attrMap = drawableAttrMap + colorAttrMap

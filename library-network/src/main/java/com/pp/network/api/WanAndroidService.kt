@@ -5,7 +5,7 @@ import com.pp.network.utils.RetrofitUtil
 import com.pp.network.utils.addHeadersInterceptor
 import com.pp.network.utils.bodyLoggingInterceptor
 
-interface MusicService {
+interface WanAndroidService {
 
     companion object {
 

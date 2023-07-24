@@ -3,7 +3,7 @@ package com.pp.user.routerservice
 import android.content.Context
 import androidx.lifecycle.LiveData
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.pp.module_user.manager.UserManager
+import com.pp.user.manager.UserManager
 import com.pp.router_service.IUserService
 import com.pp.router_service.RouterServiceImpl
 

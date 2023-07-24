@@ -3,7 +3,7 @@ package com.pp.user.routerservice
 import android.app.Application
 import android.content.Context
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.pp.module_user.manager.UserManager
+import com.pp.user.manager.UserManager
 import com.pp.router_service.IAppService
 import com.pp.router_service.RouterServiceImpl
 import kotlinx.coroutines.GlobalScope

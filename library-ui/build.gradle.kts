@@ -52,4 +52,7 @@ dependencies {
     implementation(libs.kotlin.core.get())
     api(libs.material.get())
     api(libs.constraintlayout.get())
+
+    api(libs.glide)
+    kapt(libs.glide.compiler)
 }

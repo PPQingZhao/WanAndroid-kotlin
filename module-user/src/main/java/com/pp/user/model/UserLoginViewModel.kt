@@ -3,7 +3,7 @@ package com.pp.user.model
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
-import com.pp.module_user.manager.UserManager
+import com.pp.user.manager.UserManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow

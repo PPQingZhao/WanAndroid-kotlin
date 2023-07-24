@@ -8,7 +8,7 @@ import com.pp.common.app.App
 import com.pp.common.datastore.userDataStore
 import com.pp.database.AppDataBase
 import com.pp.database.user.User
-import com.pp.network.api.MusicService
+import com.pp.network.api.WanAndroidService
 import com.pp.network.bean.ResponseBean
 import com.pp.network.bean.user.LoginBean
 import com.pp.user.repositoy.setInfo
@@ -20,7 +20,7 @@ object UserRepository {
     private const val TAG = "UserRepository"
     private val userNameKey = stringPreferencesKey("user_name")
 
-    private val userApi by lazy { MusicService.userApi }
+    private val userApi by lazy { WanAndroidService.userApi }
     private val userDao by lazy {
         AppDataBase.instance.getUserDao()
     }
@@ -70,19 +70,19 @@ object UserRepository {
         val loginResponse = userApi.loginByUserName(userName, password)
 
         Log.v(TAG, "login code: ${loginResponse.code}")
-        if (loginResponse.code == MusicService.ErrorCode.SUCCESS) {
+        if (loginResponse.code == WanAndroidService.ErrorCode.SUCCESS) {
             val user = User(name = userName, password = password)
             val loginBean = loginResponse.data
             loginBean?.apply {
                 user.token = token
                 // head添加登录token
-                MusicService.setToken(token)
+                WanAndroidService.setToken(token)
             }
 
             // 获取uer info
-            val userInfoResponse = MusicService.userApi.getUserInfo()
+            val userInfoResponse = WanAndroidService.userApi.getUserInfo()
 
-            if (userInfoResponse.code == MusicService.ErrorCode.SUCCESS) {
+            if (userInfoResponse.code == WanAndroidService.ErrorCode.SUCCESS) {
                 userInfoResponse.data?.apply {
                     user.setInfo(this)
                 }

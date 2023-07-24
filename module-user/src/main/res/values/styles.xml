@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="StyleTextInputLayout">
+        <item name="hintTextColor">@color/hintTextColor</item>
+        <item name="android:textColorHint">@color/hintTextColor</item>
+        <item name="boxStrokeColor">@color/hintTextColor</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1dp</item>
+<!--        <item name="boxBackgroundColor">@color/colorWindowBackground</item>-->
+        <item name="hintAnimationEnabled">false</item>
+    </style>
+</resources>

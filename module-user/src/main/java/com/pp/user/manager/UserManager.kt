@@ -1,4 +1,4 @@
-package com.pp.module_user.manager
+package com.pp.user.manager
 
 import android.content.Context
 import androidx.annotation.UiThread

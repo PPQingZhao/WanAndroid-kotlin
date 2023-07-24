@@ -27,6 +27,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
+        <item name="colorControlActivated">@color/colorControlActivated</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
         <item name="hintTextColor">@color/hintTextColor</item>
@@ -34,6 +35,7 @@
         <item name="android:textColorHint">@color/hintTextColor</item>
         <item name="android:progressTint">@color/progressTint</item>
         <item name="android:secondaryProgressTint">@color/secondaryProgressTint</item>
+        <item name="android:windowBackground">@drawable/shape_window_bg</item>
 
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>

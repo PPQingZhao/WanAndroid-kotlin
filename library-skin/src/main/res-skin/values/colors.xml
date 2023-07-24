@@ -7,6 +7,7 @@
     <color name="colorAccent">#FF9C27B0</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
+    <color name="colorControlActivated">#9C27B0</color>
     <color name="textColor">#000000</color>
     <color name="textColorSecondary">#929292</color>
     <color name="hintTextColor">#929292</color>

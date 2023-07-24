@@ -5,20 +5,18 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.content.res.Configuration
+import android.os.Bundle
 import android.os.Environment
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
 import com.pp.main.databinding.ActivityMainBinding
-import com.pp.theme.AppDynamicTheme
-import com.pp.theme.DynamicTheme
+import com.pp.router_service.RouterPath
 import com.pp.theme.DynamicThemeManager
-import com.pp.theme.extension.init
 import com.pp.theme.factory.SkinThemeFactory
 import java.io.File
 
@@ -26,14 +24,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
     override val mBinding: ActivityMainBinding by lazy {
         ActivityMainBinding.inflate(layoutInflater)
-    }
-
-    private val mAppDynamicTheme = AppDynamicTheme().apply {
-        init(this@MainActivity)
-    }
-
-    override fun getDynamicTheme(): DynamicTheme {
-        return mAppDynamicTheme
     }
 
     override fun getModelClazz(): Class<ThemeViewModel> {
@@ -44,6 +34,11 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
         fun start(activity: Activity) {
             activity.startActivity(Intent(activity, MainActivity::class.java))
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        ARouter.getInstance().build(RouterPath.User.activity_login).navigation()
     }
 
     @SuppressLint("DiscouragedPrivateApi")
@@ -68,7 +63,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
     @SuppressLint("DiscouragedPrivateApi")
     private fun skin() {
 
-        DynamicThemeManager.create(mAppDynamicTheme)
+        DynamicThemeManager.create(dynamicTheme!!)
             .run {
 
                 skin = if (skin == "skinBlack.skin") {

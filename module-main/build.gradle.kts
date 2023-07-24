@@ -44,6 +44,8 @@ android {
 }
 
 dependencies {
-
+    // 路由
+    implementation(libs.arouter.api)
+    kapt(libs.arouter.compiler)
     api(projects.libraryCommon)
 }
