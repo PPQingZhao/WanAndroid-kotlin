@@ -3,6 +3,8 @@ package com.pp.user.model
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
+import com.pp.module_user.repositoy.UserRepository
+import com.pp.network.api.WanAndroidService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -34,21 +36,20 @@ class UserRegisterViewModel : RegisterViewModel(), DefaultLifecycleObserver {
         helperMessage.value = ""
         succeed.value = false
 
-        if (password.value != confirmPassword.value) {
+    /*    if (password.value != confirmPassword.value) {
             helperMessage.value = "请确认密码"
             return
-        }
+        }*/
 
         ViewTreeLifecycleOwner.get(view)?.lifecycleScope?.launch {
             try {
-                // todo: 待实现
-//                val response = UserRepository.register(username.value, password.value)
+                val response = UserRepository.register(username.value, password.value,confirmPassword.value)
 
-                val result = /*response.code == MusicService.ErrorCode.SUCCESS*/ true
+                val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
                 _registerResult.emit(result)
 
                 withContext(Dispatchers.Main) {
-                    helperMessage.value = /*response.msg*/""
+                    helperMessage.value = response.errorMsg
                     succeed.value = result
                 }
             } catch (e: Throwable) {

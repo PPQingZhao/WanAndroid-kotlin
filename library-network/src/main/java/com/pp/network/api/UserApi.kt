@@ -22,7 +22,7 @@ interface UserApi {
      * 用户登录
      */
     @FormUrlEncoded
-    @POST("LoginByUsername")
+    @POST("user/login")
     suspend fun loginByUserName(
         @Field("username") userName: String? = "",
         @Field("password") passWord: String? = "",
@@ -32,30 +32,21 @@ interface UserApi {
      * 用户注册
      */
     @FormUrlEncoded
-    @POST("RegisterByUsername")
+    @POST("user/register")
     suspend fun registerByUserName(
         @Field("username") userName: String? = "",
         @Field("password") passWord: String? = "",
+        @Field("repassword") repassword: String? = "",
     ): ResponseBean<LoginBean>
+
+    @GET("user/logout/json")
+    suspend fun logout()
 
     /**
      * 获取用户(token)信息
      *
      */
-    @GET("UserByInfo")
+    @GET("user/lg/userinfo/json")
     suspend fun getUserInfo(): ResponseBean<UserInfoBean>
-
-    /**
-     * 修改用户信息
-     * 昵称
-     * 头像
-     * 座右铭
-     */
-    @POST("UserByChangeInfo")
-    suspend fun modifyUserInfo(
-        @Field("nick") nick: String? = "",
-        @Field("avatar") avatar: String? = "",
-        @Field("motto") motto: String? = "",
-    ): ResponseBody
 
 }

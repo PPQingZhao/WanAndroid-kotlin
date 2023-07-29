@@ -6,7 +6,7 @@
         <item name="boxStrokeColor">@color/hintTextColor</item>
         <item name="boxStrokeWidth">1dp</item>
         <item name="boxStrokeWidthFocused">1dp</item>
-<!--        <item name="boxBackgroundColor">@color/colorWindowBackground</item>-->
+        <item name="boxBackgroundColor">@color/boxBackgroundColor</item>
         <item name="hintAnimationEnabled">false</item>
     </style>
 </resources>

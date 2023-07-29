@@ -1,7 +1,7 @@
 package com.pp.network.bean
 
 data class ResponseBean<Data>(
-    val code: Int,
+    val errorCode: Int,
     val `data`: Data?,
-    val msg: String,
+    val errorMsg: String,
 )

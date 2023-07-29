@@ -1,60 +1,52 @@
 package com.pp.network.bean.user
 /*
 {
-  "code": 0,
-  "msg": "操作成功",
-  "data": {
-    "is_admin": 0,
-    "login": {
-      "e_mail": "",
-      "is_login": 1,
-      "last_login_ip": "223.73.201.248",
-      "last_login_time": "2022-12-27 02:10:07",
-      "mobile": "",
-      "username": "test6"
-    },
-    "property": {
-      "id": 98,
-      "money": "0.00",
-      "user_id": 98,
-      "vip": 0
-    },
-    "user": {
-      "avatar": "",
-      "id": 98,
-      "motto": "",
-      "nick": "901672074902"
-    }
-  }
-}
+		"coinInfo": {
+			"coinCount": 10,
+			"level": 1,
+			"nickname": "",
+			"rank": "9999+",
+			"userId": 151418,
+			"username": "p**test"
+		},
+		"collectArticleInfo": {
+			"count": 0
+		},
+		"userInfo": {
+			"admin": false,
+			"chapterTops": [],
+			"coinCount": 10,
+			"collectIds": [],
+			"email": "",
+			"icon": "",
+			"id": 151418,
+			"nickname": "pp_test",
+			"password": "",
+			"publicName": "pp_test",
+			"token": "",
+			"type": 0,
+			"username": "pp_test"
+		}
+	}
 
-* */
+*/
+
 data class UserInfoBean(
-    val is_admin: Int = 0,
-    val login: Login = Login(),
-    val `property`: Property = Property(),
-    val user: User = User(),
+    val coinInfo: CoinInfo = CoinInfo(),
+    val collectArticleInfo: CollectArticleInfo = CollectArticleInfo(),
+    val userInfo: LoginBean = LoginBean(),
 ) {
-    data class Login(
-        val e_mail: String = "",
-        val is_login: Int = -1,
-        val last_login_ip: String = "",
-        val last_login_time: String = "",
-        val mobile: String = "",
+    data class CoinInfo(
+        val coinCount: Int = 0,
+        val level: Int = 0,
+        val nickname: String = "",
+        val rank: String = "",
+        val userId: Int = 0,
         val username: String = "",
     )
 
-    data class Property(
-        val id: Int = 0,
-        val money: String = "",
-        val user_id: Int = 0,
-        val vip: Int = 0,
+    data class CollectArticleInfo(
+        val count: Int = 0,
     )
 
-    data class User(
-        val avatar: String = "",
-        val id: Int = 0,
-        val motto: String = "",
-        val nick: String = "",
-    )
 }

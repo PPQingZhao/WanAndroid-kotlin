@@ -35,7 +35,6 @@ class UserModel {
             _password.value = value?.password
             _loginToken.value = value?.token
             _headIcon.value = value?.avatar
-            motto.value = value?.motto
         }
 
 

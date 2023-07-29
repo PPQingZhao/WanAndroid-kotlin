@@ -109,8 +109,9 @@
             android:onClick="@{viewModel::onNewUser}"
             android:padding="@dimen/margin_small"
             android:text="@string/register"
-            android:textColor="@color/colorAccent"
+            android:textColor="@{dynamicThemeViewModel.colorAccent}"
             app:layout_constraintEnd_toEndOf="@id/card_register"
-            app:layout_constraintTop_toBottomOf="@id/card_register" />
+            app:layout_constraintTop_toBottomOf="@id/card_register"
+            tools:textColor="@color/colorAccent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

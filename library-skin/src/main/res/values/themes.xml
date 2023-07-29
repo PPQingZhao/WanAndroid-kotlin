@@ -19,7 +19,7 @@
 17.colorSwitchThumbNormal: switch thumbs 默认状态的颜色. (switch off)
 -->
     <!-- Base application theme. -->
-    <style name="Theme.Dynamic" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.Dynamic" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>

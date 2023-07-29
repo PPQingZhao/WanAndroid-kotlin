@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!--default theme-->
     <color name="colorPrimary">#FFFFFFFF</color>
     <color name="colorOnPrimary">#FFFFFFFF</color>
     <color name="colorPrimaryVariant">#FFFFFFFF</color>
     <color name="colorAccent">#FF9C27B0</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
-    <color name="colorControlActivated">#9C27B0</color>
+    <color name="colorControlActivated">#FF9C27B0</color>
     <color name="textColor">#000000</color>
     <color name="textColorSecondary">#929292</color>
     <color name="hintTextColor">#929292</color>
     <color name="editTextColor">#323232</color>
     <color name="progressTint">#2196F3</color>
     <color name="secondaryProgressTint">#929292</color>
-    <!--end-->
+    <color name="boxBackgroundColor">#40929292</color>
 </resources>

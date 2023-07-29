@@ -3,6 +3,7 @@ package com.pp.user.model
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
+import com.pp.network.api.WanAndroidService
 import com.pp.user.manager.UserManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -40,12 +41,11 @@ class UserLoginViewModel : LoginViewModel(), DefaultLifecycleObserver {
 
             try {
                 val response = UserManager.loginWithPreferenceCache(username.value, password.value)
-                // todo: 待实现
-                val result =/* response.code == MusicService.ErrorCode.SUCCESS*/ true
+                val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
 
                 _loginResult.emit(result)
                 withContext(Dispatchers.Main) {
-                    helperMessage.value = response.msg
+                    helperMessage.value = response.errorMsg
                     succeed.value = result
                 }
             } catch (e: Throwable) {

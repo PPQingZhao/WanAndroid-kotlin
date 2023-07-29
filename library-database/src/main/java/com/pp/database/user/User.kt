@@ -15,8 +15,6 @@ data class User(
     @ColumnInfo var password: String? = null,
     @ColumnInfo var token: String? = null,
     @ColumnInfo var e_mail: String? = null,
-    @ColumnInfo var mobile: String? = null,
     @ColumnInfo var nickName: String? = null,
-    @ColumnInfo var motto: String? = null,
     @ColumnInfo var avatar: String? = null,
 )

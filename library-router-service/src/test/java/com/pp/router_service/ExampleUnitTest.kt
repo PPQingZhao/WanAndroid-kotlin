@@ -1,4 +1,4 @@
-package com.pp.lrouter_service
+package com.pp.router_service
 
 import org.junit.Test
 

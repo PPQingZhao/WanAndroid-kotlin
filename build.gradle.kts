@@ -1,5 +1,11 @@
-@file:Suppress("UnstableApiUsage","DSL_SCOPE_VIOLATION")
+@file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
+buildscript {
+    dependencies{
+        classpath(kotlin("serialization",libs.versions.kotlin.get()))
+//        classpath("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+    }
+}
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
 //    alias(libs.plugins.android.application) apply false

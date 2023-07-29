@@ -36,9 +36,7 @@ object UserRepository {
 
         val user = userDao.findUser(userName ?: "")
         return try {
-            val login = login(user?.name, user?.password)
-            login
-
+            login(user?.name, user?.password)
         } catch (e: Throwable) {
             Pair(ResponseBean(-1, null, e.message.toString()), user)
         }
@@ -69,20 +67,20 @@ object UserRepository {
         // 执行登录逻辑
         val loginResponse = userApi.loginByUserName(userName, password)
 
-        Log.v(TAG, "login code: ${loginResponse.code}")
-        if (loginResponse.code == WanAndroidService.ErrorCode.SUCCESS) {
+        Log.v(TAG, "login code: ${loginResponse.errorCode}")
+        if (loginResponse.errorCode == WanAndroidService.ErrorCode.SUCCESS) {
             val user = User(name = userName, password = password)
             val loginBean = loginResponse.data
             loginBean?.apply {
                 user.token = token
                 // head添加登录token
-                WanAndroidService.setToken(token)
+//                WanAndroidService.setToken(token)
             }
 
             // 获取uer info
-            val userInfoResponse = WanAndroidService.userApi.getUserInfo()
+            val userInfoResponse = userApi.getUserInfo()
 
-            if (userInfoResponse.code == WanAndroidService.ErrorCode.SUCCESS) {
+            if (userInfoResponse.errorCode == WanAndroidService.ErrorCode.SUCCESS) {
                 userInfoResponse.data?.apply {
                     user.setInfo(this)
                 }
@@ -101,14 +99,15 @@ object UserRepository {
      */
     suspend fun logoutWithPreferenceClear() {
         withContext(Dispatchers.IO) {
+            userApi.logout()
             App.getInstance().baseContext.userDataStore.edit {
                 it[userNameKey] = ""
             }
         }
     }
 
-    suspend fun register(username: String?, password: String?): ResponseBean<LoginBean> {
-        return userApi.registerByUserName(username, password)
+    suspend fun register(username: String?, password: String?,repassword:String?): ResponseBean<LoginBean> {
+        return userApi.registerByUserName(username, password,repassword)
     }
 
 }

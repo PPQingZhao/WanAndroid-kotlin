@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.android.library") version (libs.versions.androidGradlePlugin)
     id("kotlin-kapt")
+//    id("kotlinx.serialization")
 }
 
 android {
@@ -52,4 +53,13 @@ dependencies {
 
     api(libs.logging)
     api(libs.bundles.retrofit2)
+
+    // 路由
+    implementation(libs.arouter.api)
+    kapt(libs.arouter.compiler)
+
+    implementation(projects.libraryRouterService)
+    implementation(libs.datastore)
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.3")
+
 }

@@ -14,4 +14,9 @@ object RouterServiceImpl {
         const val SERVICE_USER = "$base/user"
         const val SERVICE_APP = "$base/app"
     }
+
+    object NetWork{
+        private const val base = "/network_service"
+        const val SERVICE_APP = "$base/app"
+    }
 }
