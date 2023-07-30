@@ -15,11 +15,7 @@ import com.pp.router_service.RouterServiceImpl
 class DataBaseAppServiceImpl : IAppService {
     override fun onCreate(application: Application) {
         // 初始化数据库
-        ProcessLifecycleOwner.get().lifecycle.addObserver(
-            AppDataBase
-                .Companion
-                .ProcessDatabaseInitializer(application)
-        )
+        AppDataBase.DatabaseInitializer.init(application)
     }
 
     override fun init(context: Context?) {

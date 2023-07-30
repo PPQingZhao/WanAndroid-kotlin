@@ -2,7 +2,7 @@ package com.pp.common.app
 
 import android.app.Application
 import android.content.Context
-import com.pp.router_service.ProcessRouterInitializer
+import com.pp.router_service.RouterInitializer
 import kotlin.properties.Delegates
 
 open class App : Application() {
@@ -20,7 +20,7 @@ open class App : Application() {
         mInstance = this
 
         // 路由初始化
-        ProcessRouterInitializer.init(this)
+        RouterInitializer.init(this)
     }
 
 }

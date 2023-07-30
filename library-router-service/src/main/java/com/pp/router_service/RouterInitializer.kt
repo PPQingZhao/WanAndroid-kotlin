@@ -11,16 +11,9 @@ import com.alibaba.android.arouter.launcher.ARouter
  * 路由初始化
  * 分发app生命周期给各模块
  */
-object ProcessRouterInitializer {
+class RouterInitializer private constructor() {
 
-    private var mApplication: Application? = null
-    fun init(application: Application) {
-
-        if (null != mApplication) {
-            throw RuntimeException("Do not initialize RouterService again")
-        }
-        this.mApplication = application
-
+    private fun init() {
         // init ARouter
         if (BuildConfig.DEBUG) {
             ARouter.openDebug()
@@ -30,15 +23,24 @@ object ProcessRouterInitializer {
         // @Autowired 注解
         ARouter.getInstance().inject(this)
 
-        mApps.add(dataBaseAppService)
-        mApps.add(userAppService)
-        mApps.add(networkAppService)
-
-        ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserver())
+        ProcessLifecycleOwner.get().lifecycle.addObserver(LifecycleObserver(this))
     }
 
+    companion object {
 
-    //        // 数据库模块
+        private var mApplication: Application? = null
+        fun init(application: Application) {
+
+            if (null != mApplication) {
+                throw RuntimeException("Do not initialize RouterService again")
+            }
+            mApplication = application
+
+            RouterInitializer().init()
+        }
+    }
+
+    // 数据库模块
     @Autowired(name = RouterServiceImpl.DataBase.DATABASE_APP)
     lateinit var dataBaseAppService: IAppService
 
@@ -51,16 +53,21 @@ object ProcessRouterInitializer {
     lateinit var networkAppService: IAppService
 
     private val mApps by lazy {
-        ArrayList<IAppService>()
+        ArrayList<IAppService>().apply {
+            add(dataBaseAppService)
+            add(userAppService)
+            add(networkAppService)
+        }
     }
 
-    private class LifecycleObserver : DefaultLifecycleObserver {
+    private class LifecycleObserver(private val routerInitializer: RouterInitializer) :
+        DefaultLifecycleObserver {
 
         override fun onCreate(owner: LifecycleOwner) {
             super.onCreate(owner)
 
             // onCreate
-            mApps.forEach {
+            routerInitializer.mApps.forEach {
                 it.onCreate(mApplication!!)
             }
         }

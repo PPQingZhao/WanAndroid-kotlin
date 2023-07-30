@@ -2,22 +2,22 @@ package com.pp.database
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import androidx.room.migration.Migration
-import androidx.sqlite.db.SupportSQLiteDatabase
 import com.pp.database.details.FeedDetails
 import com.pp.database.user.User
 import com.pp.database.user.UserDao
 import kotlinx.coroutines.*
+import kotlin.properties.Delegates
 
 /**
  * 数据库
  */
-@Database(entities = [User::class, FeedDetails::class], version = 3, exportSchema = true)
+@Database(entities = [User::class, FeedDetails::class], version = 1, exportSchema = true)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
@@ -26,7 +26,7 @@ abstract class AppDataBase : RoomDatabase() {
         private const val TAG = "AppDataBase"
 
         // 数据库名称
-        private const val DB_NAME = "Music.db"
+        private const val DB_NAME = "wanandroid.db"
 
         @SuppressLint("StaticFieldLeak")
         private var context: Context? = null
@@ -61,30 +61,38 @@ abstract class AppDataBase : RoomDatabase() {
                 .build()
         }
 
-        private fun init(ctx: Context) {
+        private fun init() {
             Log.v(TAG, "start init $DB_NAME")
-            if (context != null) {
-                throw RuntimeException("Do not initialize AppDataBase again")
-            }
-            context = ctx
             instance
             Log.v(TAG, "$DB_NAME init succeed")
         }
 
-        /**
-         * 监听 app 生命周期,用于初始化数据库
-         */
-        internal class ProcessDatabaseInitializer(private val ctx: Context) :
-            DefaultLifecycleObserver {
-            override fun onCreate(owner: LifecycleOwner) {
+    }
 
-                owner.lifecycleScope.launch(Dispatchers.IO) {
-                    // 数据库初始化
-                    init(ctx)
+    /**
+     * 监听 app 生命周期,用于初始化数据库
+     */
+    internal class DatabaseInitializer private constructor() :
+        DefaultLifecycleObserver {
+
+        companion object {
+            fun init(ctx: Context) {
+                if (context != null) {
+                    throw RuntimeException("Do not initialize AppDataBase again")
                 }
-                // 初始化完成，移除监听
-                ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
+                context = ctx
+                ProcessLifecycleOwner.get().lifecycle.addObserver(DatabaseInitializer())
             }
+        }
+
+        override fun onCreate(owner: LifecycleOwner) {
+
+            owner.lifecycleScope.launch(Dispatchers.IO) {
+                // 数据库初始化
+                init()
+            }
+            // 初始化完成，移除监听
+            ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         }
     }
 
