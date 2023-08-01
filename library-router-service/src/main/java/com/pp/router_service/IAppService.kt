@@ -1,12 +1,19 @@
 package com.pp.router_service
 
+import android.annotation.SuppressLint
 import android.app.Application
+import android.content.Context
 import com.alibaba.android.arouter.facade.template.IProvider
+import kotlin.properties.Delegates
 
 /**
  * app 生命周期
  */
-interface IAppService : IProvider {
+abstract class IAppService : IProvider {
 
-    fun onCreate(application: Application)
+    override fun init(context: Context?) {
+        // do nothing
+    }
+
+    abstract fun onCreate(application: Application)
 }

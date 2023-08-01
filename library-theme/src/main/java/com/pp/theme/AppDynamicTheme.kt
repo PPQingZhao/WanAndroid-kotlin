@@ -5,6 +5,7 @@ import android.R
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Resources
+import android.content.res.Resources.Theme
 import android.graphics.drawable.Drawable
 import androidx.annotation.CallSuper
 import androidx.lifecycle.MutableLiveData
@@ -12,7 +13,7 @@ import androidx.lifecycle.MutableLiveData
 /**
  * 动态主题
  */
-open class AppDynamicTheme : DynamicTheme {
+open class AppDynamicTheme() : DynamicTheme() {
 
     val windowBackground = MutableLiveData<Drawable?>()
     val colorPrimary = MutableLiveData<ColorStateList>()
@@ -28,7 +29,7 @@ open class AppDynamicTheme : DynamicTheme {
 
     @CallSuper
     @SuppressLint("ResourceType", "Recycle")
-    override fun applyTheme(theme: Resources.Theme) {
+    override fun applyTheme(theme: Theme) {
 
         val drawableAttrMap = mapOf(
             windowBackground to R.attr.windowBackground,

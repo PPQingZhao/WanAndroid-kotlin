@@ -13,13 +13,12 @@ import com.pp.router_service.IAppService
 import com.pp.router_service.RouterServiceImpl
 import kotlinx.coroutines.Dispatchers
 
-@Route(path = RouterServiceImpl.NetWork.SERVICE_APP)
-class NetWorkAppImpl : IAppService {
+@Route(path = RouterServiceImpl.NetWork.NETWORK_APP)
+class NetWorkAppImpl : IAppService() {
 
     private val COOKIE_PREFERENCES = "cookie_preferences"
     private val Context.userDataStore by preferencesDataStore(name = COOKIE_PREFERENCES)
     override fun onCreate(application: Application) {
-
 
         HttpUtil.init(
             UserCookieJarImpl(
@@ -31,6 +30,4 @@ class NetWorkAppImpl : IAppService {
         )
     }
 
-    override fun init(context: Context?) {
-    }
 }

@@ -6,6 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.util.DisplayMetrics
+import com.pp.theme.R
 
 /**
  * 皮肤包主题工厂

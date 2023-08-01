@@ -9,14 +9,28 @@ object RouterServiceImpl {
         const val DATABASE_APP = "$base/app"
     }
 
+    /**
+     * 用户
+     */
     object User{
         private const val base = "/user_service"
         const val SERVICE_USER = "$base/user"
-        const val SERVICE_APP = "$base/app"
+        const val USER_APP = "$base/app"
     }
 
+    /**
+     * 网络
+     */
     object NetWork{
         private const val base = "/network_service"
-        const val SERVICE_APP = "$base/app"
+        const val NETWORK_APP = "$base/app"
+    }
+
+    /**
+     * 主题
+     */
+    object Theme{
+        private const val base = "/theme_service"
+        const val THEME_APP = "$base/app"
     }
 }

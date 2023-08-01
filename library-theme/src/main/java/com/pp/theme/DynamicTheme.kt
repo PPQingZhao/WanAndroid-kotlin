@@ -5,7 +5,8 @@ import android.content.res.Resources.Theme
 /**
  * 动态主题
  */
-interface DynamicTheme {
+abstract class DynamicTheme {
 
-    fun applyTheme(theme:Theme)
+    abstract fun applyTheme(theme: Theme)
+
 }

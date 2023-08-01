@@ -2,13 +2,13 @@ package com.pp.base
 
 import android.content.res.Resources
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
 import com.pp.mvvm.LifecycleActivity
 import com.pp.theme.AppDynamicTheme
-import com.pp.theme.DynamicTheme
 import com.pp.theme.extension.init
 
 /**
@@ -17,15 +17,18 @@ import com.pp.theme.extension.init
 abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleActivity<VB, VM>() {
 
-    open var dynamicTheme: DynamicTheme? = AppDynamicTheme().apply {
-        init(this@ThemeActivity)
+    open var dynamicTheme: AppDynamicTheme? = AppDynamicTheme().apply { init(this@ThemeActivity) }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        attachTheme(dynamicTheme!!, theme, resources.displayMetrics, resources.configuration)
     }
 
     override fun onApplyThemeResource(theme: Resources.Theme?, resid: Int, first: Boolean) {
         super.onApplyThemeResource(theme, resid, first)
 //        Log.e("TAG", "onApplyThemeResource  resid: $resid")
         theme?.apply {
-            dynamicTheme?.applyTheme(this)
+            dynamicTheme?.applyTheme(theme)
         }
     }
 

@@ -12,12 +12,10 @@ import com.pp.router_service.RouterServiceImpl
  * 监听app 生命周期
  */
 @Route(path = RouterServiceImpl.DataBase.DATABASE_APP)
-class DataBaseAppServiceImpl : IAppService {
+class DataBaseAppServiceImpl : IAppService() {
     override fun onCreate(application: Application) {
         // 初始化数据库
         AppDataBase.DatabaseInitializer.init(application)
     }
 
-    override fun init(context: Context?) {
-    }
 }

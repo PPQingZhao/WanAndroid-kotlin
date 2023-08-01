@@ -6,7 +6,6 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
@@ -14,11 +13,10 @@ import androidx.core.content.ContextCompat
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
+import com.pp.base.WanAndroidTheme
+import com.pp.base.updateTheme
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.router_service.RouterPath
-import com.pp.theme.DynamicThemeManager
-import com.pp.theme.factory.SkinThemeFactory
-import java.io.File
 
 class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
@@ -58,37 +56,17 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
         skin()
     }
 
-    var skin = "skinBlack.skin"
+    var flag = 0
 
-    @SuppressLint("DiscouragedPrivateApi")
     private fun skin() {
-
-        DynamicThemeManager.create(dynamicTheme!!)
-            .run {
-
-                skin = if (skin == "skinBlack.skin") {
-                    "skinBlue.skin"
-                } else {
-                    "skinBlack.skin"
-                }
-
-                val skinPath =
-                    Environment.getExternalStorageDirectory().absolutePath +
-                            File.separator + "wanandroid" +
-                            File.separator + "theme" +
-                            File.separator + "skin" +
-                            File.separator + skin
-                SkinThemeFactory(
-                    skinPath,
-                    resources.displayMetrics,
-                    resources.configuration,
-                    "Theme.Dynamic",
-                    "com.pp.skin"
-                ).create()?.run {
-                    applyTheme(this)
-                }
+        updateTheme(
+            when (flag % 3) {
+                0 -> WanAndroidTheme.Blue
+                1 -> WanAndroidTheme.Black
+                else -> WanAndroidTheme.Default
             }
-
+        )
+        flag++
     }
 
 }

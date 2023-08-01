@@ -45,18 +45,23 @@ class RouterInitializer private constructor() {
     lateinit var dataBaseAppService: IAppService
 
     // user模块
-    @Autowired(name = RouterServiceImpl.User.SERVICE_APP)
+    @Autowired(name = RouterServiceImpl.User.USER_APP)
     lateinit var userAppService: IAppService
 
     // 网络模块
-    @Autowired(name = RouterServiceImpl.NetWork.SERVICE_APP)
+    @Autowired(name = RouterServiceImpl.NetWork.NETWORK_APP)
     lateinit var networkAppService: IAppService
+
+    // theme模块
+    @Autowired(name = RouterServiceImpl.Theme.THEME_APP)
+    lateinit var themeAppService: IAppService
 
     private val mApps by lazy {
         ArrayList<IAppService>().apply {
             add(dataBaseAppService)
             add(userAppService)
             add(networkAppService)
+            add(themeAppService)
         }
     }
 

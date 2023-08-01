@@ -30,6 +30,13 @@ abstract class AppDataBase : RoomDatabase() {
 
         @SuppressLint("StaticFieldLeak")
         private var context: Context? = null
+            set(value) {
+                if (context != null) {
+                    throw RuntimeException("Do not initialize AppDataBase again")
+                }
+
+                field = value
+            }
 
         val instance by lazy {
             if (context == null) {
@@ -77,9 +84,7 @@ abstract class AppDataBase : RoomDatabase() {
 
         companion object {
             fun init(ctx: Context) {
-                if (context != null) {
-                    throw RuntimeException("Do not initialize AppDataBase again")
-                }
+
                 context = ctx
                 ProcessLifecycleOwner.get().lifecycle.addObserver(DatabaseInitializer())
             }

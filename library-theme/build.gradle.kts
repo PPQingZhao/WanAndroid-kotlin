@@ -52,4 +52,9 @@ dependencies {
     androidTestImplementation(libs.espresso.core.get())
 
     api(projects.librarySkin)
+    implementation(libs.datastore)
+
+    implementation(libs.arouter.api)
+    kapt(libs.arouter.compiler)
+    implementation(projects.libraryRouterService)
 }
