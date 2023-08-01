@@ -56,4 +56,6 @@ dependencies {
     api(libs.glide)
     kapt(libs.glide.compiler)
     api(libs.paging3)
+
+    implementation(projects.libraryTheme)
 }

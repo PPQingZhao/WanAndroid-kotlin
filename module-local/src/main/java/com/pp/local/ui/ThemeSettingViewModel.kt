@@ -1,4 +1,4 @@
-package com.pp.local.viewmodel
+package com.pp.local.ui
 
 import android.app.Application
 import com.pp.base.ThemeViewModel

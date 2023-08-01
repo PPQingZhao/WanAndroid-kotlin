@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputLayout
-import com.pp.ui.databinding.utils.load
+import com.pp.ui.utils.load
 
 object BindingAdapter {
 

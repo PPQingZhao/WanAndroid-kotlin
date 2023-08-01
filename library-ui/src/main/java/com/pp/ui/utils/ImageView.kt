@@ -1,4 +1,4 @@
-package com.pp.ui.databinding.utils
+package com.pp.ui.utils
 
 import android.animation.Animator
 import android.annotation.SuppressLint
