@@ -61,7 +61,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
         dataList.add(
             ItemPreferenceThemeSettingViewModel(
                 WanAndroidTheme.Default,
-                resources.newTheme(),
+                requireActivity().theme,
                 resources.displayMetrics,
                 resources.configuration
             )
@@ -69,7 +69,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
         dataList.add(
             ItemPreferenceThemeSettingViewModel(
                 WanAndroidTheme.Black,
-                resources.newTheme(),
+                requireActivity().theme,
                 resources.displayMetrics,
                 resources.configuration
             )
@@ -77,7 +77,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
         dataList.add(
             ItemPreferenceThemeSettingViewModel(
                 WanAndroidTheme.Blue,
-                resources.newTheme(),
+                requireActivity().theme,
                 resources.displayMetrics,
                 resources.configuration
             )
