@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage")
 
-
 pluginManagement {
     repositories {
         google()
@@ -39,4 +38,5 @@ include(
     ":library-database",
     ":module-main",
     ":module-user",
+    ":module-local",
 )

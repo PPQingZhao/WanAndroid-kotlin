@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
@@ -39,7 +40,17 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ARouter.getInstance().build(RouterPath.User.activity_login).navigation()
+        val fragment = ARouter.getInstance().build(RouterPath.Local.fragment_theme_setting)
+            .navigation() as Fragment
+
+        supportFragmentManager.run {
+            beginTransaction().replace(
+                R.id.fl_theme_setting,
+                fragment,
+                RouterPath.Local.fragment_theme_setting
+            ).commitNow()
+        }
+
     }
 
     @SuppressLint("DiscouragedPrivateApi")
