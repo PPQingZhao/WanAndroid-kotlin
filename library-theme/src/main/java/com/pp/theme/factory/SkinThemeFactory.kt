@@ -6,7 +6,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.util.DisplayMetrics
-import com.pp.theme.R
+import android.util.Log
 
 /**
  * 皮肤包主题工厂
@@ -16,7 +16,7 @@ class SkinThemeFactory : Factory<Theme?> {
     private val configuration: Configuration
 
     // 皮肤存储路径
-    private val skinPath: String
+    private val skinFile: String
 
     // 主题名称(字符串形式)
     private val themeName: String
@@ -25,13 +25,13 @@ class SkinThemeFactory : Factory<Theme?> {
     private val defPackage: String
 
     constructor(
-        skinPath: String,
+        skinFile: String,
         displayMetrics: DisplayMetrics,
         configuration: Configuration,
         themeName: String,
         defPackage: String,
     ) {
-        this.skinPath = skinPath
+        this.skinFile = skinFile
         this.displayMetrics = DisplayMetrics().apply {
             setTo(displayMetrics)
         }
@@ -47,17 +47,22 @@ class SkinThemeFactory : Factory<Theme?> {
     override fun create(): Resources.Theme? {
 
         return kotlin.runCatching {
+            Log.e(
+                "ThemeFactory",
+                "create theme: {skinFile: $skinFile, defPackage: $defPackage themeName:$themeName}"
+            )
             val assetManager = AssetManager::class.java.newInstance()
             val addAssetPathMethod =
                 AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
             addAssetPathMethod.isAccessible = true
-            addAssetPathMethod.invoke(assetManager, skinPath)
+            addAssetPathMethod.invoke(assetManager, skinFile)
 
             val skinResources =
                 Resources(assetManager, displayMetrics, configuration)
 
             val themeId =
                 skinResources.getIdentifier(themeName, "style", defPackage)
+            Log.e("ThemeFactory","themeId: $themeId")
             val skinTheme = skinResources.newTheme()
             skinTheme.applyStyle(themeId, true)
             skinTheme

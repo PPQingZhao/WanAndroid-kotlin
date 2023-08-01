@@ -1,14 +1,13 @@
 package com.pp.theme
 
 import android.content.Context
+import android.content.res.Resources
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
-import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.single
 
 /**
  * 动态主题管理类:
@@ -64,16 +63,18 @@ object DynamicThemeManager {
     /**
      * 更新主题
      */
-    fun updateTheme(@androidx.annotation.IntRange(from = 0, to = 100) themeId: Int) {
-        CoroutineScope(Dispatchers.IO).launch {
-            val cacheThemeId = getPreferenceTheme().firstOrNull()
-            // 与缓存的themeId比较,相同则不处理
-            if (cacheThemeId == themeId) {
-                // The same theme
-                cancel()
-            }
-            sContext!!.setPreferenceTheme(themeId)
+    suspend fun updateTheme(@androidx.annotation.IntRange(from = 0, to = 100) themeId: Int) {
+        val cacheThemeId = getPreferenceTheme().firstOrNull()
+        // 与缓存的themeId比较,相同则不处理
+        if (cacheThemeId == themeId) {
+            // The same theme
+            return
         }
+        sContext!!.setPreferenceTheme(themeId)
+    }
+
+    interface ThemeFactory {
+        fun create(themeId: Int?): Resources.Theme
     }
 
 }

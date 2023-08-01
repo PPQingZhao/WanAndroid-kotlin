@@ -10,6 +10,7 @@ import android.util.Log
 import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
@@ -17,6 +18,8 @@ import com.pp.base.WanAndroidTheme
 import com.pp.base.updateTheme
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.router_service.RouterPath
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
@@ -59,14 +62,16 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
     var flag = 0
 
     private fun skin() {
-        updateTheme(
-            when (flag % 3) {
-                0 -> WanAndroidTheme.Blue
-                1 -> WanAndroidTheme.Black
-                else -> WanAndroidTheme.Default
-            }
-        )
-        flag++
+        lifecycleScope.launch(Dispatchers.IO) {
+            updateTheme(
+                when (flag % 3) {
+                    0 -> WanAndroidTheme.Blue
+                    1 -> WanAndroidTheme.Black
+                    else -> WanAndroidTheme.Default
+                }
+            )
+            flag++
+        }
     }
 
 }

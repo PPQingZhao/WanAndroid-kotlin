@@ -7,7 +7,10 @@ import android.content.res.ColorStateList
 import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.graphics.drawable.Drawable
+import androidx.activity.ComponentActivity
 import androidx.annotation.CallSuper
+import androidx.lifecycle.DefaultLifecycleObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 
 /**
@@ -73,4 +76,17 @@ open class AppDynamicTheme() : DynamicTheme() {
 
         typedArray.recycle()
     }
+}
+
+fun AppDynamicTheme.init(activity: ComponentActivity): AppDynamicTheme {
+    windowBackground.observe(activity) {
+        // 主题窗口背景发生变化时,主动给window设置
+        activity.window?.setBackgroundDrawable(it)
+    }
+    activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
+        override fun onCreate(owner: LifecycleOwner) {
+            applyTheme(activity.theme)
+        }
+    })
+    return this
 }
