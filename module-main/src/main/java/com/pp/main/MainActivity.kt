@@ -11,16 +11,11 @@ import android.view.View
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
-import com.pp.base.WanAndroidTheme
-import com.pp.base.updateTheme
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.router_service.RouterPath
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
@@ -40,14 +35,20 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val fragment = ARouter.getInstance().build(RouterPath.Local.fragment_theme_setting)
-            .navigation() as Fragment
 
         supportFragmentManager.run {
+            val settingfragment =
+                ARouter.getInstance().build(RouterPath.Local.fragment_theme_setting)
+                    .navigation() as Fragment
+            val mainFragment = MainFragment()
             beginTransaction().replace(
                 R.id.fl_theme_setting,
-                fragment,
+                settingfragment,
                 RouterPath.Local.fragment_theme_setting
+            ).replace(
+                R.id.fl_main,
+                mainFragment,
+                "MainFragment"
             ).commitNow()
         }
 
@@ -67,22 +68,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, ThemeViewModel>() {
             return
         }
 
-        skin()
     }
 
-    var flag = 0
-
-    private fun skin() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            updateTheme(
-                when (flag % 3) {
-                    0 -> WanAndroidTheme.Blue
-                    1 -> WanAndroidTheme.Black
-                    else -> WanAndroidTheme.Default
-                }
-            )
-            flag++
-        }
-    }
 
 }
