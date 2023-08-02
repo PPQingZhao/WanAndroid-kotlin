@@ -4,7 +4,8 @@
     <color name="colorPrimary">#000000</color>
     <color name="colorOnPrimary">#000000</color>
     <color name="colorPrimaryVariant">#000000</color>
-    <color name="colorAccent">#FF5722</color>
+    <color name="colorAccent">#FF9800</color>
+    <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
     <color name="textColorPrimary">#000000</color>
@@ -15,5 +16,6 @@
     <color name="editTextColor">#323232</color>
     <color name="progressTint">#2196F3</color>
     <color name="secondaryProgressTint">#929292</color>
+    <color name="strokeColor">#FFFFFFFF</color>
     <!--end-->
 </resources>

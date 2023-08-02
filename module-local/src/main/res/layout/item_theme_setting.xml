@@ -28,8 +28,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/StyleRoundImageView"
-            app:strokeColor="@{viewModel.checked ? @color/gray : @color/transparent}"
-            app:strokeWidth="1dp" />
+            app:strokeColor="@{viewModel.appTheme.strokeColor}"
+            app:strokeWidth="@{viewModel.checked ? @dimen/strokeWidth : @dimen/strokeWidth_small}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -37,13 +37,14 @@
             android:layout_marginTop="@dimen/margin_small"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="主题"
+            android:text="@{viewModel.themeName}"
             android:textColor="@{viewModel.appTheme.textColor}"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@id/iv"
             app:layout_constraintEnd_toEndOf="@id/iv"
             app:layout_constraintStart_toStartOf="@id/iv"
-            app:layout_constraintTop_toTopOf="@id/iv" />
+            app:layout_constraintTop_toTopOf="@id/iv"
+            tools:text="主题" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

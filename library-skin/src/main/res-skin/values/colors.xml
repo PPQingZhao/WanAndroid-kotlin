@@ -4,6 +4,7 @@
     <color name="colorOnPrimary">#FFFFFFFF</color>
     <color name="colorPrimaryVariant">#FFFFFFFF</color>
     <color name="colorAccent">#FF9C27B0</color>
+    <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
     <color name="colorControlActivated">#FF9C27B0</color>
@@ -16,4 +17,5 @@
     <color name="progressTint">#2196F3</color>
     <color name="secondaryProgressTint">#929292</color>
     <color name="boxBackgroundColor">#40929292</color>
+    <color name="strokeColor">#000000</color>
 </resources>

@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.util.DisplayMetrics
 import android.view.View
+import androidx.annotation.StringRes
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -11,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pp.base.WanAndroidTheme
 import com.pp.base.getPreferenceTheme
 import com.pp.base.updateTheme
+import com.pp.theme.init
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -19,7 +21,8 @@ class ItemPreferenceThemeSettingViewModel(
     defaultTheme: Resources.Theme,
     private val displayMetrics: DisplayMetrics,
     private val configuration: Configuration,
-) : ItemThemeSettingViewModel(defaultTheme, themeId), DefaultLifecycleObserver {
+    @StringRes private val themName: Int,
+) : ItemThemeSettingViewModel(defaultTheme, themeId, themName), DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
@@ -32,6 +35,7 @@ class ItemPreferenceThemeSettingViewModel(
         ).run {
             appTheme.applyTheme(getTheme())
         }
+        //监听主题变化
         owner.lifecycleScope.launch {
             getPreferenceTheme().collectLatest {
                 checked.set((it ?: WanAndroidTheme.Default) == themeId)

@@ -1,4 +1,7 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="ExtraTranslation">
     <string name="app_name">module-local</string>
     <string name="theme">Theme</string>
+    <string name="theme_default">默认</string>
+    <string name="theme_black">黑色</string>
+    <string name="theme_blue">蓝色</string>
 </resources>

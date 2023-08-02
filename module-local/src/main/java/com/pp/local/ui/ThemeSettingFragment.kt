@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.WanAndroidTheme
+import com.pp.local.R
 import com.pp.local.databinding.FragmentThemeSettingBinding
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
@@ -63,7 +64,8 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Default,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration
+                resources.configuration,
+                R.string.theme_default
             )
         )
         dataList.add(
@@ -71,7 +73,8 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Black,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration
+                resources.configuration,
+                R.string.theme_black
             )
         )
         dataList.add(
@@ -79,7 +82,8 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Blue,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration
+                resources.configuration,
+                R.string.theme_blue
             )
         )
 

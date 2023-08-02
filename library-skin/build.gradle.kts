@@ -60,6 +60,7 @@ android {
 
 /*
 
+
     applicationVariants.all {
         this@all.outputs.all {
             val apkName = this.baseName.split("-")[0]
@@ -75,20 +76,21 @@ android {
         create("skinBlack") {
 //            defaultConfig.applicationId = "com.pp.skin_black"
 //            android.namespace = "com.pp.skin_black"
-            signingConfig = signingConfigs.get("release")
+            signingConfig = signingConfigs["release"]
             dimension = "skin"
         }
 
         create("skinBlue") {
-            signingConfig = signingConfigs.get("release")
 //            defaultConfig.applicationId = "com.pp.skin_blue"
 //            android.namespace = "com.pp.skin_blue"
+            signingConfig = signingConfigs["release"]
             dimension = "skin"
         }
 
     }
 
 */
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -100,10 +102,6 @@ android {
     dataBinding {
         enable = true
     }
-}
-
-android {
-
 }
 
 dependencies {

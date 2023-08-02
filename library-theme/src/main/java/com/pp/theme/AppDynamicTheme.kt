@@ -24,6 +24,7 @@ open class AppDynamicTheme : DynamicTheme() {
     val windowBackground = MutableLiveData<Drawable?>(drawable)
     val colorPrimary = MutableLiveData<ColorStateList>(colorState)
     val colorAccent = MutableLiveData<ColorStateList>(colorState)
+    val navigationBarColor = MutableLiveData<ColorStateList>(colorState)
     val textColorPrimary = MutableLiveData<ColorStateList>(colorState)
     val textColor = MutableLiveData<ColorStateList>(colorState)
     val textColorSecondary = MutableLiveData<ColorStateList>(colorState)
@@ -34,6 +35,7 @@ open class AppDynamicTheme : DynamicTheme() {
     val secondaryProgressTint = MutableLiveData<ColorStateList>(colorState)
     val colorButtonNormal = MutableLiveData<ColorStateList>(colorState)
     val colorControlActivated = MutableLiveData<ColorStateList>(colorState)
+    val strokeColor = MutableLiveData<ColorStateList>(colorState)
 
     @CallSuper
     @SuppressLint("ResourceType", "Recycle")
@@ -46,6 +48,7 @@ open class AppDynamicTheme : DynamicTheme() {
         val colorAttrMap = mapOf(
             colorPrimary to R.attr.colorPrimary,
             colorAccent to R.attr.colorAccent,
+            navigationBarColor to R.attr.navigationBarColor,
             textColorPrimary to R.attr.textColorPrimary,
             textColor to R.attr.textColor,
             textColorSecondary to R.attr.textColorSecondary,
@@ -56,6 +59,7 @@ open class AppDynamicTheme : DynamicTheme() {
             secondaryProgressTint to R.attr.secondaryProgressTint,
             colorButtonNormal to R.attr.colorButtonNormal,
             colorControlActivated to R.attr.colorControlActivated,
+            strokeColor to R.attr.strokeColor,
         )
 
         val attrMap = drawableAttrMap + colorAttrMap
