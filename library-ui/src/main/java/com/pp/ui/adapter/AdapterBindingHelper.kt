@@ -2,8 +2,6 @@ package com.pp.ui.adapter
 
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import com.pp.theme.ViewTreeAppThemeViewModel
 import com.pp.ui.BR
 
 abstract class AdapterBindingHelper<VB : ViewDataBinding, VM : Any, T : Any?> {
@@ -26,7 +24,7 @@ abstract class AdapterBindingHelper<VB : ViewDataBinding, VM : Any, T : Any?> {
         itemViewModelCaches[position] = createItemViewModel
 
         setVariable(holder.binding, createItemViewModel)
-        holder.binding.executePendingBindings()
+
     }
 
     private fun setVariable(binding: VB, viewModel: VM?) {
@@ -67,13 +65,6 @@ abstract class AdapterBindingHelper<VB : ViewDataBinding, VM : Any, T : Any?> {
      */
     fun createBinding(parent: ViewGroup, viewType: Int): VB {
         val binding = onCreateBinding(parent, viewType)
-
-        val appTheme = ViewTreeAppThemeViewModel.get(parent)
-        binding.setVariable(com.pp.theme.BR.dynamicThemeViewModel, appTheme)
-
-        val lifecycleOwner = ViewTreeLifecycleOwner.get(parent)
-        binding.lifecycleOwner = lifecycleOwner
-
         return binding
     }
 

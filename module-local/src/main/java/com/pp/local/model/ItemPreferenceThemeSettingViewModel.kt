@@ -16,10 +16,10 @@ import kotlinx.coroutines.launch
 
 class ItemPreferenceThemeSettingViewModel(
     @WanAndroidTheme.ThemeId themeId: Int,
-    private val defaultTheme: Resources.Theme,
+    defaultTheme: Resources.Theme,
     private val displayMetrics: DisplayMetrics,
     private val configuration: Configuration,
-) : ItemThemeSettingViewModel(themeId), DefaultLifecycleObserver {
+) : ItemThemeSettingViewModel(defaultTheme, themeId), DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)

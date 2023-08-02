@@ -17,6 +17,7 @@
 15.textColorPrimaryDisableOnly RadioButton checkbox等控件的文字
 16.textColorPrimary 应用的主要文字颜色，actionBar的标题文字默认使用该颜色
 17.colorSwitchThumbNormal: switch thumbs 默认状态的颜色. (switch off)
+18.textColorTertiary: 不经常用，按字面意思是第三级颜色，参照第二级颜色
 -->
     <!-- Base application theme. -->
     <style name="Theme.Dynamic" parent="Theme.MaterialComponents.DayNight.NoActionBar.Bridge">
@@ -28,8 +29,10 @@
         <item name="colorControlHighlight">@color/colorControlHighlight</item>
         <item name="colorControlNormal">@color/colorControlNormal</item>
         <item name="colorControlActivated">@color/colorControlActivated</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
+        <item name="android:textColorTertiary">@color/textColorTertiary</item>
         <item name="hintTextColor">@color/hintTextColor</item>
         <item name="android:editTextColor">@color/editTextColor</item>
         <item name="android:textColorHint">@color/hintTextColor</item>

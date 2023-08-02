@@ -11,7 +11,7 @@
 
         <variable
             name="viewModel"
-            type="com.pp.local.ui.ThemeSettingFragment" />
+            type="com.pp.local.ui.ThemeSettingViewModel" />
 
     </data>
 

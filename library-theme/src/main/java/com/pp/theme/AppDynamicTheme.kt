@@ -4,31 +4,36 @@ package com.pp.theme
 import android.R
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.content.res.Resources
 import android.content.res.Resources.Theme
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.activity.ComponentActivity
 import androidx.annotation.CallSuper
-import androidx.lifecycle.DefaultLifecycleObserver
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 
 /**
  * 动态主题
  */
-open class AppDynamicTheme() : DynamicTheme() {
+open class AppDynamicTheme : DynamicTheme() {
 
-    val windowBackground = MutableLiveData<Drawable?>()
-    val colorPrimary = MutableLiveData<ColorStateList>()
-    val colorAccent = MutableLiveData<ColorStateList>()
-    val textColor = MutableLiveData<ColorStateList>()
-    val textColorSecondary = MutableLiveData<ColorStateList>()
-    val textColorHint = MutableLiveData<ColorStateList>()
-    val editTextColor = MutableLiveData<ColorStateList>()
-    val progressTint = MutableLiveData<ColorStateList>()
-    val secondaryProgressTint = MutableLiveData<ColorStateList>()
-    val colorButtonNormal = MutableLiveData<ColorStateList>()
-    val colorControlActivated = MutableLiveData<ColorStateList>()
+    companion object{
+        private val drawable = ColorDrawable(Color.TRANSPARENT)
+        private val colorState = ColorStateList.valueOf(Color.TRANSPARENT)
+    }
+    val windowBackground = MutableLiveData<Drawable?>(drawable)
+    val colorPrimary = MutableLiveData<ColorStateList>(colorState)
+    val colorAccent = MutableLiveData<ColorStateList>(colorState)
+    val textColorPrimary = MutableLiveData<ColorStateList>(colorState)
+    val textColor = MutableLiveData<ColorStateList>(colorState)
+    val textColorSecondary = MutableLiveData<ColorStateList>(colorState)
+    val textColorTertiary = MutableLiveData<ColorStateList>(colorState)
+    val textColorHint = MutableLiveData<ColorStateList>(colorState)
+    val editTextColor = MutableLiveData<ColorStateList>(colorState)
+    val progressTint = MutableLiveData<ColorStateList>(colorState)
+    val secondaryProgressTint = MutableLiveData<ColorStateList>(colorState)
+    val colorButtonNormal = MutableLiveData<ColorStateList>(colorState)
+    val colorControlActivated = MutableLiveData<ColorStateList>(colorState)
 
     @CallSuper
     @SuppressLint("ResourceType", "Recycle")
@@ -41,8 +46,10 @@ open class AppDynamicTheme() : DynamicTheme() {
         val colorAttrMap = mapOf(
             colorPrimary to R.attr.colorPrimary,
             colorAccent to R.attr.colorAccent,
+            textColorPrimary to R.attr.textColorPrimary,
             textColor to R.attr.textColor,
             textColorSecondary to R.attr.textColorSecondary,
+            textColorTertiary to R.attr.textColorTertiary,
             textColorHint to R.attr.textColorHint,
             editTextColor to R.attr.editTextColor,
             progressTint to R.attr.progressTint,
@@ -83,10 +90,5 @@ fun AppDynamicTheme.init(activity: ComponentActivity): AppDynamicTheme {
         // 主题窗口背景发生变化时,主动给window设置
         activity.window?.setBackgroundDrawable(it)
     }
-    activity.lifecycle.addObserver(object : DefaultLifecycleObserver {
-        override fun onCreate(owner: LifecycleOwner) {
-            applyTheme(activity.theme)
-        }
-    })
     return this
 }

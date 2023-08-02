@@ -1,5 +1,6 @@
 package com.pp.base
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -20,17 +21,17 @@ import kotlinx.coroutines.launch
 abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleActivity<VB, VM>() {
 
-    open var dynamicTheme: AppDynamicTheme? =
-        AppDynamicTheme().run { this.init(this@ThemeActivity) }
+    open var dynamicTheme: AppDynamicTheme? = AppDynamicTheme().run { this.init(this@ThemeActivity) }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
         lifecycleScope.launch(Dispatchers.IO) {
             dynamicTheme?.collectTheme(
                 themeFactory(theme, resources.displayMetrics, resources.configuration)
             )
         }
     }
+
 
     override fun onSetVariable(binding: VB, viewModel: VM): Boolean {
         dynamicTheme?.run {

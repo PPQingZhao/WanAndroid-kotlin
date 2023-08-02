@@ -19,16 +19,31 @@
         android:onClick="@{viewModel::onItemClick}">
 
         <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="2dp"
             android:src="@{viewModel.appTheme.windowBackground}"
-            app:layout_constraintDimensionRatio="3:5"
+            app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/StyleRoundImageView"
             app:strokeColor="@{viewModel.checked ? @color/gray : @color/transparent}"
             app:strokeWidth="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="主题"
+            android:textColor="@{viewModel.appTheme.textColor}"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/iv"
+            app:layout_constraintEnd_toEndOf="@id/iv"
+            app:layout_constraintStart_toStartOf="@id/iv"
+            app:layout_constraintTop_toTopOf="@id/iv" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
