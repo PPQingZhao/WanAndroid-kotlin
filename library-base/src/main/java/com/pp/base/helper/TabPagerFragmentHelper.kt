@@ -29,11 +29,13 @@ class TabPagerFragmentHelper {
 
     fun addPager(pager: TabPager): TabPagerFragmentHelper {
         tabPagerList.add(pager)
+        pagerHelper.addPager(pager)
         return this
     }
 
     fun addPagers(pagers: List<TabPager>): TabPagerFragmentHelper {
         tabPagerList.addAll(pagers)
+        pagerHelper.addPagers(pagers)
         return this
     }
 
@@ -69,17 +71,17 @@ class TabPagerFragmentHelper {
         internal val tab: Tab
 
         constructor(
+            fragment: Fragment,
             tabView: View?,
             @DrawableRes icon: Int = 0,
             @StringRes text: Int = 0,
             title: String = "",
-            fragment: Fragment,
         ) : super(fragment) {
             tab = Tab(tabView, icon, text, title)
         }
     }
 
-    class Tab(
+    internal class Tab(
         val tab: View?,
         @DrawableRes val icon: Int = 0,
         @StringRes val text: Int = 0,

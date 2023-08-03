@@ -85,6 +85,9 @@ dependencies {
     implementation(projects.moduleMain)
 
     if ("com.android.library" == libs.plugins.android.module.get().pluginId) {
+        implementation(projects.moduleHome)
+        implementation(projects.moduleProject)
+        implementation(projects.moduleNavigation)
         implementation(projects.moduleUser)
         implementation(projects.moduleLocal)
     }

@@ -49,7 +49,7 @@ dependencies {
     implementation(libs.arouter.api)
     kapt(libs.arouter.compiler)
 
-    api(projects.libraryCommon)
+    implementation(projects.libraryCommon)
     implementation(projects.libraryNetwork)
 
 }

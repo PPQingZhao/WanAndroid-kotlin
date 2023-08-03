@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
 
-    <androidx.slidingpanelayout.widget.SlidingPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context="com.pp.main.MainActivity">
 
-        <FrameLayout
-            android:id="@+id/fl_theme_setting"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/main_viewpager2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="0dp"
+            android:layout_weight="1" />
 
-        <FrameLayout
-            android:id="@+id/fl_main"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/fl_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="50dp" />
 
-    </androidx.slidingpanelayout.widget.SlidingPaneLayout>
+    </LinearLayout>
 </layout>

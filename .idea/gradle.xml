@@ -22,8 +22,11 @@
             <option value="$PROJECT_DIR$/library-skin" />
             <option value="$PROJECT_DIR$/library-theme" />
             <option value="$PROJECT_DIR$/library-ui" />
+            <option value="$PROJECT_DIR$/module-home" />
             <option value="$PROJECT_DIR$/module-local" />
             <option value="$PROJECT_DIR$/module-main" />
+            <option value="$PROJECT_DIR$/module-navigation" />
+            <option value="$PROJECT_DIR$/module-project" />
             <option value="$PROJECT_DIR$/module-user" />
           </set>
         </option>

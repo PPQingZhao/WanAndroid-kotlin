@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.pp.local"
+    namespace = "com.pp.home"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
     defaultConfig {
@@ -50,5 +50,6 @@ dependencies {
     kapt(libs.arouter.compiler)
 
     implementation(projects.libraryCommon)
+    implementation(projects.libraryNetwork)
 
 }
