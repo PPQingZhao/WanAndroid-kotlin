@@ -1,0 +1,88 @@
+package com.pp.base.helper
+
+import android.view.View
+import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.FragmentManager
+import androidx.lifecycle.Lifecycle
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
+
+class TabPagerFragmentHelper {
+    private val pagerHelper: PagerFragmentHelper
+    private var tabPagerList = mutableListOf<TabPager>()
+
+    constructor(manager: FragmentManager, lifecycle: Lifecycle) {
+        pagerHelper = PagerFragmentHelper(manager, lifecycle)
+    }
+
+    constructor(
+        activity: FragmentActivity,
+    ) : this(activity.supportFragmentManager, activity.lifecycle)
+
+    constructor(
+        fragment: Fragment,
+    ) : this(fragment.childFragmentManager, fragment.lifecycle)
+
+    fun addPager(pager: TabPager): TabPagerFragmentHelper {
+        tabPagerList.add(pager)
+        return this
+    }
+
+    fun addPagers(pagers: List<TabPager>): TabPagerFragmentHelper {
+        tabPagerList.addAll(pagers)
+        return this
+    }
+
+    fun attach(tabLayout: TabLayout, viewPager2: ViewPager2, smoothScroll: Boolean = false) {
+        pagerHelper.attach(viewPager2)
+
+        //TabLayout联动ViewPager
+//        tabLayout.clearOnTabSelectedListeners()
+        tabLayout.removeAllTabs()
+
+        TabLayoutMediator(
+            tabLayout,
+            viewPager2,
+            true,
+            smoothScroll,
+            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
+                val pTab = tabPagerList[position].tab
+                tab.customView = pTab.tab
+                if (pTab.icon > 0) {
+                    tab.setIcon(pTab.icon)
+                }
+                if (pTab.text > 0) {
+                    tab.setText(pTab.text)
+                }
+                if (pTab.title.isNotEmpty()) {
+                    tab.text = pTab.title
+                }
+
+            }).attach()
+    }
+
+    class TabPager : PagerFragmentHelper.Pager {
+        internal val tab: Tab
+
+        constructor(
+            tabView: View?,
+            @DrawableRes icon: Int = 0,
+            @StringRes text: Int = 0,
+            title: String = "",
+            fragment: Fragment,
+        ) : super(fragment) {
+            tab = Tab(tabView, icon, text, title)
+        }
+    }
+
+    class Tab(
+        val tab: View?,
+        @DrawableRes val icon: Int = 0,
+        @StringRes val text: Int = 0,
+        val title: String = "",
+    )
+}

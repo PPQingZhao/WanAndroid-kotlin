@@ -2,11 +2,22 @@ package com.pp.router_service
 
 object RouterPath {
 
+    object Home{
+        const val fragment_home = "/home/fragment_home"
+    }
+
     object User {
         const val activity_login = "/user/activity_login"
         const val fragment_user = "/user/fragment_user"
     }
 
+    object Navigation{
+        const val fragment_navigation = "/navigation/fragment_navigation"
+    }
+
+    object Project{
+        const val fragment_project = "/project/fragment_project"
+    }
     object Local {
         const val fragment_local = "/local/fragment_user"
         const val fragment_theme_setting = "/local/fragment_theme_setting"
