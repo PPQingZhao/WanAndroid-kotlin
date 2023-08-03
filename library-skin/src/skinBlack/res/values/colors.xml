@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--default theme-->
-    <color name="colorPrimary">#000000</color>
-    <color name="colorOnPrimary">#000000</color>
-    <color name="colorPrimaryVariant">#000000</color>
-    <color name="colorAccent">#FF9800</color>
+    <color name="colorPrimary">#1A1C19</color>
+    <color name="colorOnPrimary">#1A1C19</color>
+    <color name="colorPrimaryVariant">#1A1C19</color>
+    <color name="colorAccent">#75D0FE</color>
     <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
-    <color name="textColorPrimary">#000000</color>
-    <color name="textColor">#ffffff</color>
-    <color name="textColorSecondary">#929292</color>
+    <color name="colorControlActivated">#75D0FE</color>
+    <color name="textColorPrimary">#FF94D59A</color>
+    <color name="textColor">#E0E2DB</color>
+    <color name="textColorSecondary">#FFC2CABF</color>
     <color name="textColorTertiary">#929292</color>
     <color name="hintTextColor">#929292</color>
     <color name="editTextColor">#323232</color>

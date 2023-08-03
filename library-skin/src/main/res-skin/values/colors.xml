@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#FFFFFFFF</color>
-    <color name="colorOnPrimary">#FFFFFFFF</color>
-    <color name="colorPrimaryVariant">#FFFFFFFF</color>
-    <color name="colorAccent">#FF9C27B0</color>
+    <color name="colorPrimary">#FEFAF8</color>
+    <color name="colorOnPrimary">#FEFAF8</color>
+    <color name="colorPrimaryVariant">#FEFAF8</color>
+    <color name="colorAccent">#449F47</color>
     <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
-    <color name="colorControlActivated">#FF9C27B0</color>
-    <color name="textColorPrimary">#000000</color>
+    <color name="colorControlActivated">#449F47</color>
+    <color name="textColorPrimary">#845305</color>
     <color name="textColor">#000000</color>
-    <color name="textColorSecondary">#929292</color>
+    <color name="textColorSecondary">#4E4439</color>
     <color name="textColorTertiary">#929292</color>
     <color name="hintTextColor">#929292</color>
     <color name="editTextColor">#323232</color>

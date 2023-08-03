@@ -62,10 +62,12 @@ class SkinThemeFactory : Factory<Theme?> {
 
             val themeId =
                 skinResources.getIdentifier(themeName, "style", defPackage)
-            Log.e("ThemeFactory","themeId: $themeId")
-            val skinTheme = skinResources.newTheme()
-            skinTheme.applyStyle(themeId, true)
-            skinTheme
+            Log.e("ThemeFactory", "themeId: $themeId")
+            if (themeId > 0) {
+                val skinTheme = skinResources.newTheme()
+                skinTheme.applyStyle(themeId, true)
+                skinTheme
+            } else null
         }.getOrNull()
     }
 }

@@ -5,10 +5,9 @@ import android.content.res.Resources
 import android.content.res.Resources.Theme
 import android.os.Environment
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.annotation.IntDef
 import androidx.annotation.RestrictTo
-import com.pp.theme.DynamicTheme
+import androidx.annotation.StringRes
 import com.pp.theme.DynamicThemeManager
 import com.pp.theme.factory.SkinThemeFactory
 import kotlinx.coroutines.*
@@ -116,10 +115,17 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
 
     abstract fun getTheme(): Theme
 
+    @StringRes
+    abstract fun getName(): Int
+
     class Default(defaultTheme: Resources.Theme) :
         WanAndroidTheme(defaultTheme) {
         override fun getTheme(): Theme {
             return defaultTheme
+        }
+
+        override fun getName(): Int {
+            return R.string.theme_default
         }
     }
 
@@ -140,6 +146,10 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
                 themePackage
             ).create() ?: defaultTheme
         }
+
+        override fun getName(): Int {
+            return R.string.theme_black
+        }
     }
 
     class Blue(
@@ -158,6 +168,10 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
                 themeName,
                 themePackage
             ).create() ?: defaultTheme
+        }
+
+        override fun getName(): Int {
+            return R.string.theme_blue
         }
     }
 }

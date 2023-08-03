@@ -2,7 +2,6 @@ package com.pp.base
 
 import android.content.Context
 import android.os.Build
-import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager

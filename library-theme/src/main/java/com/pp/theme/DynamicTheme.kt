@@ -10,7 +10,6 @@ import kotlinx.coroutines.withContext
  * 动态主题
  */
 abstract class DynamicTheme {
-
     abstract fun applyTheme(theme: Theme)
 
 }

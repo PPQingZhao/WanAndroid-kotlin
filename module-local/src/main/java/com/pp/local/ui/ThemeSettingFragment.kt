@@ -64,8 +64,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Default,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration,
-                R.string.theme_default
+                resources.configuration
             )
         )
         dataList.add(
@@ -73,8 +72,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Black,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration,
-                R.string.theme_black
+                resources.configuration
             )
         )
         dataList.add(
@@ -82,8 +80,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                 WanAndroidTheme.Blue,
                 requireActivity().theme,
                 resources.displayMetrics,
-                resources.configuration,
-                R.string.theme_blue
+                resources.configuration
             )
         )
 

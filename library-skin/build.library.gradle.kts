@@ -1,6 +1,5 @@
 @file:Suppress("UnstableApiUsage", "DSL_SCOPE_VIOLATION")
 
-import org.gradle.configuration.ScriptPlugin
 import kotlin.io.println
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -61,6 +60,7 @@ android {
 
 /*
 
+
     applicationVariants.all {
         this@all.outputs.all {
             val apkName = this.baseName.split("-")[0]
@@ -88,8 +88,8 @@ android {
         }
 
     }
-*/
 
+*/
 
 
     compileOptions {
