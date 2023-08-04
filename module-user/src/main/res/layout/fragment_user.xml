@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="dynamicThemeViewModel"
-            type="com.pp.theme.AppDynamicTheme" />
-
-        <variable
             name="viewModel"
             type="com.pp.user.ui.UserViewModel" />
     </data>
@@ -27,7 +23,7 @@
             android:gravity="center"
             android:text="theme"
             android:textAllCaps="false"
-            android:textColor="@{dynamicThemeViewModel.textColor}"
+            android:textColor="@{viewModel.mTheme.textColor}"
             app:layout_constraintBottom_toTopOf="@id/btn_login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +41,7 @@
             android:gravity="center"
             android:text="@string/login"
             android:textAllCaps="false"
-            android:textColor="@{dynamicThemeViewModel.textColor}"
+            android:textColor="@{viewModel.mTheme.textColor}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

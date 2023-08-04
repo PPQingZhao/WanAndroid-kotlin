@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.main.MainViewModel" />
+    </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -15,9 +22,31 @@
             android:layout_weight="1" />
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/fl_tab_layout"
+            android:id="@+id/main_tab_layout"
             android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:background="@color/transparent"
+            app:tabBackground="@null"
+            app:tabGravity="fill"
+            app:tabIndicator="@null"
+            app:tabMode="fixed"
+            app:tabRippleColor="@android:color/transparent"
+            tools:ignore="SpeakableTextPresentCheck" />
+
+        <ImageView
+            drawableName="@{viewModel.iconHome}"
+            dynamicTheme="@{viewModel.mTheme.themeInfo}"
+            android:layout_width="50dp"
             android:layout_height="50dp" />
+
+        <TextView
+            android:id="@+id/tv_theme"
+            dynamicTheme="@{viewModel.mTheme.themeInfo}"
+            textColorAttr="@{viewModel.textColor}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name" />
+
 
     </LinearLayout>
 </layout>

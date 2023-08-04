@@ -7,8 +7,8 @@
     <data>
 
         <variable
-            name="dynamicThemeViewModel"
-            type="com.pp.theme.AppDynamicTheme" />
+            name="viewModel"
+            type="com.pp.navigation.ui.NavigationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="navigation"
-            android:textColor="@{dynamicThemeViewModel.textColor}"
+            android:textColor="@{viewModel.mTheme.textColor}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

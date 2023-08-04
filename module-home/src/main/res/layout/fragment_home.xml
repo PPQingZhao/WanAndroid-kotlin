@@ -5,10 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="dynamicThemeViewModel"
-            type="com.pp.theme.AppDynamicTheme" />
+            name="viewModel"
+            type="com.pp.home.ui.HomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="home"
-            android:textColor="@{dynamicThemeViewModel.textColor}"
+            android:textColor="@{viewModel.mTheme.textColor}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

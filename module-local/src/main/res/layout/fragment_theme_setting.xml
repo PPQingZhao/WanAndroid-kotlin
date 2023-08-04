@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="dynamicThemeViewModel"
-            type="com.pp.theme.AppDynamicTheme" />
-
-        <variable
             name="viewModel"
             type="com.pp.local.ui.ThemeSettingViewModel" />
 
@@ -33,7 +29,7 @@
                 android:layout_height="?actionBarSize"
                 android:gravity="center"
                 android:text="@string/theme"
-                android:textColor="@{dynamicThemeViewModel.textColor}" />
+                android:textColor="@{viewModel.mTheme.textColor}" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

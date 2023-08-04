@@ -1,14 +1,14 @@
 package com.pp.base
 
-import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleActivity
-import com.pp.theme.AppDynamicTheme
+import com.pp.theme.ViewTreeAppThemeViewModel
 import com.pp.theme.collectTheme
 import com.pp.theme.init
 import kotlinx.coroutines.Dispatchers
@@ -20,23 +20,15 @@ import kotlinx.coroutines.launch
 abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleActivity<VB, VM>() {
 
-    open var dynamicTheme: AppDynamicTheme? = AppDynamicTheme().run { this.init(this@ThemeActivity) }
-
-    override fun attachBaseContext(newBase: Context?) {
-        super.attachBaseContext(newBase)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mViewModel.mTheme.init(this)
+        ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
         lifecycleScope.launch(Dispatchers.IO) {
-            dynamicTheme?.collectTheme(
+            mViewModel.mTheme.collectTheme(
                 themeFactory(theme, resources.displayMetrics, resources.configuration)
             )
         }
-    }
-
-
-    override fun onSetVariable(binding: VB, viewModel: VM): Boolean {
-        dynamicTheme?.run {
-            binding.setVariable(BR.dynamicThemeViewModel, this)
-        }
-        return super.onSetVariable(binding, viewModel)
     }
 
     override fun onAttachedToWindow() {

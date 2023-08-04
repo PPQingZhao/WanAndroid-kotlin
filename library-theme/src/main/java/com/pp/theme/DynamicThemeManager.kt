@@ -73,8 +73,8 @@ object DynamicThemeManager {
         sContext!!.setPreferenceTheme(themeId)
     }
 
-    interface ThemeFactory {
-        fun create(themeId: Int?): Resources.Theme
+    interface ThemeInfoFactory {
+        fun create(themeId: Int?): DynamicTheme.Info
     }
 
 }

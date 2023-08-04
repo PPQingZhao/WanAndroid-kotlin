@@ -20,13 +20,11 @@ import kotlinx.coroutines.launch
 abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleFragment<VB, VM>() {
 
-    open var dynamicTheme: AppDynamicTheme? = AppDynamicTheme()
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         lifecycleScope.launch(Dispatchers.IO) {
-            dynamicTheme?.collectTheme(
+            mViewModel.mTheme.collectTheme(
                 themeFactory(
                     requireActivity().theme,
                     resources.displayMetrics,
@@ -36,19 +34,12 @@ abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
         }
     }
 
-    @CallSuper
-    override fun onSetVariable(binding: VB, viewModel: VM): Boolean {
-        // set theme variable
-        mBinding.setVariable(BR.dynamicThemeViewModel, dynamicTheme)
-        return super.onSetVariable(binding, viewModel)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        ViewTreeAppThemeViewModel[mBinding.root] = dynamicTheme
+        ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
         return super.onCreateView(inflater, container, savedInstanceState)
     }
 

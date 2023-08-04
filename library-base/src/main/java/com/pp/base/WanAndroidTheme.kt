@@ -8,6 +8,7 @@ import android.util.DisplayMetrics
 import androidx.annotation.IntDef
 import androidx.annotation.RestrictTo
 import androidx.annotation.StringRes
+import com.pp.theme.DynamicTheme
 import com.pp.theme.DynamicThemeManager
 import com.pp.theme.factory.SkinThemeFactory
 import kotlinx.coroutines.*
@@ -31,8 +32,8 @@ fun themeFactory(
     themeName: String = "Theme.Dynamic",
     themePackage: String = "com.pp.skin",
     skin: String = "",
-) = object : DynamicThemeManager.ThemeFactory {
-    override fun create(themeId: Int?): Theme {
+) = object : DynamicThemeManager.ThemeInfoFactory {
+    override fun create(themeId: Int?): DynamicTheme.Info {
         // 创建 WanAndroidTheme
         val wanAndroidTheme = WanAndroidTheme.getThemeById(
             themeId ?: WanAndroidTheme.Default,
@@ -43,7 +44,7 @@ fun themeFactory(
             themePackage,
             skin
         )
-        return wanAndroidTheme.getTheme()
+        return DynamicTheme.Info(wanAndroidTheme.getTheme(), wanAndroidTheme.getPackage())
     }
 
 }
@@ -65,7 +66,10 @@ fun getPreferenceTheme(): Flow<Int?> {
 /**
  * 主题类型
  */
-sealed class WanAndroidTheme(val defaultTheme: Theme) {
+sealed class WanAndroidTheme(
+    protected val defaultTheme: Theme,
+    protected val themePackage: String = "com.pp.skin",
+) {
     companion object {
         const val Default = 0
         const val Black = 1
@@ -84,25 +88,25 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
                 Black -> {
                     Black(
                         defaultTheme,
+                        themePackage,
                         displayMetrics,
                         configuration,
                         themeName,
-                        themePackage,
                         skin.ifEmpty { "skinBlack.skin" }
                     )
                 }
                 Blue -> {
                     Blue(
                         defaultTheme,
+                        themePackage,
                         displayMetrics,
                         configuration,
                         themeName,
-                        themePackage,
                         skin.ifEmpty { "skinBlue.skin" }
                     )
                 }
                 else -> {
-                    Default(defaultTheme)
+                    Default(defaultTheme, "com.pp.wanandroid")
                 }
             }
         }
@@ -115,13 +119,19 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
 
     abstract fun getTheme(): Theme
 
+    abstract fun getPackage(): String
+
     @StringRes
     abstract fun getName(): Int
 
-    class Default(defaultTheme: Resources.Theme) :
-        WanAndroidTheme(defaultTheme) {
+    class Default(defaultTheme: Resources.Theme, themePackage: String = "com.pp.wanandroid") :
+        WanAndroidTheme(defaultTheme,themePackage) {
         override fun getTheme(): Theme {
             return defaultTheme
+        }
+
+        override fun getPackage(): String {
+            return themePackage
         }
 
         override fun getName(): Int {
@@ -131,12 +141,12 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
 
     class Black(
         defaultTheme: Resources.Theme,
+        themePackage: String = "com.pp.skin",
         private val displayMetrics: DisplayMetrics,
         private val configuration: Configuration,
         private val themeName: String = "Theme.Dynamic",
-        private val themePackage: String = "com.pp.skin",
         private val skin: String = "skinBlack.skin",
-    ) : WanAndroidTheme(defaultTheme) {
+    ) : WanAndroidTheme(defaultTheme, themePackage) {
         override fun getTheme(): Resources.Theme {
             return SkinThemeFactory(
                 skinPath + skin,
@@ -145,6 +155,10 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
                 themeName,
                 themePackage
             ).create() ?: defaultTheme
+        }
+
+        override fun getPackage(): String {
+            return themePackage
         }
 
         override fun getName(): Int {
@@ -154,12 +168,12 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
 
     class Blue(
         defaultTheme: Resources.Theme,
+        themePackage: String = "com.pp.skin",
         private val displayMetrics: DisplayMetrics,
         private val configuration: Configuration,
         private val themeName: String = "Theme.Dynamic",
-        private val themePackage: String = "com.pp.skin",
         private val skin: String = "skinBlue.skin",
-    ) : WanAndroidTheme(defaultTheme) {
+    ) : WanAndroidTheme(defaultTheme, themePackage) {
         override fun getTheme(): Resources.Theme {
             return SkinThemeFactory(
                 skinPath + skin,
@@ -168,6 +182,10 @@ sealed class WanAndroidTheme(val defaultTheme: Theme) {
                 themeName,
                 themePackage
             ).create() ?: defaultTheme
+        }
+
+        override fun getPackage(): String {
+            return themePackage
         }
 
         override fun getName(): Int {
