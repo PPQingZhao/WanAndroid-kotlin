@@ -33,14 +33,5 @@
             app:tabRippleColor="@android:color/transparent"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <TextView
-            android:id="@+id/tv_theme"
-            dynamicTheme="@{viewModel.mTheme.themeInfo}"
-            textColorAttr="@{viewModel.textColor}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/app_name" />
-
-
     </LinearLayout>
 </layout>

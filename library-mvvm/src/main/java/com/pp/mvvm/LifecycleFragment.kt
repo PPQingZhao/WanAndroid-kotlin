@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.lifecycle.ViewTreeViewModelStoreOwner
 
 abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> : Fragment() {
 
@@ -22,10 +20,14 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
 
     abstract fun getModelClazz(): Class<VM>
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         lifecycle.addObserver(mViewModel)
         setVariable(mBinding, mViewModel)
+        mBinding.setLifecycleOwner {
+            viewLifecycleOwner.lifecycle
+        }
+
     }
 
     private fun setVariable(binding: VB, viewModel: VM) {
@@ -46,10 +48,6 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        mBinding.setLifecycleOwner {
-            viewLifecycleOwner.lifecycle
-        }
-
         val parent = mBinding.root.parent
         if (parent is ViewGroup) {
             parent.removeView(mBinding.root)

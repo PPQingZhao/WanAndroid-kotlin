@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -45,23 +46,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         TabPagerFragmentHelper(this)
             .addPagers(pagerFragments())
             .attach(mBinding.mainTabLayout, mBinding.mainViewpager2)
-
-        var themeId = WanAndroidTheme.Default
-        lifecycleScope.launch(Dispatchers.IO) {
-            getPreferenceTheme().collectLatest {
-                themeId = it ?: WanAndroidTheme.Default
-            }
-        }
-
-        mBinding.tvTheme.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (themeId == WanAndroidTheme.Default) {
-                    updateTheme(WanAndroidTheme.Black)
-                } else {
-                    updateTheme(WanAndroidTheme.Default)
-                }
-            }
-        }
     }
 
     private fun pagerFragments(): MutableList<TabPagerFragmentHelper.TabPager> {
@@ -75,7 +59,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                         this@MainActivity,
                         mViewModel.mTheme,
                         "ic_tab_selected_home_bg",
-                        "ic_tab_selected_home_bg"
+                        "ic_tab_unselected_home_bg"
                     )
                 )
             )
@@ -87,8 +71,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_home_bg",
-                        "ic_tab_selected_home_bg"
+                        "ic_tab_selected_project_bg",
+                        "ic_tab_unselected_project_bg"
                     )
                 )
             )
@@ -100,8 +84,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_home_bg",
-                        "ic_tab_selected_home_bg"
+                        "ic_tab_selected_navigation_bg",
+                        "ic_tab_unselected_navigation_bg"
                     )
                 )
             )
@@ -113,8 +97,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_home_bg",
-                        "ic_tab_selected_home_bg"
+                        "ic_tab_selected_mine_bg",
+                        "ic_tab_unselected_mine_bg"
                     )
                 )
             )
@@ -139,10 +123,12 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         private val themeInfoObserver = Observer<DynamicTheme.Info> {
             it?.theme?.resources?.run {
                 getIdentifier(selectedIconName, "drawable", it.themePackage).run {
+                    Log.e("TAG","selectedIconName: $selectedIconName")
                     getDrawable(this, it.theme).run { mSelectedImageView.setImageDrawable(this) }
                 }
 
                 getIdentifier(unSelectedIconName, "drawable", it.themePackage).run {
+                    Log.e("TAG","unSelectedIconName: $unSelectedIconName")
                     getDrawable(this, it.theme).run { mUnSelectedImageView.setImageDrawable(this) }
                 }
             }
