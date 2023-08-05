@@ -46,7 +46,6 @@ fun themeFactory(
         )
         return DynamicTheme.Info(wanAndroidTheme.getTheme(), wanAndroidTheme.getPackage())
     }
-
 }
 
 /**

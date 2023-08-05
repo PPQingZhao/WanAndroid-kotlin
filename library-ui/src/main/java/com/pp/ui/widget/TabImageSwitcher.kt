@@ -6,19 +6,19 @@ import android.view.Gravity
 import android.widget.ImageSwitcher
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import androidx.core.view.get
 import com.pp.ui.R
 
 
 @SuppressLint("ViewConstructor")
-class TabImageSwitcher : ImageSwitcher {
+open class TabImageSwitcher : ImageSwitcher {
 
-    constructor(
-        context: Context,
-        @DrawableRes unSelectedIcon: Int,
-        @DrawableRes selectedIcon: Int,
-    ) : super(context) {
+    protected val mUnSelectedImageView: ImageView
+    protected val mSelectedImageView: ImageView
+
+    constructor(context: Context) : super(context) {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-        setFactory {
+        this.setFactory {
             val layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
             layoutParams.gravity = Gravity.CENTER
             ImageView(context).apply {
@@ -28,8 +28,9 @@ class TabImageSwitcher : ImageSwitcher {
                 scaleY = 0.8f
             }
         }
-        setImageResource(selectedIcon)
-        setImageResource(unSelectedIcon)
+
+        mUnSelectedImageView = (get(0) as ImageView)
+        mSelectedImageView = (get(1) as ImageView)
     }
 
     @SuppressLint("ResourceType")

@@ -54,8 +54,6 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         if (parent is ViewGroup) {
             parent.removeView(mBinding.root)
         }
-//        ViewTreeViewModelStoreOwner.set(mBinding.root, this)
-//        ViewTreeLifecycleOwner.set(mBinding.root, viewLifecycleOwner)
         return mBinding.root
     }
 

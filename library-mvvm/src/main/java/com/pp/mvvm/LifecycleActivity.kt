@@ -33,8 +33,6 @@ abstract class LifecycleActivity<VB : ViewDataBinding, VM : LifecycleViewModel> 
         setVariable(mBinding, mViewModel)
         lifecycle.addObserver(mViewModel)
         mBinding.setLifecycleOwner { this.lifecycle }
-//        ViewTreeLifecycleOwner.set(mBinding.root, this)
-//        ViewTreeViewModelStoreOwner.set(mBinding.root, this)
 
     }
 

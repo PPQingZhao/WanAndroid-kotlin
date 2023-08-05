@@ -1,9 +1,13 @@
 package com.pp.main
 
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
@@ -14,6 +18,7 @@ import com.pp.base.updateTheme
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
 import com.pp.router_service.RouterPath
+import com.pp.theme.DynamicTheme
 import com.pp.ui.widget.TabImageSwitcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -57,7 +62,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
         }
-
     }
 
     private fun pagerFragments(): MutableList<TabPagerFragmentHelper.TabPager> {
@@ -67,9 +71,11 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 TabPagerFragmentHelper.TabPager(
                     ARouter.getInstance().build(RouterPath.Home.fragment_home)
                         .navigation() as Fragment,
-                    TabImageSwitcher(
-                        this@MainActivity, com.pp.skin.R.drawable.ic_tab_selected_home_bg,
-                        com.pp.skin.R.drawable.ic_tab_selected_home_bg
+                    WanAndroidTabImageSwitcher(
+                        this@MainActivity,
+                        mViewModel.mTheme,
+                        "ic_tab_selected_home_bg",
+                        "ic_tab_selected_home_bg"
                     )
                 )
             )
@@ -78,9 +84,11 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 TabPagerFragmentHelper.TabPager(
                     ARouter.getInstance().build(RouterPath.Project.fragment_project)
                         .navigation() as Fragment,
-                    TabImageSwitcher(
-                        this@MainActivity, com.pp.skin.R.drawable.ic_tab_selected_home_bg,
-                        com.pp.skin.R.drawable.ic_tab_selected_home_bg
+                    WanAndroidTabImageSwitcher(
+                        this@MainActivity,
+                        mViewModel.mTheme,
+                        "ic_tab_selected_home_bg",
+                        "ic_tab_selected_home_bg"
                     )
                 )
             )
@@ -89,9 +97,11 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 TabPagerFragmentHelper.TabPager(
                     ARouter.getInstance().build(RouterPath.Navigation.fragment_navigation)
                         .navigation() as Fragment,
-                    TabImageSwitcher(
-                        this@MainActivity, com.pp.skin.R.drawable.ic_tab_selected_home_bg,
-                        com.pp.skin.R.drawable.ic_tab_selected_home_bg
+                    WanAndroidTabImageSwitcher(
+                        this@MainActivity,
+                        mViewModel.mTheme,
+                        "ic_tab_selected_home_bg",
+                        "ic_tab_selected_home_bg"
                     )
                 )
             )
@@ -100,12 +110,49 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 TabPagerFragmentHelper.TabPager(
                     ARouter.getInstance().build(RouterPath.User.fragment_user)
                         .navigation() as Fragment,
-                    TabImageSwitcher(
-                        this@MainActivity, com.pp.skin.R.drawable.ic_tab_selected_home_bg,
-                        com.pp.skin.R.drawable.ic_tab_selected_home_bg
+                    WanAndroidTabImageSwitcher(
+                        this@MainActivity,
+                        mViewModel.mTheme,
+                        "ic_tab_selected_home_bg",
+                        "ic_tab_selected_home_bg"
                     )
                 )
             )
+        }
+    }
+
+    private class WanAndroidTabImageSwitcher(
+        context: Context,
+        private val theme: DynamicTheme,
+        private val selectedIconName: String,
+        private val unSelectedIconName: String,
+    ) : TabImageSwitcher(context) {
+
+        override fun onDetachedFromWindow() {
+            super.onDetachedFromWindow()
+            ViewTreeLifecycleOwner.get(this)?.run {
+                theme.themeInfo.removeObserver(themeInfoObserver)
+            }
+        }
+
+        @SuppressLint("UseCompatLoadingForDrawables")
+        private val themeInfoObserver = Observer<DynamicTheme.Info> {
+            it?.theme?.resources?.run {
+                getIdentifier(selectedIconName, "drawable", it.themePackage).run {
+                    getDrawable(this, it.theme).run { mSelectedImageView.setImageDrawable(this) }
+                }
+
+                getIdentifier(unSelectedIconName, "drawable", it.themePackage).run {
+                    getDrawable(this, it.theme).run { mUnSelectedImageView.setImageDrawable(this) }
+                }
+            }
+        }
+
+        override fun onAttachedToWindow() {
+            super.onAttachedToWindow()
+            ViewTreeLifecycleOwner.get(this)?.run {
+                theme.themeInfo.observe(this, themeInfoObserver)
+            }
         }
     }
 

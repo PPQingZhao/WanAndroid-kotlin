@@ -33,12 +33,6 @@
             app:tabRippleColor="@android:color/transparent"
             tools:ignore="SpeakableTextPresentCheck" />
 
-        <ImageView
-            drawableName="@{viewModel.iconHome}"
-            dynamicTheme="@{viewModel.mTheme.themeInfo}"
-            android:layout_width="50dp"
-            android:layout_height="50dp" />
-
         <TextView
             android:id="@+id/tv_theme"
             dynamicTheme="@{viewModel.mTheme.themeInfo}"
