@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
 import com.pp.router_service.RouterPath
 import com.pp.theme.DynamicTheme
+import com.pp.theme.getColor
 import com.pp.ui.widget.TabImageSwitcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -58,8 +60,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_home_bg",
-                        "ic_tab_unselected_home_bg"
+                        "ic_tab_selected_home",
+                        "ic_tab_unselected_home"
                     )
                 )
             )
@@ -71,8 +73,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_project_bg",
-                        "ic_tab_unselected_project_bg"
+                        "ic_tab_selected_project",
+                        "ic_tab_unselected_project"
                     )
                 )
             )
@@ -84,8 +86,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_navigation_bg",
-                        "ic_tab_unselected_navigation_bg"
+                        "ic_tab_selected_navigation",
+                        "ic_tab_unselected_navigation"
                     )
                 )
             )
@@ -97,8 +99,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     WanAndroidTabImageSwitcher(
                         this@MainActivity,
                         mViewModel.mTheme,
-                        "ic_tab_selected_mine_bg",
-                        "ic_tab_unselected_mine_bg"
+                        "ic_tab_selected_mine",
+                        "ic_tab_unselected_mine"
                     )
                 )
             )
@@ -119,16 +121,25 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
             }
         }
 
-        @SuppressLint("UseCompatLoadingForDrawables")
+        @SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
         private val themeInfoObserver = Observer<DynamicTheme.Info> {
+
+
             it?.theme?.resources?.run {
+
+                it.theme.getColor(android.R.attr.navigationBarColor, Color.TRANSPARENT)
+                    .run {
+                        mSelectedImageView.setBackgroundColor(this)
+                        mUnSelectedImageView.setBackgroundColor(this)
+                    }
+
                 getIdentifier(selectedIconName, "drawable", it.themePackage).run {
-                    Log.e("TAG","selectedIconName: $selectedIconName")
+                    Log.e("TAG", "selectedIconName: $selectedIconName")
                     getDrawable(this, it.theme).run { mSelectedImageView.setImageDrawable(this) }
                 }
 
                 getIdentifier(unSelectedIconName, "drawable", it.themePackage).run {
-                    Log.e("TAG","unSelectedIconName: $unSelectedIconName")
+                    Log.e("TAG", "unSelectedIconName: $unSelectedIconName")
                     getDrawable(this, it.theme).run { mUnSelectedImageView.setImageDrawable(this) }
                 }
             }
