@@ -42,11 +42,11 @@ open class TabImageSwitcher : ImageSwitcher {
         if (selected) {
             setInAnimation(context, R.anim.anim_tab_selected_in)
             setOutAnimation(context, R.anim.anim_tab_unselected_out)
-            showNext()
+            displayedChild = 1
         } else {
             setInAnimation(context, R.anim.anim_tab_unselected_in)
             setOutAnimation(context, R.anim.anim_tab_selected_out)
-            showPrevious()
+            displayedChild = 0
         }
         super.setSelected(selected)
     }

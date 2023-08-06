@@ -39,7 +39,7 @@ class TabPagerFragmentHelper {
         return this
     }
 
-    fun attach(tabLayout: TabLayout, viewPager2: ViewPager2, smoothScroll: Boolean = false) {
+    fun attach(tabLayout: TabLayout, viewPager2: ViewPager2, smoothScroll: Boolean = true) {
         pagerHelper.attach(viewPager2)
 
         //TabLayout联动ViewPager
@@ -50,21 +50,21 @@ class TabPagerFragmentHelper {
             tabLayout,
             viewPager2,
             true,
-            smoothScroll,
-            TabLayoutMediator.TabConfigurationStrategy { tab, position ->
-                val pTab = tabPagerList[position].tab
-                tab.customView = pTab.tab
-                if (pTab.icon > 0) {
-                    tab.setIcon(pTab.icon)
-                }
-                if (pTab.text > 0) {
-                    tab.setText(pTab.text)
-                }
-                if (pTab.title.isNotEmpty()) {
-                    tab.text = pTab.title
-                }
+            smoothScroll
+        ) { tab, position ->
+            val pTab = tabPagerList[position].tab
+            tab.customView = pTab.tab
+            if (pTab.icon > 0) {
+                tab.setIcon(pTab.icon)
+            }
+            if (pTab.text > 0) {
+                tab.setText(pTab.text)
+            }
+            if (pTab.title.isNotEmpty()) {
+                tab.text = pTab.title
+            }
 
-            }).attach()
+        }.attach()
     }
 
     class TabPager : PagerFragmentHelper.Pager {

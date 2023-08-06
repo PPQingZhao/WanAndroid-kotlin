@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -8,30 +8,10 @@
             type="com.pp.main.MainViewModel" />
     </data>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_fragment"
+        android:name="com.pp.main.MainFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context="com.pp.main.MainActivity">
-
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/main_viewpager2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/main_tab_layout"
-            android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@{viewModel.mTheme.navigationBarColor}"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicator="@null"
-            app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"
-            tools:ignore="SpeakableTextPresentCheck" />
-
-    </LinearLayout>
+        tools:layout="@layout/fragment_main" />
 </layout>

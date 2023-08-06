@@ -1,31 +1,10 @@
 package com.pp.main
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.lifecycle.lifecycleScope
-import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
-import com.pp.base.WanAndroidTheme
-import com.pp.base.getPreferenceTheme
-import com.pp.base.helper.TabPagerFragmentHelper
-import com.pp.base.updateTheme
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
-import com.pp.router_service.RouterPath
-import com.pp.theme.DynamicTheme
-import com.pp.theme.getColor
-import com.pp.ui.widget.TabImageSwitcher
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
 
@@ -43,114 +22,5 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        TabPagerFragmentHelper(this)
-            .addPagers(pagerFragments())
-            .attach(mBinding.mainTabLayout, mBinding.mainViewpager2)
-    }
-
-    private fun pagerFragments(): MutableList<TabPagerFragmentHelper.TabPager> {
-
-        return mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
-            add(
-                TabPagerFragmentHelper.TabPager(
-                    ARouter.getInstance().build(RouterPath.Home.fragment_home)
-                        .navigation() as Fragment,
-                    WanAndroidTabImageSwitcher(
-                        this@MainActivity,
-                        mViewModel.mTheme,
-                        "ic_tab_selected_home",
-                        "ic_tab_unselected_home"
-                    )
-                )
-            )
-
-            add(
-                TabPagerFragmentHelper.TabPager(
-                    ARouter.getInstance().build(RouterPath.Project.fragment_project)
-                        .navigation() as Fragment,
-                    WanAndroidTabImageSwitcher(
-                        this@MainActivity,
-                        mViewModel.mTheme,
-                        "ic_tab_selected_project",
-                        "ic_tab_unselected_project"
-                    )
-                )
-            )
-
-            add(
-                TabPagerFragmentHelper.TabPager(
-                    ARouter.getInstance().build(RouterPath.Navigation.fragment_navigation)
-                        .navigation() as Fragment,
-                    WanAndroidTabImageSwitcher(
-                        this@MainActivity,
-                        mViewModel.mTheme,
-                        "ic_tab_selected_navigation",
-                        "ic_tab_unselected_navigation"
-                    )
-                )
-            )
-
-            add(
-                TabPagerFragmentHelper.TabPager(
-                    ARouter.getInstance().build(RouterPath.User.fragment_user)
-                        .navigation() as Fragment,
-                    WanAndroidTabImageSwitcher(
-                        this@MainActivity,
-                        mViewModel.mTheme,
-                        "ic_tab_selected_mine",
-                        "ic_tab_unselected_mine"
-                    )
-                )
-            )
-        }
-    }
-
-    private class WanAndroidTabImageSwitcher(
-        context: Context,
-        private val theme: DynamicTheme,
-        private val selectedIconName: String,
-        private val unSelectedIconName: String,
-    ) : TabImageSwitcher(context) {
-
-        override fun onDetachedFromWindow() {
-            super.onDetachedFromWindow()
-            ViewTreeLifecycleOwner.get(this)?.run {
-                theme.themeInfo.removeObserver(themeInfoObserver)
-            }
-        }
-
-        @SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
-        private val themeInfoObserver = Observer<DynamicTheme.Info> {
-
-
-            it?.theme?.resources?.run {
-
-                it.theme.getColor(android.R.attr.navigationBarColor, Color.TRANSPARENT)
-                    .run {
-                        mSelectedImageView.setBackgroundColor(this)
-                        mUnSelectedImageView.setBackgroundColor(this)
-                    }
-
-                getIdentifier(selectedIconName, "drawable", it.themePackage).run {
-                    Log.e("TAG", "selectedIconName: $selectedIconName")
-                    getDrawable(this, it.theme).run { mSelectedImageView.setImageDrawable(this) }
-                }
-
-                getIdentifier(unSelectedIconName, "drawable", it.themePackage).run {
-                    Log.e("TAG", "unSelectedIconName: $unSelectedIconName")
-                    getDrawable(this, it.theme).run { mUnSelectedImageView.setImageDrawable(this) }
-                }
-            }
-        }
-
-        override fun onAttachedToWindow() {
-            super.onAttachedToWindow()
-            ViewTreeLifecycleOwner.get(this)?.run {
-                theme.themeInfo.observe(this, themeInfoObserver)
-            }
-        }
-    }
 
 }

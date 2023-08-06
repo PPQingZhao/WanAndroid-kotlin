@@ -1,16 +1,14 @@
 package com.pp.base
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.CallSuper
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleFragment
-import com.pp.theme.*
-import com.pp.theme.BR
+import com.pp.theme.ViewTreeAppThemeViewModel
+import com.pp.theme.collectTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
