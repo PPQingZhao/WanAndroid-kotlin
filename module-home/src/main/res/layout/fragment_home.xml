@@ -14,18 +14,18 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
         tools:context=".ui.HomeFragment">
-
-
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/home_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@{viewModel.mTheme.navigationBarColor}"
+            android:background="@{viewModel.MTheme.navigationBarColor}"
             app:tabBackground="@null"
             app:tabGravity="fill"
+            app:tabIndicator="@null"
             app:tabMode="fixed"
             app:tabRippleColor="@android:color/transparent"
             tools:ignore="SpeakableTextPresentCheck" />

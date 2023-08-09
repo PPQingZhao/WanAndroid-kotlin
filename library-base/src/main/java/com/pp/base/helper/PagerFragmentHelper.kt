@@ -26,7 +26,8 @@ class PagerFragmentHelper {
 
     constructor(
         fragment: Fragment,
-    ) : this(fragment.childFragmentManager, fragment.lifecycle)
+        lifecycle: Lifecycle
+    ) : this(fragment.childFragmentManager, lifecycle)
 
     fun addPager(pager: Pager): PagerFragmentHelper {
         pagerList.add(pager)
@@ -61,9 +62,9 @@ class PagerFragmentHelper {
         }
     }
 
-    open class Pager(private val f: Fragment) {
+    open class Pager(private val f: () -> Fragment) {
         fun getFragment(): Fragment {
-            return f
+            return f.invoke()
         }
     }
 

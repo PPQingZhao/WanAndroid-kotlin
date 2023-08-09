@@ -22,16 +22,11 @@ object DynamicThemeManager {
 
     private var sContext: Context? = null
         set(value) {
-            if (field != null) {
-                throw RuntimeException("Do not initialize AppDataBase again")
-            }
+            check(null == field) { "Do not initialize AppDataBase again" }
             field = value
         }
         get() {
-            if (null == field) {
-                throw RuntimeException("you should call DynamicThemeManager.init(context) at first")
-            }
-            return field
+            return checkNotNull(field) { "you should call DynamicThemeManager.init(context) at first" }
         }
 
     fun init(ctx: Context) {

@@ -1,12 +1,12 @@
 package com.pp.user.model
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.pp.module_user.repositoy.UserRepository
 import com.pp.network.api.WanAndroidService
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -53,7 +53,7 @@ class UserRegisterViewModel : RegisterViewModel(), DefaultLifecycleObserver {
                     succeed.value = result
                 }
             } catch (e: Throwable) {
-                Log.e("UserRegisterViewModel", "${e.message}")
+                e.printStackTrace()
                 withContext(Dispatchers.Main) {
                     errorMessage.value = "发生错误"
                 }

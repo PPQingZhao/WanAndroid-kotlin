@@ -25,7 +25,8 @@ class TabPagerFragmentHelper {
 
     constructor(
         fragment: Fragment,
-    ) : this(fragment.childFragmentManager, fragment.lifecycle)
+        lifecycle: Lifecycle
+    ) : this(fragment.childFragmentManager, lifecycle)
 
     fun addPager(pager: TabPager): TabPagerFragmentHelper {
         tabPagerList.add(pager)
@@ -71,7 +72,7 @@ class TabPagerFragmentHelper {
         internal val tab: Tab
 
         constructor(
-            fragment: Fragment,
+            fragment: () -> Fragment,
             tabView: View?,
             @DrawableRes icon: Int = 0,
             @StringRes text: Int = 0,

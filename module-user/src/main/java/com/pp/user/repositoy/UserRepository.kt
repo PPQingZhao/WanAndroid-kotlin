@@ -61,7 +61,7 @@ object UserRepository {
     /**
      * 用户名&密码 登录
      */
-    suspend fun login(userName: String?, password: String?): Pair<ResponseBean<LoginBean>, User?> {
+    private suspend fun login(userName: String?, password: String?): Pair<ResponseBean<LoginBean>, User?> {
 
         Log.v(TAG, "start login: $userName}")
         // 执行登录逻辑
@@ -73,8 +73,6 @@ object UserRepository {
             val loginBean = loginResponse.data
             loginBean?.apply {
                 user.token = token
-                // head添加登录token
-//                WanAndroidService.setToken(token)
             }
 
             // 获取uer info

@@ -24,9 +24,6 @@ interface WanAndroidService {
          */
         val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
 
-        fun setToken(token: String) {
-            header["token"] = token
-        }
     }
 
     object ErrorCode {

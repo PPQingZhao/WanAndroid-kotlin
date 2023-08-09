@@ -23,7 +23,7 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
 
     private var supportManager: FragmentManager? = null
     private var contentView: View? = null
-    private val mWindowInsets = MutableLiveData<WindowInsets>()
+    private val mDispatchInsets = MutableLiveData<WindowInsets>()
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
 
@@ -43,7 +43,7 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
         super.onCreate(owner)
         contentView?.setOnApplyWindowInsetsListener { view, windowInsets ->
             // 记录windowInsets
-            mWindowInsets.value = WindowInsets(windowInsets)
+            mDispatchInsets.value = WindowInsets(windowInsets)
 
             contentView?.apply {
                 // 分发windowInsets给 activity布局
@@ -68,7 +68,7 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
             ) {
                 Log.e("WindowInsetsDispatcher", "onFragmentViewCreated==>> ${f}")
                 // 分发windowInsets 给fragment
-                mWindowInsets.observe(f) {
+                mDispatchInsets.observe(f) {
                     it?.apply {
                         f.view?.let { view ->
                             ViewCompat.dispatchApplyWindowInsets(
@@ -87,7 +87,7 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
     override fun onDestroy(owner: LifecycleOwner) {
         super.onDestroy(owner)
         contentView = null
-        mWindowInsets.value = null
+        mDispatchInsets.value = null
 
         supportManager?.unregisterFragmentLifecycleCallbacks(fragmentLifecycleCallbacks!!)
         fragmentLifecycleCallbacks = null

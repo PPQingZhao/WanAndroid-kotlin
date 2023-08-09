@@ -27,6 +27,7 @@
             android:background="@{viewModel.mTheme.navigationBarColor}"
             app:tabBackground="@null"
             app:tabGravity="fill"
+            app:tabIndicator="@null"
             app:tabMode="fixed"
             app:tabRippleColor="@android:color/transparent"
             tools:ignore="SpeakableTextPresentCheck" />

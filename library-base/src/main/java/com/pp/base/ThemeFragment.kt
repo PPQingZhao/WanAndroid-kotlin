@@ -18,7 +18,6 @@ import kotlinx.coroutines.launch
 abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleFragment<VB, VM>() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         lifecycleScope.launch(Dispatchers.IO) {
@@ -37,8 +36,9 @@ abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-        ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
-        return super.onCreateView(inflater, container, savedInstanceState)
+        return super.onCreateView(inflater, container, savedInstanceState).apply {
+            ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
+        }
     }
 
 }

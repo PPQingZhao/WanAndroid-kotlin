@@ -8,10 +8,11 @@
             type="com.pp.main.MainViewModel" />
     </data>
 
-    <androidx.fragment.app.FragmentContainerView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/main_fragment"
-        android:name="com.pp.main.MainFragment"
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+
+    </FrameLayout>
 </layout>

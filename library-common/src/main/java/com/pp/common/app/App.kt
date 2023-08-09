@@ -2,15 +2,19 @@ package com.pp.common.app
 
 import android.app.Application
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.pp.router_service.RouterInitializer
+import com.pp.router_service.RouterPath
 import kotlin.properties.Delegates
 
 open class App : Application() {
 
+    val navigation = MutableLiveData<String>(RouterPath.Main.fragment_main)
+
     companion object {
         private var mInstance: App by Delegates.notNull()
 
-        fun getInstance(): Application {
+        fun getInstance(): App {
             return mInstance
         }
     }

@@ -46,7 +46,7 @@ object ThemeBindingAdapter {
      *   <color name="colorPrimaryVariant">#FEFAF8</color>      ->  "colorPrimaryVariant"
      */
     @JvmStatic
-    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
+    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables", "DiscouragedApi")
     @androidx.databinding.BindingAdapter(
         value = ["dynamicThemeInfo", "textColorName"],
         requireAll = true
@@ -66,7 +66,7 @@ object ThemeBindingAdapter {
      * ic_arrow_back.png    -> “ic_arrow_back”
      */
     @JvmStatic
-    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables")
+    @SuppressLint("ResourceAsColor", "UseCompatLoadingForDrawables", "DiscouragedApi")
     @androidx.databinding.BindingAdapter(
         value = ["dynamicThemeInfo", "drawableName"],
         requireAll = true
