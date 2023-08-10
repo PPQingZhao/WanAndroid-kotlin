@@ -32,6 +32,9 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
             )
         }
 
+        /**
+         * 应用主要色调(toolbar)
+         */
         mViewModel.mTheme.colorPrimary.observe(this) { it ->
             // 计算颜色亮度
             val luminance = ColorUtils.calculateLuminance(it.defaultColor)
@@ -48,7 +51,7 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
     }
 
     /**
-     * 设置状态栏字体颜色
+     * 设置状态栏深色(字体高亮)或亮色(字体深色)
      */
     fun requireLightStatusBar(light: Boolean) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
