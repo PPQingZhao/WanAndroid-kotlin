@@ -24,7 +24,7 @@ data class LoginBean(
     val collectIds: List<Any> = listOf(),
     val email: String = "",
     val icon: String = "",
-    val id: Int = 0,
+    val id: Long = 0,
     val nickname: String = "",
     val password: String = "",
     val publicName: String = "",

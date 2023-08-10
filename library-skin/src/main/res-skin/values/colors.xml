@@ -3,7 +3,7 @@
     <color name="colorPrimary">#FEFAF8</color>
     <color name="colorPrimaryDark">#673AB7</color>
     <color name="colorOnPrimary">#FEFAF8</color>
-    <color name="colorPrimaryVariant">#FEFAF8</color>
+    <color name="colorPrimaryVariant">#EEEFF3</color>
     <color name="colorAccent">#449F47</color>
     <color name="navigationBarColor">@color/colorPrimary</color>
     <color name="colorControlHighlight">#40929292</color>

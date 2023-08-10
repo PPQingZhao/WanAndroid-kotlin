@@ -17,4 +17,8 @@ data class User(
     @ColumnInfo var e_mail: String? = null,
     @ColumnInfo var nickName: String? = null,
     @ColumnInfo var avatar: String? = null,
+    @ColumnInfo var coinCount: Long? = null,
+    @ColumnInfo var level: Long? = null,
+    @ColumnInfo var rank: String? = null,
+    @ColumnInfo var userId: Long? = null,
 )

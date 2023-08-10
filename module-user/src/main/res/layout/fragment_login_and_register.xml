@@ -57,7 +57,7 @@
                 android:id="@+id/motion_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layoutDescription="@xml/activity_login_and_register_scene">
+                app:layoutDescription="@xml/fragment_login_and_register_scene">
 
                 <include
                     android:id="@+id/view_register"

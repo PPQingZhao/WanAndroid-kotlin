@@ -1,4 +1,4 @@
-package com.pp.module_user.repositoy
+package com.pp.user.repositoy
 
 import androidx.lifecycle.MutableLiveData
 import com.pp.database.user.User
@@ -27,9 +27,13 @@ class UserModel {
     private val _motto = MutableLiveData<String?>()
     val motto = _motto
 
+    private val _User = MutableLiveData<User?>()
+    val userData = _User
+
     var user: User? = null
         set(value) {
             field = value
+            _User.value = field
             _userName.value = value?.name
             _nickName.value = value?.nickName
             _password.value = value?.password

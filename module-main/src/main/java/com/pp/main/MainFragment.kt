@@ -2,6 +2,7 @@ package com.pp.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeFragment
@@ -83,10 +84,10 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
                         "ic_tab_unselected_mine"
                     ).apply {
                         setOnTouchListener { v, event ->
-                            /* if (true) {
-                                 App.getInstance().navigation.value = RouterPath.User.fragment_login
-                                 return@setOnTouchListener true
-                             }*/
+                            if (event.action == MotionEvent.ACTION_DOWN) {
+                                App.getInstance().navigation.value = RouterPath.User.fragment_login
+                                return@setOnTouchListener true
+                            }
                             return@setOnTouchListener false
                         }
                     }

@@ -28,8 +28,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    private val mainFragment = MainFragment()
-
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,27 +51,40 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         var loginFragment =
             supportFragmentManager.findFragmentByTag(RouterPath.User.fragment_login)
 
-        if (!isShow(loginFragment)) {
+        if (null == loginFragment) {
             loginFragment = ARouter.getInstance()
                 .build(RouterPath.User.fragment_login).navigation() as Fragment
-
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, loginFragment, RouterPath.User.fragment_login)
-                .commitNow()
         }
+
+        val oldFragment = curFragment
+        supportFragmentManager.beginTransaction()
+            .run {
+                if (null != oldFragment) {
+                    hide(oldFragment)
+                }
+                add(R.id.main_container, loginFragment, RouterPath.User.fragment_login)
+                show(loginFragment)
+                commitNow()
+            }
+        curFragment = loginFragment
     }
 
+    private var curFragment: Fragment? = null
     private fun showMain() {
-        if (!isShow(mainFragment)) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.main_container, mainFragment)
-                .commitNow()
+        var mainFragment = supportFragmentManager.findFragmentByTag(RouterPath.Main.fragment_main)
+        if (null == mainFragment) {
+            mainFragment = MainFragment()
         }
+
+        supportFragmentManager.beginTransaction()
+            .run {
+                replace(R.id.main_container, mainFragment, RouterPath.Main.fragment_main)
+                show(mainFragment)
+                commitNow()
+            }
+        curFragment = mainFragment
+
     }
 
-    private fun isShow(f: Fragment?): Boolean {
-        if (null == f) return false
-        return f.isAdded && f.isVisible
-    }
 
 }

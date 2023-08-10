@@ -10,44 +10,78 @@
             type="com.pp.user.ui.UserViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_user_scene">
 
-        <Button
-            android:id="@+id/btn_theme"
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_avatar"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/margin_small"
-            android:background="@{viewModel.MTheme.colorControlActivated}"
-            android:gravity="center"
-            android:text="theme"
-            android:textAllCaps="false"
-            android:textColor="@{viewModel.MTheme.textColor}"
-            app:layout_constraintBottom_toTopOf="@id/btn_login"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="0dp"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:src="@mipmap/ic_launcher"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="packed"
-            app:layout_constraintWidth_percent="0.8"
-            tools:textColor="?android:textColor" />
+            app:layout_constraintVertical_bias="0.2"
+            app:layout_constraintWidth_percent="0.25"
+            app:roundPercent="1" />
 
-        <Button
-            android:id="@+id/btn_login"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
-            android:background="@{viewModel.MTheme.colorControlActivated}"
-            android:gravity="center"
-            android:text="@string/login"
-            android:textAllCaps="false"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.nickName(viewModel.userModel.nickName)}"
             android:textColor="@{viewModel.MTheme.textColor}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_theme"
-            app:layout_constraintWidth_percent="0.8"
-            tools:textColor="?android:textColor" />
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
+            tools:text="用户名: PP" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tv_userid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.userId(viewModel.userModel.userData)}"
+            android:textColor="@{viewModel.MTheme.textColorSecondary}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_nickname"
+            tools:text="id:28231" />
+
+        <TextView
+            android:id="@+id/tv_show"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginTop="@dimen/margin_small"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.coinInfo(viewModel.userModel.userData)}"
+            android:textColor="@{viewModel.MTheme.textColorSecondary}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_userid"
+            tools:text="积分:455 等级:5 排名: 2222" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/user_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_large"
+            android:background="@{viewModel.MTheme.colorPrimaryVariant}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_avatar"
+            tools:background="?attr/colorPrimaryVariant" />
+
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 </layout>

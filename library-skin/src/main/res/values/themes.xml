@@ -9,7 +9,7 @@
 7.colorBackground 应用的背景色，popMenu的背景默认使用该颜色
 8.colorAccent CheckBox，RadioButton，SwitchCompat等一般控件的选中效果默认采用该颜色
 9.colorControlNormal CheckBox，RadioButton，SwitchCompat等默认状态的颜色。
-10.colorControlHighlight 控件按压时的色调
+10.colorControlHighlight 控件按压时的色调（ripple涟漪效果）
 11.colorControlActivated 控件选中时的颜色，默认使用colorAccent
 12.colorButtonNormal 默认按钮的背景颜色
 13.editTextColor：默认EditView输入框字体的颜色。

@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import com.pp.database.user.User
-import com.pp.module_user.repositoy.UserModel
+import com.pp.user.repositoy.UserModel
 import com.pp.module_user.repositoy.UserRepository
 import com.pp.network.bean.ResponseBean
 import com.pp.network.bean.user.LoginBean

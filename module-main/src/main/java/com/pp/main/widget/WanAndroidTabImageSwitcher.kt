@@ -40,12 +40,12 @@ class WanAndroidTabImageSwitcher(
                 }
 
             getIdentifier(selectedIconName, "drawable", it.themePackage).run {
-                Log.e("TAG", "selectedIconName: $selectedIconName")
+//                Log.e("TAG", "selectedIconName: $selectedIconName")
                 getDrawable(this, it.theme).run { mSelectedImageView.setImageDrawable(this) }
             }
 
             getIdentifier(unSelectedIconName, "drawable", it.themePackage).run {
-                Log.e("TAG", "unSelectedIconName: $unSelectedIconName")
+//                Log.e("TAG", "unSelectedIconName: $unSelectedIconName")
                 getDrawable(this, it.theme).run { mUnSelectedImageView.setImageDrawable(this) }
             }
         }

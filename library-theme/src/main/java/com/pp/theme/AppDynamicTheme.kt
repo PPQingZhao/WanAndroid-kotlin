@@ -23,6 +23,7 @@ open class AppDynamicTheme : DynamicTheme() {
     }
     val windowBackground = MutableLiveData<Drawable?>(drawable)
     val colorPrimary = MutableLiveData<ColorStateList>(colorState)
+    val colorPrimaryVariant = MutableLiveData<ColorStateList>(colorState)
     val colorAccent = MutableLiveData<ColorStateList>(colorState)
     val navigationBarColor = MutableLiveData<ColorStateList>(colorState)
     val textColorPrimary = MutableLiveData<ColorStateList>(colorState)
@@ -47,6 +48,7 @@ open class AppDynamicTheme : DynamicTheme() {
 
         val colorAttrMap = mapOf(
             colorPrimary to R.attr.colorPrimary,
+            colorPrimaryVariant to com.google.android.material.R.attr.colorPrimaryVariant,
             colorAccent to R.attr.colorAccent,
             navigationBarColor to R.attr.navigationBarColor,
             textColorPrimary to R.attr.textColorPrimary,

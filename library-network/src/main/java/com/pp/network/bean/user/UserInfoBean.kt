@@ -37,16 +37,16 @@ data class UserInfoBean(
     val userInfo: LoginBean = LoginBean(),
 ) {
     data class CoinInfo(
-        val coinCount: Int = 0,
-        val level: Int = 0,
+        val coinCount: Long = 0,
+        val level: Long = 0,
         val nickname: String = "",
         val rank: String = "",
-        val userId: Int = 0,
+        val userId: Long = 0,
         val username: String = "",
     )
 
     data class CollectArticleInfo(
-        val count: Int = 0,
+        val count: Long = 0,
     )
 
 }
