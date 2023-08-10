@@ -8,7 +8,6 @@ import com.alibaba.android.arouter.facade.template.IProvider
  */
 interface IUserService : IProvider {
 
-
     /**
      * 获取 登录token
      */

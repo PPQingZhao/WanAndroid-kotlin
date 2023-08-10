@@ -2,9 +2,11 @@ package com.pp.base
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
+import androidx.core.graphics.ColorUtils
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleActivity
@@ -28,6 +30,15 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
             mViewModel.mTheme.collectTheme(
                 themeFactory(theme, resources.displayMetrics, resources.configuration)
             )
+        }
+
+        mViewModel.mTheme.colorPrimary.observe(this) { it ->
+            // 计算颜色亮度
+            val luminance = ColorUtils.calculateLuminance(it.defaultColor)
+            Log.e("TAG", "luminance: $luminance")
+            // 亮度大于0.5,则认为主题色为亮色,需设置状态栏亮色(字体深色)
+            requireLightStatusBar(luminance > 0.5)
+
         }
     }
 

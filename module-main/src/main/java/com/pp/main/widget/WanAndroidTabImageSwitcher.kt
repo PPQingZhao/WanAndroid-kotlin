@@ -1,5 +1,6 @@
 package com.pp.main.widget
 
+//noinspection SuspiciousImport
 import android.R
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,6 +12,7 @@ import com.pp.theme.DynamicTheme
 import com.pp.theme.getColor
 import com.pp.ui.widget.TabImageSwitcher
 
+@SuppressLint("ViewConstructor")
 class WanAndroidTabImageSwitcher(
     context: Context,
     private val theme: DynamicTheme,

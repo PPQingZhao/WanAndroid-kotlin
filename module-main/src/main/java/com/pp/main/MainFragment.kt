@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
+import com.pp.common.routerservice.userService
 import com.pp.main.databinding.FragmentMainBinding
 import com.pp.main.widget.WanAndroidTabImageSwitcher
 import com.pp.router_service.RouterPath
@@ -49,47 +50,23 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
 
         return mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
             add(
-                TabPagerFragmentHelper.TabPager(
-                    {
-                        ARouter.getInstance().build(RouterPath.Home.fragment_home)
-                            .navigation() as Fragment
-                    },
-                    WanAndroidTabImageSwitcher(
-                        requireContext(),
-                        mViewModel.mTheme,
-                        "ic_tab_selected_home",
-                        "ic_tab_unselected_home"
-                    )
+                createTagPager(
+                    RouterPath.Home.fragment_home, "ic_tab_selected_home",
+                    "ic_tab_unselected_home"
                 )
             )
 
             add(
-                TabPagerFragmentHelper.TabPager(
-                    {
-                        ARouter.getInstance().build(RouterPath.Project.fragment_project)
-                            .navigation() as Fragment
-                    },
-                    WanAndroidTabImageSwitcher(
-                        requireContext(),
-                        mViewModel.mTheme,
-                        "ic_tab_selected_project",
-                        "ic_tab_unselected_project"
-                    )
+                createTagPager(
+                    RouterPath.Project.fragment_project, "ic_tab_selected_project",
+                    "ic_tab_unselected_project"
                 )
             )
 
             add(
-                TabPagerFragmentHelper.TabPager(
-                    {
-                        ARouter.getInstance().build(RouterPath.Navigation.fragment_navigation)
-                            .navigation() as Fragment
-                    },
-                    WanAndroidTabImageSwitcher(
-                        requireContext(),
-                        mViewModel.mTheme,
-                        "ic_tab_selected_navigation",
-                        "ic_tab_unselected_navigation"
-                    )
+                createTagPager(
+                    RouterPath.Navigation.fragment_navigation, "ic_tab_selected_navigation",
+                    "ic_tab_unselected_navigation"
                 )
             )
 
@@ -106,8 +83,11 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
                         "ic_tab_unselected_mine"
                     ).apply {
                         setOnTouchListener { v, event ->
-                            App.getInstance().navigation.value = RouterPath.User.fragment_login
-                            return@setOnTouchListener true
+                            /* if (true) {
+                                 App.getInstance().navigation.value = RouterPath.User.fragment_login
+                                 return@setOnTouchListener true
+                             }*/
+                            return@setOnTouchListener false
                         }
                     }
                 )
@@ -115,4 +95,20 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
         }
     }
 
+    private fun createTagPager(
+        fragment: String, selectedIconName: String, unSelectedIconName: String,
+    ): TabPagerFragmentHelper.TabPager {
+        return TabPagerFragmentHelper.TabPager(
+            {
+                ARouter.getInstance().build(fragment)
+                    .navigation() as Fragment
+            },
+            WanAndroidTabImageSwitcher(
+                requireContext(),
+                mViewModel.mTheme,
+                selectedIconName,
+                unSelectedIconName
+            )
+        )
+    }
 }
