@@ -9,4 +9,10 @@
     <string name="hint_password">输入密码</string>
     <string name="hint_new_user">新用户</string>
     <string name="hint_confirm_password">确认密码</string>
+
+    <string name="message_center">消息中心</string>
+    <string name="share_articles">分享文章</string>
+    <string name="collect_articles">收藏文章</string>
+    <string name="tool_list">工具列表</string>
+
 </resources>

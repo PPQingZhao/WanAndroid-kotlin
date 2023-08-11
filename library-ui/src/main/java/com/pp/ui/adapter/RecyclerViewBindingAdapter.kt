@@ -69,11 +69,6 @@ abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any, T : An
      * 在这里设置 ViewDataBinding::setVariable(int variableId, @Nullable Object value);
      */
     open fun onSetVariable(binding: ViewDataBinding, viewModel: VM?): Boolean {
-        val appTheme = ViewTreeAppThemeViewModel[binding.root]
-        binding.setVariable(com.pp.theme.BR.dynamicThemeViewModel, appTheme)
-
-        val lifecycleOwner = ViewTreeLifecycleOwner.get(binding.root)
-        binding.lifecycleOwner = lifecycleOwner
         return false
     }
 

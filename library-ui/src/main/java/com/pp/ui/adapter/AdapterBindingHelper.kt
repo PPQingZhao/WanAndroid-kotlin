@@ -2,6 +2,7 @@ package com.pp.ui.adapter
 
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.pp.ui.BR
 
 abstract class AdapterBindingHelper<VB : ViewDataBinding, VM : Any, T : Any?> {
@@ -39,9 +40,9 @@ abstract class AdapterBindingHelper<VB : ViewDataBinding, VM : Any, T : Any?> {
         }
     }
 
-
     fun onViewAttachedToWindow(holder: BindingHolder<VB>) {
-
+        val lifecycleOwner = ViewTreeLifecycleOwner.get(holder.binding.root)
+        holder.binding.lifecycleOwner = lifecycleOwner
     }
 
     /**

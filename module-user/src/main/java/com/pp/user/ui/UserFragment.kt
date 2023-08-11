@@ -1,10 +1,18 @@
 package com.pp.user.ui
 
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.router_service.RouterPath
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.databinding.ItemAllowRightBinding
+import com.pp.user.R
 import com.pp.user.databinding.FragmentUserBinding
+import com.pp.user.model.UserItemAllowRightModel
 
 @Route(path = RouterPath.User.fragment_user)
 class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
@@ -16,28 +24,70 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
         return UserViewModel::class.java
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initRecyclerView()
+    }
 
-       /* var themeId = WanAndroidTheme.Default
-        lifecycleScope.launch(Dispatchers.IO) {
-            getPreferenceTheme().collectLatest {
-                themeId = it ?: WanAndroidTheme.Default
+    private val mAdapter by lazy {
+        object :
+            RecyclerViewBindingAdapter<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>() {
+            override fun createViewModel(
+                binding: ItemAllowRightBinding,
+                item: UserItemAllowRightModel?,
+                cacheItemViewModel: UserItemAllowRightModel?,
+            ): UserItemAllowRightModel? {
+                return item
             }
-        }*/
 
-      /*  mBinding.btnTheme.setOnClickListener {
-            lifecycleScope.launch(Dispatchers.IO) {
-                if (themeId == WanAndroidTheme.Default) {
-                    updateTheme(WanAndroidTheme.Black)
-                } else if (themeId == WanAndroidTheme.Black) {
-                    updateTheme(WanAndroidTheme.Blue)
-                } else {
-                    updateTheme(WanAndroidTheme.Default)
-                }
+            override fun onCreateBinding(
+                parent: ViewGroup,
+                viewType: Int,
+            ): ItemAllowRightBinding {
+                return ItemAllowRightBinding.inflate(layoutInflater, parent, false)
             }
-        }*/
+        }
+    }
 
+    private fun initRecyclerView() {
+        mBinding.userRecyclerview.layoutManager = LinearLayoutManager(context)
+        mAdapter.setDataList(getItems())
+        mBinding.userRecyclerview.adapter = mAdapter
+    }
+
+    private fun getItems(): List<UserItemAllowRightModel> {
+        return mutableListOf<UserItemAllowRightModel>().apply {
+            add(
+                UserItemAllowRightModel(
+                    com.pp.skin.R.drawable.ic_allow_right,
+                    R.string.message_center,
+                    mViewModel.mTheme
+                )
+            )
+            add(
+                UserItemAllowRightModel(
+                    com.pp.skin.R.drawable.ic_allow_right,
+                    R.string.share_articles,
+                    mViewModel.mTheme
+                )
+            )
+
+            add(
+                UserItemAllowRightModel(
+                    com.pp.skin.R.drawable.ic_allow_right,
+                    R.string.collect_articles,
+                    mViewModel.mTheme
+                )
+            )
+            add(
+                UserItemAllowRightModel(
+                    com.pp.skin.R.drawable.ic_allow_right,
+                    R.string.tool_list,
+                    mViewModel.mTheme
+                )
+            )
+
+        }
     }
 
 }
