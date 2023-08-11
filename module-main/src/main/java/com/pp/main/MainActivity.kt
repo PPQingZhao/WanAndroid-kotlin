@@ -34,20 +34,28 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         App.getInstance().navigation.observe(this) {
 
             when (it) {
-                RouterPath.User.fragment_login -> {
-                    showLogin()
-                }
                 RouterPath.Main.fragment_main,
                 RouterPath.User.fragment_user,
                 -> {
-                    showMain()
+                    showFragment(getMainFragment(), RouterPath.Main.fragment_main)
+                }
+                RouterPath.User.fragment_login -> {
+                    showFragment(getLoginFragment(), RouterPath.User.fragment_login)
                 }
             }
         }
     }
 
-    @SuppressLint("CommitTransaction")
-    private fun showLogin() {
+    private fun getMainFragment(): Fragment {
+        var mainFragment =
+            supportFragmentManager.findFragmentByTag(RouterPath.Main.fragment_main)
+        if (null == mainFragment) {
+            mainFragment = MainFragment()
+        }
+        return mainFragment
+    }
+
+    private fun getLoginFragment(): Fragment {
         var loginFragment =
             supportFragmentManager.findFragmentByTag(RouterPath.User.fragment_login)
 
@@ -55,35 +63,28 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
             loginFragment = ARouter.getInstance()
                 .build(RouterPath.User.fragment_login).navigation() as Fragment
         }
+        return loginFragment
+    }
+
+    private var curFragment: Fragment? = null
+
+    @SuppressLint("CommitTransaction")
+    private fun showFragment(fragment: Fragment, tag: String) {
 
         val oldFragment = curFragment
         supportFragmentManager.beginTransaction()
             .run {
-                if (null != oldFragment) {
+                oldFragment?.run {
                     hide(oldFragment)
                 }
-                add(R.id.main_container, loginFragment, RouterPath.User.fragment_login)
-                show(loginFragment)
+
+                if (!fragment.isAdded) {
+                    add(R.id.main_container, fragment, tag)
+                }
+                show(fragment)
                 commitNow()
             }
-        curFragment = loginFragment
-    }
-
-    private var curFragment: Fragment? = null
-    private fun showMain() {
-        var mainFragment = supportFragmentManager.findFragmentByTag(RouterPath.Main.fragment_main)
-        if (null == mainFragment) {
-            mainFragment = MainFragment()
-        }
-
-        supportFragmentManager.beginTransaction()
-            .run {
-                replace(R.id.main_container, mainFragment, RouterPath.Main.fragment_main)
-                show(mainFragment)
-                commitNow()
-            }
-        curFragment = mainFragment
-
+        curFragment = fragment
     }
 
 
