@@ -23,9 +23,9 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_normal"
+            android:layout_marginStart="@dimen/margin_small"
             android:src="@{viewModel.icon}"
-            tools:src="@mipmap/ic_launcher" />
+            tools:src="@drawable/ic_message_center" />
 
         <TextView
             android:layout_width="0dp"
@@ -36,19 +36,20 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{viewModel.content}"
-            android:textColor="@{viewModel.theme.textColor}"
+            android:textColor="@{viewModel.theme.textColorSecondary}"
             android:textSize="15sp"
-            tools:text="消息中心" />
+            tools:text="消息中心"
+            tools:textColor="?android:textColorSecondary" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:layout_marginEnd="@dimen/margin_normal"
-            android:src="@drawable/ic_allow_right"
-            android:tint="@{viewModel.theme.textColor}"
+            android:src="@drawable/ic_arrow_right"
+            android:tint="@{viewModel.theme.textColorSecondary}"
             tools:ignore="UseAppTint"
-            tools:tint="?android:textColor" />
+            tools:tint="?android:textColorSecondary" />
 
     </LinearLayout>
 </layout>

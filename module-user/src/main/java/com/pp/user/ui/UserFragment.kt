@@ -59,14 +59,14 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
         return mutableListOf<UserItemAllowRightModel>().apply {
             add(
                 UserItemAllowRightModel(
-                    com.pp.skin.R.drawable.ic_allow_right,
+                    com.pp.skin.R.drawable.ic_message_center,
                     R.string.message_center,
                     mViewModel.mTheme
                 )
             )
             add(
                 UserItemAllowRightModel(
-                    com.pp.skin.R.drawable.ic_allow_right,
+                    com.pp.skin.R.drawable.ic_share,
                     R.string.share_articles,
                     mViewModel.mTheme
                 )
@@ -74,14 +74,14 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
 
             add(
                 UserItemAllowRightModel(
-                    com.pp.skin.R.drawable.ic_allow_right,
+                    com.pp.skin.R.drawable.ic_favorite,
                     R.string.collect_articles,
                     mViewModel.mTheme
                 )
             )
             add(
                 UserItemAllowRightModel(
-                    com.pp.skin.R.drawable.ic_allow_right,
+                    com.pp.skin.R.drawable.ic_tool,
                     R.string.tool_list,
                     mViewModel.mTheme
                 )
