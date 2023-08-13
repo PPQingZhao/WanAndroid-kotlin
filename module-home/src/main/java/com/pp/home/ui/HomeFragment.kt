@@ -21,7 +21,18 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val pagerList = mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
+
+        mBinding.homeViewpager2.run {
+            offscreenPageLimit = 3
+            isUserInputEnabled = false
+            TabPagerFragmentHelper(this@HomeFragment, viewLifecycleOwner.lifecycle)
+                .addPagers(getPagers())
+                .attach(mBinding.homeTabLayout, this, true)
+        }
+    }
+
+    private fun getPagers(): MutableList<TabPagerFragmentHelper.TabPager> {
+        return mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
             add(
                 TabPagerFragmentHelper.TabPager(
                     { RealHomeFragment() },
@@ -51,9 +62,5 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
             )
         }
 
-        mBinding.homeViewpager2.offscreenPageLimit = 3
-        TabPagerFragmentHelper(this, viewLifecycleOwner.lifecycle)
-            .addPagers(pagerList)
-            .attach(mBinding.homeTabLayout, mBinding.homeViewpager2, true)
     }
 }

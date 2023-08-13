@@ -30,6 +30,7 @@
             app:tabGravity="center"
             app:tabIndicator="@drawable/layer_tab_indicator_media"
             app:tabIndicatorHeight="2dp"
+            app:tabRippleColor="@color/transparent"
             tools:background="?attr/colorPrimary"
             tools:ignore="SpeakableTextPresentCheck" />
 
