@@ -1,8 +1,11 @@
 package com.pp.home.ui
 
+import android.os.Bundle
+import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
+import com.pp.home.R
 import com.pp.home.databinding.FragmentHomeBinding
 import com.pp.router_service.RouterPath
 
@@ -16,34 +19,34 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
         return HomeViewModel::class.java
     }
 
-    override fun onFirstResume() {
-        super.onFirstResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         val pagerList = mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
             add(
                 TabPagerFragmentHelper.TabPager(
-                    { TestFragment("1111111111111111111111") },
+                    { RealHomeFragment() },
                     null,
                     0,
-                    0,
-                    "1"
+                    R.string.home,
+                    ""
                 )
             )
             add(
                 TabPagerFragmentHelper.TabPager(
-                    { TestFragment("2222222222222222222222") },
+                    { SquareFragment() },
                     null,
                     0,
-                    0,
-                    "2"
+                    R.string.square,
+                    ""
                 )
             )
             add(
                 TabPagerFragmentHelper.TabPager(
-                    { TestFragment("333333333333333333333") },
+                    { AnswerFragment() },
                     null,
                     0,
-                    0,
-                    "3"
+                    R.string.answer,
+                    ""
                 )
             )
         }

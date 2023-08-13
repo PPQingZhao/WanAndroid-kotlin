@@ -14,21 +14,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:orientation="vertical"
         tools:context=".ui.HomeFragment">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/home_tab_layout"
             android:layout_width="match_parent"
-            android:layout_height="?actionBarSize"
-            android:background="@{viewModel.MTheme.navigationBarColor}"
-            app:tabBackground="@null"
-            app:tabGravity="fill"
-            app:tabIndicator="@null"
-            app:tabMode="fixed"
-            app:tabRippleColor="@android:color/transparent"
+            android:layout_height="wrap_content"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            android:fitsSystemWindows="true"
+            app:SelectedTabIndicatorColor="@{viewModel.MTheme.textColorPrimary.defaultColor}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="center"
+            app:tabIndicator="@drawable/layer_tab_indicator_media"
+            app:tabIndicatorHeight="2dp"
+            tools:background="?attr/colorPrimary"
             tools:ignore="SpeakableTextPresentCheck" />
+
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/home_viewpager2"

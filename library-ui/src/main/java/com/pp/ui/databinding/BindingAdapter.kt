@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -14,13 +13,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.pp.ui.utils.load
 
 object BindingAdapter {
-
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:background")
-    fun setBackground(iv: View, drawable: Drawable?) {
-//        Log.e("TAG", "res: $res")
-        iv.background = drawable
-    }
 
 
     @JvmStatic
@@ -85,15 +77,5 @@ object BindingAdapter {
     }
 
 
-    @androidx.databinding.BindingAdapter("android:resId")
-    fun setBackground(iv: ImageView, res: Int) {
-        Log.e("TAG", "res: $res")
-    }
-    /*  @JvmStatic
-      @androidx.databinding.BindingAdapter("android:textColor")
-      fun setTextColor(tv: TextView, color: ColorStateList?) {
-          color?.apply {
-              tv.setTextColor(this)
-          }
-      }*/
+
 }

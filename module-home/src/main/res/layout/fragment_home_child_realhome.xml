@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.pp.base.ThemeViewModel" />
+            type="com.pp.home.ui.RealHomeViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:text="test"
+            android:text="首页"
             android:textColor="@{viewModel.MTheme.textColor}" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
