@@ -99,7 +99,7 @@ abstract class BannerAdapter(
             }.flowOn(Dispatchers.IO)
                 .collectLatest { targetIndex ->
                     carousel.run {
-                        Log.e("TAG", "collect:  ${targetIndex}")
+                        Log.e("TAG", "collect:  $targetIndex")
                         if (targetIndex == carousel?.count) {
                             motionLayout?.addTransitionListener(object :
                                 TransitionAdapter() {

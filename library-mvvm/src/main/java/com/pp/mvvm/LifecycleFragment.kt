@@ -65,6 +65,10 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+    }
+
     open fun onFirstResume() {
     }
 

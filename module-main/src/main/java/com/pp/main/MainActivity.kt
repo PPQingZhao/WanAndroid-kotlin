@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.base.ThemeActivity
+import com.pp.base.helper.PagerFragmentHelper
 import com.pp.common.app.App
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
@@ -31,60 +32,40 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        mBinding.viewpager2.run {
+            isUserInputEnabled = false
+            PagerFragmentHelper(this@MainActivity)
+                .addPagers(getPagers())
+                .attach(this)
+        }
+
         App.getInstance().navigation.observe(this) {
 
             when (it) {
                 RouterPath.Main.fragment_main,
                 RouterPath.User.fragment_user,
                 -> {
-                    showFragment(getMainFragment(), RouterPath.Main.fragment_main)
+                    mBinding.viewpager2.currentItem = 0
                 }
                 RouterPath.User.fragment_login -> {
-                    showFragment(getLoginFragment(), RouterPath.User.fragment_login)
+                    mBinding.viewpager2.currentItem = 1
                 }
             }
         }
     }
 
-    private fun getMainFragment(): Fragment {
-        var mainFragment =
-            supportFragmentManager.findFragmentByTag(RouterPath.Main.fragment_main)
-        if (null == mainFragment) {
-            mainFragment = MainFragment()
+    private fun getPagers(): List<PagerFragmentHelper.Pager> {
+        return mutableListOf<PagerFragmentHelper.Pager>().apply {
+            add(PagerFragmentHelper.Pager {
+                MainFragment()
+            })
+
+            add(PagerFragmentHelper.Pager {
+                ARouter.getInstance()
+                    .build(RouterPath.User.fragment_login).navigation() as Fragment
+            })
         }
-        return mainFragment
-    }
-
-    private fun getLoginFragment(): Fragment {
-        var loginFragment =
-            supportFragmentManager.findFragmentByTag(RouterPath.User.fragment_login)
-
-        if (null == loginFragment) {
-            loginFragment = ARouter.getInstance()
-                .build(RouterPath.User.fragment_login).navigation() as Fragment
-        }
-        return loginFragment
-    }
-
-    private var curFragment: Fragment? = null
-
-    @SuppressLint("CommitTransaction")
-    private fun showFragment(fragment: Fragment, tag: String) {
-
-        val oldFragment = curFragment
-        supportFragmentManager.beginTransaction()
-            .run {
-                oldFragment?.run {
-                    hide(oldFragment)
-                }
-
-                if (!fragment.isAdded) {
-                    add(R.id.main_container, fragment, tag)
-                }
-                show(fragment)
-                commitNow()
-            }
-        curFragment = fragment
     }
 
 

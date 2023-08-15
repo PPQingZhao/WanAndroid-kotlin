@@ -1,6 +1,7 @@
 package com.pp.home.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.Lifecycle
@@ -39,7 +40,7 @@ class RealHomeFragment :
             }
 
             override fun populate(view: View?, index: Int) {
-//                Log.e("TAG", " index: $index  $view")
+                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
                     view.loadOriginal(dataList[index].imagePath)
                 }
@@ -52,7 +53,7 @@ class RealHomeFragment :
         bannerAdapter.attachLifecycle(this@RealHomeFragment)
         mBinding.carousel.setAdapter(bannerAdapter)
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mViewModel.bannerFlow.collectLatest {
                     dataList.clear()
                     dataList.addAll(it)
