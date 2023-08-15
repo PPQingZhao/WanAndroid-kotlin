@@ -1,6 +1,7 @@
 package com.pp.ui.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.MotionEvent
 import androidx.constraintlayout.helper.widget.Carousel
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -86,7 +87,7 @@ abstract class BannerAdapter(
             }.flowOn(Dispatchers.IO)
                 .collectLatest { targetIndex ->
                     carousel.run {
-//                        Log.e("TAG", "collect:  ${currentIndex}")
+                        Log.e("TAG", "collect:  ${targetIndex}")
                         if (targetIndex == carousel?.count) {
                             motionLayout?.addTransitionListener(object :
                                 TransitionAdapter() {

@@ -46,4 +46,5 @@ dependencies {
 
     implementation(libs.kotlin.core.get())
     api(libs.appcompat.get())
+    api(libs.viewmodel.ktx)
 }

@@ -15,7 +15,7 @@ espresso-core = "androidx.test.espresso:espresso-core:3.4.0"
 #androidx
 appcompat = "androidx.appcompat:appcompat:1.4.1"
 paging3 = "androidx.paging:paging-runtime-ktx:3.0.0-alpha05"
-viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"
+viewmodel-ktx = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
 # kotlin
 kotlin-core = "androidx.core:core-ktx:1.7.0"
 

@@ -1,15 +1,18 @@
 package com.pp.home.ui
 
+import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.ui.adapter.BannerAdapter
 import com.pp.ui.utils.load
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RealHomeFragment :
     ThemeFragment<FragmentHomeChildRealhomeBinding, RealHomeViewModel>() {
@@ -21,38 +24,47 @@ class RealHomeFragment :
         return RealHomeViewModel::class.java
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initBanner()
+    }
 
-    override fun onFirstResume() {
-        super.onFirstResume()
-        lifecycleScope.launch(Dispatchers.IO) {
-            mViewModel.getBanner().data?.also { dataList ->
-                val bannerAdapter = object :
-                    BannerAdapter(lifecycleScope, mBinding.motionlayout, mBinding.carousel) {
-                    override fun count(): Int {
-                        return dataList.size
-                    }
+    private fun initBanner() {
 
-                    override fun populate(view: View?, index: Int) {
+        val dataList = mutableListOf<BannerBean>()
+        val bannerAdapter = object :
+            BannerAdapter(lifecycleScope, mBinding.motionlayout, mBinding.carousel) {
+            override fun count(): Int {
+                return dataList.size
+            }
+
+            override fun populate(view: View?, index: Int) {
 //                        Log.e("TAG", "populate index: $index")
-                        if (view is ImageView) {
-                            view.load(dataList[index].imagePath.trim())
-                        }
-                    }
-
-                    override fun onNewItem(index: Int) {
-//                        Log.e("TAG", "onNewItem index: $index")
-                    }
+                if (view is ImageView) {
+                    view.load(dataList[index].imagePath.trim())
                 }
+            }
 
-                withContext(Dispatchers.Main) {
-                    bannerAdapter.attachLifecycle(this@RealHomeFragment)
-                    mBinding.carousel.run {
-                        setAdapter(bannerAdapter)
-                        jumpToIndex(0)
-                    }
+            override fun onNewItem(index: Int) {
+//                        Log.e("TAG", "onNewItem index: $index")
+            }
+        }
+        bannerAdapter.attachLifecycle(this@RealHomeFragment)
+        mBinding.carousel.setAdapter(bannerAdapter)
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
+                mViewModel.bannerFlow.collectLatest {
+                    dataList.clear()
+                    dataList.addAll(it)
+                    mBinding.carousel.jumpToIndex(mBinding.carousel.currentIndex)
+                    bannerAdapter.start()
                 }
             }
         }
+    }
 
+    override fun onFirstResume() {
+        super.onFirstResume()
+        mViewModel.getBanner2()
     }
 }
