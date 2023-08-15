@@ -1,4 +1,4 @@
-package com.pp.network.api
+package com.pp.common.http.wanandroid.api
 
 import com.pp.library_network.api.UserApi
 import com.pp.network.utils.RetrofitUtil
@@ -20,24 +20,16 @@ interface WanAndroidService {
         }
 
         /**
-         * user api
+         * api impl
          */
         val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
+        val homeApi: HomeApi by lazy { retrofit.create(HomeApi::class.java) }
 
     }
 
     object ErrorCode {
         const val FAILED = -1
         const val SUCCESS = 0
-
-        // 登录:账号不存在
-        const val LOGIN_USER_INVALID = 1
     }
 
-    object LoginStatus {
-        /**
-         * 状态:登录
-         */
-        const val LOGIN = 1
-    }
 }

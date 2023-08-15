@@ -1,7 +1,7 @@
 package com.pp.user.repositoy
 
 import com.pp.database.user.User
-import com.pp.network.bean.user.UserInfoBean
+import com.pp.common.http.wanandroid.bean.user.UserInfoBean
 
 fun User.setInfo(info: UserInfoBean?) {
     name = info?.userInfo?.username

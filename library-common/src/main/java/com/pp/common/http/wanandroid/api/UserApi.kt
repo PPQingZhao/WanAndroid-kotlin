@@ -1,8 +1,8 @@
 package com.pp.library_network.api
 
-import com.pp.network.bean.ResponseBean
-import com.pp.network.bean.user.LoginBean
-import com.pp.network.bean.user.UserInfoBean
+import com.pp.common.http.wanandroid.bean.ResponseBean
+import com.pp.common.http.wanandroid.bean.user.LoginBean
+import com.pp.common.http.wanandroid.bean.user.UserInfoBean
 import okhttp3.ResponseBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded

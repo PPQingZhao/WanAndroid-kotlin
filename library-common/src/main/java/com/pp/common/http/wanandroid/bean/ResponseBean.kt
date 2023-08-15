@@ -1,4 +1,4 @@
-package com.pp.network.bean
+package com.pp.common.http.wanandroid.bean
 
 data class ResponseBean<Data>(
     val errorCode: Int,

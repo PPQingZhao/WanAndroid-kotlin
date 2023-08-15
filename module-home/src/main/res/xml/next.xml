@@ -24,7 +24,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.85" />
         <Constraint
             android:id="@+id/iv4"
             android:layout_width="0dp"
@@ -36,7 +36,7 @@
             app:layout_constraintEnd_toEndOf="@+id/guideline_end"
             app:layout_constraintStart_toStartOf="@+id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.85" />
         <Constraint
             android:id="@+id/iv5"
             android:layout_width="0dp"
@@ -47,7 +47,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/guideline_end"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.8" />
+            app:layout_constraintWidth_percent="0.85" />
     </ConstraintSet>
 
 </MotionScene>

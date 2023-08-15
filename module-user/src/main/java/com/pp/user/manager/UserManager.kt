@@ -6,8 +6,8 @@ import androidx.lifecycle.LiveData
 import com.pp.database.user.User
 import com.pp.user.repositoy.UserModel
 import com.pp.module_user.repositoy.UserRepository
-import com.pp.network.bean.ResponseBean
-import com.pp.network.bean.user.LoginBean
+import com.pp.common.http.wanandroid.bean.ResponseBean
+import com.pp.common.http.wanandroid.bean.user.LoginBean
 import com.pp.router_service.IUserService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

@@ -1,4 +1,4 @@
-package com.pp.network.bean.user
+package com.pp.common.http.wanandroid.bean.user
 
 /*
 {

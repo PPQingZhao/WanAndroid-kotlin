@@ -50,6 +50,5 @@ dependencies {
     kapt(libs.arouter.compiler)
 
     implementation(projects.libraryCommon)
-    implementation(projects.libraryNetwork)
 
 }

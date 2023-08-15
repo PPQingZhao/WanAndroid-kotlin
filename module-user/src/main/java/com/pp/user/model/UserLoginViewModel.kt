@@ -3,7 +3,7 @@ package com.pp.user.model
 import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
-import com.pp.network.api.WanAndroidService
+import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.user.manager.UserManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
