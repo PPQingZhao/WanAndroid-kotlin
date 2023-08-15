@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.flowOn
 abstract class BannerAdapter(
     lifecycleScope: CoroutineScope,
     motionLayout: MotionLayout,
-    carousel: Carousel
+    carousel: Carousel,
 ) : Carousel.Adapter, DefaultLifecycleObserver {
 
     private var lifecycleScope: CoroutineScope? = lifecycleScope
@@ -60,18 +60,30 @@ abstract class BannerAdapter(
             return
         }
         motionLayout?.setOnTouchListener { _, event ->
-            if (MotionEvent.ACTION_DOWN == event.action) {
-                cancel()
-            } else if (MotionEvent.ACTION_UP == event.action) {
-                motionLayout?.addTransitionListener(object : TransitionAdapter() {
-                    override fun onTransitionCompleted(
-                        motionLayout: MotionLayout?,
-                        currentId: Int
-                    ) {
-                        motionLayout?.removeTransitionListener(this)
-                        start()
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    cancel()
+
+                }
+                MotionEvent.ACTION_UP,
+                MotionEvent.ACTION_CANCEL,
+                -> {
+                    motionLayout?.run {
+                        if (progress == 0f) {
+                            start()
+                        } else {
+                            motionLayout?.addTransitionListener(object : TransitionAdapter() {
+                                override fun onTransitionCompleted(
+                                    motionLayout: MotionLayout?,
+                                    currentId: Int,
+                                ) {
+                                    motionLayout?.removeTransitionListener(this)
+                                    start()
+                                }
+                            })
+                        }
                     }
-                })
+                }
             }
             false
         }

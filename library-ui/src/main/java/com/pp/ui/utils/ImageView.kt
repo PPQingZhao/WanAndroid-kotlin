@@ -11,6 +11,8 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.vectordrawable.graphics.drawable.AnimatorInflaterCompat
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.target.DrawableImageViewTarget
+import com.bumptech.glide.request.target.SizeReadyCallback
 import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
 import com.pp.ui.glide.GlideApp
 
@@ -38,6 +40,32 @@ fun ImageView.starAnimator(@AnimatorRes id: Int): Animator? {
     loadAnimator.setTarget(this)
     loadAnimator.start()
     return loadAnimator
+}
+
+/**
+ * 加载原图尺寸
+ */
+fun ImageView.loadOriginal(path: String?, error: Drawable? = null) {
+
+    val crossFadeFactory = DrawableCrossFadeFactory.Builder()
+        .setCrossFadeEnabled(true)
+        .build()
+
+    GlideApp.with(context)
+        .load(path)
+        .dontAnimate()
+        .diskCacheStrategy(DiskCacheStrategy.ALL)
+        .skipMemoryCache(false)
+        .error(error)
+        .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
+        .into(object : DrawableImageViewTarget(this@loadOriginal) {
+            override fun getSize(cb: SizeReadyCallback) {
+                super.getSize { width, height ->
+                    cb.onSizeReady(SIZE_ORIGINAL, SIZE_ORIGINAL)
+                }
+            }
+        })
+
 }
 
 /**

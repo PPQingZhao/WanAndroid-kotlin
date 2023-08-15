@@ -22,8 +22,8 @@
             android:layout_marginBottom="@dimen/margin_small"
             android:translationZ="5dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="@+id/guideline_end"
-            app:layout_constraintStart_toStartOf="@+id/guideline_start"
+            app:layout_constraintEnd_toStartOf="@+id/guideline_end"
+            app:layout_constraintStart_toEndOf="@+id/guideline_start"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.85" />
         <Constraint
@@ -46,6 +46,18 @@
             android:translationZ="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv3"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.85" />
+
+        <Constraint
+            android:id="@+id/iv5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginBottom="@dimen/margin_small"
+            android:translationZ="1dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/iv4"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.85" />
 

@@ -10,7 +10,7 @@ import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.ui.adapter.BannerAdapter
-import com.pp.ui.utils.load
+import com.pp.ui.utils.loadOriginal
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -39,9 +39,9 @@ class RealHomeFragment :
             }
 
             override fun populate(view: View?, index: Int) {
-//                        Log.e("TAG", "populate index: $index")
+//                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
-                    view.load(dataList[index].imagePath.trim())
+                    view.loadOriginal(dataList[index].imagePath)
                 }
             }
 
