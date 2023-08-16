@@ -6,11 +6,12 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
+import com.pp.common.materialSharedAxis
 import com.pp.router_service.RouterPath
 import com.pp.user.databinding.FragmentLoginAndRegisterBinding
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @Route(path = RouterPath.User.fragment_login)
@@ -30,6 +31,9 @@ class LoginAndRegisterFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        enterTransition = materialSharedAxis(MaterialSharedAxis.X, true)
+        exitTransition = materialSharedAxis(MaterialSharedAxis.X, false)
 
         enableBackPressed(true)
         initLoginViewModel()

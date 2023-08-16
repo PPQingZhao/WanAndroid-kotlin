@@ -40,7 +40,7 @@ class RealHomeFragment :
             }
 
             override fun populate(view: View?, index: Int) {
-                Log.e("TAG", " index: $index  $view")
+//                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
                     view.loadOriginal(dataList[index].imagePath)
                 }
