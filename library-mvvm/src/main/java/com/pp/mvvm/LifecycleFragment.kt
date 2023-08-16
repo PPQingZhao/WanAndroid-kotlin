@@ -46,7 +46,7 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         val parent = mBinding.root.parent
         if (parent is ViewGroup) {
@@ -55,11 +55,21 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         return mBinding.root
     }
 
+    override fun onStart() {
+        super.onStart()
+        Log.e("TAG", "onStart==> $this")
+    }
+    override fun onPause() {
+        super.onPause()
+        Log.e("TAG", "onPause==> $this")
+    }
+
     private var alreadyResume = false
     override fun onResume() {
         super.onResume()
+        Log.e("TAG", "onResume==> $this")
         if (!alreadyResume) {
-            Log.e("TAG", "onFirstResume==> ${this}")
+            Log.e("TAG", "onFirstResume==> $this")
             onFirstResume()
             alreadyResume = true
         }
@@ -67,6 +77,7 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
 
     override fun onStop() {
         super.onStop()
+        Log.e("TAG", "onStop==> $this")
     }
 
     open fun onFirstResume() {

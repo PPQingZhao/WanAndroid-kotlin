@@ -27,7 +27,7 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
         App.getInstance().navigation.observe(this) { t ->
             when (t) {
                 RouterPath.User.fragment_user -> {
-                    mBinding.mainViewpager2.currentItem = 3
+                    mBinding.mainViewpager2.setCurrentItem(3, false)
                 }
             }
         }

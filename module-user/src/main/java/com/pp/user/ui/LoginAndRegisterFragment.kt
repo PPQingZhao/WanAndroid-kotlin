@@ -31,16 +31,20 @@ class LoginAndRegisterFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        enableBackPressed(true)
         initLoginViewModel()
         initRegisterViewModel()
-
         initMotionLayout()
         initView()
     }
 
+    override fun handleOnBackPressed() {
+        App.getInstance().navigation.value = RouterPath.Main.fragment_main
+    }
+
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
-            App.getInstance().navigation.value = RouterPath.Main.fragment_main
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 

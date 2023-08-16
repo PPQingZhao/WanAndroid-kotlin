@@ -5,7 +5,6 @@ import android.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
-import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.pp.theme.DynamicTheme
@@ -19,13 +18,6 @@ class WanAndroidTabImageSwitcher(
     private val selectedIconName: String,
     private val unSelectedIconName: String,
 ) : TabImageSwitcher(context) {
-
-    override fun onDetachedFromWindow() {
-        super.onDetachedFromWindow()
-        ViewTreeLifecycleOwner.get(this)?.run {
-            theme.themeInfo.removeObserver(themeInfoObserver)
-        }
-    }
 
     @SuppressLint("UseCompatLoadingForDrawables", "ResourceType")
     private val themeInfoObserver = Observer<DynamicTheme.Info> {

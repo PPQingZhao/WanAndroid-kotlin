@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleFragment
@@ -17,6 +18,30 @@ import kotlinx.coroutines.launch
  */
 abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
     LifecycleFragment<VB, VM>() {
+
+    private var onBackPressCallback: OnBackPressedCallback? = null
+
+    protected fun enableBackPressed(enable: Boolean) {
+        if (!enable && null == onBackPressCallback) {
+            return
+        }
+
+        if (null == onBackPressCallback) {
+            onBackPressCallback = object : OnBackPressedCallback(false) {
+                override fun handleOnBackPressed() {
+                    this@ThemeFragment.handleOnBackPressed()
+                }
+            }
+            requireActivity().onBackPressedDispatcher
+                .addCallback(this, onBackPressCallback!!)
+        }
+
+        onBackPressCallback!!.isEnabled = enable
+
+    }
+
+    protected open fun handleOnBackPressed() {
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
