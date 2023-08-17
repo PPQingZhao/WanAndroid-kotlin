@@ -19,16 +19,16 @@
         android:layout_marginVertical="@dimen/dp_4"
         android:layout_marginStart="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_8"
+        android:background="?selectableItemBackground"
+        android:onClick="@{viewModel.onItemClick}"
         app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="@dimen/dp_8"
         app:contentPadding="@dimen/dp_8"
         tools:cardBackgroundColor="?colorPrimaryVariant">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?selectableItemBackground"
-            android:onClick="@{viewModel.onItemClick}">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/tv_author"
@@ -48,7 +48,7 @@
                 android:id="@+id/tv_pinned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginStart="@dimen/dp_8"
                 android:text="@string/pinned"
                 android:textColor="@color/red"
                 android:textSize="13sp"
@@ -61,7 +61,7 @@
                 android:id="@+id/tv_fresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginStart="@dimen/dp_8"
                 android:text="@string/fresh"
                 android:textColor="@color/red"
                 android:textSize="13sp"
@@ -74,7 +74,7 @@
                 android:id="@+id/tv_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginStart="@dimen/dp_8"
                 android:text="@{viewModel.tags}"
                 android:textColor="@{viewModel.theme.colorAccent}"
                 android:textSize="13sp"
@@ -129,16 +129,19 @@
                 tools:text="问答·官方"
                 tools:textColor="?android:textColorSecondary" />
 
-            <ImageView
+            <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:id="@+id/iv_favorite"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_4"
+                android:background="?android:selectableItemBackground"
+                android:onClick="@{viewModel.onFavorite}"
                 android:src="@drawable/ic_favorite"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
-                app:layout_constraintWidth_percent="0.08" />
+                app:layout_constraintWidth_percent="0.085"
+                app:roundPercent="1" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

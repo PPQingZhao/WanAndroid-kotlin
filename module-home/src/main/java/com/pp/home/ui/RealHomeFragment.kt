@@ -21,7 +21,6 @@ import com.pp.ui.adapter.DefaultViewBindingItem
 import com.pp.ui.adapter.MultiBindingPagingDataAdapter
 import com.pp.ui.databinding.ItemArticleBindingImpl
 import com.pp.ui.utils.loadOriginal
-import com.pp.ui.viewModel.ItemArticleViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -44,7 +43,7 @@ class RealHomeFragment :
     }
 
     private val mAdapter by lazy {
-        val call = object : DiffUtil.ItemCallback<ArticleBean>() {
+        val differCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
             override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
                 val result = oldItem.id == newItem.id
 //                Log.e("TAG", "111  result: ${result}")
@@ -57,7 +56,7 @@ class RealHomeFragment :
                 return result
             }
         }
-        val adapter = MultiBindingPagingDataAdapter<ArticleBean>(call)
+        val adapter = MultiBindingPagingDataAdapter<ArticleBean>(differCallback)
         adapter.addBindingItem(
             DefaultViewBindingItem<ArticleBean>(
                 0,

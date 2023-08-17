@@ -14,10 +14,15 @@ open class ItemArticleViewModel(val theme: AppDynamicTheme) {
 
     // 置顶
     val isPinned = ObservableBoolean(false)
+
     // 新发布
     val isFresh = ObservableBoolean(false)
 
-    fun onItemClick(v: View){
+    fun onItemClick(v: View) {
+
+    }
+
+    fun onFavorite(v: View) {
 
     }
 
