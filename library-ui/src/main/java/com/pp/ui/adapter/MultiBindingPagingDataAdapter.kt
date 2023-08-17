@@ -10,7 +10,6 @@ open class MultiBindingPagingDataAdapter<Data : Any>(
 
     private val mViewTypeAdapterMap by lazy { mutableMapOf<Int, ViewBindingItem<Data>>() }
 
-
     fun addBindingItem(item: ViewBindingItem<Data>) {
         val type = item.getType()
 

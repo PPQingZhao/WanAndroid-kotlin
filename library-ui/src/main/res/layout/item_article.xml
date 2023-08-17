@@ -1,24 +1,144 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingDefaultResource">
 
     <data>
+
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
             type="com.pp.ui.viewModel.ItemArticleViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
+        app:cardCornerRadius="10dp"
+        app:contentPadding="@dimen/dp_8"
+        tools:cardBackgroundColor="?colorPrimaryVariant">
 
-        <TextView
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="article" />
+            android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
+            android:onClick="@{viewModel.onItemClick}">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="@{viewModel.author}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="15sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="扔物线"
+                tools:textColor="?android:textColorSecondary" />
+
+            <TextView
+                android:id="@+id/tv_pinned"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@string/pinned"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_author"
+                app:layout_constraintStart_toEndOf="@id/tv_author"
+                app:layout_constraintTop_toTopOf="@id/tv_author" />
+
+            <TextView
+                android:id="@+id/tv_fresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@string/fresh"
+                android:textColor="@color/red"
+                android:textSize="13sp"
+                android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_author"
+                app:layout_constraintStart_toEndOf="@id/tv_pinned"
+                app:layout_constraintTop_toTopOf="@id/tv_author" />
+
+            <TextView
+                android:id="@+id/tv_tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@{viewModel.tags}"
+                android:textColor="@{viewModel.theme.colorAccent}"
+                android:textSize="13sp"
+                android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toBottomOf="@id/tv_author"
+                app:layout_constraintStart_toEndOf="@id/tv_fresh"
+                app:layout_constraintTop_toTopOf="@id/tv_author"
+                tools:text="本站发布"
+                tools:textColor="?colorAccent" />
+
+            <TextView
+                android:id="@+id/tv_nicedate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.niceDate}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="一天前"
+                tools:textColor="?android:textColorSecondary" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@{viewModel.title}"
+                android:textColor="@{viewModel.theme.textColor}"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@id/tv_nicedate"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toStartOf="@id/tv_author"
+                app:layout_constraintTop_toBottomOf="@id/tv_author"
+                tools:text="大家提问 Android中前后台切换监听,如果涉及到多进程如何完美解决"
+                tools:textColor="?android:textColor" />
+
+            <TextView
+                android:id="@+id/tv_chaptername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_4"
+                android:text="@{viewModel.chapterName}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_favorite"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintTop_toTopOf="@id/iv_favorite"
+                tools:text="问答·官方"
+                tools:textColor="?android:textColorSecondary" />
+
+            <ImageView
+                android:id="@+id/iv_favorite"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_4"
+                android:src="@drawable/ic_favorite"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                app:layout_constraintWidth_percent="0.08" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
 </layout>

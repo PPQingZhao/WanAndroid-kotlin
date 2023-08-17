@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="margin_normal">15dp</dimen>
+    <dimen name="dp_4">4dp</dimen>
+    <dimen name="dp_8">8dp</dimen>
+    <dimen name="dp_16">16dp</dimen>
     <dimen name="margin_large">30dp</dimen>
-    <dimen name="margin_small">4dp</dimen>
     <dimen name="strokeWidth">1dp</dimen>
     <dimen name="strokeWidth_small">0.2dp</dimen>
 </resources>

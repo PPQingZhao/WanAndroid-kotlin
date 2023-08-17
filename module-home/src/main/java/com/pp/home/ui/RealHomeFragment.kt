@@ -15,12 +15,14 @@ import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
+import com.pp.home.model.HomeItemArticleViewModel
 import com.pp.ui.adapter.BannerAdapter
 import com.pp.ui.adapter.DefaultViewBindingItem
 import com.pp.ui.adapter.MultiBindingPagingDataAdapter
 import com.pp.ui.databinding.ItemArticleBindingImpl
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.viewModel.ItemArticleViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -44,14 +46,15 @@ class RealHomeFragment :
     private val mAdapter by lazy {
         val call = object : DiffUtil.ItemCallback<ArticleBean>() {
             override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
+                val result = oldItem.id == newItem.id
 //                Log.e("TAG", "111  result: ${result}")
-                return true
+                return result
             }
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-//                Log.e("TAG", "2222  result: ${result}")
-                return true
+                val result = oldItem == newItem
+                return result
             }
         }
         val adapter = MultiBindingPagingDataAdapter<ArticleBean>(call)
@@ -61,9 +64,9 @@ class RealHomeFragment :
                 { true },
                 { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
                 { binding, item, cacheItemViewModel ->
-                    if (cacheItemViewModel is ArticleBean) {
-                        cacheItemViewModel
-                    } else ItemArticleViewModel()
+                    if (cacheItemViewModel is HomeItemArticleViewModel) {
+                        cacheItemViewModel.article = item
+                    } else HomeItemArticleViewModel(item, mViewModel.mTheme)
                 })
         )
         adapter
@@ -136,7 +139,7 @@ class RealHomeFragment :
         super.onFirstResume()
         mViewModel.getBanner2()
 
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.IO) {
             mViewModel.getPageData().collect {
                 mAdapter.submitData(lifecycle, it)
             }

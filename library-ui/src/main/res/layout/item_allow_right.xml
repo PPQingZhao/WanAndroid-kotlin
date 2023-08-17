@@ -16,14 +16,14 @@
         android:background="?attr/selectableItemBackground"
         android:onClick="@{viewModel::onItemClick}"
         android:orientation="horizontal"
-        android:paddingTop="@dimen/margin_small"
-        android:paddingBottom="@dimen/margin_small">
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4">
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginStart="@dimen/dp_4"
             android:src="@{viewModel.icon}"
             tools:src="@drawable/ic_message_center" />
 
@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/margin_small"
+            android:layout_marginStart="@dimen/dp_4"
             android:layout_weight="1"
             android:ellipsize="end"
             android:maxLines="1"
@@ -45,7 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginEnd="@dimen/margin_normal"
+            android:layout_marginEnd="@dimen/dp_16"
             android:src="@drawable/ic_arrow_right"
             android:tint="@{viewModel.theme.textColorSecondary}"
             tools:ignore="UseAppTint"

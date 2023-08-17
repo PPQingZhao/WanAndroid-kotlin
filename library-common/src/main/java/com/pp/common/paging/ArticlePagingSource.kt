@@ -10,9 +10,8 @@ open class ArticlePagingSource : PagingSource<Int, ArticleBean>() {
             val key = params.key ?: return LoadResult.Page(emptyList(), null, null)
             val dataList = mutableListOf<ArticleBean>()
             var nextKey: Int? = null
-            val page = key
 
-            WanAndroidService.homeApi.getArticles(page).data?.let {
+            WanAndroidService.homeApi.getArticles(key).data?.let {
                 nextKey = it.curPage
                 dataList.addAll(it.datas)
             }

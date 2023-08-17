@@ -14,8 +14,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_small"
-        android:layout_marginVertical="@dimen/margin_small"
+        android:layout_marginHorizontal="@dimen/dp_4"
+        android:layout_marginVertical="@dimen/dp_4"
         android:onClick="@{viewModel::onItemClick}">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -34,7 +34,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small"
+            android:layout_marginTop="@dimen/dp_4"
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{viewModel.themeName}"
