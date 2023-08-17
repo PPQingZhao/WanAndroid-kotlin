@@ -65,6 +65,7 @@ class RealHomeFragment :
                 { binding, item, cacheItemViewModel ->
                     if (cacheItemViewModel is HomeItemArticleViewModel) {
                         cacheItemViewModel.article = item
+                        cacheItemViewModel
                     } else HomeItemArticleViewModel(item, mViewModel.mTheme)
                 })
         )

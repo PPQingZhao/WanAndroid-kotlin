@@ -10,6 +10,10 @@ class HomeItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme
     ItemArticleViewModel(theme) {
     var article: ArticleBean? = null
         set(value) {
+            if (field == value) {
+                return
+            }
+
             field = value
 
             author.set(field?.getAuthor())
