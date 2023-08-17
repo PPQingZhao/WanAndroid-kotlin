@@ -116,6 +116,14 @@
                 app:carousel_previousState="@+id/previous"
                 app:constraint_referenced_ids="iv1,iv2,iv3,iv4,iv5" />
 
+            <com.pp.ui.indicator.RoundIndicatorView
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_normal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
         </androidx.constraintlayout.motion.widget.MotionLayout>
 
 

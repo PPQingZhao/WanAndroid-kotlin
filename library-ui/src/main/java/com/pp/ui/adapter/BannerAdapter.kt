@@ -68,11 +68,11 @@ abstract class BannerAdapter(
                 MotionEvent.ACTION_UP,
                 MotionEvent.ACTION_CANCEL,
                 -> {
-                    motionLayout?.run {
-                        if (progress == 0f) {
+                    motionLayout?.let {
+                        if (it.progress == 0f) {
                             start()
                         } else {
-                            motionLayout?.addTransitionListener(object : TransitionAdapter() {
+                            it.addTransitionListener(object : TransitionAdapter() {
                                 override fun onTransitionCompleted(
                                     motionLayout: MotionLayout?,
                                     currentId: Int,
@@ -98,22 +98,22 @@ abstract class BannerAdapter(
                 }
             }.flowOn(Dispatchers.IO)
                 .collectLatest { targetIndex ->
-                    carousel.run {
-                        Log.e("TAG", "collect:  $targetIndex")
-                        if (targetIndex == carousel?.count) {
+                    carousel?.let {
+//                        Log.e("TAG", "collect:  $targetIndex")
+                        if (targetIndex == it.count) {
                             motionLayout?.addTransitionListener(object :
                                 TransitionAdapter() {
                                 override fun onTransitionCompleted(
                                     motionLayout: MotionLayout?,
                                     currentId: Int,
                                 ) {
-                                    carousel?.transitionToIndex(0, 0)
+                                    it.transitionToIndex(0, 0)
                                     motionLayout?.removeTransitionListener(this)
                                 }
                             })
-                            carousel?.transitionToIndex(targetIndex, 1000)
+                            it.transitionToIndex(targetIndex, 1000)
                         } else {
-                            carousel?.transitionToIndex(targetIndex, 1000)
+                            it.transitionToIndex(targetIndex, 1000)
                         }
                     }
                 }

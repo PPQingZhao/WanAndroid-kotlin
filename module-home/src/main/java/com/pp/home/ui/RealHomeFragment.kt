@@ -1,9 +1,10 @@
 package com.pp.home.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -28,6 +29,24 @@ class RealHomeFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initBanner()
+        initIndicator()
+    }
+
+    private fun initIndicator() {
+        mBinding.motionlayout.addTransitionListener(object : TransitionAdapter() {
+            override fun onTransitionChange(
+                motionLayout: MotionLayout?,
+                startId: Int,
+                endId: Int,
+                progress: Float,
+            ) {
+                mBinding.indicator.onPageChangeCallback.onPageScrolled(
+                    mBinding.carousel.currentIndex,
+                    progress,
+                    0
+                )
+            }
+        })
     }
 
     private fun initBanner() {
@@ -59,9 +78,14 @@ class RealHomeFragment :
                     dataList.addAll(it)
                     mBinding.carousel.jumpToIndex(mBinding.carousel.currentIndex)
                     bannerAdapter.start()
+                    updateIndicator()
                 }
             }
         }
+    }
+
+    private fun updateIndicator() {
+        mBinding.indicator.initIndicator(mBinding.carousel.count)
     }
 
     override fun onFirstResume() {

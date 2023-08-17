@@ -8,4 +8,6 @@ object HomeRepository {
     suspend fun getBanner(): ResponseBean<List<BannerBean>> {
         return WanAndroidService.homeApi.getBanner()
     }
+
+
 }
