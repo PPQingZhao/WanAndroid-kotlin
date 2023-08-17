@@ -1,10 +1,12 @@
 package com.pp.common.http.wanandroid.api
 
 import com.pp.common.http.wanandroid.bean.ArticleBean
+import com.pp.common.http.wanandroid.bean.PageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import retrofit2.http.GET
 import retrofit2.http.Path
+import retrofit2.http.Url
 
 interface HomeApi {
 
@@ -27,6 +29,9 @@ interface HomeApi {
      * https://www.wanandroid.com/article/list/0/json
      * 分页加载
      */
-    @GET("article/list/{page}}/json")
-    suspend fun getArticles(@Path("page") page: Int = 0): ResponseBean<List<ArticleBean>>
+    @GET("article/list/{page}/json")
+    suspend fun getArticles(@Path("page") page: Int = 0): ResponseBean<PageBean>
+
+    @GET
+    suspend fun getPage(@Url url: String): ResponseBean<PageBean>
 }

@@ -1,5 +1,6 @@
 package com.pp.home.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -8,11 +9,18 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.ui.adapter.BannerAdapter
+import com.pp.ui.adapter.DefaultViewBindingItem
+import com.pp.ui.adapter.MultiBindingPagingDataAdapter
+import com.pp.ui.databinding.ItemArticleBindingImpl
 import com.pp.ui.utils.loadOriginal
+import com.pp.ui.viewModel.ItemArticleViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -30,6 +38,42 @@ class RealHomeFragment :
         super.onViewCreated(view, savedInstanceState)
         initBanner()
         initIndicator()
+        initRecyclerView()
+    }
+
+    private val mAdapter by lazy {
+        val call = object : DiffUtil.ItemCallback<ArticleBean>() {
+            override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
+//                Log.e("TAG", "111  result: ${result}")
+                return true
+            }
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
+//                Log.e("TAG", "2222  result: ${result}")
+                return true
+            }
+        }
+        val adapter = MultiBindingPagingDataAdapter<ArticleBean>(call)
+        adapter.addBindingItem(
+            DefaultViewBindingItem<ArticleBean>(
+                0,
+                { true },
+                { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
+                { binding, item, cacheItemViewModel ->
+                    if (cacheItemViewModel is ArticleBean) {
+                        cacheItemViewModel
+                    } else ItemArticleViewModel()
+                })
+        )
+        adapter
+    }
+
+    private fun initRecyclerView() {
+        mBinding.recyclerview.let {
+            it.layoutManager = LinearLayoutManager(context)
+            it.adapter = mAdapter
+        }
     }
 
     private fun initIndicator() {
@@ -91,5 +135,11 @@ class RealHomeFragment :
     override fun onFirstResume() {
         super.onFirstResume()
         mViewModel.getBanner2()
+
+        lifecycleScope.launch {
+            mViewModel.getPageData().collect {
+                mAdapter.submitData(lifecycle, it)
+            }
+        }
     }
 }

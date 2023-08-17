@@ -1,5 +1,44 @@
 package com.pp.common.http.wanandroid.bean
 
+/*
+    {
+				"adminAdd": false,
+				"apkLink": "",
+				"audit": 1,
+				"author": "",
+				"canEdit": false,
+				"chapterId": 502,
+				"chapterName": "自助",
+				"collect": false,
+				"courseId": 13,
+				"desc": "",
+				"descMd": "",
+				"envelopePic": "",
+				"fresh": false,
+				"host": "",
+				"id": 27001,
+				"isAdminAdd": false,
+				"link": "https://mp.weixin.qq.com/s/4eWuPTEw4Sgpi2VlBwWCUw",
+				"niceDate": "2天前",
+				"niceShareDate": "2天前",
+				"origin": "",
+				"prefix": "",
+				"projectLink": "",
+				"publishTime": 1691994344000,
+				"realSuperChapterId": 493,
+				"selfVisible": 0,
+				"shareDate": 1691994344000,
+				"shareUser": "小马快跑",
+				"superChapterId": 494,
+				"superChapterName": "广场Tab",
+				"tags": [],
+				"title": "超能力文本：探索Span机制的多彩世界（一）",
+				"type": 0,
+				"userId": 128797,
+				"visible": 1,
+				"zan": 0
+			}
+ */
 data class ArticleBean(
     val adminAdd: Boolean = false,
     val apkLink: String = "",
@@ -30,15 +69,10 @@ data class ArticleBean(
     val shareUser: String = "",
     val superChapterId: Int = 0,
     val superChapterName: String = "",
-    val tags: List<Tag> = listOf(),
+    val tags: List<Any> = listOf(),
     val title: String = "",
     val type: Int = 0,
     val userId: Int = 0,
     val visible: Int = 0,
     val zan: Int = 0,
-) {
-    data class Tag(
-        val name: String = "",
-        val url: String = "",
-    )
-}
+)

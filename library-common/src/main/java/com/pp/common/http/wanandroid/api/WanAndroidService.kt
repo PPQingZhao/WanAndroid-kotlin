@@ -11,6 +11,7 @@ interface WanAndroidService {
 
         private val header = mutableMapOf<String, String>()
         private const val URL_BASE = "https://www.wanandroid.com/"
+
         private val retrofit by lazy {
             RetrofitUtil.create(
                 URL_BASE,
