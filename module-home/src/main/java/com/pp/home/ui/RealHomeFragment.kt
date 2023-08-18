@@ -54,15 +54,15 @@ class RealHomeFragment :
                 return result
             }
         }
+
         BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
             onCreateViewDataBinding = { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
             onCreateItemViewModel = { binding, item ->
-                if (binding.viewModel == null) {
-                    HomeItemArticleViewModel(item, mViewModel.mTheme)
+                val viewModel = binding.viewModel
+                if (viewModel is HomeItemArticleViewModel) {
+                    viewModel.also { it.article = item }
                 } else {
-                    binding.viewModel.also {
-                        (it as HomeItemArticleViewModel).article = item
-                    }
+                    HomeItemArticleViewModel(item, mViewModel.mTheme)
                 }
             },
             diffCallback = differCallback

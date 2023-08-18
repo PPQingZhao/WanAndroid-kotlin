@@ -5,40 +5,53 @@ import androidx.databinding.ViewDataBinding
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 
-open class BindingPagingDataAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
-    private val viewBindingItem: ViewDataBindingItemType<VB, VM, Data>,
+abstract class BindingPagingDataAdapter<
+        VB : ViewDataBinding,
+        VM : Any?,
+        Data : Any,
+        ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
+        >(
     diffCallback: DiffUtil.ItemCallback<Data>,
-) : PagingDataAdapter<Data, BindingItemViewHolder<VB>>(diffCallback) {
+) : PagingDataAdapter<Data, BindingItemViewHolder<VB, VM, Data>>(diffCallback) {
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder<VB>, position: Int) {
+    private val delegate = RecyclerViewAdapterDelegate<VB, VM, Data, ViewBindingItemType>()
+    abstract fun createViewBindingItemType(viewType: Int): ViewBindingItemType
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): BindingItemViewHolder<VB, VM, Data> {
+        val viewBindingItemType = createViewBindingItemType(viewType)
+        return delegate.onCreateViewHolder(parent, viewBindingItemType)
+    }
+
+    override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
         val itemData = getItem(position)
-        val itemViewModel = viewBindingItem.createItemViewModel(holder.binding, itemData)
-
-        viewBindingItem.setVariable(holder.binding, itemViewModel)
-
+        delegate.onBindViewHolder(holder, itemData)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingItemViewHolder<VB> {
-        val binding = viewBindingItem.createViewDataBinding(parent)
-        return BindingItemViewHolder(binding)
-    }
-
-    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB>) {
+    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
         super.onViewAttachedToWindow(holder)
-        viewBindingItem.onViewAttachedToWindow(holder.binding)
+        delegate.onViewAttachedToWindow(holder)
     }
 
     class DefaultBindingPagingDataAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
-        onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-        onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
-        onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
+        private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
+        private val onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+        private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
+        private val getItemType: () -> Int = { 0 },
         diffCallback: DiffUtil.ItemCallback<Data>,
-    ) : BindingPagingDataAdapter<VB, VM, Data>(
-        DefaultItemViewDataBindingItemType(
-            onCreateViewDataBinding,
-            onCreateItemViewModel,
-            onSetVariable
-        ),
+    ) : BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
         diffCallback
-    )
+    ) {
+        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+            return DefaultViewDataBindingItemType(
+                onCreateViewDataBinding,
+                onCreateItemViewModel,
+                onSetVariable,
+                getItemType
+            )
+        }
+    }
+
+
 }

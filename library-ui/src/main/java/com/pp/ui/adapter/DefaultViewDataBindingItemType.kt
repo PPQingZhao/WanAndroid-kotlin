@@ -3,14 +3,15 @@ package com.pp.ui.adapter
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 
-class DefaultItemViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : Any>(
-    private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-    private val onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+class DefaultViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : Any>(
+    private val createBinding: (parent: ViewGroup) -> VB,
+    private val createItemViewModel: (binding: VB, data: Data?) -> VM,
     private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
+    private val getItemType: () -> Int = { 0 },
 ) : ViewDataBindingItemType<VB, VM, Data>() {
 
     override fun createViewDataBinding(parent: ViewGroup): VB {
-        return onCreateViewDataBinding.invoke(parent)
+        return createBinding.invoke(parent)
     }
 
     override fun onSetVariable(binding: VB, viewModel: VM): Boolean {
@@ -18,7 +19,11 @@ class DefaultItemViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data :
     }
 
     override fun createItemViewModel(binding: VB, data: Data?): VM {
-        return onCreateItemViewModel.invoke(binding, data)
+        return createItemViewModel.invoke(binding, data)
+    }
+
+    override fun getItemType(): Int {
+        return getItemType.invoke()
     }
 
 }

@@ -21,10 +21,20 @@ abstract class ViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : A
         }
     }
 
-    abstract fun onSetVariable(binding: VB, viewModel: VM): Boolean
+    open fun onSetVariable(binding: VB, viewModel: VM): Boolean {
+        return false
+    }
 
     fun onViewAttachedToWindow(binding: VB) {
         val lifecycleOwner = ViewTreeLifecycleOwner.get(binding.root)
         binding.lifecycleOwner = lifecycleOwner
+    }
+
+    open fun getItemType(): Int {
+        return 0
+    }
+
+    fun getItemType(item: Data?): Int {
+        return getItemType()
     }
 }

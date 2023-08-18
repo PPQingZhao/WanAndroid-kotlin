@@ -1,53 +1,30 @@
 package com.pp.ui.adapter
 
-import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 
-open class MultiBindingPagingDataAdapter<Data : Any>(
-    diffCallback: DiffUtil.ItemCallback<Data>
-) : PagingDataAdapter<Data, MultiItemViewHolder<Data>>(diffCallback) {
+class MultiBindingPagingDataAdapter<
+        VB : ViewDataBinding,
+        VM : Any?,
+        Data : Any>
+    (diffCallback: DiffUtil.ItemCallback<Data>) :
+    BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
+        diffCallback
+    ) {
 
-    private val mViewTypeAdapterMap by lazy { mutableMapOf<Int, ViewBindingItem<Data>>() }
+    private val delegate = MultiAdapterDelegate<VB,VM,Data>()
 
-    fun addBindingItem(item: ViewBindingItem<Data>) {
-        val type = item.getType()
-
-        if (mViewTypeAdapterMap.containsKey(type)) {
-            throw RuntimeException("The item type already exists: {type: ${type}}")
-        }
-        mViewTypeAdapterMap[type] = item
+    fun addBindingItem(item: ViewDataBindingItemType<VB, VM, Data>) {
+        delegate.addBindingItem(item)
     }
 
     override fun getItemViewType(position: Int): Int {
-//        Log.e("TAG","getItemViewType: ${position}  count: ${itemCount}")
         val item = peek(position)
-
-        // 查找 item type
-        for (entry in mViewTypeAdapterMap) {
-            if (entry.key == entry.value.getItemType(position, item)) {
-                return entry.key
-            }
-        }
-
-        throw RuntimeException("ViewBindingItem not found for {position: ${position} item: ${item}}")
+        return delegate.getItemViewType(item)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MultiItemViewHolder<Data> {
-        val viewBindingItem = mViewTypeAdapterMap[viewType]!!
-        return MultiItemViewHolder(
-            viewBindingItem,
-            viewBindingItem.adapterBindingHelper.createBinding(parent, viewType)
-        )
+    override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+        return delegate.createViewBindingItemType(viewType)
     }
-
-    override fun onBindViewHolder(holder: MultiItemViewHolder<Data>, position: Int) {
-        holder.viewBindingItem.adapterBindingHelper.bind(holder, position, getItem(position))
-    }
-
-    override fun onViewAttachedToWindow(holder: MultiItemViewHolder<Data>) {
-        holder.viewBindingItem.adapterBindingHelper.onViewAttachedToWindow(holder)
-    }
-
 
 }

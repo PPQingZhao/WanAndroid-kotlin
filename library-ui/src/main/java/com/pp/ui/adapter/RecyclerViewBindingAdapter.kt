@@ -3,24 +3,29 @@ package com.pp.ui.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, T : Any>(
-    private val viewBindingItem: ViewDataBindingItemType<VB, VM, T>,
-) :
-    RecyclerView.Adapter<BindingItemViewHolder<VB>>() {
+abstract class RecyclerViewBindingAdapter<
+        VB : ViewDataBinding,
+        VM : Any?,
+        Data : Any,
+        ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
+        > :
+    RecyclerView.Adapter<BindingItemViewHolder<VB, VM, Data>>() {
 
-    private val dataList by lazy { mutableListOf<T>() }
+    private val delegate = RecyclerViewAdapterDelegate<VB, VM, Data, ViewBindingItemType>()
+    private val dataList by lazy { mutableListOf<Data>() }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setDataList(list: List<T>) {
+    fun setDataList(list: List<Data>) {
         dataList.clear()
         dataList.addAll(list)
         notifyDataSetChanged()
     }
 
 
-    protected fun getItem(position: Int): T? {
+    protected fun getItem(position: Int): Data? {
         return if (position >= 0 && position < dataList.size) {
             dataList[position]
         } else {
@@ -32,34 +37,40 @@ abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, T : A
         return dataList.size
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder<VB>, position: Int) {
+    abstract fun createViewBindingItemType(viewType: Int): ViewBindingItemType
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): BindingItemViewHolder<VB, VM, Data> {
+        val viewBindingItemType = createViewBindingItemType(viewType)
+        return delegate.onCreateViewHolder(parent, viewBindingItemType)
+    }
+
+    override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
         val itemData = getItem(position)
-        val itemViewModel = viewBindingItem.createItemViewModel(holder.binding, itemData)
-
-        viewBindingItem.setVariable(holder.binding, itemViewModel)
-
+        delegate.onBindViewHolder(holder, itemData)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingItemViewHolder<VB> {
-        val binding = viewBindingItem.createViewDataBinding(parent)
-        return BindingItemViewHolder(binding)
-    }
-
-    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB>) {
+    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
         super.onViewAttachedToWindow(holder)
-        viewBindingItem.onViewAttachedToWindow(holder.binding)
+        delegate.onViewAttachedToWindow(holder)
     }
+
 
     class DefaultRecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
-        onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-        onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
-        onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
-    ) : RecyclerViewBindingAdapter<VB, VM, Data>(
-        DefaultItemViewDataBindingItemType(
-            onCreateViewDataBinding,
-            onCreateItemViewModel,
-            onSetVariable
-        ),
-    )
+        private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
+        private val onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+        private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
+        private val getItemType: () -> Int = { 0 },
+    ) : RecyclerViewBindingAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>() {
+        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+            return DefaultViewDataBindingItemType(
+                onCreateViewDataBinding,
+                onCreateItemViewModel,
+                onSetVariable,
+                getItemType
+            )
+        }
+    }
 
 }
