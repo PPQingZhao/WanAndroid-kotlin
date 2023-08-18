@@ -3,6 +3,7 @@ package com.pp.home.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
@@ -16,9 +17,8 @@ import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.HomeItemArticleViewModel
-import com.pp.ui.adapter.BannerAdapter
-import com.pp.ui.adapter.DefaultViewBindingItem
-import com.pp.ui.adapter.MultiBindingPagingDataAdapter
+import com.pp.ui.adapter.*
+import com.pp.ui.databinding.ItemArticleBinding
 import com.pp.ui.databinding.ItemArticleBindingImpl
 import com.pp.ui.utils.loadOriginal
 import kotlinx.coroutines.Dispatchers
@@ -56,20 +56,19 @@ class RealHomeFragment :
                 return result
             }
         }
-        val adapter = MultiBindingPagingDataAdapter<ArticleBean>(differCallback)
-        adapter.addBindingItem(
-            DefaultViewBindingItem<ArticleBean>(
-                0,
-                { true },
-                { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
-                { binding, item, cacheItemViewModel ->
-                    if (cacheItemViewModel is HomeItemArticleViewModel) {
-                        cacheItemViewModel.article = item
-                        cacheItemViewModel
-                    } else HomeItemArticleViewModel(item, mViewModel.mTheme)
-                })
+        DefaultBindingPagingDataAdapter(
+            onCreateViewDataBinding = { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
+            onCreateItemViewModel = { binding, item ->
+                if (binding.viewModel == null) {
+                    HomeItemArticleViewModel(item, mViewModel.mTheme)
+                } else {
+                    binding.viewModel.also {
+                        (it as HomeItemArticleViewModel).article = item
+                    }
+                }
+            },
+            diffCallback = differCallback
         )
-        adapter
     }
 
     private fun initRecyclerView() {
