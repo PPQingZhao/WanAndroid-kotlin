@@ -3,7 +3,6 @@ package com.pp.home.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
@@ -18,7 +17,6 @@ import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.HomeItemArticleViewModel
 import com.pp.ui.adapter.*
-import com.pp.ui.databinding.ItemArticleBinding
 import com.pp.ui.databinding.ItemArticleBindingImpl
 import com.pp.ui.utils.loadOriginal
 import kotlinx.coroutines.Dispatchers
@@ -56,7 +54,7 @@ class RealHomeFragment :
                 return result
             }
         }
-        DefaultBindingPagingDataAdapter(
+        BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
             onCreateViewDataBinding = { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
             onCreateItemViewModel = { binding, item ->
                 if (binding.viewModel == null) {

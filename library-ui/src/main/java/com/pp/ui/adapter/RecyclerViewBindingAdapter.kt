@@ -3,12 +3,12 @@ package com.pp.ui.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
-import com.pp.theme.ViewTreeAppThemeViewModel
 
-abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any, T : Any> :
-    RecyclerView.Adapter<BindingHolder<VB>>() {
+abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, T : Any>(
+    private val viewBindingItem: ViewDataBindingItemType<VB, VM, T>,
+) :
+    RecyclerView.Adapter<BindingItemViewHolder<VB>>() {
 
     private val dataList by lazy { mutableListOf<T>() }
 
@@ -19,31 +19,6 @@ abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any, T : An
         notifyDataSetChanged()
     }
 
-    private val bindingHelper: AdapterBindingHelper<VB, VM, T> by lazy {
-        object : AdapterBindingHelper<VB, VM, T>() {
-            override fun createViewModel(binding: VB, item: T?, cacheItemViewModel: VM?): VM? {
-                return this@RecyclerViewBindingAdapter.createViewModel(
-                    binding,
-                    item,
-                    cacheItemViewModel
-                )
-            }
-
-            override fun onCreateBinding(parent: ViewGroup, viewType: Int): VB {
-                return this@RecyclerViewBindingAdapter.onCreateBinding(parent, viewType)
-            }
-
-            override fun onSetVariable(binding: VB, viewModel: VM?): Boolean {
-                return this@RecyclerViewBindingAdapter.onSetVariable(binding, viewModel)
-            }
-
-        }
-    }
-
-    override fun onBindViewHolder(holder: BindingHolder<VB>, position: Int) {
-
-        bindingHelper.bind(holder, position, getItem(position))
-    }
 
     protected fun getItem(position: Int): T? {
         return if (position >= 0 && position < dataList.size) {
@@ -57,34 +32,34 @@ abstract class RecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any, T : An
         return dataList.size
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<VB> {
-        return BindingHolder<VB>(bindingHelper.createBinding(parent, viewType))
+    override fun onBindViewHolder(holder: BindingItemViewHolder<VB>, position: Int) {
+        val itemData = getItem(position)
+        val itemViewModel = viewBindingItem.createItemViewModel(holder.binding, itemData)
+
+        viewBindingItem.setVariable(holder.binding, itemViewModel)
+
     }
 
-    override fun onViewAttachedToWindow(holder: BindingHolder<VB>) {
-        bindingHelper.onViewAttachedToWindow(holder)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingItemViewHolder<VB> {
+        val binding = viewBindingItem.createViewDataBinding(parent)
+        return BindingItemViewHolder(binding)
     }
 
-    /**
-     * 在这里设置 ViewDataBinding::setVariable(int variableId, @Nullable Object value);
-     */
-    open fun onSetVariable(binding: ViewDataBinding, viewModel: VM?): Boolean {
-        return false
+    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB>) {
+        super.onViewAttachedToWindow(holder)
+        viewBindingItem.onViewAttachedToWindow(holder.binding)
     }
 
-    /**
-     * 创建viewModel
-     */
-    abstract fun createViewModel(
-        binding: VB,
-        item: T?,
-        cacheItemViewModel: VM?,
-    ): VM?
-
-    /**
-     * 创建viewType类型的ViewDataBinding
-     */
-    abstract fun onCreateBinding(parent: ViewGroup, viewType: Int): VB
-
+    class DefaultRecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
+        onCreateViewDataBinding: (parent: ViewGroup) -> VB,
+        onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+        onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
+    ) : RecyclerViewBindingAdapter<VB, VM, Data>(
+        DefaultItemViewDataBindingItemType(
+            onCreateViewDataBinding,
+            onCreateItemViewModel,
+            onSetVariable
+        ),
+    )
 
 }

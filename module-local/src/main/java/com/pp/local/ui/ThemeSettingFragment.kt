@@ -1,12 +1,10 @@
 package com.pp.local.ui
 
 import android.os.Bundle
-import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.WanAndroidTheme
-import com.pp.local.R
 import com.pp.local.databinding.FragmentThemeSettingBinding
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
@@ -32,23 +30,12 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
     }
 
     private val mAdapter by lazy {
-        object :
-            RecyclerViewBindingAdapter<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
-            override fun createViewModel(
-                binding: ItemThemeSettingBinding,
-                item: ItemPreferenceThemeSettingViewModel?,
-                cacheItemViewModel: ItemPreferenceThemeSettingViewModel?,
-            ): ItemPreferenceThemeSettingViewModel? {
-                return item
-            }
 
-            override fun onCreateBinding(
-                parent: ViewGroup,
-                viewType: Int,
-            ): ItemThemeSettingBinding {
-                return ItemThemeSettingBinding.inflate(layoutInflater, parent, false)
-            }
-        }
+
+        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>(
+            onCreateViewDataBinding = { ItemThemeSettingBinding.inflate(layoutInflater, it, false) },
+            onCreateItemViewModel = { binding, item -> item!! }
+        )
     }
 
     private fun initRecyclerView() {

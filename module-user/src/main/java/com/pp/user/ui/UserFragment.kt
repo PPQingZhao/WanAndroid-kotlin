@@ -1,9 +1,7 @@
 package com.pp.user.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
@@ -30,23 +28,11 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
     }
 
     private val mAdapter by lazy {
-        object :
-            RecyclerViewBindingAdapter<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>() {
-            override fun createViewModel(
-                binding: ItemAllowRightBinding,
-                item: UserItemAllowRightModel?,
-                cacheItemViewModel: UserItemAllowRightModel?,
-            ): UserItemAllowRightModel? {
-                return item
-            }
 
-            override fun onCreateBinding(
-                parent: ViewGroup,
-                viewType: Int,
-            ): ItemAllowRightBinding {
-                return ItemAllowRightBinding.inflate(layoutInflater, parent, false)
-            }
-        }
+        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>(
+            onCreateViewDataBinding = { ItemAllowRightBinding.inflate(layoutInflater, it, false) },
+            onCreateItemViewModel = { binding, item -> item!! }
+        )
     }
 
     private fun initRecyclerView() {
