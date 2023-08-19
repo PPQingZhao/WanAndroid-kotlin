@@ -24,6 +24,7 @@
         app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
         app:cardCornerRadius="@dimen/dp_8"
         app:contentPadding="@dimen/dp_8"
+        app:contentPaddingBottom="@dimen/dp_4"
         tools:cardBackgroundColor="?colorPrimaryVariant">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,7 +39,7 @@
                 android:maxLines="1"
                 android:text="@{viewModel.author}"
                 android:textColor="@{viewModel.theme.textColorSecondary}"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="扔物线"
@@ -48,10 +49,10 @@
                 android:id="@+id/tv_pinned"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_6"
                 android:text="@string/pinned"
                 android:textColor="@color/red"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_author"
                 app:layout_constraintStart_toEndOf="@id/tv_author"
@@ -61,10 +62,10 @@
                 android:id="@+id/tv_fresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_4"
                 android:text="@string/fresh"
                 android:textColor="@color/red"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_author"
                 app:layout_constraintStart_toEndOf="@id/tv_pinned"
@@ -74,10 +75,10 @@
                 android:id="@+id/tv_tags"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginStart="@dimen/dp_6"
                 android:text="@{viewModel.tags}"
                 android:textColor="@{viewModel.theme.colorAccent}"
-                android:textSize="13sp"
+                android:textSize="12sp"
                 android:visibility="@{viewModel.isPinned ? View.VISIBLE : View.GONE}"
                 app:layout_constraintBottom_toBottomOf="@id/tv_author"
                 app:layout_constraintStart_toEndOf="@id/tv_fresh"
@@ -91,7 +92,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{viewModel.niceDate}"
                 android:textColor="@{viewModel.theme.textColorSecondary}"
-                android:textSize="15sp"
+                android:textSize="13sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="一天前"
@@ -101,12 +102,14 @@
                 android:id="@+id/tv_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginTop="@dimen/dp_8"
                 android:ellipsize="end"
+                android:gravity="center_vertical"
                 android:maxLines="2"
+                android:minLines="2"
                 android:text="@{viewModel.title}"
                 android:textColor="@{viewModel.theme.textColor}"
-                android:textSize="16sp"
+                android:textSize="15sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@id/tv_nicedate"
                 app:layout_constraintHorizontal_bias="0"
@@ -126,7 +129,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/iv_favorite"
                 app:layout_constraintStart_toStartOf="@id/tv_title"
                 app:layout_constraintTop_toTopOf="@id/iv_favorite"
-                tools:text="问答·官方"
+                tools:text="问答/官方"
                 tools:textColor="?android:textColorSecondary" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -144,5 +147,6 @@
                 app:roundPercent="1"
                 tools:src="@drawable/ic_favorite_on" />
         </androidx.constraintlayout.widget.ConstraintLayout>
+
     </com.google.android.material.card.MaterialCardView>
 </layout>

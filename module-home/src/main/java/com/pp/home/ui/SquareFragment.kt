@@ -1,19 +1,33 @@
 package com.pp.home.ui
 
-import android.os.Bundle
-import com.pp.base.ThemeFragment
-import com.pp.home.databinding.FragmentHomeChildSquareBinding
+import com.pp.common.paging.articleDifferCallback
+import com.pp.home.model.ChapterItemArticleViewModel
+import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.databinding.ItemArticleBinding
 
-class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewModel>() {
-    override val mBinding: FragmentHomeChildSquareBinding by lazy {
-        FragmentHomeChildSquareBinding.inflate(layoutInflater)
-    }
+class SquareFragment : ArticleListFragment<SquareViewModel>() {
 
     override fun getModelClazz(): Class<SquareViewModel> {
         return SquareViewModel::class.java
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onFirstResume() {
+        super.onFirstResume()
+
+        setAdapter(
+            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
+                onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
+                onCreateItemViewModel = { binding, item ->
+                    val viewModel = binding.viewModel
+                    if (viewModel is ChapterItemArticleViewModel) {
+                        viewModel.also { it.updateArticle(item) }
+                    } else {
+                        ChapterItemArticleViewModel(item, mViewModel.mTheme)
+                    }
+                },
+                diffCallback = articleDifferCallback
+            )
+        )
     }
 }

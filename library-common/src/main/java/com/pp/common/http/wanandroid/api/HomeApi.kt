@@ -25,13 +25,28 @@ interface HomeApi {
     suspend fun getTopArticles(): ResponseBean<List<ArticleBean>>
 
     /**
-     * 首页文章列表
+     * 首页文章列表分页加载
      * https://www.wanandroid.com/article/list/0/json
-     * 分页加载
+     *
+     * page:从0开始
      */
     @GET("article/list/{page}/json")
-    suspend fun getArticles(@Path("page") page: Int = 0): ResponseBean<PageBean>
+    suspend fun getArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<PageBean>
 
-    @GET
-    suspend fun getPage(@Url url: String): ResponseBean<PageBean>
+    /**
+     * 广场文章列表分页加载
+     * https://www.wanandroid.com/user_article/list/0/json
+     * page: 从0开始
+     */
+    @GET("user_article/list/{page}/json")
+    suspend fun getSquareArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<PageBean>
+
+    /**
+     * 问答文章列表分页加载
+     * https://www.wanandroid.com/wenda/list/1/json
+     *
+     * page:从1开始
+     */
+    @GET("wenda/list/{page}/json")
+    suspend fun getAnswerArticles(@Path("page") @androidx.annotation.IntRange(from = 1) page: Int = 1): ResponseBean<PageBean>
 }

@@ -34,8 +34,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
         App.getInstance().navigation.observe(this) {
 
             when (it) {

@@ -1,6 +1,5 @@
 package com.pp.home.ui
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -9,15 +8,14 @@ import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
+import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
-import com.pp.home.model.HomeItemArticleViewModel
+import com.pp.home.model.ArticleItemArticleViewModel
 import com.pp.ui.adapter.*
-import com.pp.ui.databinding.ItemArticleBindingImpl
+import com.pp.ui.databinding.ItemArticleBinding
 import com.pp.ui.utils.loadOriginal
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -41,28 +39,18 @@ class RealHomeFragment :
     }
 
     private val mAdapter by lazy {
-        val differCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
-            override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-                return oldItem == newItem
-            }
-        }
 
         BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
-            onCreateViewDataBinding = { ItemArticleBindingImpl.inflate(layoutInflater, it, false) },
+            onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
             onCreateItemViewModel = { binding, item ->
                 val viewModel = binding.viewModel
-                if (viewModel is HomeItemArticleViewModel) {
-                    viewModel.also { it.article = item }
+                if (viewModel is ArticleItemArticleViewModel) {
+                    viewModel.also { it.updateArticle(item) }
                 } else {
-                    HomeItemArticleViewModel(item, mViewModel.mTheme)
+                    ArticleItemArticleViewModel(item, mViewModel.mTheme)
                 }
             },
-            diffCallback = differCallback
+            diffCallback = articleDifferCallback
         )
     }
 

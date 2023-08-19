@@ -24,7 +24,6 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
 
         mBinding.homeViewpager2.run {
             offscreenPageLimit = 3
-            isUserInputEnabled = false
             TabPagerFragmentHelper(this@HomeFragment, viewLifecycleOwner.lifecycle)
                 .addPagers(getPagers())
                 .attach(mBinding.homeTabLayout, this, true)

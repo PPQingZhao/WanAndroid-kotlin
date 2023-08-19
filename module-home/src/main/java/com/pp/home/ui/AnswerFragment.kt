@@ -1,19 +1,33 @@
 package com.pp.home.ui
 
-import android.os.Bundle
-import com.pp.base.ThemeFragment
-import com.pp.home.databinding.FragmentHomeChildAnswerBinding
+import com.pp.common.paging.articleDifferCallback
+import com.pp.home.model.ChapterItemArticleViewModel
+import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.databinding.ItemArticleBinding
 
-class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewModel>() {
-    override val mBinding: FragmentHomeChildAnswerBinding by lazy {
-        FragmentHomeChildAnswerBinding.inflate(layoutInflater)
-    }
+class AnswerFragment :ArticleListFragment<AnswerViewModel>() {
 
     override fun getModelClazz(): Class<AnswerViewModel> {
         return AnswerViewModel::class.java
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+
+    override fun onFirstResume() {
+        super.onFirstResume()
+
+        setAdapter(
+            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
+                onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
+                onCreateItemViewModel = { binding, item ->
+                    val viewModel = binding.viewModel
+                    if (viewModel is ChapterItemArticleViewModel) {
+                        viewModel.also { it.updateArticle(item) }
+                    } else {
+                        ChapterItemArticleViewModel(item, mViewModel.mTheme)
+                    }
+                },
+                diffCallback = articleDifferCallback
+            )
+        )
     }
 }
