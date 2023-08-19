@@ -8,17 +8,11 @@
             type="com.pp.home.ui.AnswerViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <com.pp.ui.widget.PageDataListView
+        android:id="@+id/pageListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/tv_test"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="问答"
-            android:textColor="@{viewModel.MTheme.textColor}" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.pp.ui.widget.PageDataListView>
 </layout>

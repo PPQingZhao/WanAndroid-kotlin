@@ -127,8 +127,8 @@
         </androidx.constraintlayout.motion.widget.MotionLayout>
 
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
+        <com.pp.ui.widget.PageDataListView
+            android:id="@+id/pageListView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

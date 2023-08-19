@@ -35,30 +35,6 @@ class RealHomeFragment :
         super.onViewCreated(view, savedInstanceState)
         initBanner()
         initIndicator()
-        initRecyclerView()
-    }
-
-    private val mAdapter by lazy {
-
-        BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
-            onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-            onCreateItemViewModel = { binding, item ->
-                val viewModel = binding.viewModel
-                if (viewModel is ArticleItemArticleViewModel) {
-                    viewModel.also { it.updateArticle(item) }
-                } else {
-                    ArticleItemArticleViewModel(item, mViewModel.mTheme)
-                }
-            },
-            diffCallback = articleDifferCallback
-        )
-    }
-
-    private fun initRecyclerView() {
-        mBinding.recyclerview.let {
-            it.layoutManager = LinearLayoutManager(context)
-            it.adapter = mAdapter
-        }
     }
 
     private fun initIndicator() {
@@ -117,10 +93,26 @@ class RealHomeFragment :
         super.onFirstResume()
         mViewModel.getBanner2()
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            mViewModel.getPageData().collect {
-                mAdapter.submitData(lifecycle, it)
-            }
-        }
+        val adapter =
+            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
+                onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
+                onCreateItemViewModel = { binding, item ->
+                    val viewModel = binding.viewModel
+                    if (viewModel is ArticleItemArticleViewModel) {
+                        viewModel.also { it.updateArticle(item) }
+                    } else {
+                        ArticleItemArticleViewModel(item, mViewModel.mTheme)
+                    }
+                },
+                diffCallback = articleDifferCallback
+            )
+
+        mBinding.pageListView.setPageAdapter(
+            viewLifecycleOwner,
+            lifecycleScope,
+            mViewModel.getPageData(),
+            adapter
+        )
+
     }
 }

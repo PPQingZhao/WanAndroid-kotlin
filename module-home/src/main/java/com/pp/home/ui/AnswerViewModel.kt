@@ -8,8 +8,8 @@ import com.pp.home.repository.AnswerRepository
 import com.pp.home.repository.SquareRepository
 import kotlinx.coroutines.flow.Flow
 
-class AnswerViewModel(app: Application) : ArticleListViewModel(app) {
-    override fun getPageData(): Flow<PagingData<ArticleBean>> {
+class AnswerViewModel(app: Application) : ThemeViewModel(app) {
+    fun getPageData(): Flow<PagingData<ArticleBean>> {
         return AnswerRepository.getPageData()
     }
 }
