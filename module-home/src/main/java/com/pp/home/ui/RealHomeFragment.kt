@@ -84,11 +84,7 @@ class RealHomeFragment :
                 endId: Int,
                 progress: Float,
             ) {
-                mBinding.indicator.onPageChangeCallback.onPageScrolled(
-                    mBinding.carousel.currentIndex,
-                    progress,
-                    0
-                )
+                mBinding.indicator.setPosition(mBinding.carousel.currentIndex, progress)
             }
         })
     }

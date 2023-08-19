@@ -81,22 +81,15 @@ abstract class IndicatorView : View {
 
     abstract fun calculateWidth(widthMeasureSpec: Int): Int
 
-    val onPageChangeCallback: OnPageChangeCallback = object : OnPageChangeCallback() {
-        override fun onPageScrolled(
-            position: Int,
-            positionOffset: Float,
-            positionOffsetPixels: Int,
-        ) {
-            selectedPos = position
-            indicationOffset = positionOffset
-            invalidate()
-        }
+    fun setPosition(position: Int, positionOffset: Float) {
+        selectedPos = position
+        indicationOffset = positionOffset
+        invalidate()
     }
 
     fun initIndicator(count: Int) {
         this.mIndicatorCount = count
         visibility = if (count > 1) VISIBLE else GONE
-        Log.e("TAG","visibility: $visibility")
     }
 
 }
