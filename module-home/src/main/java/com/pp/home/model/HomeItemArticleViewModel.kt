@@ -23,6 +23,7 @@ class HomeItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme
 
             isFresh.set(field?.fresh == true)
             isPinned.set(field?.type == 1)
+            isCollect.set(field?.collect == true)
         }
 
     init {

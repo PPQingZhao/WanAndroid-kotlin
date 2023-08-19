@@ -43,15 +43,12 @@ class RealHomeFragment :
     private val mAdapter by lazy {
         val differCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
             override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-                val result = oldItem.id == newItem.id
-//                Log.e("TAG", "111  result: ${result}")
-                return result
+                return oldItem.id == newItem.id
             }
 
             @SuppressLint("DiffUtilEquals")
             override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-                val result = oldItem == newItem
-                return result
+                return oldItem == newItem
             }
         }
 

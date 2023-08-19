@@ -60,7 +60,7 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
 
             add(
                 UserItemAllowRightModel(
-                    com.pp.skin.R.drawable.ic_favorite,
+                    com.pp.skin.R.drawable.ic_favorite_on,
                     R.string.collect_articles,
                     mViewModel.mTheme
                 )

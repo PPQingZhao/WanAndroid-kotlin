@@ -135,13 +135,14 @@
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_4"
                 android:background="?android:selectableItemBackground"
-                android:onClick="@{viewModel.onFavorite}"
-                android:src="@drawable/ic_favorite"
+                android:onClick="@{viewModel.onCollect}"
+                android:src="@{viewModel.isCollect ? @drawable/ic_favorite_on:@drawable/ic_favorite}"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
                 app:layout_constraintWidth_percent="0.085"
-                app:roundPercent="1" />
+                app:roundPercent="1"
+                tools:src="@drawable/ic_favorite_on" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

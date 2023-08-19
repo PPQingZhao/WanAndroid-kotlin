@@ -17,13 +17,16 @@ open class ItemArticleViewModel(val theme: AppDynamicTheme) {
 
     // 新发布
     val isFresh = ObservableBoolean(false)
+    val isCollect = ObservableBoolean(false)
 
     fun onItemClick(v: View) {
 
     }
 
-    fun onFavorite(v: View) {
-
+    fun onCollect(v: View) {
+        isCollect.let {
+            it.set(it.get().not())
+        }
     }
 
 }
