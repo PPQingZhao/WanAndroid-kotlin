@@ -39,7 +39,7 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
             val pagerFragments = pagerFragments()
             isUserInputEnabled = false
             offscreenPageLimit = pagerFragments.size
-            TabPagerFragmentHelper(this@MainFragment, viewLifecycleOwner.lifecycle)
+            TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
                 .addPagers(pagerFragments)
                 .attach(mBinding.mainTabLayout, this, false)
         }

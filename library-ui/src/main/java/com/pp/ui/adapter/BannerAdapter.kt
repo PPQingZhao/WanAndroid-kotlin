@@ -1,7 +1,6 @@
 package com.pp.ui.adapter
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.MotionEvent
 import androidx.constraintlayout.helper.widget.Carousel
 import androidx.constraintlayout.motion.widget.MotionLayout

@@ -19,15 +19,6 @@ class TabPagerFragmentHelper {
         pagerHelper = PagerFragmentHelper(manager, lifecycle)
     }
 
-    constructor(
-        activity: FragmentActivity,
-    ) : this(activity.supportFragmentManager, activity.lifecycle)
-
-    constructor(
-        fragment: Fragment,
-        lifecycle: Lifecycle
-    ) : this(fragment.childFragmentManager, lifecycle)
-
     fun addPager(pager: TabPager): TabPagerFragmentHelper {
         tabPagerList.add(pager)
         pagerHelper.addPager(pager)

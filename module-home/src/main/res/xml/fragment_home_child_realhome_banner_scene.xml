@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Include app:constraintSet="@xml/start" />
+    <Include app:constraintSet="@xml/previous" />
+    <Include app:constraintSet="@xml/next" />
+    <Transition
+        android:id="@+id/forward"
+        app:constraintSetEnd="@+id/next"
+        app:constraintSetStart="@+id/start"
+        app:duration="1000">
+        <OnSwipe
+            app:dragDirection="dragLeft"
+            app:touchAnchorSide="left" />
+    </Transition>
+
+    <Transition
+        android:id="@+id/backward"
+        app:constraintSetEnd="@+id/previous"
+        app:constraintSetStart="@+id/start"
+        app:duration="1000">
+        <OnSwipe
+            app:dragDirection="dragRight"
+            app:touchAnchorSide="right" />
+    </Transition>
+</MotionScene>

@@ -4,7 +4,6 @@ import androidx.lifecycle.lifecycleScope
 import com.pp.base.ThemeFragment
 import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildSquareBinding
-import com.pp.home.model.ArticleItemArticleViewModel
 import com.pp.home.model.ChapterItemArticleViewModel
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.databinding.ItemArticleBinding
@@ -17,8 +16,7 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
         return SquareViewModel::class.java
     }
 
-    override fun onFirstResume() {
-        super.onFirstResume()
+    private fun initPagingList() {
 
         val adapter =
             BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
@@ -40,7 +38,11 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
             mViewModel.getPageData(),
             adapter
         )
-
-
     }
+
+    override fun onFirstResume() {
+        super.onFirstResume()
+        initPagingList()
+    }
+
 }

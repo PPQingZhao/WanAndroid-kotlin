@@ -20,15 +20,6 @@ class PagerFragmentHelper {
         adapter = FragmentAdapter(manager, lifecycle)
     }
 
-    constructor(
-        activity: FragmentActivity,
-    ) : this(activity.supportFragmentManager, activity.lifecycle)
-
-    constructor(
-        fragment: Fragment,
-        lifecycle: Lifecycle
-    ) : this(fragment.childFragmentManager, lifecycle)
-
     fun addPager(pager: Pager): PagerFragmentHelper {
         pagerList.add(pager)
         return this

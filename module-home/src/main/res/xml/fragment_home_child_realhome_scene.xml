@@ -2,26 +2,51 @@
 <MotionScene xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <Include app:constraintSet="@xml/start" />
-    <Include app:constraintSet="@xml/previous" />
-    <Include app:constraintSet="@xml/next" />
     <Transition
-        android:id="@+id/forward"
-        app:constraintSetEnd="@+id/next"
-        app:constraintSetStart="@+id/start"
+        app:constraintSetEnd="@id/end"
+        app:constraintSetStart="@id/start"
         app:duration="1000">
         <OnSwipe
-            app:dragDirection="dragLeft"
-            app:touchAnchorSide="left" />
+            app:dragDirection="dragUp"
+            app:touchAnchorId="@id/pageListView"
+            app:touchAnchorSide="top" />
     </Transition>
 
-    <Transition
-        android:id="@+id/backward"
-        app:constraintSetEnd="@+id/previous"
-        app:constraintSetStart="@+id/start"
-        app:duration="1000">
-        <OnSwipe
-            app:dragDirection="dragRight"
-            app:touchAnchorSide="right" />
-    </Transition>
+    <ConstraintSet android:id="@+id/start">
+        <Constraint
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutDescription="@xml/fragment_home_child_realhome_banner_scene"
+            app:layout_constraintDimensionRatio="16:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Constraint
+            android:id="@+id/pageListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/banner" />
+    </ConstraintSet>
+
+    <ConstraintSet android:id="@+id/end">
+        <Constraint
+            android:id="@+id/banner"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layoutDescription="@xml/fragment_home_child_realhome_banner_scene"
+            app:layout_constraintBottom_toTopOf="parent"
+            app:layout_constraintDimensionRatio="16:7"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Constraint
+            android:id="@+id/pageListView"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/banner" />
+    </ConstraintSet>
 </MotionScene>

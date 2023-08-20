@@ -1,23 +1,22 @@
 package com.pp.home.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.ArticleItemArticleViewModel
-import com.pp.ui.adapter.*
+import com.pp.ui.adapter.BannerAdapter
+import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.databinding.ItemArticleBinding
 import com.pp.ui.utils.loadOriginal
-import kotlinx.coroutines.Dispatchers
+import com.pp.ui.widget.BannerMotionLayoutScrollAbility
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -38,23 +37,25 @@ class RealHomeFragment :
     }
 
     private fun initIndicator() {
-        mBinding.motionlayout.addTransitionListener(object : TransitionAdapter() {
-            override fun onTransitionChange(
-                motionLayout: MotionLayout?,
-                startId: Int,
-                endId: Int,
-                progress: Float,
-            ) {
-                mBinding.indicator.setPosition(mBinding.carousel.currentIndex, progress)
-            }
-        })
+//        mBinding.bannermotionlayout.addTransitionListener(
+//            IndicatorTransitionAdapter(
+//                mBinding.indicator,
+//                mBinding.carousel
+//            )
+//        )
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private fun initBanner() {
+        mBinding.banner.setChildScrollAbility(
+            BannerMotionLayoutScrollAbility(
+                mBinding.carousel
+            )
+        )
 
         val dataList = mutableListOf<BannerBean>()
         val bannerAdapter = object :
-            BannerAdapter(lifecycleScope, mBinding.motionlayout, mBinding.carousel) {
+            BannerAdapter(lifecycleScope, mBinding.bannermotionlayout, mBinding.carousel) {
             override fun count(): Int {
                 return dataList.size
             }
@@ -67,7 +68,8 @@ class RealHomeFragment :
             }
 
             override fun onNewItem(index: Int) {
-//                        Log.e("TAG", "onNewItem index: $index")
+                mBinding.indicator.setPosition(index,0f)
+//                Log.e("TAG", "onNewItem index: $index")
             }
         }
         bannerAdapter.attachLifecycle(this@RealHomeFragment)
@@ -89,10 +91,7 @@ class RealHomeFragment :
         mBinding.indicator.initIndicator(mBinding.carousel.count)
     }
 
-    override fun onFirstResume() {
-        super.onFirstResume()
-        mViewModel.getBanner2()
-
+    private fun initPagingList() {
         val adapter =
             BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
                 onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
@@ -113,6 +112,11 @@ class RealHomeFragment :
             mViewModel.getPageData(),
             adapter
         )
+    }
 
+    override fun onFirstResume() {
+        super.onFirstResume()
+        mViewModel.getBanner2()
+        initPagingList()
     }
 }
