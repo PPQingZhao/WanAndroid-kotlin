@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -13,8 +14,9 @@ import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.ArticleItemArticleViewModel
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.adapter.IndicatorTransitionAdapter
+import com.pp.ui.adapter.IndicatorTransitionListener
 import com.pp.ui.databinding.ItemArticleBinding
+import com.pp.ui.utils.BannerCarousel
 import com.pp.ui.utils.BannerCarousel.Adapter
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
@@ -38,12 +40,7 @@ class RealHomeFragment :
     }
 
     private fun initIndicator() {
-        mBinding.bannermotionlayout.addTransitionListener(
-            IndicatorTransitionAdapter(
-                mBinding.indicator,
-                mBinding.carousel
-            )
-        )
+        mBinding.carousel.setTransitionListener(IndicatorTransitionListener(mBinding.indicator))
     }
 
     @SuppressLint("ClickableViewAccessibility")

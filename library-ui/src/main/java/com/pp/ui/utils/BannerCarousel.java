@@ -280,6 +280,7 @@ public class BannerCarousel extends MotionHelper {
                     + " to " + endId + " progress " + progress);
         }
         mLastStartId = startId;
+        dispatchOnTransitionChange();
     }
 
     int mLastStartId = -1;
@@ -311,6 +312,8 @@ public class BannerCarousel extends MotionHelper {
         if (mPreviousIndex != mIndex) {
             mMotionLayout.post(mUpdateRunnable);
         }
+
+        dispatchOnTransitionCompleted();
     }
 
     @SuppressWarnings("unused")
@@ -634,4 +637,37 @@ public class BannerCarousel extends MotionHelper {
         }
     }
 
+    private TransitionListener mTransitionListener = null;
+
+    private void dispatchOnTransitionChange() {
+        if (null != mTransitionListener) {
+            mTransitionListener.onTransitionChange(mMotionLayout,
+                    mMotionLayout.getStartState(),
+                    mMotionLayout.getEndState(),
+                    mMotionLayout.getProgress(),
+                    this, mIndex, mNextState, mPreviousState);
+        }
+    }
+
+    private void dispatchOnTransitionCompleted() {
+        if (null != mTransitionListener) {
+            mTransitionListener.onTransitionCompleted(mMotionLayout,
+                    mMotionLayout.getCurrentState(),
+                    this, mIndex, mNextState, mPreviousState);
+        }
+    }
+
+
+    public void setTransitionListener(TransitionListener listener) {
+        this.mTransitionListener = listener;
+    }
+
+    public interface TransitionListener {
+        void onTransitionChange(MotionLayout motionLayout,
+                                int startId, int endId,
+                                float progress, BannerCarousel carousel, int curIndex, int nextStateId, int previousStateId);
+
+        void onTransitionCompleted(MotionLayout motionLayout, int currentId, BannerCarousel carousel, int curIndex, int nextStateId, int previousStateId);
+
+    }
 }
