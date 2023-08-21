@@ -1,12 +1,11 @@
 package com.pp.ui.widget
 
 import android.view.View
-import androidx.constraintlayout.helper.widget.Carousel
 import androidx.constraintlayout.motion.widget.MotionLayout
-import androidx.constraintlayout.motion.widget.TransitionAdapter
+import com.pp.ui.utils.BannerCarousel
 
 class BannerMotionLayoutScrollAbility(
-    private val carousel: Carousel,
+    private val carousel: BannerCarousel,
 ) :
     NestedScrollableHost.ViewScrollAbility {
     override fun canScrollHorizontally(view: View, direction: Int): Boolean {

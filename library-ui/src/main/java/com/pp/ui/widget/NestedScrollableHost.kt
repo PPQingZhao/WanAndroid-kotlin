@@ -2,7 +2,6 @@ package com.pp.ui.widget
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewConfiguration
@@ -113,14 +112,14 @@ open class NestedScrollableHost(context: Context, attrs: AttributeSet?, defStyle
                     MotionEvent.ACTION_MOVE -> {
                         val dx = e.x - initialX
                         val dy = e.y - initialY
-                        val isVpHorizontal = orientation == 0
+                        val isVpHorizontal = orientation == ViewPager2.ORIENTATION_HORIZONTAL
                         val scaledDx = Math.abs(dx) * if (isVpHorizontal) 0.5f else 1.0f
                         val scaledDy = Math.abs(dy) * if (isVpHorizontal) 1.0f else 0.5f
                         if (scaledDx > touchSlop.toFloat() || scaledDy > touchSlop.toFloat()) {
                             when {
-                                isVpHorizontal == scaledDy > scaledDx -> {
-                                    this.parent.requestDisallowInterceptTouchEvent(false)
-                                }
+//                                isVpHorizontal == scaledDy > scaledDx -> {
+//                                    this.parent.requestDisallowInterceptTouchEvent(false)
+//                                }
                                 canChildScroll(orientation, if (isVpHorizontal) dx else dy) -> {
                                     this.parent.requestDisallowInterceptTouchEvent(true)
                                 }

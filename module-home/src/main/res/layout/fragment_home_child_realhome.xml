@@ -109,11 +109,11 @@
                     app:roundPercent="0.1"
                     tools:src="@mipmap/ic_launcher" />
 
-
-                <androidx.constraintlayout.helper.widget.Carousel
+                <com.pp.ui.utils.BannerCarousel
                     android:id="@+id/carousel"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    app:autoBanner="true"
                     app:carousel_backwardTransition="@+id/backward"
                     app:carousel_firstView="@id/iv3"
                     app:carousel_forwardTransition="@+id/forward"

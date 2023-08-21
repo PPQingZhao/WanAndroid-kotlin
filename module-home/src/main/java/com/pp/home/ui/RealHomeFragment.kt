@@ -12,9 +12,10 @@ import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.ArticleItemArticleViewModel
-import com.pp.ui.adapter.BannerAdapter
 import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.adapter.IndicatorTransitionAdapter
 import com.pp.ui.databinding.ItemArticleBinding
+import com.pp.ui.utils.BannerCarousel.Adapter
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
 import kotlinx.coroutines.flow.collectLatest
@@ -37,12 +38,12 @@ class RealHomeFragment :
     }
 
     private fun initIndicator() {
-//        mBinding.bannermotionlayout.addTransitionListener(
-//            IndicatorTransitionAdapter(
-//                mBinding.indicator,
-//                mBinding.carousel
-//            )
-//        )
+        mBinding.bannermotionlayout.addTransitionListener(
+            IndicatorTransitionAdapter(
+                mBinding.indicator,
+                mBinding.carousel
+            )
+        )
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -54,8 +55,7 @@ class RealHomeFragment :
         )
 
         val dataList = mutableListOf<BannerBean>()
-        val bannerAdapter = object :
-            BannerAdapter(lifecycleScope, mBinding.bannermotionlayout, mBinding.carousel) {
+        val bannerAdapter = object : Adapter {
             override fun count(): Int {
                 return dataList.size
             }
@@ -68,19 +68,18 @@ class RealHomeFragment :
             }
 
             override fun onNewItem(index: Int) {
-                mBinding.indicator.setPosition(index,0f)
+//                mBinding.indicator.setPosition(index,0f)
 //                Log.e("TAG", "onNewItem index: $index")
             }
         }
-        bannerAdapter.attachLifecycle(this@RealHomeFragment)
-        mBinding.carousel.setAdapter(bannerAdapter)
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 mViewModel.bannerFlow.collectLatest {
                     dataList.clear()
                     dataList.addAll(it)
+
+                    mBinding.carousel.setAdapter(bannerAdapter)
                     mBinding.carousel.jumpToIndex(mBinding.carousel.currentIndex)
-                    bannerAdapter.start()
                     updateIndicator()
                 }
             }
