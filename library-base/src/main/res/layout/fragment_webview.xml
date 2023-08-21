@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data class="WebViewBinding">
+
+        <variable
+            name="viewModel"
+            type="com.pp.base.browser.WebViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ll_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            android:fitsSystemWindows="true"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="?colorPrimary">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dp_8"
+                android:background="?android:selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/dp_8"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="@{viewModel.MTheme.textColorPrimary}"
+                app:layout_constraintBottom_toBottomOf="@id/web_tv_title"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundPercent="1"
+                tools:tint="?android:textColorPrimary" />
+
+            <TextView
+                android:id="@+id/web_tv_title"
+                android:layout_width="0dp"
+                android:layout_height="?android:actionBarSize"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginEnd="@dimen/margin_large"
+                android:ellipsize="marquee"
+                android:gravity="center_vertical"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:text="@{viewModel.MTitle}"
+                android:textColor="@{viewModel.MTheme.textColorPrimary}"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_back"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="EllipsizeMaxLines"
+                tools:text="加载中..."
+                tools:textColor="?android:textColorPrimary" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ProgressBar
+            android:id="@+id/web_progressbar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:indeterminateOnly="false"
+            android:progress="@{viewModel.MProgress}"
+            android:visibility="@{viewModel.MProgressVisibility}"
+            tools:progress="30" />
+
+        <WebView
+            android:id="@+id/webview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:webUrl="@{viewModel.webUrl}" />
+    </LinearLayout>
+</layout>

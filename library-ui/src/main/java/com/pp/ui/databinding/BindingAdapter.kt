@@ -5,6 +5,7 @@ import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.view.View
+import android.webkit.WebView
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
@@ -76,6 +77,13 @@ object BindingAdapter {
         iv.setImageResource(src)
     }
 
+    @JvmStatic
+    @androidx.databinding.BindingAdapter("android:webUrl")
+    fun loadWebUrl(webView: WebView, webUrl: String?) {
+        webUrl?.let {
+            webView.loadUrl(it)
+        }
+    }
 
 
 }

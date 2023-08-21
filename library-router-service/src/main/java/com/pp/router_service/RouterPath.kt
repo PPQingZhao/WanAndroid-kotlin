@@ -6,6 +6,10 @@ object RouterPath {
         const val fragment_main = "/main/fragment_main"
     }
 
+    object Web {
+        const val fragment_web = "/web/fragment_web"
+    }
+
     object Home {
         const val fragment_home = "/home/fragment_home"
     }
@@ -32,5 +36,6 @@ object RouterPath {
         const val activity_recently_played = "/local/activity_recently_played"
         const val activity_liked = "/local/activity_liked"
     }
+
 
 }

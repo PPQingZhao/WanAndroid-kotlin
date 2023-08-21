@@ -23,8 +23,8 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.getInstance().navigation.observe(this) { t ->
-            when (t) {
+        App.getInstance().navigation.observe(this) { it ->
+            when (it.first) {
                 RouterPath.User.fragment_user -> {
                     mBinding.mainViewpager2.setCurrentItem(3, false)
                 }
@@ -84,7 +84,8 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
                     ).apply {
                         setOnTouchListener { v, event ->
                             if (event.action == MotionEvent.ACTION_DOWN) {
-                                App.getInstance().navigation.value = RouterPath.User.fragment_login
+                                App.getInstance().navigation.value =
+                                    RouterPath.User.fragment_login to Any()
                                 return@setOnTouchListener true
                             }
                             return@setOnTouchListener false

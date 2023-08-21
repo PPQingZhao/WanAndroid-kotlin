@@ -43,7 +43,7 @@ class LoginAndRegisterFragment :
     }
 
     override fun handleOnBackPressed() {
-        App.getInstance().navigation.value = RouterPath.Main.fragment_main
+        App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
     }
 
     private fun initView() {
@@ -85,7 +85,7 @@ class LoginAndRegisterFragment :
         lifecycleScope.launch {
             mViewModel.loginViewModel.loginResult.collect {
                 if (it) {
-                    App.getInstance().navigation.value = RouterPath.User.fragment_user
+                    App.getInstance().navigation.value = RouterPath.User.fragment_user to Any()
                 }
             }
         }

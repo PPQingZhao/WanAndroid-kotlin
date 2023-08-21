@@ -9,7 +9,7 @@ import kotlin.properties.Delegates
 
 open class App : Application() {
 
-    val navigation = MutableLiveData<String>(RouterPath.Main.fragment_main)
+    val navigation = MutableLiveData(RouterPath.Main.fragment_main to Any())
 
     companion object {
         private var mInstance: App by Delegates.notNull()

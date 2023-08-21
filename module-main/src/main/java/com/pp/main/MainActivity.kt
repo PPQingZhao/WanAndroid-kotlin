@@ -10,6 +10,7 @@ import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeActivity
 import com.pp.common.app.App
+import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.materialSharedAxis
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
@@ -36,7 +37,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         super.onCreate(savedInstanceState)
         App.getInstance().navigation.observe(this) {
 
-            when (it) {
+            when (it.first) {
                 RouterPath.User.fragment_user,
                 RouterPath.Main.fragment_main,
                 -> {
@@ -47,25 +48,53 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                         f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
                         f.enterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
                     }
-                    showFragment(getLoginFragment(), RouterPath.User.fragment_login)
+                    getLoginFragment().let {
+                        showFragment(it, RouterPath.User.fragment_login)
+                        toRemoveFragment = it
+                    }
+                }
+                RouterPath.Web.fragment_web -> {
+                    getMainFragment().let { f ->
+//                        f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
+//                        f.enterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+                    }
+                    getWebFragment().let { f ->
+                        val secondArg = it.second
+                        if (secondArg is Bundle) {
+                            f.arguments = secondArg
+                        }
+                        showFragment(f, RouterPath.Web.fragment_web)
+                        toRemoveFragment = f
+                    }
                 }
             }
         }
     }
 
+    private fun getWebFragment(): Fragment {
+        var webFragment =
+            supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
+        if (null == webFragment) {
+            webFragment = CommonWebViewFragment()
+        }
+        return webFragment
+    }
+
     private var curFragment: Fragment? = null
+    private var toRemoveFragment: Fragment? = null
 
     @SuppressLint("CommitTransaction")
     private fun showFragment(fragment: Fragment, tag: String) {
         supportFragmentManager.beginTransaction().let { transition ->
             val oldFragment = curFragment
             oldFragment?.let {
-                if (RouterPath.Main.fragment_main == it.tag) {
-                    transition.hide(it)
-                } else {
-                    transition.remove(it)
-                }
+                transition.hide(it)
                 transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
+            }
+
+            toRemoveFragment?.let {
+                transition.remove(toRemoveFragment!!)
+                toRemoveFragment = null
             }
 
             fragment.let {
