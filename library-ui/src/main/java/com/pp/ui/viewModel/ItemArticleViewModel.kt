@@ -11,6 +11,7 @@ open class ItemArticleViewModel(val theme: AppDynamicTheme) {
     val chapterName = ObservableField<String>()
     val niceDate = ObservableField<String>()
     val tags = ObservableField<String>()
+    val transitionName = ObservableField<String>()
 
     // 置顶
     val isPinned = ObservableBoolean(false)

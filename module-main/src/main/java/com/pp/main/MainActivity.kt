@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.alibaba.android.arouter.launcher.ARouter
@@ -12,6 +14,7 @@ import com.pp.base.ThemeActivity
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.materialSharedAxis
+import com.pp.common.util.ShareElementNavigation
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
 import com.pp.router_service.RouterPath
@@ -55,17 +58,26 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
                 RouterPath.Web.fragment_web -> {
                     getMainFragment().let { f ->
-//                        f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
-//                        f.enterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+                        f.exitTransition = null
+                        f.enterTransition = null
                     }
                     getWebFragment().let { f ->
+
                         val secondArg = it.second
-                        if (secondArg is Bundle) {
-                            f.arguments = secondArg
+                        var sharedElement: View? = null
+                        if (secondArg is ShareElementNavigation) {
+                            f.arguments = secondArg.bundle
+                            sharedElement = secondArg.shareElement
                         }
-                        showFragment(f, RouterPath.Web.fragment_web)
+                        showFragment(
+                            f,
+                            RouterPath.Web.fragment_web,
+                            sharedElement,
+                            addToBackStack = true
+                        )
                         toRemoveFragment = f
                     }
+
                 }
             }
         }
@@ -84,15 +96,22 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
     private var toRemoveFragment: Fragment? = null
 
     @SuppressLint("CommitTransaction")
-    private fun showFragment(fragment: Fragment, tag: String) {
+    private fun showFragment(
+        fragment: Fragment,
+        tag: String,
+        sharedElement: View? = null,
+        addToBackStack: Boolean = false,
+    ) {
         supportFragmentManager.beginTransaction().let { transition ->
             val oldFragment = curFragment
             oldFragment?.let {
+                Log.e("TAG", "$it")
                 transition.hide(it)
                 transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
             }
 
             toRemoveFragment?.let {
+                supportFragmentManager.popBackStack()
                 transition.remove(toRemoveFragment!!)
                 toRemoveFragment = null
             }
@@ -102,9 +121,17 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     transition.add(R.id.container, it, tag)
                 }
 
+                if (null != sharedElement) {
+                    transition.addSharedElement(sharedElement, sharedElement.transitionName)
+                }
+
+                if (addToBackStack) {
+                    transition.addToBackStack("main")
+                }
+
                 transition.show(it)
                     .setMaxLifecycle(it, Lifecycle.State.RESUMED)
-                    .commitNow()
+                    .commit()
             }
 
             curFragment = fragment

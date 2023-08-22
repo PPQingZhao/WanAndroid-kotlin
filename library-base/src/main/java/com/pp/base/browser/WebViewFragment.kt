@@ -3,15 +3,15 @@ package com.pp.base.browser
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.text.Html
 import android.view.ViewGroup
 import android.webkit.WebSettings
 import com.pp.base.ThemeFragment
 import com.pp.base.databinding.WebViewBinding
+import com.pp.base.databinding.WebViewBindingImpl
 
 open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     override val mBinding: WebViewBinding by lazy {
-        WebViewBinding.inflate(layoutInflater)
+        WebViewBindingImpl.inflate(layoutInflater)
     }
 
     override fun getModelClazz(): Class<WebViewModel> {
@@ -32,14 +32,16 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
         initWeb()
     }
 
-    private fun parseArgs() {
+    fun parseArgs() {
         arguments?.let {
             val webUrl = it.getString(WEB_VIEW_URL)
             val webTitle = it.getString(WEB_VIEW_TITLE)
 
-            mViewModel.webUrl.value = webUrl
-            mBinding.webTvTitle.text =
-                (Html.fromHtml(if (webTitle?.isNotEmpty() == true) webTitle else "加载中..."))
+            mViewModel.load(webUrl)
+            (if (webTitle?.isNotEmpty() == true) webTitle else "加载中...").let {
+//                mBinding.webTvTitle.text = it
+                mViewModel.mTitle.value = it
+            }
         }
     }
 
@@ -57,7 +59,6 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initWeb() {
-        mBinding.webview.loadUrl("mUrl")
 
         mBinding.webview.webViewClient = mViewModel.webViewClient
         mBinding.webview.webChromeClient = mViewModel.webChromeClient

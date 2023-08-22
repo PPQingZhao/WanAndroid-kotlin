@@ -4,19 +4,21 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
-import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.pp.base.ThemeFragment
+import com.pp.base.browser.WebViewFragment
+import com.pp.common.app.App
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.articleDifferCallback
+import com.pp.common.util.ShareElementNavigation
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.model.ArticleItemArticleViewModel
+import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.IndicatorTransitionListener
 import com.pp.ui.databinding.ItemArticleBinding
-import com.pp.ui.utils.BannerCarousel
 import com.pp.ui.utils.BannerCarousel.Adapter
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
@@ -60,12 +62,28 @@ class RealHomeFragment :
             override fun populate(view: View?, index: Int) {
 //                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
-                    view.loadOriginal(dataList[index].imagePath)
+                    dataList[index].let { bannerBean ->
+                        view.loadOriginal(bannerBean.imagePath)
+                        view.setOnClickListener(object : View.OnClickListener {
+                            override fun onClick(v: View?) {
+                                val bundle = Bundle().also {
+                                    it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
+                                    it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
+                                }
+
+                                App.getInstance().navigation.value =
+                                    RouterPath.Web.fragment_web to ShareElementNavigation(
+                                        null,
+                                        bundle
+                                    )
+                            }
+
+                        })
+                    }
                 }
             }
 
             override fun onNewItem(index: Int) {
-//                mBinding.indicator.setPosition(index,0f)
 //                Log.e("TAG", "onNewItem index: $index")
             }
         }

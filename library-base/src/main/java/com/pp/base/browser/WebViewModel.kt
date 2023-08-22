@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.text.Html
+import android.util.Log
 import android.view.View
 import android.webkit.SslErrorHandler
 import android.webkit.WebChromeClient
@@ -17,17 +18,24 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
 
     val mProgress = MutableLiveData(0)
     val mProgressVisibility = MutableLiveData(View.GONE)
-    val mTitle = MutableLiveData("加载中...")
-    val webUrl = MutableLiveData("")
+    val mTitle = MutableLiveData<String>()
+    val webUrl = MutableLiveData<String>()
+
+
+    fun load(url: String?) {
+        webUrl.value = url
+    }
 
     val webChromeClient = object : WebChromeClient() {
         // 网页加载进度
         override fun onProgressChanged(view: WebView?, newProgress: Int) {
             mProgress.value = newProgress
+//            Log.e("TAG","progress: $newProgress")
         }
 
         override fun onReceivedTitle(view: WebView?, title: String?) {
             mTitle.value = title
+//            Log.e("TAG", "onReceivedTitle: $title")
         }
     }
 
@@ -79,6 +87,4 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
-    override fun onDestroy(owner: LifecycleOwner) {
-    }
 }

@@ -74,6 +74,7 @@
             android:layout_height="3dp"
             android:indeterminateOnly="false"
             android:progress="@{viewModel.MProgress}"
+            android:progressDrawable="@drawable/layer_progressbar"
             android:visibility="@{viewModel.MProgressVisibility}"
             tools:progress="30" />
 
