@@ -87,7 +87,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         var webFragment =
             supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
         if (null == webFragment) {
-            webFragment = CommonWebViewFragment()
+            webFragment = CommonWebViewFragment
         }
         return webFragment
     }

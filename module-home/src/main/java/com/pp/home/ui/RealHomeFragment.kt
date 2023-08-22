@@ -54,6 +54,23 @@ class RealHomeFragment :
         )
 
         val dataList = mutableListOf<BannerBean>()
+
+        mBinding.bannermotionlayout.setOnClickListener {
+
+            dataList[mBinding.carousel.currentIndex].let { bannerBean ->
+                val bundle = Bundle().also {
+                    it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
+                    it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
+                }
+
+                App.getInstance().navigation.value =
+                    RouterPath.Web.fragment_web to ShareElementNavigation(
+                        null,
+                        bundle
+                    )
+            }
+        }
+
         val bannerAdapter = object : Adapter {
             override fun count(): Int {
                 return dataList.size
@@ -64,21 +81,6 @@ class RealHomeFragment :
                 if (view is ImageView) {
                     dataList[index].let { bannerBean ->
                         view.loadOriginal(bannerBean.imagePath)
-                        view.setOnClickListener(object : View.OnClickListener {
-                            override fun onClick(v: View?) {
-                                val bundle = Bundle().also {
-                                    it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
-                                    it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
-                                }
-
-                                App.getInstance().navigation.value =
-                                    RouterPath.Web.fragment_web to ShareElementNavigation(
-                                        null,
-                                        bundle
-                                    )
-                            }
-
-                        })
                     }
                 }
             }

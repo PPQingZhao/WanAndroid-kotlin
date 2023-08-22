@@ -25,19 +25,18 @@ abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
         if (!enable && null == onBackPressCallback) {
             return
         }
+        getOnBackPressedCallback().isEnabled = enable
+    }
 
+    private fun getOnBackPressedCallback(): OnBackPressedCallback {
         if (null == onBackPressCallback) {
             onBackPressCallback = object : OnBackPressedCallback(false) {
                 override fun handleOnBackPressed() {
                     this@ThemeFragment.handleOnBackPressed()
                 }
             }
-            requireActivity().onBackPressedDispatcher
-                .addCallback(this, onBackPressCallback!!)
         }
-
-        onBackPressCallback!!.isEnabled = enable
-
+        return onBackPressCallback!!
     }
 
     protected open fun handleOnBackPressed() {
@@ -54,6 +53,9 @@ abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
                 )
             )
         }
+
+        requireActivity().onBackPressedDispatcher
+            .addCallback(this, getOnBackPressedCallback())
     }
 
     override fun onCreateView(

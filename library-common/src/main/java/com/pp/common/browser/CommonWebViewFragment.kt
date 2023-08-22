@@ -8,11 +8,9 @@ import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.router_service.RouterPath
 
-class CommonWebViewFragment : WebViewFragment() {
+object CommonWebViewFragment : WebViewFragment() {
 
-    companion object {
         const val WEB_VIEW_TRANSITION_NAME = "transitionName"
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +26,17 @@ class CommonWebViewFragment : WebViewFragment() {
             setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
         }
     }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if(!hidden){
+            parseArgs()
+            enableBackPressed(true)
+            initTitle()
+            initWeb()
+        }
+    }
+
 
     override fun handleOnBackPressed() {
         super.handleOnBackPressed()

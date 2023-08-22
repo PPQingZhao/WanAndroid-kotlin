@@ -45,7 +45,7 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
         }
     }
 
-    private fun initTitle() {
+    fun initTitle() {
         mBinding.webTvTitle.isSelected = true
 
         mBinding.ivBack.setOnClickListener {
@@ -58,7 +58,7 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     }
 
     @SuppressLint("SetJavaScriptEnabled")
-    private fun initWeb() {
+    fun initWeb() {
 
         mBinding.webview.webViewClient = mViewModel.webViewClient
         mBinding.webview.webChromeClient = mViewModel.webChromeClient
@@ -111,14 +111,13 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
             goBack()
             return
         }
-        enableBackPressed(false)
     }
 
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinding.webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+//        mBinding.webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
         mBinding.webview.clearHistory()
-        (mBinding.webview.parent as ViewGroup).removeView(mBinding.webview)
+//        (mBinding.webview.parent as ViewGroup).removeView(mBinding.webview)
     }
 }
