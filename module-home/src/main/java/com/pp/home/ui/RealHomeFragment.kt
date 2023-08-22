@@ -60,30 +60,6 @@ class RealHomeFragment :
         )
 
         val dataList = mutableListOf<BannerBean>()
-        val detectorCompat = GestureDetectorCompat(requireContext(), object :
-            GestureDetector.SimpleOnGestureListener() {
-
-            override fun onDown(e: MotionEvent): Boolean {
-                return true
-            }
-
-            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
-                dataList[mBinding.carousel.currentIndex].let { bannerBean ->
-                    val bundle = Bundle().also {
-                        it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
-                        it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
-                    }
-
-                    App.getInstance().navigation.value =
-                        RouterPath.Web.fragment_web to ShareElementNavigation(
-                            null,
-                            bundle
-                        )
-                }
-                return true
-            }
-        })
-
         val bannerAdapter = object : Adapter {
             override fun count(): Int {
                 return dataList.size
@@ -93,9 +69,21 @@ class RealHomeFragment :
 
 //                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
-                    view.setOnTouchListener { v, event ->
-                        detectorCompat.onTouchEvent(event)
+                    view.setOnClickListener {
+                        dataList[mBinding.carousel.currentIndex].let { bannerBean ->
+                            val bundle = Bundle().also {
+                                it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
+                                it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
+                            }
+
+                            App.getInstance().navigation.value =
+                                RouterPath.Web.fragment_web to ShareElementNavigation(
+                                    null,
+                                    bundle
+                                )
+                        }
                     }
+
                     dataList[index].let { bannerBean ->
                         view.loadOriginal(bannerBean.imagePath)
                     }
