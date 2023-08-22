@@ -8,28 +8,31 @@ import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.router_service.RouterPath
 
-object CommonWebViewFragment : WebViewFragment() {
+class CommonWebViewFragment : WebViewFragment() {
 
+    companion object {
         const val WEB_VIEW_TRANSITION_NAME = "transitionName"
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            val transitionName = it.getString(WEB_VIEW_TRANSITION_NAME)
-            mBinding.webTvTitle.transitionName = transitionName
-        }
+            it.getString(WEB_VIEW_TRANSITION_NAME)?.let {
+                mBinding.webTvTitle.transitionName = it
 
-        sharedElementEnterTransition = MaterialContainerTransform().apply {
-            duration = Constants.TRANSITION_DURATION
-            scrimColor = Color.TRANSPARENT
-            setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
+                sharedElementEnterTransition = MaterialContainerTransform().apply {
+                    duration = Constants.TRANSITION_DURATION
+                    scrimColor = Color.TRANSPARENT
+                    setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
+                }
+            }
         }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(!hidden){
+        if (!hidden) {
             parseArgs()
             enableBackPressed(true)
             initTitle()

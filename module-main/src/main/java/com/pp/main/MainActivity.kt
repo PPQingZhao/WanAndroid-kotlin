@@ -75,7 +75,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                             sharedElement,
                             addToBackStack = true
                         )
-                        toRemoveFragment = f
+                        toPopStackFragment = f
                     }
 
                 }
@@ -83,17 +83,9 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    private fun getWebFragment(): Fragment {
-        var webFragment =
-            supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
-        if (null == webFragment) {
-            webFragment = CommonWebViewFragment
-        }
-        return webFragment
-    }
-
     private var curFragment: Fragment? = null
     private var toRemoveFragment: Fragment? = null
+    private var toPopStackFragment: Fragment? = null
 
     @SuppressLint("CommitTransaction")
     private fun showFragment(
@@ -102,16 +94,26 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         sharedElement: View? = null,
         addToBackStack: Boolean = false,
     ) {
+
         supportFragmentManager.beginTransaction().let { transition ->
+
             val oldFragment = curFragment
             oldFragment?.let {
-                Log.e("TAG", "$it")
+//                Log.e("TAG", "$it")
                 transition.hide(it)
-                transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
+                if (toPopStackFragment != it) {
+                    transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
+                }
+            }
+
+            toPopStackFragment?.let {
+                if (supportFragmentManager.backStackEntryCount > 0) {
+                    supportFragmentManager.popBackStackImmediate()
+                }
+                toPopStackFragment = null
             }
 
             toRemoveFragment?.let {
-                supportFragmentManager.popBackStack()
                 transition.remove(toRemoveFragment!!)
                 toRemoveFragment = null
             }
@@ -126,7 +128,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
 
                 if (addToBackStack) {
-                    transition.addToBackStack("main")
+                    transition.addToBackStack(null)
                 }
 
                 transition.show(it)
@@ -154,4 +156,12 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         return loginFragment
     }
 
+    private fun getWebFragment(): Fragment {
+        var webFragment =
+            supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
+        if (null == webFragment) {
+            webFragment = CommonWebViewFragment()
+        }
+        return webFragment
+    }
 }
