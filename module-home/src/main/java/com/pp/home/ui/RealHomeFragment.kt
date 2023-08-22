@@ -2,8 +2,14 @@ package com.pp.home.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
+import android.view.GestureDetector
+import android.view.GestureDetector.OnGestureListener
+import android.view.MotionEvent
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.ImageView
+import androidx.core.view.GestureDetectorCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -54,7 +60,29 @@ class RealHomeFragment :
         )
 
         val dataList = mutableListOf<BannerBean>()
+        val detectorCompat = GestureDetectorCompat(requireContext(), object :
+            GestureDetector.SimpleOnGestureListener() {
 
+            override fun onDown(e: MotionEvent): Boolean {
+                return true
+            }
+
+            override fun onSingleTapConfirmed(e: MotionEvent): Boolean {
+                dataList[mBinding.carousel.currentIndex].let { bannerBean ->
+                    val bundle = Bundle().also {
+                        it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
+                        it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
+                    }
+
+                    App.getInstance().navigation.value =
+                        RouterPath.Web.fragment_web to ShareElementNavigation(
+                            null,
+                            bundle
+                        )
+                }
+                return true
+            }
+        })
 
         val bannerAdapter = object : Adapter {
             override fun count(): Int {
@@ -62,26 +90,14 @@ class RealHomeFragment :
             }
 
             override fun populate(view: View?, index: Int) {
+
 //                Log.e("TAG", " index: $index  $view")
                 if (view is ImageView) {
+                    view.setOnTouchListener { v, event ->
+                        detectorCompat.onTouchEvent(event)
+                    }
                     dataList[index].let { bannerBean ->
                         view.loadOriginal(bannerBean.imagePath)
-
-                        view.setOnClickListener {
-                            dataList[mBinding.carousel.currentIndex].let { bannerBean ->
-                                view.transitionName = "transitionName${bannerBean.id}"
-                                val bundle = Bundle().also {
-                                    it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
-                                    it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
-                                }
-
-                                App.getInstance().navigation.value =
-                                    RouterPath.Web.fragment_web to ShareElementNavigation(
-                                        null,
-                                        bundle
-                                    )
-                            }
-                        }
                     }
                 }
             }
