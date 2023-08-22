@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
+import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.articleDifferCallback
 import com.pp.common.util.ShareElementNavigation
@@ -74,6 +75,7 @@ class RealHomeFragment :
                             val bundle = Bundle().also {
                                 it.putString(WebViewFragment.WEB_VIEW_TITLE, bannerBean.title)
                                 it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
+                                it.putString(CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME, null)
                             }
 
                             App.getInstance().navigation.value =

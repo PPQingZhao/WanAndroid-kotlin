@@ -67,22 +67,26 @@
                 tools:textColor="?android:textColorPrimary" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ProgressBar
-            android:id="@+id/web_progressbar"
-            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:indeterminateOnly="false"
-            android:progress="@{viewModel.MProgress}"
-            android:progressDrawable="@drawable/layer_progressbar"
-            android:visibility="@{viewModel.MProgressVisibility}"
-            tools:progress="30" />
+            android:layout_height="match_parent">
 
-        <WebView
-            android:id="@+id/webview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:webUrl="@{viewModel.webUrl}" />
+            <WebView
+                android:id="@+id/webview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:webUrl="@{viewModel.webUrl}" />
+
+            <ProgressBar
+                android:id="@+id/web_progressbar"
+                style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:indeterminateOnly="false"
+                android:progress="@{viewModel.MProgress}"
+                android:progressDrawable="@drawable/layer_progressbar"
+                android:visibility="@{viewModel.MProgressVisibility}"
+                tools:progress="30" />
+        </FrameLayout>
     </LinearLayout>
 </layout>

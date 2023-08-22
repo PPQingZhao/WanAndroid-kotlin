@@ -3,8 +3,9 @@ package com.pp.base.browser
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.view.ViewGroup
+import android.webkit.WebChromeClient
 import android.webkit.WebSettings
+import android.webkit.WebViewClient
 import com.pp.base.ThemeFragment
 import com.pp.base.databinding.WebViewBinding
 import com.pp.base.databinding.WebViewBindingImpl
@@ -117,7 +118,11 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     override fun onDestroy() {
         super.onDestroy()
 //        mBinding.webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
-        mBinding.webview.clearHistory()
+        mBinding.webview.let {
+            it.webViewClient = WebViewClient()
+            it.webChromeClient = WebChromeClient()
+            it.clearHistory()
+        }
 //        (mBinding.webview.parent as ViewGroup).removeView(mBinding.webview)
     }
 }

@@ -8,25 +8,27 @@ import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.router_service.RouterPath
 
-class CommonWebViewFragment : WebViewFragment() {
+object CommonWebViewFragment : WebViewFragment() {
 
-    companion object {
-        const val WEB_VIEW_TRANSITION_NAME = "transitionName"
-    }
+    const val WEB_VIEW_TRANSITION_NAME = "transitionName"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        var transitionName: String? = null
         arguments?.let {
-            it.getString(WEB_VIEW_TRANSITION_NAME)?.let {
-                mBinding.webTvTitle.transitionName = it
+            transitionName = it.getString(WEB_VIEW_TRANSITION_NAME)
+        }
+        mBinding.webTvTitle.transitionName = transitionName
 
-                sharedElementEnterTransition = MaterialContainerTransform().apply {
-                    duration = Constants.TRANSITION_DURATION
-                    scrimColor = Color.TRANSPARENT
-                    setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
-                }
+        if (transitionName?.isNotEmpty() == true) {
+            sharedElementEnterTransition = MaterialContainerTransform().apply {
+                duration = Constants.TRANSITION_DURATION
+                scrimColor = Color.TRANSPARENT
+                setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
             }
+        } else {
+            sharedElementEnterTransition = null
         }
     }
 
