@@ -1,5 +1,6 @@
 package com.pp.common.browser
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import com.google.android.material.transition.platform.MaterialContainerTransform
@@ -7,11 +8,13 @@ import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.router_service.RouterPath
+import com.pp.theme.getColor
 
 object CommonWebViewFragment : WebViewFragment() {
 
     const val WEB_VIEW_TRANSITION_NAME = "transitionName"
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -25,7 +28,16 @@ object CommonWebViewFragment : WebViewFragment() {
             sharedElementEnterTransition = MaterialContainerTransform().apply {
                 duration = Constants.TRANSITION_DURATION
                 scrimColor = Color.TRANSPARENT
-                setAllContainerColors(resources.getColor(com.pp.skin.R.color.colorPrimary))
+                if (null != mViewModel.mTheme.colorPrimary.value) {
+                    setAllContainerColors(mViewModel.mTheme.colorPrimary.value?.defaultColor!!)
+                } else {
+                    setAllContainerColors(
+                        requireActivity().theme.getColor(
+                            android.R.attr.colorPrimary,
+                            Color.TRANSPARENT
+                        )
+                    )
+                }
             }
         } else {
             sharedElementEnterTransition = null
@@ -51,6 +63,7 @@ object CommonWebViewFragment : WebViewFragment() {
     }
 
     override fun onBack() {
+        super.goBack()
         App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
     }
 

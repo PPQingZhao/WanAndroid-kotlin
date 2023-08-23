@@ -59,6 +59,7 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         super.onStart()
         Log.e("TAG", "onStart==> $this")
     }
+
     override fun onPause() {
         super.onPause()
         Log.e("TAG", "onPause==> $this")
@@ -78,6 +79,11 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
     override fun onStop() {
         super.onStop()
         Log.e("TAG", "onStop==> $this")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.e("TAG", "destroy ===> ${this}")
     }
 
     open fun onFirstResume() {

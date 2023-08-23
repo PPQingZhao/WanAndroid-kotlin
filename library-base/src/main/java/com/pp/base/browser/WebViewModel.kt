@@ -3,27 +3,20 @@ package com.pp.base.browser
 import android.app.Application
 import android.graphics.Bitmap
 import android.net.http.SslError
-import android.text.Html
-import android.util.Log
 import android.view.View
-import android.webkit.SslErrorHandler
-import android.webkit.WebChromeClient
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.lifecycle.LifecycleOwner
+import android.webkit.*
 import androidx.lifecycle.MutableLiveData
 import com.pp.base.ThemeViewModel
 
 class WebViewModel(app: Application) : ThemeViewModel(app) {
 
+    private var mOrignalUrl: String? = null
     val mProgress = MutableLiveData(0)
     val mProgressVisibility = MutableLiveData(View.GONE)
     val mTitle = MutableLiveData<String>()
-    val webUrl = MutableLiveData<String>()
 
-
-    fun load(url: String?) {
-        webUrl.value = url
+    fun setUrl(url: String?) {
+        mOrignalUrl = url
     }
 
     val webChromeClient = object : WebChromeClient() {
@@ -37,14 +30,18 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
             mTitle.value = title
 //            Log.e("TAG", "onReceivedTitle: $title")
         }
+
     }
 
     val webViewClient = object : WebViewClient() {
+
         // 使用当前webview打开网页,不调用系统浏览器
         @Deprecated("Deprecated in Java")
         override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
 //            Log.e(WebViewClient1.TAG, url!!)
-            webUrl.value = url
+            url?.let {
+                view?.loadUrl(it)
+            }
             return true
         }
 
@@ -53,12 +50,20 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
             mProgress.value = 0
             mProgressVisibility.value = View.VISIBLE
         }
-//                Log.e(TAG, "onPageStarted");
 
         // 页面加载结束
         override fun onPageFinished(view: WebView?, url: String?) {
             mProgressVisibility.value = View.GONE
-            //                Log.e(TAG, "onPageFinished");
+            // mOrignalUrl 是第一个页面,如果webview(复用)已加载过其它页面,需要清除之前页面,确保 mOrignalUrl第一个页面
+            if (url == "about:blank" || mOrignalUrl == url) {
+                view?.clearHistory()
+            }
+//            Log.e("TAG", " onPageFinished  $url");
+            view?.visibility = View.VISIBLE
+        }
+
+        override fun onPageCommitVisible(view: WebView?, url: String?) {
+            view?.visibility = View.VISIBLE
         }
 
         // 加载页面资源,每一个资源的加载都会回调此方法,如加载图片

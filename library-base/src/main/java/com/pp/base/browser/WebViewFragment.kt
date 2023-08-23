@@ -3,9 +3,9 @@ package com.pp.base.browser
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
-import android.webkit.WebChromeClient
+import android.view.View
 import android.webkit.WebSettings
-import android.webkit.WebViewClient
+import androidx.core.app.SharedElementCallback
 import com.pp.base.ThemeFragment
 import com.pp.base.databinding.WebViewBinding
 import com.pp.base.databinding.WebViewBindingImpl
@@ -25,12 +25,27 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        setEnterSharedElementCallback(object : SharedElementCallback() {
+            override fun onSharedElementEnd(
+                sharedElementNames: MutableList<String>?,
+                sharedElements: MutableList<View>?,
+                sharedElementSnapshots: MutableList<View>?,
+            ) {
+
+                if (isRemoving) {
+                    clearWebView()
+                }
+
+            }
+        })
         super.onCreate(savedInstanceState)
 
-        parseArgs()
+        mBinding.webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
         enableBackPressed(true)
         initTitle()
         initWeb()
+        parseArgs()
     }
 
     fun parseArgs() {
@@ -38,7 +53,10 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
             val webUrl = it.getString(WEB_VIEW_URL)
             val webTitle = it.getString(WEB_VIEW_TITLE)
 
-            mViewModel.load(webUrl)
+            mViewModel.setUrl(webUrl)
+            webUrl?.let {
+                mBinding.webview.loadUrl(it)
+            }
             (if (webTitle?.isNotEmpty() == true) webTitle else "加载中...").let {
 //                mBinding.webTvTitle.text = it
                 mViewModel.mTitle.value = it
@@ -55,11 +73,17 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     }
 
     open fun onBack() {
-
+        mBinding.webview.let {
+            while (it.canGoBack()) {
+                it.goBack()
+            }
+        }
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     fun initWeb() {
+        mBinding.webview.visibility = View.GONE
+        mBinding.webview.clearHistory()
 
         mBinding.webview.webViewClient = mViewModel.webViewClient
         mBinding.webview.webChromeClient = mViewModel.webChromeClient
@@ -100,6 +124,8 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     }
 
     fun canGoBack(): Boolean {
+        val currentItem = mBinding.webview.copyBackForwardList().currentItem
+
         return mBinding.webview.canGoBack()
     }
 
@@ -114,15 +140,22 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
         }
     }
 
+    private fun clearWebView() {
+        mBinding.webview.let {
+
+            it.stopLoading()
+
+            it.clearHistory()
+            it.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+        }
+    }
 
     override fun onDestroy() {
         super.onDestroy()
-//        mBinding.webview.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
-        mBinding.webview.let {
-            it.webViewClient = WebViewClient()
-            it.webChromeClient = WebChromeClient()
-            it.clearHistory()
+
+        if (null == sharedElementEnterTransition) {
+            clearWebView()
         }
-//        (mBinding.webview.parent as ViewGroup).removeView(mBinding.webview)
+
     }
 }
