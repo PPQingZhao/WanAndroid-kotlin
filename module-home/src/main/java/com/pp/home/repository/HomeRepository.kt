@@ -16,8 +16,8 @@ import kotlinx.coroutines.withContext
 
 object HomeRepository {
     private const val startPage = 0
-    suspend fun getBanner(): ResponseBean<List<BannerBean>> {
-        return WanAndroidService.homeApi.getBanner()
+    suspend fun getBanner(): List<BannerBean> {
+        return WanAndroidService.homeApi.getBanner().data?: emptyList()
     }
 
     fun getPageData(): Flow<PagingData<ArticleBean>> {

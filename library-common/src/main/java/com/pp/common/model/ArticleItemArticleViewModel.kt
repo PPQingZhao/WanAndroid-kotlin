@@ -1,4 +1,4 @@
-package com.pp.home.model
+package com.pp.common.model
 
 import android.os.Bundle
 import android.view.View
@@ -35,14 +35,23 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
             isFresh.set(field?.fresh == true)
             isPinned.set(field?.type == 1)
             isCollect.set(field?.collect == true)
+
+            link.set(field?.link)
+            desc.set(field?.desc)
+            envelopePic.set(field?.envelopePic)
         }
 
     init {
-        this.article = articleBean
+        updateArticle(articleBean)
     }
 
-    open fun updateArticle(articleBean: ArticleBean?) {
+    fun updateArticle(articleBean: ArticleBean?) {
         this.article = articleBean
+        onUpdateArticle(articleBean)
+    }
+
+    open fun onUpdateArticle(articleBean: ArticleBean?) {
+
     }
 
     override fun onItemClick(v: View) {

@@ -1,7 +1,10 @@
 package com.pp.ui.utils
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
+import androidx.annotation.DrawableRes
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.target.DrawableImageViewTarget
@@ -53,4 +56,9 @@ fun ImageView.load(path: String?, error: Drawable? = null) {
         .error(error)
         .transition(DrawableTransitionOptions.withCrossFade(crossFadeFactory))
         .into(this)
+}
+
+@SuppressLint("ResourceType")
+fun ImageView.load(path: String?, @DrawableRes error: Int = -1) {
+    load(path, if (error > 0) resources.getDrawable(error) else null)
 }

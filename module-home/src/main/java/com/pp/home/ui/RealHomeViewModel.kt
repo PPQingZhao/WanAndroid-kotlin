@@ -20,7 +20,7 @@ class RealHomeViewModel(app: Application) : ThemeViewModel(app) {
 
     fun getBanner2() {
         viewModelScope.launch(Dispatchers.IO) {
-            _bannerFlow.value = HomeRepository.getBanner().data ?: mutableListOf()
+            _bannerFlow.value = HomeRepository.getBanner()
         }
     }
 

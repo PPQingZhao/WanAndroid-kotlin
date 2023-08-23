@@ -6,8 +6,7 @@ import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.PageBean
-import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.ArticlePagingSource
+import com.pp.common.paging.WanPagingSource
 import kotlinx.coroutines.flow.Flow
 
 object SquareRepository {
@@ -16,13 +15,17 @@ object SquareRepository {
         return Pager(
             initialKey = startPage,
             config = PagingConfig(15),
-            pagingSourceFactory = { SquareArticlePagingSource() }).flow
+            pagingSourceFactory = { SquarePagingSource() }).flow
     }
 
-    private class SquareArticlePagingSource : ArticlePagingSource() {
-        override suspend fun getArticlesApi(page: Int): ResponseBean<PageBean> {
-            return WanAndroidService.homeApi.getSquareArticles(page)
+
+    private class SquarePagingSource : WanPagingSource() {
+
+        override suspend fun getPageData(page: Int): PageBean? {
+            return WanAndroidService.homeApi.getSquareArticles(page).data
         }
+
+
     }
 
 }

@@ -4,7 +4,7 @@ import androidx.lifecycle.lifecycleScope
 import com.pp.base.ThemeFragment
 import com.pp.common.paging.articleDifferCallback
 import com.pp.home.databinding.FragmentHomeChildAnswerBinding
-import com.pp.home.model.ChapterItemArticleViewModel
+import com.pp.common.model.ChapterItemArticleViewModel
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.databinding.ItemArticleBinding
 

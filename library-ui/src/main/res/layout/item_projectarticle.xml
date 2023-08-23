@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.ui.viewModel.ItemArticleViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:background="?selectableItemBackground"
+        android:onClick="@{viewModel.onItemClick}"
+        app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
+        app:cardCornerRadius="@dimen/dp_8"
+        tools:cardBackgroundColor="?colorPrimaryVariant">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/iv_cover"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:errorDrawable="@{@drawable/error}"
+                android:imageUrl="@{viewModel.envelopePic}"
+                android:scaleType="fitXY"
+                app:layout_constraintDimensionRatio="140:230"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.3"
+                app:round="@dimen/dp_8"
+                tools:src="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:layout_marginTop="@dimen/dp_4"
+                android:layout_marginEnd="@dimen/dp_4"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:minLines="2"
+                android:text="@{viewModel.title}"
+                android:textColor="@{viewModel.theme.textColor}"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:transitionName="@{viewModel.transitionName}"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/iv_cover"
+                app:layout_constraintTop_toTopOf="@id/iv_cover"
+                tools:text="Android i觉得机觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉觉得机肉肉i就"
+                tools:textColor="?android:textColor" />
+
+            <TextView
+                android:id="@+id/tv_desc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:ellipsize="end"
+                android:maxLines="4"
+                android:minLines="4"
+                android:text="@{viewModel.title}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="13sp"
+                app:layout_constraintEnd_toEndOf="@id/tv_title"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                tools:text="Android 阅读器就是爽地阅读器就是爽地级市佛i觉得i二u金阅读器就是爽地级市佛i觉得i二u金级市佛i觉得i二u金融危机肉i就"
+                tools:textColor="?android:textColorSecondary" />
+
+            <TextView
+                android:id="@+id/tv_niceDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_4"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.niceDate}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+                app:layout_constraintStart_toStartOf="@id/tv_title"
+                tools:text="2023-10-10 01:00"
+                tools:textColor="?android:textColorSecondary" />
+
+            <TextView
+                android:id="@+id/tv_author"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_8"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@{viewModel.author}"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
+                android:textSize="13sp"
+                app:layout_constrainedWidth="true"
+                app:layout_constraintBottom_toBottomOf="@id/tv_niceDate"
+                app:layout_constraintEnd_toStartOf="@id/iv_favorite"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/tv_niceDate"
+                tools:text="用户111edstewtwtwtwtw111"
+                tools:textColor="?android:textColorSecondary" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/iv_favorite"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="@dimen/dp_4"
+                android:background="?android:selectableItemBackground"
+                android:onClick="@{viewModel.onCollect}"
+                android:src="@{viewModel.isCollect ? @drawable/ic_favorite_on:@drawable/ic_favorite}"
+                app:layout_constraintBottom_toBottomOf="@id/iv_cover"
+                app:layout_constraintDimensionRatio="1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintWidth_percent="0.085"
+                app:roundPercent="1"
+                tools:src="@drawable/ic_favorite_on" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

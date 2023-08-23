@@ -21,7 +21,7 @@ import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.articleDifferCallback
 import com.pp.common.util.ShareElementNavigation
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
-import com.pp.home.model.ArticleItemArticleViewModel
+import com.pp.common.model.ArticleItemArticleViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.IndicatorTransitionListener

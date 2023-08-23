@@ -13,6 +13,10 @@ open class ItemArticleViewModel(val theme: AppDynamicTheme) {
     val tags = ObservableField<String>()
     val transitionName = ObservableField<String>()
 
+    val link = ObservableField<String>()
+    val desc = ObservableField<String>()
+    val envelopePic = ObservableField<String>()
+
     // 置顶
     val isPinned = ObservableBoolean(false)
 

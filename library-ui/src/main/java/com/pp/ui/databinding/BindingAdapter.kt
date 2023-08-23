@@ -67,7 +67,7 @@ object BindingAdapter {
         value = ["android:imageUrl", "android:errorDrawable"],
         requireAll = true
     )
-    fun setImageUrl(iv: ImageView, url: String?, error: Drawable) {
+    fun setImageUrl(iv: ImageView, url: String?, error: Drawable?) {
         iv.load(url, error)
     }
 

@@ -64,7 +64,7 @@ class TabPagerFragmentHelper {
 
         constructor(
             fragment: () -> Fragment,
-            tabView: View?,
+            tabView: View? = null,
             @DrawableRes icon: Int = 0,
             @StringRes text: Int = 0,
             title: String = "",
