@@ -73,9 +73,7 @@ class CidProjectFragment private constructor() :
         super.onFirstResume()
 
         lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                initPagingList()
-            }
+            initPagingList()
         }
     }
 }

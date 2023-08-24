@@ -3,7 +3,6 @@ package com.pp.project.ui
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
-import com.pp.base.helper.PagerFragmentHelper
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.http.wanandroid.bean.ArticleCidBean
 import com.pp.project.databinding.FragmentProjectBinding
@@ -38,9 +37,9 @@ class ProjectFragment : ThemeFragment<FragmentProjectBinding, ProjectViewModel>(
         }
     }
 
-    private fun getPagers(cids: List<ArticleCidBean>): List<TabPagerFragmentHelper.TabPager> {
+    private fun getPagers(cidList: List<ArticleCidBean>): List<TabPagerFragmentHelper.TabPager> {
         val pagers = mutableListOf<TabPagerFragmentHelper.TabPager>()
-        cids.onEach {
+        cidList.onEach {
             TabPagerFragmentHelper.TabPager(
                 fragment = { CidProjectFragment.newInstance(it.id) },
                 title = it.name
