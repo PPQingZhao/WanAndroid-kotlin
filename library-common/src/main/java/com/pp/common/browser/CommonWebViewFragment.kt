@@ -8,11 +8,12 @@ import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.router_service.RouterPath
-import com.pp.theme.getColor
 
-object CommonWebViewFragment : WebViewFragment() {
+class CommonWebViewFragment : WebViewFragment() {
 
-    const val WEB_VIEW_TRANSITION_NAME = "transitionName"
+    companion object {
+        const val WEB_VIEW_TRANSITION_NAME = "transitionName"
+    }
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,18 +26,20 @@ object CommonWebViewFragment : WebViewFragment() {
         mBinding.webTvTitle.transitionName = transitionName
 
         if (transitionName?.isNotEmpty() == true) {
+            allowEnterTransitionOverlap = true
             sharedElementEnterTransition = MaterialContainerTransform().apply {
                 duration = Constants.TRANSITION_DURATION
                 scrimColor = Color.TRANSPARENT
-                if (null != mViewModel.mTheme.colorPrimary.value) {
-                    setAllContainerColors(mViewModel.mTheme.colorPrimary.value?.defaultColor!!)
-                } else {
-                    setAllContainerColors(
-                        requireActivity().theme.getColor(
-                            android.R.attr.colorPrimary,
-                            Color.TRANSPARENT
-                        )
-                    )
+                postponeEnterTransition()
+                var isCreating = true
+                mViewModel.mTheme.colorPrimary.observe(this@CommonWebViewFragment) {
+                    if (it.defaultColor != 0) {
+                        setAllContainerColors(it.defaultColor)
+                        if (isCreating) {
+                            startPostponedEnterTransition()
+                            isCreating = false
+                        }
+                    }
                 }
             }
         } else {
@@ -54,6 +57,9 @@ object CommonWebViewFragment : WebViewFragment() {
         }
     }
 
+    override fun onClearWebView() {
+
+    }
 
     override fun handleOnBackPressed() {
         super.handleOnBackPressed()

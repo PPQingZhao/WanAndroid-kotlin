@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -156,12 +155,10 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         return loginFragment
     }
 
+    private var mWebFragment: Fragment? = null
     private fun getWebFragment(): Fragment {
-        var webFragment =
-            supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
-        if (null == webFragment) {
-            webFragment = CommonWebViewFragment
-        }
-        return webFragment
+        val webFragment = supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
+        mWebFragment = webFragment ?: CommonWebViewFragment()
+        return mWebFragment!!
     }
 }

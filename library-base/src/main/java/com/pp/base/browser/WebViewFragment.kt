@@ -148,6 +148,12 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
             it.clearHistory()
             it.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
         }
+
+        onClearWebView()
+    }
+
+    open fun onClearWebView() {
+
     }
 
     override fun onDestroy() {
@@ -156,6 +162,5 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
         if (null == sharedElementEnterTransition) {
             clearWebView()
         }
-
     }
 }

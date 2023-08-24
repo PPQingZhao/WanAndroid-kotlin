@@ -21,7 +21,7 @@ open class AppDynamicTheme : DynamicTheme() {
         private val drawable = ColorDrawable(Color.TRANSPARENT)
         private val colorState = ColorStateList.valueOf(Color.TRANSPARENT)
     }
-    val windowBackground = MutableLiveData<Drawable?>(drawable)
+    val windowBackground = MutableLiveData<Drawable>(drawable)
     val colorPrimary = MutableLiveData<ColorStateList>(colorState)
     val colorPrimaryVariant = MutableLiveData<ColorStateList>(colorState)
     val colorAccent = MutableLiveData<ColorStateList>(colorState)

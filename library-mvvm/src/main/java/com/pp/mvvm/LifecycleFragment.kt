@@ -81,6 +81,11 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
         Log.e("TAG", "onStop==> $this")
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.e("TAG", "onDestroyView ==> ${this}")
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.e("TAG", "destroy ===> ${this}")
