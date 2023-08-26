@@ -2,6 +2,7 @@ package com.pp.project.ui
 
 import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.model.ChapterItemArticleViewModel
@@ -9,6 +10,7 @@ import com.pp.common.paging.articleDifferCallback
 import com.pp.project.databinding.FragmentCidprojectBinding
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.databinding.ItemProjectarticleBinding
+import com.pp.ui.utils.setPagingAdapter
 import kotlinx.coroutines.launch
 
 class CidProjectFragment private constructor() :
@@ -51,7 +53,7 @@ class CidProjectFragment private constructor() :
                 },
                 onBindItemViewModel = { _, item, _, cacheItemModel ->
                     if (cacheItemModel is ChapterItemArticleViewModel) {
-                        cacheItemModel.apply { updateArticle(item) }
+                        cacheItemModel.apply { data = item }
                     } else {
                         ChapterItemArticleViewModel(item, mViewModel.mTheme)
                     }
@@ -59,7 +61,8 @@ class CidProjectFragment private constructor() :
                 diffCallback = articleDifferCallback
             )
 
-        mBinding.pageList.setPageAdapter(
+        mBinding.pageList.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.pageList.setPagingAdapter(
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),

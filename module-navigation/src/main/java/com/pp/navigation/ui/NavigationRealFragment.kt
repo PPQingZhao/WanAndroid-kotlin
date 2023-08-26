@@ -3,13 +3,14 @@ package com.pp.navigation.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.http.wanandroid.bean.ArticleCidBean
+import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
 import com.pp.navigation.model.ItemArticleTextViewModel
-import com.pp.navigation.model.ItemCidTextViewModel
+import com.pp.navigation.model.ItemArticleListTextViewModel
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.ItemTagFlexboxBinding
 import com.pp.ui.databinding.ItemText2Binding
@@ -36,11 +37,16 @@ class NavigationRealFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ItemCidTextViewModel.selectedItemModel.observe(viewLifecycleOwner) {
-            (mBinding.articleRecyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                it.getPosition(),
-                0
-            )
+
+        ItemArticleListTextViewModel.observerSelectedItem(
+            viewLifecycleOwner
+        ) {
+            it?.run {
+                (mBinding.articleRecyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                    it.getPosition(),
+                    0
+                )
+            }
         }
         initRecyclerView()
     }
@@ -58,16 +64,16 @@ class NavigationRealFragment private constructor() :
     }
 
     private val cidAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTextBinding, ItemCidTextViewModel, ArticleCidBean>(
+        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
             onCreateBinding = {
                 ItemTextBinding.inflate(layoutInflater, it, false)
             },
             onBindItemModel = { _, item, position, cachedItemModel ->
 //                Log.e("TAG","position: $position  $item")
-                if (cachedItemModel is ItemCidTextViewModel) {
-                    cachedItemModel.apply { updateData(item) }
+                if (cachedItemModel is ItemArticleListTextViewModel) {
+                    cachedItemModel.apply { data = item }
                 } else {
-                    ItemCidTextViewModel(item, mViewModel.mTheme)
+                    ItemArticleListTextViewModel(item, mViewModel.mTheme)
                 }.apply {
                     setPosition(position)
                 }
@@ -75,7 +81,7 @@ class NavigationRealFragment private constructor() :
         )
 
     private val articleAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTagFlexboxBinding, ItemCidTextViewModel, ArticleCidBean>(
+        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTagFlexboxBinding, ItemArticleListTextViewModel, ArticleListBean>(
             onCreateBinding = {
                 ItemTagFlexboxBinding.inflate(layoutInflater, it, false)
             },
@@ -91,10 +97,10 @@ class NavigationRealFragment private constructor() :
                         }
                 }
 
-                if (cachedItemModel is ItemCidTextViewModel) {
-                    cachedItemModel.apply { updateData(item) }
+                if (cachedItemModel is ItemArticleListTextViewModel) {
+                    cachedItemModel.apply { data = item }
                 } else {
-                    ItemCidTextViewModel(item, mViewModel.mTheme)
+                    ItemArticleListTextViewModel(item, mViewModel.mTheme)
                 }
             }
         )
@@ -139,9 +145,5 @@ class NavigationRealFragment private constructor() :
         mViewModel.getNavigation()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        ItemCidTextViewModel.reset()
-    }
 
 }

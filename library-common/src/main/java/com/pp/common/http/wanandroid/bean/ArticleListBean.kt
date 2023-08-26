@@ -1,6 +1,6 @@
 package com.pp.common.http.wanandroid.bean
 
-data class ArticleCidBean(
+data class ArticleListBean(
 //    val articleList: List<ArticleBean> = listOf(),
     val articles: List<ArticleBean> = listOf(),
     val author: String = "",

@@ -5,14 +5,14 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.ArticleCidBean
+import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.http.wanandroid.bean.PageBean
 import com.pp.common.paging.WanPagingSource
 import kotlinx.coroutines.flow.Flow
 
 object ProjectRepository {
 
-    suspend fun getProjectCid(): List<ArticleCidBean> {
+    suspend fun getProjectCid(): List<ArticleListBean> {
         return WanAndroidService.projectApi.getProjectCid().data ?: emptyList()
     }
 

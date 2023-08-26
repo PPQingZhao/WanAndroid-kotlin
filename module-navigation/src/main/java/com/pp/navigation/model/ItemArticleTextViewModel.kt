@@ -16,7 +16,7 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
     ItemTextViewModel<ArticleBean>(theme) {
 
     init {
-        updateData(cidBean)
+        data = cidBean
     }
 
     override fun onUpdateData(data: ArticleBean?) {

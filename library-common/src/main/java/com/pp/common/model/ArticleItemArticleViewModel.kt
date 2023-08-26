@@ -16,21 +16,20 @@ import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemArticleViewModel
 
 open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
-    ItemArticleViewModel(theme) {
-    private var article: ArticleBean? = null
-        set(value) {
-            if (field == value) {
-                return
-            }
+    ItemArticleViewModel<ArticleBean>(theme) {
 
-            field = value
+    init {
+        data = articleBean
+    }
 
-            author.set(field?.getAuthor())
+    override fun onUpdateData(data: ArticleBean?) {
+        data.let { field ->
+            author.set(data?.getAuthor())
             niceDate.set(field?.niceDate)
             title.set(field?.title)
             chapterName.set(field?.getCharterName())
             tags.set(field?.getTags())
-            transitionName.set("transitionName${article?.id}")
+            transitionName.set("transitionName${field?.id}")
 
             isFresh.set(field?.fresh == true)
             isPinned.set(field?.type == 1)
@@ -40,29 +39,18 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
             desc.set(field?.desc)
             envelopePic.set(field?.envelopePic)
         }
-
-    init {
-        updateArticle(articleBean)
     }
 
-    fun updateArticle(articleBean: ArticleBean?) {
-        this.article = articleBean
-        onUpdateArticle(articleBean)
-    }
 
-    open fun onUpdateArticle(articleBean: ArticleBean?) {
-
-    }
-
-    override fun onItemClick(v: View) {
-        if (null == article) {
+    override fun onItemClick(view: View) {
+        if (null == data) {
             return
         }
 
-        val shareElement = v.findViewById<TextView>(com.pp.ui.R.id.tv_title)
+        val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
         val bundle = Bundle().also {
             it.putString(WebViewFragment.WEB_VIEW_TITLE, title.get())
-            it.putString(WebViewFragment.WEB_VIEW_URL, article!!.link)
+            it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
             it.putString(
                 CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
                 shareElement.transitionName
@@ -76,7 +64,7 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
     override fun onCollect(v: View) {
         isCollect.let {
             it.set(it.get().not())
-            article?.collect = it.get()
+            data?.collect = it.get()
         }
     }
 }

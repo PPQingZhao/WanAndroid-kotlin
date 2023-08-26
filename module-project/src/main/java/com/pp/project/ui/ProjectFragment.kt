@@ -4,7 +4,7 @@ import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
-import com.pp.common.http.wanandroid.bean.ArticleCidBean
+import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.project.databinding.FragmentProjectBinding
 import com.pp.router_service.RouterPath
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ class ProjectFragment : ThemeFragment<FragmentProjectBinding, ProjectViewModel>(
         }
     }
 
-    private fun getPagers(cidList: List<ArticleCidBean>): List<TabPagerFragmentHelper.TabPager> {
+    private fun getPagers(cidList: List<ArticleListBean>): List<TabPagerFragmentHelper.TabPager> {
         val pagers = mutableListOf<TabPagerFragmentHelper.TabPager>()
         cidList.onEach {
             TabPagerFragmentHelper.TabPager(

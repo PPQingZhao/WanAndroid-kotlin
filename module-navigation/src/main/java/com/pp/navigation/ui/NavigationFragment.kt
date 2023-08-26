@@ -44,7 +44,7 @@ class NavigationFragment : ThemeFragment<FragmentNavigationBinding, NavigationVi
 
             it.add(
                 TabPagerFragmentHelper.TabPager(
-                    { TutorialFragment.newInstance() }, text = R.string.tutorial
+                    { WXArticleFragment.newInstance() }, text = R.string.tutorial
                 )
             )
         }

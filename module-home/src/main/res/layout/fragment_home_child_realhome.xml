@@ -135,8 +135,8 @@
 
         </com.pp.ui.widget.NestedScrollableHost>
 
-        <com.pp.ui.widget.PageDataListView
-            android:id="@+id/pageListView"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"

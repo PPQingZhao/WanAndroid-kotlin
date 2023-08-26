@@ -5,7 +5,8 @@ import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
 import com.pp.theme.AppDynamicTheme
 
-open class ItemArticleViewModel(val theme: AppDynamicTheme) {
+open class ItemArticleViewModel<Data : Any>(theme: AppDynamicTheme) :
+    ItemDataViewModel<Data>(theme) {
     val title = ObservableField<String>()
     val author = ObservableField<String>()
     val chapterName = ObservableField<String>()
@@ -25,10 +26,6 @@ open class ItemArticleViewModel(val theme: AppDynamicTheme) {
 
     // 收藏
     val isCollect = ObservableBoolean(false)
-
-    open fun onItemClick(v: View) {
-
-    }
 
     open fun onCollect(v: View) {
 

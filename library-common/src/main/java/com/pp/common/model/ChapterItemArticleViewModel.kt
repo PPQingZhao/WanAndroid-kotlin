@@ -6,7 +6,9 @@ import com.pp.theme.AppDynamicTheme
 class ChapterItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
     ArticleItemArticleViewModel(articleBean, theme) {
 
-    override fun onUpdateArticle(articleBean: ArticleBean?) {
-        chapterName.set(articleBean?.chapterName)
+    override fun onUpdateData(data: ArticleBean?) {
+        super.onUpdateData(data)
+        chapterName.set(data?.chapterName)
+
     }
 }

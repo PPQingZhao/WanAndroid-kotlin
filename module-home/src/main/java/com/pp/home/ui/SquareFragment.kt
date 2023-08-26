@@ -1,13 +1,11 @@
 package com.pp.home.ui
 
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.model.ChapterItemArticleViewModel
-import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.itemChapterArticlePagingAdapter
 import com.pp.home.databinding.FragmentHomeChildSquareBinding
-import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.databinding.ItemArticleBinding
+import com.pp.ui.utils.setPagingAdapter
 
 class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewModel>() {
 
@@ -19,24 +17,12 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
 
     private fun initPagingList() {
 
-        val adapter =
-            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ChapterItemArticleViewModel, ArticleBean>(
-                onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-                onBindItemViewModel = { _, item, _, cachedItemModel ->
-                    if (cachedItemModel is ChapterItemArticleViewModel) {
-                        cachedItemModel.apply { updateArticle(item) }
-                    } else {
-                        ChapterItemArticleViewModel(item, mViewModel.mTheme)
-                    }
-                },
-                diffCallback = articleDifferCallback
-            )
-
-        mBinding.pageListView.setPageAdapter(
+        mBinding.pageListView.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.pageListView.setPagingAdapter(
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            adapter
+            itemChapterArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
         )
     }
 

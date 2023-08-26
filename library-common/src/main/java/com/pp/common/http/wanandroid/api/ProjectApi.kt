@@ -1,6 +1,6 @@
 package com.pp.common.http.wanandroid.api
 
-import com.pp.common.http.wanandroid.bean.ArticleCidBean
+import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.http.wanandroid.bean.PageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import retrofit2.http.GET
@@ -16,7 +16,7 @@ interface ProjectApi {
      * 该接口返回整个项目分类
      */
     @GET("/project/tree/json")
-    suspend fun getProjectCid(): ResponseBean<List<ArticleCidBean>>
+    suspend fun getProjectCid(): ResponseBean<List<ArticleListBean>>
 
     /**
      * https://www.wanandroid.com/project/list/1/json?cid=294

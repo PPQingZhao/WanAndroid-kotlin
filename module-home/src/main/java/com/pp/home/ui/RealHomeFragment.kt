@@ -5,22 +5,20 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import androidx.lifecycle.*
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
-import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
-import com.pp.common.model.ArticleItemArticleViewModel
-import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.util.ShareElementNavigation
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.IndicatorTransitionListener
-import com.pp.ui.databinding.ItemArticleBinding
 import com.pp.ui.utils.BannerCarousel.Adapter
 import com.pp.ui.utils.loadOriginal
+import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -109,24 +107,13 @@ class RealHomeFragment :
     }
 
     private fun initPagingList() {
-        val adapter =
-            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ArticleItemArticleViewModel, ArticleBean>(
-                onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-                onBindItemViewModel = { _, item, _, cachedItemModel ->
-                    if (cachedItemModel is ArticleItemArticleViewModel) {
-                        cachedItemModel.also { it.updateArticle(item) }
-                    } else {
-                        ArticleItemArticleViewModel(item, mViewModel.mTheme)
-                    }
-                },
-                diffCallback = articleDifferCallback
-            )
 
-        mBinding.pageListView.setPageAdapter(
+        mBinding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.recyclerview.setPagingAdapter(
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            adapter
+            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
         )
     }
 

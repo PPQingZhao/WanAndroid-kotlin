@@ -7,7 +7,15 @@ import com.pp.theme.AppDynamicTheme
 open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
 
     val isSelected = ObservableBoolean()
-    protected var data: Data? = null
+    var data: Data? = null
+    set(value) {
+        if (field == value){
+            return
+        }
+        field = value
+
+        onUpdateData(data)
+    }
 
     private var position = -1
 
@@ -19,12 +27,7 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
         return position
     }
 
-    fun updateData(data: Data?) {
-        this.data = data
-        onUpdateData(data)
-    }
-
-    open protected fun onUpdateData(data: Data?) {
+    protected open fun onUpdateData(data: Data?) {
 
     }
 

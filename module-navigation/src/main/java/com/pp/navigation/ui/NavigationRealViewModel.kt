@@ -4,18 +4,15 @@ import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.ArticleCidBean
+import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.navigation.repository.NavigationRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class NavigationRealViewModel(app: Application) : ThemeViewModel(app) {
-    private val _navigation = MutableSharedFlow<List<ArticleCidBean>>()
+    private val _navigation = MutableSharedFlow<List<ArticleListBean>>()
     val navigation = _navigation.asSharedFlow()
 
     private val _articles = MutableSharedFlow<List<ArticleBean>>()
