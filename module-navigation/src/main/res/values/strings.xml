@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">module-home</string>
+    <string name="navigation">导航</string>
+    <string name="system">体系</string>
+    <string name="tutorial">教程</string>
 </resources>

@@ -2,26 +2,19 @@ package com.pp.home.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.view.GestureDetector
-import android.view.GestureDetector.OnGestureListener
-import android.view.MotionEvent
 import android.view.View
-import android.view.View.OnTouchListener
 import android.widget.ImageView
-import androidx.core.view.GestureDetectorCompat
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
+import androidx.lifecycle.*
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
+import com.pp.common.model.ArticleItemArticleViewModel
 import com.pp.common.paging.articleDifferCallback
 import com.pp.common.util.ShareElementNavigation
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
-import com.pp.common.model.ArticleItemArticleViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.IndicatorTransitionListener
@@ -97,7 +90,8 @@ class RealHomeFragment :
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
                 mViewModel.bannerFlow.collectLatest {
                     dataList.clear()
                     dataList.addAll(it)
@@ -116,12 +110,11 @@ class RealHomeFragment :
 
     private fun initPagingList() {
         val adapter =
-            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
+            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ArticleItemArticleViewModel, ArticleBean>(
                 onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-                onCreateItemViewModel = { binding, item ->
-                    val viewModel = binding.viewModel
-                    if (viewModel is ArticleItemArticleViewModel) {
-                        viewModel.also { it.updateArticle(item) }
+                onBindItemViewModel = { _, item, _, cachedItemModel ->
+                    if (cachedItemModel is ArticleItemArticleViewModel) {
+                        cachedItemModel.also { it.updateArticle(item) }
                     } else {
                         ArticleItemArticleViewModel(item, mViewModel.mTheme)
                     }

@@ -3,7 +3,6 @@ package com.pp.ui.adapter
 import android.annotation.SuppressLint
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 abstract class RecyclerViewBindingAdapter<
@@ -48,7 +47,7 @@ abstract class RecyclerViewBindingAdapter<
 
     override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
         val itemData = getItem(position)
-        delegate.onBindViewHolder(holder, itemData)
+        delegate.onBindViewHolder(holder, itemData, position)
     }
 
     override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
@@ -58,15 +57,15 @@ abstract class RecyclerViewBindingAdapter<
 
 
     class DefaultRecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
-        private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-        private val onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+        private val onCreateBinding: (parent: ViewGroup) -> VB,
+        private val onCreateItemModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
         private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
         private val getItemType: () -> Int = { 0 },
     ) : RecyclerViewBindingAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>() {
         override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
             return DefaultViewDataBindingItemType(
-                onCreateViewDataBinding,
-                onCreateItemViewModel,
+                onCreateBinding,
+                onCreateItemModel,
                 onSetVariable,
                 getItemType
             )

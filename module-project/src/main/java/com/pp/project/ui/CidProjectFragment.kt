@@ -1,10 +1,9 @@
 package com.pp.project.ui
 
 import android.os.Bundle
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.model.ChapterItemArticleViewModel
 import com.pp.common.paging.articleDifferCallback
 import com.pp.project.databinding.FragmentCidprojectBinding
@@ -46,14 +45,13 @@ class CidProjectFragment private constructor() :
 
     private suspend fun initPagingList() {
         val adapter =
-            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter(
+            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemProjectarticleBinding, ChapterItemArticleViewModel, ArticleBean>(
                 onCreateViewDataBinding = {
                     ItemProjectarticleBinding.inflate(layoutInflater, it, false)
                 },
-                onCreateItemViewModel = { binding, item ->
-                    val viewModel = binding.viewModel
-                    if (viewModel is ChapterItemArticleViewModel) {
-                        viewModel.also { it.updateArticle(item) }
+                onBindItemViewModel = { _, item, _, cacheItemModel ->
+                    if (cacheItemModel is ChapterItemArticleViewModel) {
+                        cacheItemModel.apply { updateArticle(item) }
                     } else {
                         ChapterItemArticleViewModel(item, mViewModel.mTheme)
                     }

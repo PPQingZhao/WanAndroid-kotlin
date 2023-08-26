@@ -11,20 +11,31 @@
             type="com.pp.navigation.ui.NavigationViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.HomeFragment">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="navigation"
-            android:textColor="@{viewModel.mTheme.textColor}"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            android:fitsSystemWindows="true"
+            app:SelectedTabIndicatorColor="@{viewModel.MTheme.textColorPrimary.defaultColor}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:tabGravity="center"
+            app:tabIndicator="@drawable/layer_tab_indicator_media"
+            app:tabIndicatorHeight="2dp"
+            app:tabRippleColor="@color/transparent"
+            tools:background="?attr/colorPrimary"
+            tools:ignore="SpeakableTextPresentCheck" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </layout>

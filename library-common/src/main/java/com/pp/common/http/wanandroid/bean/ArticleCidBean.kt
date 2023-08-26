@@ -1,7 +1,8 @@
 package com.pp.common.http.wanandroid.bean
 
 data class ArticleCidBean(
-    val articleList: List<ArticleBean> = listOf(),
+//    val articleList: List<ArticleBean> = listOf(),
+    val articles: List<ArticleBean> = listOf(),
     val author: String = "",
     val children: List<Any> = listOf(),
     val courseId: Int = 0,
@@ -15,5 +16,6 @@ data class ArticleCidBean(
     val parentChapterId: Int = 0,
     val type: Int = 0,
     val userControlSetTop: Boolean = false,
-    val visible: Int = 0
+    val visible: Int = 0,
+    val cid:Long = 0
 )

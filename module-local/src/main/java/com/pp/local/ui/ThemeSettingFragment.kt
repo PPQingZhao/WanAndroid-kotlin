@@ -33,8 +33,8 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
 
 
         RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>(
-            onCreateViewDataBinding = { ItemThemeSettingBinding.inflate(layoutInflater, it, false) },
-            onCreateItemViewModel = { binding, item -> item!! }
+            onCreateBinding = { ItemThemeSettingBinding.inflate(layoutInflater, it, false) },
+            onCreateItemModel = { _, item, _, _ -> item!! }
         )
     }
 

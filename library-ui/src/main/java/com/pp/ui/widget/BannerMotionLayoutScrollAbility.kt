@@ -10,12 +10,13 @@ class BannerMotionLayoutScrollAbility(
     NestedScrollableHost.ViewScrollAbility {
     override fun canScrollHorizontally(view: View, direction: Int): Boolean {
         if (view is MotionLayout) {
-            if (carousel.isInfinite) {
-                return true
-            }
 
             if (1 == carousel.count) {
                 return false
+            }
+
+            if (carousel.isInfinite) {
+                return true
             }
 
             if (0 < carousel.currentIndex && carousel.currentIndex < carousel.count - 1) {
@@ -36,12 +37,13 @@ class BannerMotionLayoutScrollAbility(
 
     override fun canScrollVertically(view: View, direction: Int): Boolean {
         if (view is MotionLayout) {
-            if (carousel.isInfinite) {
-                return true
-            }
 
             if (1 == carousel.count) {
                 return false
+            }
+
+            if (carousel.isInfinite) {
+                return true
             }
 
             if (0 < carousel.currentIndex && carousel.currentIndex < carousel.count - 1) {

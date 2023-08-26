@@ -30,8 +30,8 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
     private val mAdapter by lazy {
 
         RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>(
-            onCreateViewDataBinding = { ItemAllowRightBinding.inflate(layoutInflater, it, false) },
-            onCreateItemViewModel = { binding, item -> item!! }
+            onCreateBinding = { ItemAllowRightBinding.inflate(layoutInflater, it, false) },
+            onCreateItemModel = { _, item, _, _ -> item!! }
         )
     }
 

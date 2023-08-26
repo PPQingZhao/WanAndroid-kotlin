@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.widget.FrameLayout
 import androidx.viewpager2.widget.ViewPager2
+import kotlin.math.abs
 
 open class NestedScrollableHost(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     FrameLayout(context, attrs, defStyleAttr) {
@@ -19,8 +20,8 @@ open class NestedScrollableHost(context: Context, attrs: AttributeSet?, defStyle
     private var mViewScrollAbility: ViewScrollAbility? = null
 
     init {
-        val var10001 = ViewConfiguration.get(context)
-        this.touchSlop = var10001.scaledTouchSlop
+        val configuration = ViewConfiguration.get(context)
+        this.touchSlop = configuration.scaledTouchSlop
     }
 
     fun setChildScrollAbility(ability: ViewScrollAbility?) {
@@ -28,22 +29,22 @@ open class NestedScrollableHost(context: Context, attrs: AttributeSet?, defStyle
     }
 
     private fun getParentViewPager(): ViewPager2? {
-        var mViewParent = this.parent
-        if (mViewParent !is View) {
-            mViewParent = null
+        var viewParent = this.parent
+        if (viewParent !is View) {
+            viewParent = null
         }
         var view: View?
-        view = mViewParent as View
+        view = viewParent as View
 
         while (view != null && view !is ViewPager2) {
-            mViewParent = view.parent
-            if (mViewParent !is View) {
-                mViewParent = null
+            viewParent = view.parent
+            if (viewParent !is View) {
+                viewParent = null
             }
-            view = if (mViewParent == null) null else mViewParent as View
+            view = if (viewParent == null) null else viewParent as View
         }
-        val var2: View? = if (view !is ViewPager2) null else view
-        return if (var2 == null) null else var2 as ViewPager2
+        val result: View? = if (view !is ViewPager2) null else view
+        return if (result == null) null else result as ViewPager2
     }
 
     override fun onViewAdded(child: View?) {
@@ -113,8 +114,8 @@ open class NestedScrollableHost(context: Context, attrs: AttributeSet?, defStyle
                         val dx = e.x - initialX
                         val dy = e.y - initialY
                         val isVpHorizontal = orientation == ViewPager2.ORIENTATION_HORIZONTAL
-                        val scaledDx = Math.abs(dx) * if (isVpHorizontal) 0.5f else 1.0f
-                        val scaledDy = Math.abs(dy) * if (isVpHorizontal) 1.0f else 0.5f
+                        val scaledDx = abs(dx) * if (isVpHorizontal) 0.5f else 1.0f
+                        val scaledDy = abs(dy) * if (isVpHorizontal) 1.0f else 0.5f
                         if (scaledDx > touchSlop.toFloat() || scaledDy > touchSlop.toFloat()) {
                             when {
 //                                isVpHorizontal == scaledDy > scaledDx -> {

@@ -26,7 +26,7 @@ abstract class BindingPagingDataAdapter<
 
     override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
         val itemData = getItem(position)
-        delegate.onBindViewHolder(holder, itemData)
+        delegate.onBindViewHolder(holder, itemData,position)
     }
 
     override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
@@ -36,7 +36,7 @@ abstract class BindingPagingDataAdapter<
 
     class DefaultBindingPagingDataAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
         private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-        private val onCreateItemViewModel: (binding: VB, data: Data?) -> VM,
+        private val onBindItemViewModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
         private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
         private val getItemType: () -> Int = { 0 },
         diffCallback: DiffUtil.ItemCallback<Data>,
@@ -46,7 +46,7 @@ abstract class BindingPagingDataAdapter<
         override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
             return DefaultViewDataBindingItemType(
                 onCreateViewDataBinding,
-                onCreateItemViewModel,
+                onBindItemViewModel,
                 onSetVariable,
                 getItemType
             )

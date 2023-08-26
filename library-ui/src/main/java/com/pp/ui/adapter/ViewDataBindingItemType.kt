@@ -6,8 +6,28 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import com.pp.ui.BR
 
 abstract class ViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : Any> {
+    companion object {
+        val INVALID_TYPE = -1
+    }
+
     abstract fun createViewDataBinding(parent: ViewGroup): VB
-    abstract fun createItemViewModel(binding: VB, data: Data?): VM
+    fun bindItemViewModel(
+        binding: VB,
+        data: Data?,
+        position: Int,
+        cachedItemViewModel: VM?,
+    ): VM {
+        return onBindItemViewModel(binding, data, position, cachedItemViewModel).apply {
+            setVariable(binding, this)
+        }
+    }
+
+    abstract fun onBindItemViewModel(
+        binding: VB,
+        data: Data?,
+        position: Int,
+        cachedItemViewModel: VM?,
+    ): VM
 
     fun setVariable(binding: VB, viewModel: VM) {
         try {
@@ -34,7 +54,11 @@ abstract class ViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : A
         return 0
     }
 
+    open fun validItem(item: Data?): Boolean {
+        return null != item
+    }
+
     fun getItemType(item: Data?): Int {
-        return getItemType()
+        return if (validItem(item)) getItemType() else INVALID_TYPE
     }
 }

@@ -19,12 +19,12 @@ class MultiAdapterDelegate<
         mViewTypeAdapterMap[type] = item
     }
     
-    private fun getViewDataBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data>? {
+    private fun getViewDataBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
         return mViewTypeAdapterMap[viewType].also {
             if (null == it) {
                 throw RuntimeException("you should call addBindingItem() for viewType: $viewType at first")
             }
-        }
+        }!!
     }
 
     fun getItemViewType(data: Data?): Int {
@@ -39,6 +39,6 @@ class MultiAdapterDelegate<
     }
 
     fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
-        return getViewDataBindingItemType(viewType)!!
+        return getViewDataBindingItemType(viewType)
     }
 }

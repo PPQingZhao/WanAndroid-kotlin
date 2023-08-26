@@ -10,6 +10,7 @@ class RecyclerViewAdapterDelegate<
         ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
         > {
 
+    private val mItemModelCaches by lazy { mutableMapOf<Int, VM>() }
     fun onCreateViewHolder(
         parent: ViewGroup,
         viewBindingItemType: ViewBindingItemType,
@@ -18,10 +19,11 @@ class RecyclerViewAdapterDelegate<
         return BindingItemViewHolder(viewBindingItemType, binding)
     }
 
-    fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, data: Data?) {
+    fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, data: Data?, position: Int) {
         holder.viewDataBindingItemType.let {
-            val itemViewModel = it.createItemViewModel(holder.binding, data)
-            it.setVariable(holder.binding, itemViewModel)
+            var itemViewModel = mItemModelCaches[position]
+            itemViewModel = it.bindItemViewModel(holder.binding, data, position, itemViewModel)
+            mItemModelCaches[position] = itemViewModel
 
         }
     }
