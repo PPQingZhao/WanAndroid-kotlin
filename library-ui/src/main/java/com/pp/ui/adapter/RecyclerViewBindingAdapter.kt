@@ -23,6 +23,9 @@ abstract class RecyclerViewBindingAdapter<
         notifyDataSetChanged()
     }
 
+    fun getData(): List<Data> {
+        return dataList
+    }
 
     protected fun getItem(position: Int): Data? {
         return if (position >= 0 && position < dataList.size) {
@@ -58,14 +61,14 @@ abstract class RecyclerViewBindingAdapter<
 
     class DefaultRecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
         private val onCreateBinding: (parent: ViewGroup) -> VB,
-        private val onCreateItemModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
+        private val onBindItemModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
         private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
         private val getItemType: () -> Int = { 0 },
     ) : RecyclerViewBindingAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>() {
         override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
             return DefaultViewDataBindingItemType(
                 onCreateBinding,
-                onCreateItemModel,
+                onBindItemModel,
                 onSetVariable,
                 getItemType
             )

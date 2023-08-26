@@ -31,7 +31,7 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
 
         RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>(
             onCreateBinding = { ItemAllowRightBinding.inflate(layoutInflater, it, false) },
-            onCreateItemModel = { _, item, _, _ -> item!! }
+            onBindItemModel = { _, item, _, _ -> item!! }
         )
     }
 

@@ -54,6 +54,8 @@ dependencies {
     api(libs.constraintlayout.get())
     api(libs.flexbox.get())
     api(libs.swiperefreshlayout.get())
+    api(libs.recyclerview.get())
+
 
 
 
@@ -62,6 +64,7 @@ dependencies {
     api(libs.paging3)
 
     implementation(projects.libraryTheme)
+
 
 
 }
