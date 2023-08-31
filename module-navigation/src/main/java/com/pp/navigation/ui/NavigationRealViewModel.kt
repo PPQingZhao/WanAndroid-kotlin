@@ -3,20 +3,21 @@ package com.pp.navigation.ui
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import com.pp.base.ThemeViewModel
-import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.navigation.repository.NavigationRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class NavigationRealViewModel(app: Application) : ThemeViewModel(app) {
-    private val _navigation = MutableSharedFlow<List<ArticleListBean>>()
-    val navigation = _navigation.asSharedFlow()
+    private val _navigation = MutableStateFlow<List<ArticleListBean>>(emptyList())
+    val navigation = _navigation.asStateFlow()
 
-    private val _articles = MutableSharedFlow<List<ArticleBean>>()
-    val articles = _articles.asSharedFlow()
+    private val _articles = MutableStateFlow<List<Any>>(emptyList())
+    val articles = _articles.asStateFlow()
 
     fun getNavigation() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -28,9 +29,9 @@ class NavigationRealViewModel(app: Application) : ThemeViewModel(app) {
                 } else {
 
                     _navigation.emit(it.data!!)
-                    val articleList = mutableListOf<ArticleBean>()
+                    val articleList = mutableListOf<Any>()
                     it.data!!.onEach {
-//                        articleList.add(it)
+                        articleList.add(it)
                         articleList.addAll(it.articles)
                     }
                     _articles.emit(articleList)

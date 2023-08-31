@@ -8,14 +8,14 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
 
     val isSelected = ObservableBoolean()
     var data: Data? = null
-    set(value) {
-        if (field == value){
-            return
-        }
-        field = value
+        set(value) {
+            if (field == value) {
+                return
+            }
+            field = value
 
-        onUpdateData(data)
-    }
+            onUpdateData(data)
+        }
 
     private var position = -1
 
@@ -31,7 +31,15 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
 
     }
 
+    private var mOnItemListener: OnItemListener<ItemDataViewModel<Data>>? = null
+    fun setOnItemListener(listener: OnItemListener< ItemDataViewModel<Data>>) {
+        mOnItemListener = listener
+    }
+
     open fun onItemClick(view: View) {
+        if (mOnItemListener?.onItemClick(view, this) == true) {
+            return
+        }
         isSelected.set(isSelected.get().not())
     }
 

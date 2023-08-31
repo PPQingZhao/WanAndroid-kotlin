@@ -1,4 +1,4 @@
-package com.pp.navigation.model
+package com.pp.common.model
 
 import android.os.Bundle
 import android.view.View

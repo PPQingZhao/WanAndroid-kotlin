@@ -3,19 +3,26 @@ package com.pp.navigation.ui
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.model.ItemArticleListTextViewModel
+import com.pp.common.model.ItemArticleTextViewModel
+import com.pp.common.model.ItemSelectedModel
+import com.pp.common.paging.itemArticleListTextBindItemType
+import com.pp.common.paging.itemArticleText2BindItemType
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
-import com.pp.navigation.model.ItemArticleTextViewModel
-import com.pp.navigation.model.ItemArticleListTextViewModel
+import com.pp.ui.adapter.DefaultViewDataBindingItemType
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.databinding.ItemTagFlexboxBinding
+import com.pp.ui.databinding.ItemFlexboxTextBinding
 import com.pp.ui.databinding.ItemText2Binding
-import com.pp.ui.databinding.ItemTextBinding
+import com.pp.ui.viewModel.ItemTextViewModel
 import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -35,17 +42,27 @@ class NavigationRealFragment private constructor() :
         }
     }
 
+    private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
+        ItemSelectedModel()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ItemArticleListTextViewModel.observerSelectedItem(
+        selectedItem.observerSelectedItem(
             viewLifecycleOwner
-        ) {
-            it?.run {
-                (mBinding.articleRecyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                    it.getPosition(),
-                    0
-                )
+        ) { item ->
+            item?.run {
+                lifecycleScope.launch {
+                    mViewModel.navigation.collectLatest {
+                        val pos = it.indexOf(item.data as Any)
+//                        Log.e("TAG", "pos: $pos")
+                        (mBinding.articleRecyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
+                            pos,
+                            0
+                        )
+                    }
+                    cancel()
+                }
             }
         }
         initRecyclerView()
@@ -55,78 +72,63 @@ class NavigationRealFragment private constructor() :
         mBinding.cidRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         mBinding.cidRecyclerview.adapter = cidAdapter
 
-        mBinding.articleRecyclerview.layoutManager = LinearLayoutManager(requireContext()).also {
-//            it.flexDirection = FlexDirection.ROW
-//            it.flexWrap = FlexWrap.WRAP
-//            it.justifyContent = JustifyContent.FLEX_START
-        }
+        mBinding.articleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
         mBinding.articleRecyclerview.adapter = articleAdapter
     }
 
-    private val cidAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
-            onCreateBinding = {
-                ItemTextBinding.inflate(layoutInflater, it, false)
-            },
-            onBindItemModel = { _, item, position, cachedItemModel ->
-//                Log.e("TAG","position: $position  $item")
-                if (cachedItemModel is ItemArticleListTextViewModel) {
-                    cachedItemModel.apply { data = item }
-                } else {
-                    ItemArticleListTextViewModel(item, mViewModel.mTheme)
-                }.apply {
-                    setPosition(position)
-                }
-            }
+    private val cidAdapter by lazy {
+        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+            itemArticleListTextBindItemType(selectedItem, layoutInflater, mViewModel.mTheme)
         )
+    }
 
-    private val articleAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTagFlexboxBinding, ItemArticleListTextViewModel, ArticleListBean>(
-            onCreateBinding = {
-                ItemTagFlexboxBinding.inflate(layoutInflater, it, false)
-            },
-            onBindItemModel = { bind, item, position, cachedItemModel ->
-                Log.e("TAG", "position: $position  $item")
 
-                bind.flexLayout.removeAllViews()
-                item?.articles?.onEach { article ->
-                    ItemText2Binding.inflate(layoutInflater, bind.flexLayout, false)
-                        .let {
-                            it.viewModel = ItemArticleTextViewModel(article, mViewModel.mTheme)
-                            bind.flexLayout.addView(it.root)
-                        }
-                }
+    private val articleAdapter by lazy {
 
-                if (cachedItemModel is ItemArticleListTextViewModel) {
-                    cachedItemModel.apply { data = item }
-                } else {
-                    ItemArticleListTextViewModel(item, mViewModel.mTheme)
-                }
-            }
+       /* RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+            itemArticleFlexBoxBindItemType(
+                layoutInflater,
+                mViewModel.mTheme
+            )
+        )*/
+
+        val type_flexbox = 111
+        val recycledViewPool =
+            RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(type_flexbox, 100) }
+
+        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+            DefaultViewDataBindingItemType<ItemFlexboxTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
+                createBinding = {
+                    Log.e("TAG", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+                    ItemFlexboxTextBinding.inflate(layoutInflater, it, false).apply {
+                        recyclerview.setItemViewCacheSize(6)
+                        recyclerview.setRecycledViewPool(recycledViewPool)
+                        recyclerview.layoutManager = FlexboxLayoutManager(context)
+                        recyclerview.adapter =
+                            RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+                                itemArticleText2BindItemType(0, layoutInflater, mViewModel.mTheme),
+                                getItemViewType = { type_flexbox }
+                            )
+                    }
+                },
+                onBindItemViewModel = { bind, item, position, cachedItemModel ->
+                    (bind.recyclerview.adapter as RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl<ItemText2Binding, ItemArticleTextViewModel, ArticleBean>)
+                        .setDataList(item?.articles ?: emptyList())
+
+                    Log.e(
+                        "TAG",
+                        "bbbbbbbbbbbbbbbbbbbbbbb size: ${
+                            recycledViewPool.getRecycledViewCount(type_flexbox)
+                        }"
+                    )
+                    if (cachedItemModel is ItemArticleListTextViewModel) {
+                        cachedItemModel.apply { data = item }
+                    } else {
+                        ItemArticleListTextViewModel(null, item, mViewModel.mTheme)
+                    }
+                })
         )
-    /* RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemTagFlexboxBinding, ItemCidTextViewModel, ArticleCidBean>(
-         onCreateBinding = {
-//                Log.e("TAG", "onCreateBinding")
-             ItemTagFlexboxBinding.inflate(layoutInflater, it, false)
-         },
-         onBindItemModel = { bind, item, _, cachedItemModel ->
-
-             bind.flexLayout.removeAllViews()
-             item?.articles?.onEach {
-                 ItemText2Binding.inflate(layoutInflater, bind.flexLayout, false).run {
-                     viewModel = ItemArticleTextViewModel(it, mViewModel.mTheme)
-                     bind.flexLayout.addView(root)
-                 }
-             }
-             if (cachedItemModel is ItemCidTextViewModel) {
-                 cachedItemModel.updateData(item)
-                 cachedItemModel
-             } else {
-                 ItemCidTextViewModel(item, mViewModel.mTheme)
-             }
-         }
-     )
-*/
+    }
 
     override fun onFirstResume() {
         lifecycleScope.launch {

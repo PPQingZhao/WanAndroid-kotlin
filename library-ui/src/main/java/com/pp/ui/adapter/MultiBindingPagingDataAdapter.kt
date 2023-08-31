@@ -3,18 +3,15 @@ package com.pp.ui.adapter
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 
-class MultiBindingPagingDataAdapter<
-        VB : ViewDataBinding,
-        VM : Any?,
-        Data : Any>
-    (diffCallback: DiffUtil.ItemCallback<Data>) :
-    BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
+class MultiBindingPagingDataAdapter
+    (getItemViewType: (data: Any?) -> Int, diffCallback: DiffUtil.ItemCallback<Any>) :
+    BindingPagingDataAdapter<ViewDataBinding, Any?, Any, ViewDataBindingItemType<ViewDataBinding, Any?, Any>>(
         diffCallback
     ) {
 
-    private val delegate = MultiAdapterDelegate<VB,VM,Data>()
+    private val delegate = MultiAdapterDelegate(getItemViewType)
 
-    fun addBindingItem(item: ViewDataBindingItemType<VB, VM, Data>) {
+    fun addBindingItem(item: ViewDataBindingItemType<ViewDataBinding, Any?, Any>) {
         delegate.addBindingItem(item)
     }
 
@@ -23,7 +20,7 @@ class MultiBindingPagingDataAdapter<
         return delegate.getItemViewType(item)
     }
 
-    override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+    override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<ViewDataBinding, Any?, Any> {
         return delegate.createViewBindingItemType(viewType)
     }
 

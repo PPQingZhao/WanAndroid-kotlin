@@ -10,7 +10,7 @@ abstract class RecyclerViewBindingAdapter<
         VM : Any?,
         Data : Any,
         ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
-        > :
+        >(private val getItemViewType: () -> Int = { 0 }) :
     RecyclerView.Adapter<BindingItemViewHolder<VB, VM, Data>>() {
 
     private val delegate = RecyclerViewAdapterDelegate<VB, VM, Data, ViewBindingItemType>()
@@ -58,6 +58,9 @@ abstract class RecyclerViewBindingAdapter<
         delegate.onViewAttachedToWindow(holder)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return getItemViewType.invoke()
+    }
 
     class DefaultRecyclerViewBindingAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
         private val onCreateBinding: (parent: ViewGroup) -> VB,
@@ -72,6 +75,17 @@ abstract class RecyclerViewBindingAdapter<
                 onSetVariable,
                 getItemType
             )
+        }
+    }
+
+    class RecyclerViewBindingAdapterImpl<VB : ViewDataBinding, VM : Any?, Data : Any>(
+        private val bindingItemType: ViewDataBindingItemType<VB, VM, Data>,
+        getItemViewType: () -> Int = { 0 },
+    ) : RecyclerViewBindingAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
+        getItemViewType
+    ) {
+        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+            return bindingItemType
         }
     }
 

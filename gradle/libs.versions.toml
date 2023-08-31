@@ -27,7 +27,7 @@ swiperefreshlayout = "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
 photoView = "com.github.chrisbanes:PhotoView:2.1.4"
 constraintlayout = "androidx.constraintlayout:constraintlayout:2.2.0-alpha12"
 palette = "androidx.palette:palette:1.0.0"
-recyclerview = "androidx.recyclerview:recyclerview:1.2.1"
+recyclerview = "androidx.recyclerview:recyclerview:1.2.0-alpha04"
 
 #DataStore
 datastore = "androidx.datastore:datastore-preferences:1.0.0"

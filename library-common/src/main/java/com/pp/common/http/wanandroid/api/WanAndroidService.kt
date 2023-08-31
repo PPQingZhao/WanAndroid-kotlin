@@ -28,6 +28,7 @@ interface WanAndroidService {
         val projectApi: ProjectApi by lazy { retrofit.create(ProjectApi::class.java) }
         val navigationApi: NavigationApi by lazy { retrofit.create(NavigationApi::class.java) }
         val wxArticleApi: WXArticleApi by lazy { retrofit.create(WXArticleApi::class.java) }
+        val systemApi: SystemApi by lazy { retrofit.create(SystemApi::class.java) }
 
     }
 

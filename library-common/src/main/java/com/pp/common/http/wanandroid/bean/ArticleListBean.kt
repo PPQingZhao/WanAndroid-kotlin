@@ -4,7 +4,7 @@ data class ArticleListBean(
 //    val articleList: List<ArticleBean> = listOf(),
     val articles: List<ArticleBean> = listOf(),
     val author: String = "",
-    val children: List<Any> = listOf(),
+    val children: List<ArticleListBean> = listOf(),
     val courseId: Int = 0,
     val cover: String = "",
     val desc: String = "",

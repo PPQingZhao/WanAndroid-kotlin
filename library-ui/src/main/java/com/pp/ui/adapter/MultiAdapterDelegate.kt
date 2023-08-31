@@ -2,15 +2,15 @@ package com.pp.ui.adapter
 
 import androidx.databinding.ViewDataBinding
 
-class MultiAdapterDelegate<
-        VB : ViewDataBinding,
-        VM : Any?,
-        Data : Any,
-        > {
+class MultiAdapterDelegate(private val getItemViewType: (data: Any?) -> Int) {
 
-    private val mViewTypeAdapterMap by lazy { mutableMapOf<Int, ViewDataBindingItemType<VB, VM, Data>>() }
+    private val mViewTypeAdapterMap by lazy { mutableMapOf<Int, ViewDataBindingItemType<ViewDataBinding, Any?, Any>>() }
 
-    fun addBindingItem(item: ViewDataBindingItemType<VB, VM, Data>) {
+    fun hasItemType(itemType: Int): Boolean {
+        return mViewTypeAdapterMap.containsKey(itemType)
+    }
+
+    fun addBindingItem(item: ViewDataBindingItemType<ViewDataBinding, Any?, Any>) {
         val type = item.getItemType()
 
         if (mViewTypeAdapterMap.containsKey(type)) {
@@ -18,8 +18,8 @@ class MultiAdapterDelegate<
         }
         mViewTypeAdapterMap[type] = item
     }
-    
-    private fun getViewDataBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+
+    private fun getViewDataBindingItemType(viewType: Int): ViewDataBindingItemType<ViewDataBinding, Any?, Any> {
         return mViewTypeAdapterMap[viewType].also {
             if (null == it) {
                 throw RuntimeException("you should call addBindingItem() for viewType: $viewType at first")
@@ -27,18 +27,15 @@ class MultiAdapterDelegate<
         }!!
     }
 
-    fun getItemViewType(data: Data?): Int {
-        // 查找 item type
-        for (entry in mViewTypeAdapterMap) {
-            if (entry.key == entry.value.getItemType(data)) {
-                return entry.key
-            }
+    fun getItemViewType(data: Any?): Int {
+        val itemType = getItemViewType.invoke(data)
+        if (mViewTypeAdapterMap[itemType] == null) {
+            throw RuntimeException("ViewBindingItem not found: { item: ${data}}")
         }
-
-        throw RuntimeException("ViewBindingItem not found: { item: ${data}}")
+        return itemType
     }
 
-    fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+    fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<ViewDataBinding, Any?, Any> {
         return getViewDataBindingItemType(viewType)
     }
 }

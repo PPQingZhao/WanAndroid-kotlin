@@ -24,12 +24,12 @@ class RecyclerViewAdapterDelegate<
             var itemViewModel = mItemModelCaches[position]
             itemViewModel = it.bindItemViewModel(holder.binding, data, position, itemViewModel)
             mItemModelCaches[position] = itemViewModel
-
         }
     }
 
     fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
         holder.viewDataBindingItemType.onViewAttachedToWindow(holder.binding)
     }
+
 
 }

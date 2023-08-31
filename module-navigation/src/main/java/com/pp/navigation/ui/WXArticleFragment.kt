@@ -7,12 +7,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.model.ItemArticleListTextViewModel
+import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemChapterArticlePagingAdapter
 import com.pp.navigation.databinding.FragmentWxarticleBinding
-import com.pp.navigation.model.ItemArticleListTextViewModel
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.ItemText3Binding
 import com.pp.ui.utils.setPagingAdapter
+import com.pp.ui.viewModel.ItemTextViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -37,6 +39,8 @@ class WXArticleFragment private constructor() :
         initRecyclerview()
     }
 
+    private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
+        ItemSelectedModel()
 
     private val mAdapter =
         RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemText3Binding, ItemArticleListTextViewModel, ArticleListBean>(
@@ -47,10 +51,10 @@ class WXArticleFragment private constructor() :
                 if (cacheItemViewModel is ItemArticleListTextViewModel) {
                     cacheItemViewModel.also { it.data = data }
                 } else {
-                    ItemArticleListTextViewModel(data, mViewModel.mTheme)
+                    ItemArticleListTextViewModel(selectedItem, data, mViewModel.mTheme)
                 }.apply {
-                    if (ItemArticleListTextViewModel.getSelectedItem() == null && position == 0) {
-                        ItemArticleListTextViewModel.selectedItem(this)
+                    if (selectedItem.getSelectedItem() == null && position == 0) {
+                        selectedItem.selectedItem(this)
                     }
                 }
             }
@@ -67,7 +71,7 @@ class WXArticleFragment private constructor() :
         mBinding.wxarticleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
 
 
-        ItemArticleListTextViewModel.observerSelectedItem(
+        selectedItem.observerSelectedItem(
             viewLifecycleOwner
         ) {
             it?.run {

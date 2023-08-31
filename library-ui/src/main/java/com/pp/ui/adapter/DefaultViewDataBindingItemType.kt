@@ -8,7 +8,6 @@ class DefaultViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : Any
     private val onBindItemViewModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
     private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
     private val getItemType: () -> Int = { 0 },
-    private val validItem: (data: Data?) -> Boolean = { null != it },
 ) : ViewDataBindingItemType<VB, VM, Data>() {
 
     override fun createViewDataBinding(parent: ViewGroup): VB {
@@ -26,10 +25,6 @@ class DefaultViewDataBindingItemType<VB : ViewDataBinding, VM : Any?, Data : Any
         cachedItemViewModel: VM?
     ): VM {
         return onBindItemViewModel.invoke(binding, data, position, cachedItemViewModel)
-    }
-
-    override fun validItem(item: Data?): Boolean {
-        return validItem.invoke(item)
     }
 
     override fun getItemType(): Int {
