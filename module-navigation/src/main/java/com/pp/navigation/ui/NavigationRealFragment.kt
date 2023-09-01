@@ -20,7 +20,9 @@ import com.pp.ui.adapter.DefaultViewDataBindingItemType
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.ItemFlexboxTextBinding
 import com.pp.ui.databinding.ItemText2Binding
+import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
+import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
@@ -76,21 +78,40 @@ class NavigationRealFragment private constructor() :
         mBinding.articleRecyclerview.adapter = articleAdapter
     }
 
+    private val mOnItemListener = object :
+        OnItemListener<ItemDataViewModel<ArticleListBean>> {
+        override fun onItemClick(
+            view: View,
+            item: ItemDataViewModel<ArticleListBean>,
+        ): Boolean {
+            selectedItem.selectedItem(item as ItemTextViewModel<ArticleListBean>)
+            return true
+        }
+    }
+
     private val cidAdapter by lazy {
         RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleListTextBindItemType(selectedItem, layoutInflater, mViewModel.mTheme)
+            itemArticleListTextBindItemType(
+                layoutInflater,
+                mViewModel.mTheme
+            ) { _, viewModel, position ->
+                if (selectedItem.getSelectedItem() == null && position == 0) {
+                    selectedItem.selectedItem(viewModel)
+                }
+                viewModel.setOnItemListener(mOnItemListener)
+            }
         )
     }
 
 
     private val articleAdapter by lazy {
 
-       /* RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleFlexBoxBindItemType(
-                layoutInflater,
-                mViewModel.mTheme
-            )
-        )*/
+        /* RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+             itemArticleFlexBoxBindItemType(
+                 layoutInflater,
+                 mViewModel.mTheme
+             )
+         )*/
 
         val type_flexbox = 111
         val recycledViewPool =
@@ -124,7 +145,7 @@ class NavigationRealFragment private constructor() :
                     if (cachedItemModel is ItemArticleListTextViewModel) {
                         cachedItemModel.apply { data = item }
                     } else {
-                        ItemArticleListTextViewModel(null, item, mViewModel.mTheme)
+                        ItemArticleListTextViewModel(item, mViewModel.mTheme)
                     }
                 })
         )

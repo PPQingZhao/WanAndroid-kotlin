@@ -17,16 +17,6 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
             onUpdateData(data)
         }
 
-    private var position = -1
-
-    fun setPosition(pos: Int) {
-        position = pos
-    }
-
-    fun getPosition(): Int {
-        return position
-    }
-
     protected open fun onUpdateData(data: Data?) {
 
     }

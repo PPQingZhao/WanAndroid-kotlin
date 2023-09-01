@@ -13,7 +13,6 @@ import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.DefaultViewDataBindingItemType
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.*
-import com.pp.ui.viewModel.ItemTextViewModel
 
 
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
@@ -28,19 +27,19 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
 }
 
 fun itemArticleListTextBindItemType(
-    selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>>,
     layoutInflater: LayoutInflater,
     theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemTextBinding, viewModel: ItemArticleListTextViewModel, pos: Int) -> Unit = { _, _, _ -> },
 ) =
     DefaultViewDataBindingItemType<ItemTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
         createBinding = { ItemTextBinding.inflate(layoutInflater, it, false) },
-        onBindItemViewModel = { _, item, position, cachedItemModel ->
+        onBindItemViewModel = { bind, item, position, cachedItemModel ->
             if (cachedItemModel is ItemArticleListTextViewModel) {
                 cachedItemModel.apply { data = item }
             } else {
-                ItemArticleListTextViewModel(selectedItem, item, theme)
+                ItemArticleListTextViewModel(item, theme)
             }.apply {
-                setPosition(position)
+                onBindItemViewModel.invoke(bind, this, position)
             }
         })
 
@@ -53,7 +52,7 @@ fun itemArticleListText1BindItemType(
     onBindItemViewModel = { _, data, _, cacheViewModel ->
         cacheViewModel?.also {
             it.data = data
-        } ?: ItemArticleListTextViewModel(null, data, theme)
+        } ?: ItemArticleListTextViewModel(data, theme)
     },
     getItemType = { itemType }
 )
