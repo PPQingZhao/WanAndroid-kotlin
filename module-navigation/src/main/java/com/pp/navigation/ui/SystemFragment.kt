@@ -10,10 +10,13 @@ import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemArticleListTextViewModel
 import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemArticleListChildFlexBoxBindItemType
+import com.pp.common.paging.itemArticleText3BindItemType
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.ItemText3Binding
+import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
+import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -54,24 +57,30 @@ class SystemFragment private constructor() :
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
         ItemSelectedModel()
 
-    private val mAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemText3Binding, ItemArticleListTextViewModel, ArticleListBean>(
-            onCreateBinding = {
-                ItemText3Binding.inflate(layoutInflater, it, false)
-            },
-            onBindItemModel = { _, data, position, cacheItemViewModel ->
-                if (cacheItemViewModel is ItemArticleListTextViewModel) {
-                    cacheItemViewModel.also { it.data = data }
-                } else {
-                    ItemArticleListTextViewModel(selectedItem, data, mViewModel.mTheme)
-                }.apply {
+    private val mOnItemListener = object :
+        OnItemListener<ItemDataViewModel<ArticleListBean>> {
+        override fun onItemClick(
+            view: View,
+            item: ItemDataViewModel<ArticleListBean>,
+        ): Boolean {
+            selectedItem.selectedItem(item as ItemTextViewModel<ArticleListBean>)
+            return true
+        }
+    }
+    private val mAdapter by lazy {
+        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+            itemArticleText3BindItemType(
+                inflater = layoutInflater,
+                theme = mViewModel.mTheme,
+                onBindItemViewModel = { _, itemViewModel, position ->
                     if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(this)
+                        selectedItem.selectedItem(itemViewModel)
                     }
+                    itemViewModel.setOnItemListener(mOnItemListener)
                 }
-            }
-
+            )
         )
+    }
 
     private val mArticleListAdapter by lazy {
         RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(

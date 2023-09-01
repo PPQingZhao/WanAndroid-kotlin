@@ -7,14 +7,15 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.model.ItemArticleListTextViewModel
 import com.pp.common.model.ItemSelectedModel
+import com.pp.common.paging.itemArticleText3BindItemType
 import com.pp.common.paging.itemChapterArticlePagingAdapter
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.databinding.ItemText3Binding
 import com.pp.ui.utils.setPagingAdapter
+import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
+import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -42,24 +43,31 @@ class WXArticleFragment private constructor() :
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
         ItemSelectedModel()
 
-    private val mAdapter =
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemText3Binding, ItemArticleListTextViewModel, ArticleListBean>(
-            onCreateBinding = {
-                ItemText3Binding.inflate(layoutInflater, it, false)
-            },
-            onBindItemModel = { _, data, position, cacheItemViewModel ->
-                if (cacheItemViewModel is ItemArticleListTextViewModel) {
-                    cacheItemViewModel.also { it.data = data }
-                } else {
-                    ItemArticleListTextViewModel(selectedItem, data, mViewModel.mTheme)
-                }.apply {
-                    if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(this)
-                    }
-                }
-            }
+    private val mOnItemListener = object :
+        OnItemListener<ItemDataViewModel<ArticleListBean>> {
+        override fun onItemClick(
+            view: View,
+            item: ItemDataViewModel<ArticleListBean>,
+        ): Boolean {
+            selectedItem.selectedItem(item as ItemTextViewModel<ArticleListBean>)
+            return true
+        }
+    }
 
+    private val mAdapter by lazy {
+        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
+            itemArticleText3BindItemType(
+                inflater = layoutInflater,
+                theme = mViewModel.mTheme,
+                onBindItemViewModel = { _, itemViewModel, position ->
+                    if (selectedItem.getSelectedItem() == null && position == 0) {
+                        selectedItem.selectedItem(itemViewModel)
+                    }
+                    itemViewModel.setOnItemListener(mOnItemListener)
+                }
+            )
         )
+    }
 
     private fun initRecyclerview() {
         mBinding.authorRecyclerview.layoutManager = LinearLayoutManager(requireContext())

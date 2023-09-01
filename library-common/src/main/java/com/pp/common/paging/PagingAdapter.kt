@@ -78,14 +78,17 @@ fun itemArticleText3BindItemType(
     itemType: Int = 0,
     inflater: LayoutInflater,
     theme: AppDynamicTheme,
+    onBindItemViewModel: (ItemText3Binding, ItemArticleListTextViewModel, Int) -> Unit = { _, _, _ -> },
 ) = DefaultViewDataBindingItemType<ItemText3Binding, ItemArticleListTextViewModel, ArticleListBean>(
     createBinding = {
         ItemText3Binding.inflate(inflater, it, false)
     },
-    onBindItemViewModel = { _, data, position, cacheViewModel ->
-        cacheViewModel?.also {
+    onBindItemViewModel = { bind, data, position, cacheViewModel ->
+        (cacheViewModel?.also {
             it.data = data
-        } ?: ItemArticleListTextViewModel(cidBean = data, theme = theme)
+        } ?: ItemArticleListTextViewModel(cidBean = data, theme = theme)).apply {
+            onBindItemViewModel.invoke(bind, this, position)
+        }
     },
     getItemType = { itemType },
 )
@@ -180,7 +183,7 @@ fun itemArticlePagingAdapter(layoutInflater: LayoutInflater, theme: AppDynamicTh
 fun itemChapterArticlePagingAdapter(
     layoutInflater: LayoutInflater,
     theme: AppDynamicTheme,
-    onBindItemViewModel: (bind: ItemArticleBinding, ChapterItemArticleViewModel, pos: Int) -> Unit = { _, _, _ -> },
+    onBindItemViewModel: (ItemArticleBinding, ChapterItemArticleViewModel, Int) -> Unit = { _, _, _ -> },
 ) =
     BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ChapterItemArticleViewModel, ArticleBean>(
         onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },

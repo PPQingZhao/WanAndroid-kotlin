@@ -32,7 +32,7 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
     }
 
     private var mOnItemListener: OnItemListener<ItemDataViewModel<Data>>? = null
-    fun setOnItemListener(listener: OnItemListener< ItemDataViewModel<Data>>) {
+    fun setOnItemListener(listener: OnItemListener<ItemDataViewModel<Data>>) {
         mOnItemListener = listener
     }
 

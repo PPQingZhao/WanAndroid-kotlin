@@ -23,7 +23,11 @@ class ItemArticleListTextViewModel(
     }
 
     override fun onItemClick(view: View) {
-        selectedItem?.selectedItem(this)
+        if (null == selectedItem) {
+            super.onItemClick(view)
+        } else {
+            selectedItem.selectedItem(this)
+        }
     }
 
 }
