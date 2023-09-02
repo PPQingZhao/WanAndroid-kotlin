@@ -4,12 +4,10 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.model.ChapterItemArticleViewModel
 import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.itemProjectArticleBindItemType
 import com.pp.project.databinding.FragmentCidprojectBinding
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.databinding.ItemProjectarticleBinding
 import com.pp.ui.utils.setPagingAdapter
 import kotlinx.coroutines.launch
 
@@ -46,20 +44,13 @@ class CidProjectFragment private constructor() :
     }
 
     private suspend fun initPagingList() {
-        val adapter =
-            BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemProjectarticleBinding, ChapterItemArticleViewModel, ArticleBean>(
-                onCreateViewDataBinding = {
-                    ItemProjectarticleBinding.inflate(layoutInflater, it, false)
-                },
-                onBindItemViewModel = { _, item, _, cacheItemModel ->
-                    if (cacheItemModel is ChapterItemArticleViewModel) {
-                        cacheItemModel.apply { data = item }
-                    } else {
-                        ChapterItemArticleViewModel(item, mViewModel.mTheme)
-                    }
-                },
-                diffCallback = articleDifferCallback
-            )
+        val adapter = BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
+            bindingItemType = itemProjectArticleBindItemType(
+                inflater = layoutInflater,
+                theme = mViewModel.mTheme
+            ),
+            diffCallback = articleDifferCallback
+        )
 
         mBinding.pageList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.pageList.setPagingAdapter(

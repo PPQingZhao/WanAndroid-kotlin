@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.itemText3ArticleBindItemType
-import com.pp.common.paging.itemChapterArticlePagingAdapter
+import com.pp.common.paging.*
 import com.pp.navigation.databinding.FragmentWxarticleBinding
+import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
@@ -87,7 +87,13 @@ class WXArticleFragment private constructor() :
                     viewLifecycleOwner,
                     lifecycleScope,
                     mViewModel.getWXArticle(this.data?.id ?: 0),
-                    itemChapterArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+                    BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
+                        bindingItemType = itemWXArticleChapterBindItemType(
+                            inflater = layoutInflater,
+                            theme = theme,
+                        ),
+                        diffCallback = articleDifferCallback
+                    )
                 )
             }
         }

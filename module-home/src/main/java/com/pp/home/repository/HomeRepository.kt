@@ -6,9 +6,8 @@ import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.PageBean
-import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
-import com.pp.common.paging.ArticlePagingSource
+import com.pp.common.paging.WanPagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +16,7 @@ import kotlinx.coroutines.withContext
 object HomeRepository {
     private const val startPage = 0
     suspend fun getBanner(): List<BannerBean> {
-        return WanAndroidService.homeApi.getBanner().data?: emptyList()
+        return WanAndroidService.homeApi.getBanner().data ?: emptyList()
     }
 
     fun getPageData(): Flow<PagingData<ArticleBean>> {
@@ -27,16 +26,16 @@ object HomeRepository {
             pagingSourceFactory = { HomeArticlePagingSource() }).flow
     }
 
-    private class HomeArticlePagingSource : ArticlePagingSource() {
-        override suspend fun getArticlesApi(page: Int): ResponseBean<PageBean> {
-            return WanAndroidService.homeApi.getArticles(page)
+    private class HomeArticlePagingSource : WanPagingSource() {
+
+        override suspend fun getPageData(page: Int): PageBean? {
+            return WanAndroidService.homeApi.getArticles(page).data
         }
 
         override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ArticleBean> {
             return try {
                 val page = params.key ?: return LoadResult.Page(emptyList(), null, null)
                 val dataList = mutableListOf<ArticleBean>()
-
                 if (page == 0) {
                     withContext(Dispatchers.IO) {
                         //  获取置顶文章
@@ -69,9 +68,6 @@ object HomeRepository {
                 e.printStackTrace()
                 LoadResult.Error(e)
             }
-
         }
-
     }
-
 }

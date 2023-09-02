@@ -2,4 +2,6 @@
 <resources>
     <string name="pinned">置顶</string>
     <string name="fresh">新</string>
+    <string name="author">作者:</string>
+    <string name="chapter">分类:</string>
 </resources>

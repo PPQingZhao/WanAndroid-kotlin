@@ -17,6 +17,11 @@ abstract class SimplePagingSource<PageData : Any, Key : Any, Value : Any> :
 
             nextKey = createNextKey(pageData)
             val list = getPageValue(pageData)
+
+            if(list.isEmpty()){
+                return LoadResult.Page(emptyList(), null, null)
+            }
+
             dataList.addAll(list)
 
             LoadResult.Page(dataList, null, nextKey)

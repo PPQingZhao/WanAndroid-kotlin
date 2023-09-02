@@ -128,6 +128,30 @@ fun itemChapterArticleBindItemType(
     onBindItemViewModel = onBindItemViewModel
 )
 
+fun itemWXArticleChapterBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemWxArticleBinding, viewModel: ChapterItemArticleViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemWxArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
+    itemType = itemType,
+    createBinding = { ItemWxArticleBinding.inflate(inflater, it, false) },
+    onCreateViewModel = { ChapterItemArticleViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
+fun itemProjectArticleBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemProjectarticleBinding, viewModel: ChapterItemArticleViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemProjectarticleBinding, ArticleBean, ChapterItemArticleViewModel>(
+    itemType = itemType,
+    createBinding = { ItemProjectarticleBinding.inflate(inflater, it, false) },
+    onCreateViewModel = { ChapterItemArticleViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
 fun itemArticlePagingAdapter(layoutInflater: LayoutInflater, theme: AppDynamicTheme) =
     BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
         bindingItemType = itemArticleBindItemType(
