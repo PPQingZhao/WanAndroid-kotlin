@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 class MultiBindingPagingDataAdapter
     (getItemViewType: (data: Any?) -> Int, diffCallback: DiffUtil.ItemCallback<Any>) :
     BindingPagingDataAdapter<ViewDataBinding, Any?, Any, ViewDataBindingItemType<ViewDataBinding, Any?, Any>>(
-        diffCallback
+        diffCallback = diffCallback
     ) {
 
     private val delegate = MultiAdapterDelegate(getItemViewType)

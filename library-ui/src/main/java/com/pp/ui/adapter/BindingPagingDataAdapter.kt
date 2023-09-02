@@ -11,6 +11,7 @@ abstract class BindingPagingDataAdapter<
         Data : Any,
         ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
         >(
+    private val getItemType: Int = 0,
     diffCallback: DiffUtil.ItemCallback<Data>,
 ) : PagingDataAdapter<Data, BindingItemViewHolder<VB, VM, Data>>(diffCallback) {
 
@@ -26,12 +27,16 @@ abstract class BindingPagingDataAdapter<
 
     override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
         val itemData = getItem(position)
-        delegate.onBindViewHolder(holder, itemData,position)
+        delegate.onBindViewHolder(holder, itemData, position)
     }
 
     override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
         super.onViewAttachedToWindow(holder)
         delegate.onViewAttachedToWindow(holder)
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return getItemType
     }
 
     class DefaultBindingPagingDataAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
@@ -41,7 +46,7 @@ abstract class BindingPagingDataAdapter<
         private val getItemType: () -> Int = { 0 },
         diffCallback: DiffUtil.ItemCallback<Data>,
     ) : BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
-        diffCallback
+        diffCallback = diffCallback
     ) {
         override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
             return DefaultViewDataBindingItemType(
@@ -50,6 +55,17 @@ abstract class BindingPagingDataAdapter<
                 onSetVariable,
                 getItemType
             )
+        }
+    }
+
+    class RecyclerViewBindingAdapterImpl<VB : ViewDataBinding, VM : Any?, Data : Any>(
+        private val bindingItemType: ViewDataBindingItemType<VB, VM, Data>,
+        diffCallback: DiffUtil.ItemCallback<Data>,
+    ) : BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
+        diffCallback = diffCallback
+    ) {
+        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
+            return bindingItemType
         }
     }
 

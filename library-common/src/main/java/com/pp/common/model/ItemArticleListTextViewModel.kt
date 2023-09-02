@@ -10,7 +10,6 @@ class ItemArticleListTextViewModel(
 ) :
     ItemTextViewModel<ArticleListBean>(theme) {
 
-
     init {
         data = cidBean
     }

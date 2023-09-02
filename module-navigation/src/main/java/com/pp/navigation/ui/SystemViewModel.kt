@@ -14,10 +14,23 @@ class SystemViewModel(app: Application) : ThemeViewModel(app) {
 
     private val _systemList = MutableStateFlow<List<ArticleListBean>>(emptyList())
     val systemList = _systemList.asStateFlow()
+
+    private val _articlesList = MutableStateFlow<List<Any>>(emptyList())
+    val articleList = _articlesList.asStateFlow()
     fun getSystemList() {
         viewModelScope.launch {
             SystemRepository.getSystemList().let {
-                _systemList.emit(it.data ?: emptyList())
+                if (null == it.data) {
+                    return@let
+                }
+                _systemList.emit(it.data!!)
+                val articleList = mutableListOf<Any>()
+                it.data!!.onEach {
+                    articleList.add(it)
+                    articleList.addAll(it.children)
+                }
+                _articlesList.emit(articleList)
+
             }
         }
     }

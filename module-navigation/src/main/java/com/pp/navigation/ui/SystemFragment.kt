@@ -2,21 +2,23 @@ package com.pp.navigation.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.flexbox.FlexboxLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.model.ItemArticleListTextViewModel
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.itemArticleListChildFlexBoxBindItemType
-import com.pp.common.paging.itemArticleText3BindItemType
+import com.pp.common.paging.*
 import com.pp.navigation.databinding.FragmentSystemBinding
+import com.pp.ui.adapter.MultiRecyclerViewBindingAdapter
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.databinding.ItemText3Binding
+import com.pp.ui.adapter.ViewDataBindingItemType
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,11 +42,20 @@ class SystemFragment private constructor() :
     override fun onFirstResume() {
 
         lifecycleScope.launch {
-            mViewModel.systemList.collectLatest { it ->
-                mAdapter.setDataList(it)
-                mArticleListAdapter.setDataList(it)
+            async {
+                mViewModel.systemList.collectLatest { it ->
+                    mAdapter.setDataList(it)
+                }
+            }
+
+            async {
+                mViewModel.articleList.collectLatest {
+                    mBinding.articleListRecyclerview.setItemViewCacheSize(it.size)
+                    mArticleListAdapter.setDataList(it)
+                }
             }
         }
+
 
         mViewModel.getSystemList()
     }
@@ -69,26 +80,47 @@ class SystemFragment private constructor() :
     }
     private val mAdapter by lazy {
         RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleText3BindItemType(
+            itemText3ArticleBindItemType(
                 inflater = layoutInflater,
                 theme = mViewModel.mTheme,
-                onBindItemViewModel = { _, itemViewModel, position ->
+                onBindItemViewModel = { _, viewModel, position ->
                     if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(itemViewModel)
+                        selectedItem.selectedItem(viewModel)
                     }
-                    itemViewModel.setOnItemListener(mOnItemListener)
+                    viewModel.setOnItemListener(mOnItemListener)
                 }
             )
         )
     }
 
     private val mArticleListAdapter by lazy {
-        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleListChildFlexBoxBindItemType(
+        val type_parent_article_list = 0
+        val type_article_list = 1
+        MultiRecyclerViewBindingAdapter(getItemViewType = {
+            if (it is ArticleListBean && it.parentChapterId == 0) {
+                type_parent_article_list
+            } else {
+                type_article_list
+            }
+        }).apply {
+
+            itemText1ArticleListBindItemType(
+                type_parent_article_list,
+                inflater = layoutInflater,
+                mViewModel.mTheme
+            ).let {
+                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
+            }
+
+            itemText2ArticleListBindItemType(
+                type_article_list,
                 layoutInflater,
                 mViewModel.mTheme
-            )
-        )
+            ).let {
+                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
+            }
+        }
+
     }
 
     private fun initRecyclerview() {
@@ -98,7 +130,10 @@ class SystemFragment private constructor() :
         }
         mBinding.systemRecyclerview.adapter = mAdapter
 
-        mBinding.articleListRecyclerview.layoutManager = LinearLayoutManager(requireContext())
+        mBinding.articleListRecyclerview.layoutManager =
+            FlexboxLayoutManager(requireContext()).apply {
+                isAutoMeasureEnabled = false
+            }
         mBinding.articleListRecyclerview.adapter = mArticleListAdapter
 
         selectedItem.observerSelectedItem(
@@ -106,12 +141,10 @@ class SystemFragment private constructor() :
         ) { item ->
             item?.run {
                 lifecycleScope.launch {
-                    mViewModel.systemList.collectLatest {
+                    mViewModel.articleList.collectLatest {
                         val pos = it.indexOf(item.data as Any)
-                        (mBinding.articleListRecyclerview.layoutManager as LinearLayoutManager).scrollToPositionWithOffset(
-                            pos,
-                            0
-                        )
+                        mBinding.articleListRecyclerview.scrollToPosition(pos)
+
                     }
                     cancel()
                 }

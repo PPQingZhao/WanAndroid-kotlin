@@ -2,6 +2,8 @@ package com.pp.common.paging
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.flexbox.FlexboxLayoutManager
@@ -13,6 +15,7 @@ import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.DefaultViewDataBindingItemType
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.*
+import com.pp.ui.viewModel.ItemDataViewModel
 
 
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
@@ -26,106 +29,96 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     }
 }
 
-fun itemArticleListTextBindItemType(
-    layoutInflater: LayoutInflater,
-    theme: AppDynamicTheme,
-    onBindItemViewModel: (bind: ItemTextBinding, viewModel: ItemArticleListTextViewModel, pos: Int) -> Unit = { _, _, _ -> },
-) =
-    DefaultViewDataBindingItemType<ItemTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
-        createBinding = { ItemTextBinding.inflate(layoutInflater, it, false) },
-        onBindItemViewModel = { bind, item, position, cachedItemModel ->
-            if (cachedItemModel is ItemArticleListTextViewModel) {
-                cachedItemModel.apply { data = item }
-            } else {
-                ItemArticleListTextViewModel(item, theme)
-            }.apply {
-                onBindItemViewModel.invoke(bind, this, position)
-            }
-        })
-
-fun itemArticleListText1BindItemType(
+fun <VB : ViewDataBinding, Data : Any, VM : ItemDataViewModel<Data>> createBindItemType(
     itemType: Int = 0,
-    inflater: LayoutInflater,
-    theme: AppDynamicTheme,
-) = DefaultViewDataBindingItemType<ItemText1Binding, ItemArticleListTextViewModel, ArticleListBean>(
-    createBinding = { ItemText1Binding.inflate(inflater, it, false) },
-    onBindItemViewModel = { _, data, _, cacheViewModel ->
-        cacheViewModel?.also {
-            it.data = data
-        } ?: ItemArticleListTextViewModel(data, theme)
-    },
-    getItemType = { itemType }
-)
-
-fun itemArticleText2BindItemType(
-    itemType: Int = 0,
-    inflater: LayoutInflater,
-    theme: AppDynamicTheme,
-) = DefaultViewDataBindingItemType<ItemText2Binding, ItemArticleTextViewModel, ArticleBean>(
-    createBinding = {
-        ItemText2Binding.inflate(inflater, it, false)
-    },
-    onBindItemViewModel = { _, data, position, cacheViewModel ->
-        cacheViewModel?.also {
-            it.data = data
-        } ?: ItemArticleTextViewModel(data, theme)
-    },
-    getItemType = { itemType },
-)
-
-fun itemArticleText3BindItemType(
-    itemType: Int = 0,
-    inflater: LayoutInflater,
-    theme: AppDynamicTheme,
-    onBindItemViewModel: (ItemText3Binding, ItemArticleListTextViewModel, Int) -> Unit = { _, _, _ -> },
-) = DefaultViewDataBindingItemType<ItemText3Binding, ItemArticleListTextViewModel, ArticleListBean>(
-    createBinding = {
-        ItemText3Binding.inflate(inflater, it, false)
-    },
+    createBinding: (parent: ViewGroup) -> VB,
+    onCreateViewModel: (data: Data?) -> VM,
+    onBindItemViewModel: (bind: VB, viewModel: VM, position: Int) -> Unit = { _, _, _ -> },
+) = DefaultViewDataBindingItemType<VB, VM, Data>(
+    createBinding = { createBinding.invoke(it) },
     onBindItemViewModel = { bind, data, position, cacheViewModel ->
         (cacheViewModel?.also {
             it.data = data
-        } ?: ItemArticleListTextViewModel(cidBean = data, theme = theme)).apply {
+        } ?: onCreateViewModel.invoke(data)).apply {
             onBindItemViewModel.invoke(bind, this, position)
         }
     },
     getItemType = { itemType },
 )
 
-fun itemArticleListText2BindItemType(
+fun itemTextArticleListBindItemType(
     itemType: Int = 0,
     inflater: LayoutInflater,
     theme: AppDynamicTheme,
-) = DefaultViewDataBindingItemType<ItemText2Binding, ItemArticleListTextViewModel, ArticleListBean>(
-    createBinding = {
-        ItemText2Binding.inflate(inflater, it, false)
-    },
-    onBindItemViewModel = { _, data, position, cacheViewModel ->
-        cacheViewModel?.also {
-            it.data = data
-        } ?: ItemArticleListTextViewModel(cidBean = data, theme = theme)
-    },
-    getItemType = { itemType },
+    onBindItemViewModel: (bind: ItemTextBinding, viewModel: ItemArticleListTextViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemTextBinding, ArticleListBean, ItemArticleListTextViewModel>(
+    itemType = itemType,
+    createBinding = { ItemTextBinding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemArticleListTextViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
 )
 
-val type_flexbox = 111
-val recycledViewPool =
-    RecyclerView.RecycledViewPool().apply { setMaxRecycledViews(type_flexbox, 100) }
-
-fun itemArticleFlexBoxBindItemType(
+fun itemText1ArticleListBindItemType(
+    itemType: Int = 0,
     inflater: LayoutInflater,
     theme: AppDynamicTheme,
+) = createBindItemType<ItemText1Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText1Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemArticleListTextViewModel(it, theme) }
+)
+
+
+fun itemArticleText2BindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+) = createBindItemType<ItemText2Binding, ArticleBean, ItemArticleTextViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText2Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemArticleTextViewModel(it, theme) }
+)
+
+
+fun itemText3ArticleBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemText3Binding, viewModel: ItemArticleListTextViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemText3Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText3Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemArticleListTextViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
+fun itemText2ArticleListBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (ItemText2Binding, ItemArticleListTextViewModel, Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemText2Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText2Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemArticleListTextViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
+fun itemArticleFlexBoxBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    recycledViewPool: RecyclerView.RecycledViewPool,
 ) =
     DefaultViewDataBindingItemType<ItemFlexboxTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
         createBinding = {
             ItemFlexboxTextBinding.inflate(inflater, it, false).apply {
-                recyclerview.setItemViewCacheSize(6)
                 recyclerview.setRecycledViewPool(recycledViewPool)
                 recyclerview.layoutManager = FlexboxLayoutManager(root.context)
                 recyclerview.adapter =
                     RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
                         itemArticleText2BindItemType(inflater = inflater, theme = theme),
-                        getItemViewType = { type_flexbox }
+                        getItemViewType = { itemType }
                     )
             }
         },
@@ -140,19 +133,21 @@ fun itemArticleFlexBoxBindItemType(
 
 
 fun itemArticleListChildFlexBoxBindItemType(
+    itemType: Int = 0,
     inflater: LayoutInflater,
     theme: AppDynamicTheme,
+    recycledViewPool: RecyclerView.RecycledViewPool,
 ) =
     DefaultViewDataBindingItemType<ItemFlexboxTextBinding, ItemArticleListTextViewModel, ArticleListBean>(
         createBinding = {
             ItemFlexboxTextBinding.inflate(inflater, it, false).apply {
-                recyclerview.setItemViewCacheSize(6)
+                recyclerview.setItemViewCacheSize(300)
                 recyclerview.setRecycledViewPool(recycledViewPool)
                 recyclerview.layoutManager = FlexboxLayoutManager(root.context)
                 recyclerview.adapter =
                     RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-                        itemArticleListText2BindItemType(inflater = inflater, theme = theme),
-                        getItemViewType = { type_flexbox }
+                        itemText2ArticleListBindItemType(inflater = inflater, theme = theme),
+                        getItemViewType = { itemType }
                     )
             }
         },
@@ -166,16 +161,36 @@ fun itemArticleListChildFlexBoxBindItemType(
         })
 
 
+fun itemArticleBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemArticleBinding, viewModel: ArticleItemArticleViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
+    itemType = itemType,
+    createBinding = { ItemArticleBinding.inflate(inflater, it, false) },
+    onCreateViewModel = { ArticleItemArticleViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
+fun itemChapterArticleBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemArticleBinding, viewModel: ChapterItemArticleViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
+    itemType = itemType,
+    createBinding = { ItemArticleBinding.inflate(inflater, it, false) },
+    onCreateViewModel = { ChapterItemArticleViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
 fun itemArticlePagingAdapter(layoutInflater: LayoutInflater, theme: AppDynamicTheme) =
-    BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ArticleItemArticleViewModel, ArticleBean>(
-        onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-        onBindItemViewModel = { _, item, _, cachedItemModel ->
-            if (cachedItemModel is ArticleItemArticleViewModel) {
-                cachedItemModel.also { it.data = item }
-            } else {
-                ArticleItemArticleViewModel(item, theme)
-            }
-        },
+    BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
+        bindingItemType = itemArticleBindItemType(
+            inflater = layoutInflater,
+            theme = theme
+        ),
         diffCallback = articleDifferCallback
     )
 
@@ -184,16 +199,11 @@ fun itemChapterArticlePagingAdapter(
     theme: AppDynamicTheme,
     onBindItemViewModel: (ItemArticleBinding, ChapterItemArticleViewModel, Int) -> Unit = { _, _, _ -> },
 ) =
-    BindingPagingDataAdapter.DefaultBindingPagingDataAdapter<ItemArticleBinding, ChapterItemArticleViewModel, ArticleBean>(
-        onCreateViewDataBinding = { ItemArticleBinding.inflate(layoutInflater, it, false) },
-        onBindItemViewModel = { bind, item, pos, cachedItemModel ->
-            if (cachedItemModel is ChapterItemArticleViewModel) {
-                cachedItemModel.also { it.data = item }
-            } else {
-                ChapterItemArticleViewModel(item, theme)
-            }.apply {
-                onBindItemViewModel.invoke(bind, this, pos)
-            }
-        },
+    BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
+        bindingItemType = itemChapterArticleBindItemType(
+            inflater = layoutInflater,
+            theme = theme,
+            onBindItemViewModel = onBindItemViewModel
+        ),
         diffCallback = articleDifferCallback
     )

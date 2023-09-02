@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.itemArticleText3BindItemType
+import com.pp.common.paging.itemText3ArticleBindItemType
 import com.pp.common.paging.itemChapterArticlePagingAdapter
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
@@ -56,14 +56,14 @@ class WXArticleFragment private constructor() :
 
     private val mAdapter by lazy {
         RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleText3BindItemType(
+            itemText3ArticleBindItemType(
                 inflater = layoutInflater,
                 theme = mViewModel.mTheme,
-                onBindItemViewModel = { _, itemViewModel, position ->
+                onBindItemViewModel = { _, viewModel, position ->
                     if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(itemViewModel)
+                        selectedItem.selectedItem(viewModel)
                     }
-                    itemViewModel.setOnItemListener(mOnItemListener)
+                    viewModel.setOnItemListener(mOnItemListener)
                 }
             )
         )
