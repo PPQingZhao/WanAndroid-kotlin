@@ -22,6 +22,7 @@ object RouterPath {
 
     object Navigation {
         const val fragment_navigation = "/navigation/fragment_navigation"
+        const val fragment_tab_system = "/navigation/fragment_tab_system"
     }
 
     object Project {

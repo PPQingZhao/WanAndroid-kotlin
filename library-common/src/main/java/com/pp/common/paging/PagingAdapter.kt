@@ -96,7 +96,7 @@ fun itemText2ArticleListBindItemType(
     itemType: Int = 0,
     inflater: LayoutInflater,
     theme: AppDynamicTheme,
-    onBindItemViewModel: (ItemText2Binding, ItemArticleListTextViewModel, Int) -> Unit = { _, _, _ -> },
+    onBindItemViewModel: (bind: ItemText2Binding, viewModel: ItemArticleListTextViewModel, position: Int) -> Unit = { _, _, _ -> },
 ) = createBindItemType<ItemText2Binding, ArticleListBean, ItemArticleListTextViewModel>(
     itemType = itemType,
     createBinding = { ItemText2Binding.inflate(inflater, it, false) },

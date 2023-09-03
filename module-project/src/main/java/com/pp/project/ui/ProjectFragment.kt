@@ -42,7 +42,7 @@ class ProjectFragment : ThemeFragment<FragmentProjectBinding, ProjectViewModel>(
         cidList.onEach {
             TabPagerFragmentHelper.TabPager(
                 fragment = { CidProjectFragment.newInstance(it.id) },
-                title = it.name
+                title = it.name ?: ""
             ).also {
                 pagers.add(it)
             }

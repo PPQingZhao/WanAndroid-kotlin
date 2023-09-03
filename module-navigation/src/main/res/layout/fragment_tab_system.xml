@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.navigation.ui.TabSystemViewModel" />
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutDescription="@xml/fragment_tab_system_scene">
+
+        <ImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            app:layout_constraintHeight_percent="0.2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fl_back"
+            tools:background="?colorPrimary" />
+
+        <FrameLayout
+            android:id="@+id/fl_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fitsSystemWindows="true">
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/iv_back"
+                android:layout_width="?actionBarSize"
+                android:layout_height="?actionBarSize"
+                android:layout_marginStart="@dimen/dp_8"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="@{viewModel.mTheme.textColorPrimary}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:roundPercent="1"
+                tools:ignore="UseAppTint,UsingOnClickInXml"
+                tools:tint="?android:textColorPrimary" />
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{viewModel.title}"
+            android:textColor="@{viewModel.MTheme.textColorPrimary}"
+            android:textSize="15sp"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="android"
+            tools:textColor="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{viewModel.count}"
+            android:textColor="@{viewModel.MTheme.textColorSecondary}"
+            android:textSize="11sp"
+            tools:text="(共11个子分类)"
+            tools:textColor="?android:textColorSecondary" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            app:SelectedTabIndicatorColor="@{viewModel.MTheme.textColorPrimary.defaultColor}"
+            app:layout_constraintTop_toBottomOf="@id/iv_cover"
+            app:tabIndicatorHeight="2dp"
+            app:tabMode="scrollable"
+            app:tabRippleColor="@color/transparent"
+            app:tabTextAppearance="@style/StyleTabText"
+            tools:background="?colorPrimary" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewpager2"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tablayout" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

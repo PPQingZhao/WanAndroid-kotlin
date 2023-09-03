@@ -8,10 +8,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pp.base.ThemeFragment
+import com.pp.common.app.App
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.*
+import com.pp.common.paging.itemText1ArticleListBindItemType
+import com.pp.common.paging.itemText2ArticleListBindItemType
+import com.pp.common.paging.itemText3ArticleBindItemType
 import com.pp.navigation.databinding.FragmentSystemBinding
+import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.MultiRecyclerViewBindingAdapter
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.adapter.ViewDataBindingItemType
@@ -112,10 +116,42 @@ class SystemFragment private constructor() :
                 addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
             }
 
+            val onItemListener = object : OnItemListener<ItemDataViewModel<ArticleListBean>> {
+                override fun onItemClick(
+                    view: View, item: ItemDataViewModel<ArticleListBean>,
+                ): Boolean {
+                    var systemArticleList: ArticleListBean? = null
+                    var targetPosition = 0
+                    lifecycleScope.launch {
+
+                        mViewModel.systemList.collectLatest {
+                            it.onEach { articleListBean ->
+                                val data = item.data
+                                if (articleListBean.children?.contains(data) == true) {
+                                    systemArticleList = articleListBean
+                                    targetPosition = articleListBean.children!!.indexOf(data)
+                                    return@onEach
+                                }
+                            }
+                            cancel()
+                        }
+                    }
+                    val bundle = Bundle().apply {
+                        putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
+                        putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
+                    }
+                    App.getInstance().navigation.value =
+                        RouterPath.Navigation.fragment_tab_system to bundle
+                    return true
+                }
+            }
             itemText2ArticleListBindItemType(
                 type_article_list,
                 layoutInflater,
-                mViewModel.mTheme
+                mViewModel.mTheme,
+                onBindItemViewModel = { _, viewModel, _ ->
+                    viewModel.setOnItemListener(onItemListener)
+                }
             ).let {
                 addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
             }

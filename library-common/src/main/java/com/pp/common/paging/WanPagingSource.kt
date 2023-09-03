@@ -10,6 +10,12 @@ abstract class WanPagingSource : SimplePagingSource<PageBean, Int, ArticleBean>(
     }
 
     override fun createNextKey(response: PageBean?): Int? {
-        return response?.curPage
+        return response?.run {
+            if (over) {
+                null
+            } else {
+                curPage
+            }
+        }
     }
 }

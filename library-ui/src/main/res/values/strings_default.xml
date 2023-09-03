@@ -4,4 +4,5 @@
     <string name="fresh">新</string>
     <string name="author">作者:</string>
     <string name="chapter">分类:</string>
+    <string name="chapter_count">(共%d个子分类)</string>
 </resources>

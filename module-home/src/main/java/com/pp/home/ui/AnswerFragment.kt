@@ -3,7 +3,7 @@ package com.pp.home.ui
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.paging.itemChapterArticlePagingAdapter
+import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.home.databinding.FragmentHomeChildAnswerBinding
 import com.pp.ui.utils.setPagingAdapter
 
@@ -20,7 +20,7 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemChapterArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
         )
     }
 

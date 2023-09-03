@@ -19,7 +19,7 @@ object SystemRepository {
     }
 
     fun getSystemArticle(cid: Int): Flow<PagingData<ArticleBean>> {
-        return Pager(config = PagingConfig(15), initialKey = 1, pagingSourceFactory = {
+        return Pager(config = PagingConfig(15), initialKey = 0, pagingSourceFactory = {
             SystemArticlePagingSource(cid)
         }).flow
     }
@@ -27,7 +27,7 @@ object SystemRepository {
     private class SystemArticlePagingSource(val cid: Int) : WanPagingSource() {
 
         override suspend fun getPageData(page: Int): PageBean? {
-            return WanAndroidService.systemApi.getSystemArticle(cid, page).data
+            return WanAndroidService.systemApi.getSystemArticle(cid = cid, page = page).data
         }
 
     }

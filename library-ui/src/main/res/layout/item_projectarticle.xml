@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.3"
                 app:round="@dimen/dp_8"
-                tools:src="@color/colorAccent" />
+                tools:src="@drawable/error" />
 
             <TextView
                 android:id="@+id/tv_title"

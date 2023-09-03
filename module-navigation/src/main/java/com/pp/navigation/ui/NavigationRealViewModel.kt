@@ -6,9 +6,7 @@ import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.navigation.repository.NavigationRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -32,7 +30,7 @@ class NavigationRealViewModel(app: Application) : ThemeViewModel(app) {
                     val articleList = mutableListOf<Any>()
                     it.data!!.onEach {
                         articleList.add(it)
-                        articleList.addAll(it.articles)
+                        it.articles?.let { it1 -> articleList.addAll(it1) }
                     }
                     _articles.emit(articleList)
                 }

@@ -76,7 +76,21 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                         )
                         toPopStackFragment = f
                     }
+                }
+                RouterPath.Navigation.fragment_tab_system -> {
+                    getMainFragment().let { f ->
+                        f.exitTransition = null
+                        f.enterTransition = null
+                    }
+                    getTabSystemFragment().let { f ->
+                        val secondArg = it.second
+                        if(secondArg is Bundle){
+                            f.arguments = secondArg
+                        }
 
+                        showFragment(f, RouterPath.Navigation.fragment_tab_system)
+                        toRemoveFragment = f
+                    }
                 }
             }
         }
@@ -160,5 +174,16 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         val webFragment = supportFragmentManager.findFragmentByTag(RouterPath.Web.fragment_web)
         mWebFragment = webFragment ?: CommonWebViewFragment()
         return mWebFragment!!
+    }
+
+    private fun getTabSystemFragment(): Fragment {
+        var tabSystemFragment =
+            supportFragmentManager.findFragmentByTag(RouterPath.Navigation.fragment_tab_system)
+        if (null == tabSystemFragment) {
+            tabSystemFragment =
+                ARouter.getInstance().build(RouterPath.Navigation.fragment_tab_system)
+                    .navigation() as Fragment
+        }
+        return tabSystemFragment
     }
 }

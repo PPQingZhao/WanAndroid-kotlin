@@ -27,7 +27,7 @@ class SystemViewModel(app: Application) : ThemeViewModel(app) {
                 val articleList = mutableListOf<Any>()
                 it.data!!.onEach {
                     articleList.add(it)
-                    articleList.addAll(it.children)
+                    it.children?.let { it1 -> articleList.addAll(it1) }
                 }
                 _articlesList.emit(articleList)
 
@@ -35,7 +35,4 @@ class SystemViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
-    fun getSystemArticle(cid: Int): Flow<PagingData<ArticleBean>> {
-        return SystemRepository.getSystemArticle(cid)
-    }
 }

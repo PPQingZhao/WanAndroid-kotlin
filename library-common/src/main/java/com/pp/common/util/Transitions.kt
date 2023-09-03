@@ -8,3 +8,4 @@ fun materialSharedAxis(axis: Int, forward: Boolean): MaterialSharedAxis {
         duration = Constants.TRANSITION_DURATION
     }
 }
+

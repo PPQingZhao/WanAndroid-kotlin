@@ -3,7 +3,7 @@ package com.pp.home.ui
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.paging.itemChapterArticlePagingAdapter
+import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.home.databinding.FragmentHomeChildSquareBinding
 import com.pp.ui.utils.setPagingAdapter
 
@@ -22,7 +22,7 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemChapterArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
         )
     }
 

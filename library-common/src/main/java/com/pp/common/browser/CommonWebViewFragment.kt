@@ -3,7 +3,7 @@ package com.pp.common.browser
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
-import com.google.android.material.transition.platform.MaterialContainerTransform
+import com.google.android.material.transition.MaterialContainerTransform
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
