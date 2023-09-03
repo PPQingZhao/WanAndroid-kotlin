@@ -62,9 +62,10 @@ class CommonWebViewFragment : WebViewFragment() {
     }
 
     override fun handleOnBackPressed() {
-        super.handleOnBackPressed()
         if (!canGoBack()) {
             App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
+        } else {
+            super.handleOnBackPressed()
         }
     }
 

@@ -68,13 +68,9 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <FrameLayout
+            android:id="@+id/web_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-
-            <WebView
-                android:id="@+id/webview"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
 
             <ProgressBar
                 android:id="@+id/web_progressbar"
