@@ -10,7 +10,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
-import com.pp.common.materialSharedAxis
+import com.pp.common.util.materialSharedAxis
 import com.pp.router_service.RouterPath
 import com.pp.user.databinding.FragmentLoginAndRegisterBinding
 import kotlinx.coroutines.launch
@@ -36,7 +36,6 @@ class LoginAndRegisterFragment :
         enterTransition = materialSharedAxis(MaterialSharedAxis.X, true)
         exitTransition = materialSharedAxis(MaterialSharedAxis.X, false)
 
-        enableBackPressed(true)
         initLoginViewModel()
         initRegisterViewModel()
         initMotionLayout()
@@ -47,10 +46,6 @@ class LoginAndRegisterFragment :
         mBinding.ivBack.setOnClickListener {
             App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
         }
-    }
-
-    override fun handleOnBackPressed() {
-        App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
     }
 
     private fun initMotionLayout() {

@@ -2,7 +2,6 @@ package com.pp.navigation.ui
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
@@ -11,7 +10,7 @@ import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.materialSharedAxis
+import com.pp.common.util.materialSharedAxis
 import com.pp.navigation.databinding.FragmentTabSystemBinding
 import com.pp.router_service.RouterPath
 import kotlinx.coroutines.flow.collectLatest
@@ -36,8 +35,9 @@ class TabSystemFragment :
     private var targetPosition = 0
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enterTransition = materialSharedAxis(MaterialSharedAxis.Z, true)
         exitTransition = materialSharedAxis(MaterialSharedAxis.Z, false)
+        enterTransition = materialSharedAxis(MaterialSharedAxis.Z, true)
+        reenterTransition = materialSharedAxis(MaterialSharedAxis.Z, true)
 
         arguments?.apply {
             targetPosition = getInt(TARGET_POSITION)

@@ -15,6 +15,7 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
 
     val mViewModel: VM by lazy { ViewModelProvider(this, getModelFactory())[getModelClazz()] }
 
+    private val DEBUG = BuildConfig.DEBUG
     open fun getModelFactory(): ViewModelProvider.Factory =
         ViewModelProvider.AndroidViewModelFactory(activity?.application!!)
 
@@ -57,20 +58,28 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
 
     override fun onStart() {
         super.onStart()
-        Log.e("TAG", "onStart==> $this")
+        if (DEBUG) {
+            Log.e("TAG", "onStart==> $this")
+        }
     }
 
     override fun onPause() {
         super.onPause()
-        Log.e("TAG", "onPause==> $this")
+        if (DEBUG) {
+            Log.e("TAG", "onPause==> $this")
+        }
     }
 
     private var alreadyResume = false
     override fun onResume() {
         super.onResume()
-        Log.e("TAG", "onResume==> $this")
+        if (DEBUG) {
+            Log.e("TAG", "onResume==> $this")
+        }
         if (!alreadyResume) {
-            Log.e("TAG", "onFirstResume==> $this")
+            if (DEBUG) {
+                Log.e("TAG", "onFirstResume==> $this")
+            }
             onFirstResume()
             alreadyResume = true
         }
@@ -78,17 +87,23 @@ abstract class LifecycleFragment<VB : ViewDataBinding, VM : LifecycleViewModel> 
 
     override fun onStop() {
         super.onStop()
-        Log.e("TAG", "onStop==> $this")
+        if (DEBUG) {
+            Log.e("TAG", "onStop==> $this")
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
-        Log.e("TAG", "onDestroyView ==> ${this}")
+        if (DEBUG) {
+            Log.e("TAG", "onDestroyView ==> ${this}")
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Log.e("TAG", "destroy ===> ${this}")
+        if (DEBUG) {
+            Log.e("TAG", "destroy ===> ${this}")
+        }
     }
 
     open fun onFirstResume() {

@@ -5,8 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
 import androidx.lifecycle.Lifecycle
 import com.alibaba.android.arouter.launcher.ARouter
 import com.google.android.material.transition.MaterialElevationScale
@@ -15,8 +18,9 @@ import com.pp.base.ThemeActivity
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.constant.Constants
-import com.pp.common.materialSharedAxis
+import com.pp.common.util.materialSharedAxis
 import com.pp.common.util.ShareElementNavigation
+import com.pp.common.util.materialElevationScale
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
 import com.pp.router_service.RouterPath
@@ -37,6 +41,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
+    private val DEBUG = true
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(newBase)
         App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
@@ -45,11 +50,24 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        supportFragmentManager.registerFragmentLifecycleCallbacks(object :
+            FragmentLifecycleCallbacks() {
+            override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+                if (null != f.view?.parent && !f.isHidden) {
+                    showingFragment = f
+                }
+
+                if (DEBUG) {
+                    Log.e("MainActivity", "showingFragment: $showingFragment")
+                }
+            }
+        }, false)
+
         App.getInstance().navigation.observe(this) {
+
             when (it.first) {
-                RouterPath.User.fragment_user,
-                RouterPath.Main.fragment_main,
-                -> {
+                RouterPath.Main.fragment_main -> {
                     showFragment(
                         getMainFragment(),
                         RouterPath.Main.fragment_main,
@@ -58,15 +76,19 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
                 RouterPath.User.fragment_login -> {
                     getMainFragment().let { f ->
-                        f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
-                        f.enterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+                        if (f::class.java.equals(showingFragment!!::class.java)) {
+                            f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
+                            f.reenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+                        }
                     }
                     showFragment(getLoginFragment(), RouterPath.User.fragment_login)
                 }
                 RouterPath.Web.fragment_web -> {
                     getMainFragment().let { f ->
-                        f.exitTransition = null
-                        f.enterTransition = null
+                        if (f::class.java.equals(showingFragment!!::class.java)) {
+                            f.exitTransition = materialElevationScale(false)
+                            f.reenterTransition = materialElevationScale(true)
+                        }
                     }
                     getWebFragment().let { f ->
 
@@ -85,10 +107,12 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     }
                 }
                 RouterPath.Navigation.fragment_tab_system -> {
+
                     getMainFragment().let { f ->
                         f.exitTransition = null
-                        f.enterTransition = null
+                        f.reenterTransition = null
                     }
+
                     getTabSystemFragment().let { f ->
                         val secondArg = it.second
                         if (secondArg is Bundle) {
@@ -97,7 +121,9 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                         showFragment(f, RouterPath.Navigation.fragment_tab_system)
                     }
                 }
-                Constants.ON_BACK_PRESSED -> {
+                RouterPath.User.fragment_user,
+                Constants.ON_BACK_PRESSED,
+                -> {
                     popBackStack()
                 }
             }
@@ -106,25 +132,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
 
     @SuppressLint("CommitTransaction")
     private fun popBackStack() {
-        supportFragmentManager.beginTransaction().let { transition ->
-            val oldFragment = showingFragment
-            oldFragment?.let { f ->
-                if (f.isAdded) {
-                    transition.setMaxLifecycle(f, Lifecycle.State.STARTED)
-                        .commit()
-                }
-            }
-            supportFragmentManager.popBackStackImmediate()
-
-            supportFragmentManager.fragments.onEach { f ->
-                if (f.isVisible && f.isResumed && !f.isHidden) {
-                    showingFragment = f
-                    return@onEach
-                }
-            }
-
-        }
-
+        supportFragmentManager.popBackStackImmediate()
     }
 
     private var showingFragment: Fragment? = null
@@ -137,8 +145,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         addToBackStack: Boolean = true,
     ) {
         supportFragmentManager.beginTransaction().let { transition ->
-
             val oldFragment = showingFragment
+            showingFragment = null
             oldFragment?.let {
                 transition.hide(it)
                 if (oldFragment.isAdded) {
@@ -146,7 +154,6 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
             }
 
-            showingFragment = null
             fragment.let { f ->
                 if (!f.isAdded) {
                     transition.add(R.id.container, f, tag)
@@ -159,12 +166,11 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 if (addToBackStack) {
                     transition.addToBackStack("main")
                 }
-                transition.show(f)
+                transition
+                    .show(f)
                     .setMaxLifecycle(f, Lifecycle.State.RESUMED)
                     .commit()
             }
-
-            showingFragment = fragment
         }
     }
 

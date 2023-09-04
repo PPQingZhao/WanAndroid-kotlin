@@ -30,7 +30,6 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
                 }
             }
         }
-
     }
 
     override fun onFirstResume() {
