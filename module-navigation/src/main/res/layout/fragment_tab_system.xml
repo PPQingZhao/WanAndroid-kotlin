@@ -13,6 +13,7 @@
     <androidx.constraintlayout.motion.widget.MotionLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@{viewModel.MTheme.windowBackground}"
         app:layoutDescription="@xml/fragment_tab_system_scene">
 
         <ImageView
@@ -29,6 +30,7 @@
             android:id="@+id/fl_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@{viewModel.MTheme.colorPrimary}"
             android:fitsSystemWindows="true">
 
             <androidx.constraintlayout.utils.widget.ImageFilterView

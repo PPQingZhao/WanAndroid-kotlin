@@ -7,7 +7,6 @@ import com.google.android.material.transition.MaterialContainerTransform
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
-import com.pp.router_service.RouterPath
 
 class CommonWebViewFragment : WebViewFragment() {
 
@@ -61,17 +60,18 @@ class CommonWebViewFragment : WebViewFragment() {
 
     }
 
+    override fun onBack() {
+        super.onBack()
+        App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+    }
+
     override fun handleOnBackPressed() {
-        if (!canGoBack()) {
-            App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
+        val canGoBack = mViewModel.getWebView().canGoBackOrForward(-1)
+        if (!canGoBack) {
+            onBack()
         } else {
             super.handleOnBackPressed()
         }
-    }
-
-    override fun onBack() {
-        super.goBack()
-        App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
     }
 
 }

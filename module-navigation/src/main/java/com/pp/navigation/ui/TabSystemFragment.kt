@@ -2,12 +2,14 @@ package com.pp.navigation.ui
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
+import com.pp.common.constant.Constants
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.materialSharedAxis
 import com.pp.navigation.databinding.FragmentTabSystemBinding
@@ -54,14 +56,14 @@ class TabSystemFragment :
         initView()
     }
 
-    private fun initView() {
-        mBinding.ivBack.setOnClickListener {
-            App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
-        }
+    override fun handleOnBackPressed() {
+        App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
     }
 
-    override fun handleOnBackPressed() {
-        App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
+    private fun initView() {
+        mBinding.ivBack.setOnClickListener {
+            App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+        }
     }
 
     override fun onFirstResume() {

@@ -75,6 +75,7 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
                 it.goBack()
             }
         }
+        enableBackPressed(false)
     }
 
     private val mWebLayoutParams = FrameLayout.LayoutParams(
@@ -98,14 +99,15 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
     }
 
     fun goBack() {
+        mViewModel.getWebView().copyBackForwardList().currentItem
         mViewModel.getWebView().goBack()
     }
 
     override fun handleOnBackPressed() {
         if (canGoBack()) {
             goBack()
-            return
         }
+        enableBackPressed(canGoBack())
     }
 
     private fun clearWebView() {

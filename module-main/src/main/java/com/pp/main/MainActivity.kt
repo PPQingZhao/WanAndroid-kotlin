@@ -2,16 +2,19 @@ package com.pp.main
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import com.alibaba.android.arouter.launcher.ARouter
+import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeActivity
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
+import com.pp.common.constant.Constants
 import com.pp.common.materialSharedAxis
 import com.pp.common.util.ShareElementNavigation
 import com.pp.main.databinding.ActivityMainBinding
@@ -34,26 +37,31 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
+    override fun attachBaseContext(newBase: Context?) {
+        super.attachBaseContext(newBase)
+        App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
+    }
+
     @SuppressLint("CommitTransaction")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.getInstance().navigation.observe(this) {
-
             when (it.first) {
                 RouterPath.User.fragment_user,
                 RouterPath.Main.fragment_main,
                 -> {
-                    showFragment(getMainFragment(), RouterPath.Main.fragment_main)
+                    showFragment(
+                        getMainFragment(),
+                        RouterPath.Main.fragment_main,
+                        addToBackStack = false
+                    )
                 }
                 RouterPath.User.fragment_login -> {
                     getMainFragment().let { f ->
                         f.exitTransition = materialSharedAxis(MaterialSharedAxis.X, true)
                         f.enterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
                     }
-                    getLoginFragment().let {
-                        showFragment(it, RouterPath.User.fragment_login)
-                        toRemoveFragment = it
-                    }
+                    showFragment(getLoginFragment(), RouterPath.User.fragment_login)
                 }
                 RouterPath.Web.fragment_web -> {
                     getMainFragment().let { f ->
@@ -72,9 +80,8 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                             f,
                             RouterPath.Web.fragment_web,
                             sharedElement,
-                            addToBackStack = true
+                            true
                         )
-                        toPopStackFragment = f
                     }
                 }
                 RouterPath.Navigation.fragment_tab_system -> {
@@ -84,56 +91,65 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     }
                     getTabSystemFragment().let { f ->
                         val secondArg = it.second
-                        if(secondArg is Bundle){
+                        if (secondArg is Bundle) {
                             f.arguments = secondArg
                         }
-
                         showFragment(f, RouterPath.Navigation.fragment_tab_system)
-                        toRemoveFragment = f
                     }
+                }
+                Constants.ON_BACK_PRESSED -> {
+                    popBackStack()
                 }
             }
         }
     }
 
-    private var curFragment: Fragment? = null
-    private var toRemoveFragment: Fragment? = null
-    private var toPopStackFragment: Fragment? = null
+    @SuppressLint("CommitTransaction")
+    private fun popBackStack() {
+        supportFragmentManager.beginTransaction().let { transition ->
+            val oldFragment = showingFragment
+            oldFragment?.let { f ->
+                if (f.isAdded) {
+                    transition.setMaxLifecycle(f, Lifecycle.State.STARTED)
+                        .commit()
+                }
+            }
+            supportFragmentManager.popBackStackImmediate()
+
+            supportFragmentManager.fragments.onEach { f ->
+                if (f.isVisible && f.isResumed && !f.isHidden) {
+                    showingFragment = f
+                    return@onEach
+                }
+            }
+
+        }
+
+    }
+
+    private var showingFragment: Fragment? = null
 
     @SuppressLint("CommitTransaction")
     private fun showFragment(
         fragment: Fragment,
         tag: String,
         sharedElement: View? = null,
-        addToBackStack: Boolean = false,
+        addToBackStack: Boolean = true,
     ) {
-
         supportFragmentManager.beginTransaction().let { transition ->
 
-            val oldFragment = curFragment
+            val oldFragment = showingFragment
             oldFragment?.let {
-//                Log.e("TAG", "$it")
                 transition.hide(it)
-                if (toPopStackFragment != it) {
+                if (oldFragment.isAdded) {
                     transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
                 }
             }
 
-            toPopStackFragment?.let {
-                if (supportFragmentManager.backStackEntryCount > 0) {
-                    supportFragmentManager.popBackStackImmediate()
-                }
-                toPopStackFragment = null
-            }
-
-            toRemoveFragment?.let {
-                transition.remove(toRemoveFragment!!)
-                toRemoveFragment = null
-            }
-
-            fragment.let {
-                if (!it.isAdded) {
-                    transition.add(R.id.container, it, tag)
+            showingFragment = null
+            fragment.let { f ->
+                if (!f.isAdded) {
+                    transition.add(R.id.container, f, tag)
                 }
 
                 if (null != sharedElement) {
@@ -141,15 +157,14 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                 }
 
                 if (addToBackStack) {
-                    transition.addToBackStack(null)
+                    transition.addToBackStack("main")
                 }
-
-                transition.show(it)
-                    .setMaxLifecycle(it, Lifecycle.State.RESUMED)
+                transition.show(f)
+                    .setMaxLifecycle(f, Lifecycle.State.RESUMED)
                     .commit()
             }
 
-            curFragment = fragment
+            showingFragment = fragment
         }
     }
 
