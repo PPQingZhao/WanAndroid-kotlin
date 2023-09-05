@@ -10,17 +10,17 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentManager.FragmentLifecycleCallbacks
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import com.alibaba.android.arouter.launcher.ARouter
-import com.google.android.material.transition.MaterialElevationScale
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeActivity
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.constant.Constants
-import com.pp.common.util.materialSharedAxis
 import com.pp.common.util.ShareElementNavigation
 import com.pp.common.util.materialElevationScale
+import com.pp.common.util.materialSharedAxis
 import com.pp.main.databinding.ActivityMainBinding
 import com.pp.main.databinding.ActivityMainBindingImpl
 import com.pp.router_service.RouterPath
@@ -137,6 +137,17 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
 
     private var showingFragment: Fragment? = null
 
+    /**
+     * 转场动画:
+     *  单独使用 @see [FragmentTransaction.add]没有动画效果,
+     *  可以配合 @see [FragmentTransaction.hide]使用,使动画效果生效
+     *  或者使用 @see [FragmentTransaction.replace]使动画生效
+     * 在这里使用  @see [FragmentTransaction.add]方式配合 @see [FragmentTransaction.hide]使转场动画生效,
+     * 并且使用 @see [FragmentTransaction.setMaxLifecycle]控制fragment生命周期
+     * 值得注意的是 @see [FragmentTransaction.hide]之后,再次显示时没有使用@see [FragmentTransaction.show],
+     * 比如:按下回退键(系统处理fragment退栈  @see [FragmentManager.popBackStackImmediate])
+     * 会导致fragment.isVisible为false,就不能使用该属性判断fragment是否可见([showingFragment]的判断就不可以使用该条件)
+     */
     @SuppressLint("CommitTransaction")
     private fun showFragment(
         fragment: Fragment,
@@ -144,32 +155,33 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         sharedElement: View? = null,
         addToBackStack: Boolean = true,
     ) {
-        supportFragmentManager.beginTransaction().let { transition ->
+        supportFragmentManager.beginTransaction().let { transaction ->
+
             val oldFragment = showingFragment
             showingFragment = null
             oldFragment?.let {
-                transition.hide(it)
+                transaction.hide(it)
                 if (oldFragment.isAdded) {
-                    transition.setMaxLifecycle(it, Lifecycle.State.STARTED)
+                    transaction.setMaxLifecycle(it, Lifecycle.State.STARTED)
                 }
             }
 
             fragment.let { f ->
                 if (!f.isAdded) {
-                    transition.add(R.id.container, f, tag)
+                    transaction.add(R.id.container, f, tag)
                 }
 
                 if (null != sharedElement) {
-                    transition.addSharedElement(sharedElement, sharedElement.transitionName)
+                    transaction.addSharedElement(sharedElement, sharedElement.transitionName)
                 }
 
                 if (addToBackStack) {
-                    transition.addToBackStack("main")
+                    transaction.addToBackStack("main")
                 }
-                transition
+                transaction
                     .show(f)
                     .setMaxLifecycle(f, Lifecycle.State.RESUMED)
-                    .commit()
+                    .commitAllowingStateLoss()
             }
         }
     }
