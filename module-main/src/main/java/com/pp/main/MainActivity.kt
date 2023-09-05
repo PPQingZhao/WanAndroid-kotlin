@@ -138,15 +138,16 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
     private var showingFragment: Fragment? = null
 
     /**
-     * 转场动画:
+     * material motion转场动画:
      *  单独使用 @see [FragmentTransaction.add]没有动画效果,
      *  可以配合 @see [FragmentTransaction.hide]使用,使动画效果生效
      *  或者使用 @see [FragmentTransaction.replace]使动画生效
+     *
      * 在这里使用  @see [FragmentTransaction.add]方式配合 @see [FragmentTransaction.hide]使转场动画生效,
      * 并且使用 @see [FragmentTransaction.setMaxLifecycle]控制fragment生命周期
      * 值得注意的是 @see [FragmentTransaction.hide]之后,再次显示时没有使用@see [FragmentTransaction.show],
      * 比如:按下回退键(系统处理fragment退栈  @see [FragmentManager.popBackStackImmediate])
-     * 会导致fragment.isVisible为false,就不能使用该属性判断fragment是否可见([showingFragment]的判断就不可以使用该条件)
+     * 会导致 @see [Fragment.isVisible]为false,就不能使用该属性判断fragment是否可见([showingFragment]的判断就不可以使用该条件)
      */
     @SuppressLint("CommitTransaction")
     private fun showFragment(
