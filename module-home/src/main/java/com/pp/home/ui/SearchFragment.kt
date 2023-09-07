@@ -1,36 +1,26 @@
 package com.pp.home.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.appcompat.widget.SearchView
-import androidx.core.view.doOnPreDraw
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
-import androidx.paging.PagingData
 import androidx.recyclerview.widget.LinearLayoutManager
-import cn.leo.paging_ktx.SimplePagingAdapter
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
 import com.pp.common.constant.Constants
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
-import com.pp.common.model.ItemTextHotkeyViewModel
-import com.pp.common.paging.*
+import com.pp.common.paging.itemArticleBinder
+import com.pp.common.paging.itemText1HotkeyBinder
+import com.pp.common.paging.itemText2HotkeyBinder
 import com.pp.common.util.materialSharedAxis
-import com.pp.home.R
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.BindingPagingDataAdapter2
-import com.pp.ui.adapter.MultiRecyclerViewBindingAdapter
-import com.pp.ui.adapter.ViewDataBindingItemType
-import com.pp.ui.databinding.ItemText1Binding
-import com.pp.ui.databinding.ItemText2Binding
 import com.pp.ui.viewModel.ItemDataViewModel
-import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
@@ -58,13 +48,14 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     private val mSearchAdapter by lazy {
-        BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
-            itemArticleBindItemType(
-                inflater = layoutInflater,
-                theme = mViewModel.mTheme
-            ),
-            articleDifferCallback
-        )
+
+        BindingPagingDataAdapter2<ArticleBean>({
+            com.pp.ui.R.layout.item_article
+        }).apply {
+            itemArticleBinder(mViewModel.mTheme).also {
+                addItemViewModelBinder(it)
+            }
+        }
     }
 
     private fun initSearchRecyclerView() {
@@ -90,62 +81,12 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                 com.pp.ui.R.layout.item_text1
             }
         }).apply {
-            object : BindingPagingDataAdapter2.BindViewModel<ItemText1Binding, HotKey>() {
-                override fun getViewDataBindingClazz(): Class<ItemText1Binding> {
-                    return ItemText1Binding::class.java
-                }
-
-                override fun getDataClazz(): Class<HotKey>? {
-                    return HotKey::class.java
-                }
-
-                override fun bindViewModel(
-                    binding: ItemText1Binding,
-                    data: HotKey?,
-                    position: Int,
-                ) {
-                    val viewModel = binding.viewModel
-                    if (viewModel != null) {
-                        viewModel.data = data
-                    } else {
-                        ItemTextHotkeyViewModel(data, mViewModel.mTheme)
-                            .apply {
-                                setOnItemListener(onItemListener)
-                                binding.viewModel = this
-                            }
-                    }
-                }
-            }.also {
-                addBindViewModel(it as BindingPagingDataAdapter2.BindViewModel<ViewDataBinding, HotKey>)
+            itemText1HotkeyBinder(mViewModel.mTheme).also {
+                addItemViewModelBinder(it)
             }
 
-            object : BindingPagingDataAdapter2.BindViewModel<ItemText2Binding, HotKey>() {
-                override fun getViewDataBindingClazz(): Class<ItemText2Binding> {
-                    return ItemText2Binding::class.java
-                }
-
-                override fun getDataClazz(): Class<HotKey> {
-                    return HotKey::class.java
-                }
-
-                override fun bindViewModel(
-                    binding: ItemText2Binding,
-                    data: HotKey?,
-                    position: Int,
-                ) {
-                    val viewModel = binding.viewModel
-                    if (viewModel != null) {
-                        viewModel.data = data
-                    } else {
-                        ItemTextHotkeyViewModel(data, mViewModel.mTheme)
-                            .apply {
-                                setOnItemListener(onItemListener)
-                                binding.viewModel = this
-                            }
-                    }
-                }
-            }.also {
-                addBindViewModel(it as BindingPagingDataAdapter2.BindViewModel<ViewDataBinding, HotKey>)
+            itemText2HotkeyBinder(onItemListener, mViewModel.mTheme).also {
+                addItemViewModelBinder(it)
             }
 
         }
@@ -194,7 +135,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
     override fun onFirstResume() {
         viewLifecycleOwner.lifecycleScope.launch {
-            mViewModel.getSearchHot2().collectLatest {
+            mViewModel.getSearchHot().collectLatest {
                 mHotkeyAdapter.submitData(it)
             }
         }

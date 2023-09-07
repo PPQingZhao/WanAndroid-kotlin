@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.pp.ui.BR
 
 class BindingPagingDataAdapter2<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
@@ -37,31 +36,31 @@ class BindingPagingDataAdapter2<Data : Any>(
         mInflater = LayoutInflater.from(recyclerView.context)
     }
 
-    private val mBindViewModelList = mutableListOf<BindViewModel<ViewDataBinding, Data>>()
+    private val mBindViewModelList = mutableListOf<ItemViewModelBinder<ViewDataBinding, Data>>()
 
-    fun addBindViewModel(bvm: BindViewModel<ViewDataBinding, Data>) {
-        mBindViewModelList.add(bvm)
+    fun addItemViewModelBinder(itemViewModelBinder: ItemViewModelBinder<out ViewDataBinding, Data>) {
+        mBindViewModelList.add(itemViewModelBinder as ItemViewModelBinder<ViewDataBinding, Data>)
     }
 
     private fun getBindViewModel(
         bind: ViewDataBinding,
         data: Data?,
-    ): BindViewModel<ViewDataBinding, Data> {
+    ): ItemViewModelBinder<ViewDataBinding, Data> {
         val dataClazz = if (data == null) {
             null
         } else {
             data::class.java
         }
-        for (bvm in mBindViewModelList) {
+        for (binder in mBindViewModelList) {
 
-            if (bvm.getDataClazz() != dataClazz) {
+            if (binder.getDataClazz() != dataClazz) {
                 continue
             }
-            val viewDataBindingClazz = bvm.getViewDataBindingClazz()
+            val viewDataBindingClazz = binder.getViewDataBindingClazz()
             if (!viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
                 continue
             }
-            return bvm
+            return binder
         }
         throw RuntimeException("No BindViewModel for {bind:${bind::class.java.simpleName},data:${dataClazz}}")
     }
@@ -100,11 +99,4 @@ class BindingPagingDataAdapter2<Data : Any>(
         return getItemLayoutRes.invoke(data)
     }
 
-    abstract class BindViewModel<VB : ViewDataBinding, Data : Any> {
-        abstract fun getViewDataBindingClazz(): Class<VB>
-        abstract fun getDataClazz(): Class<Data>?
-        open fun bindViewModel(binding: VB, data: Data?, position: Int) {
-            binding.setVariable(BR.viewModel, data)
-        }
-    }
 }

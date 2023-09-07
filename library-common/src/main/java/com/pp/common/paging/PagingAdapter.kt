@@ -12,8 +12,10 @@ import com.pp.common.model.*
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.DefaultViewDataBindingItemType
+import com.pp.ui.adapter.ItemDataViewModelBinder
 import com.pp.ui.databinding.*
 import com.pp.ui.viewModel.ItemDataViewModel
+import com.pp.ui.viewModel.OnItemListener
 
 
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
@@ -199,3 +201,29 @@ fun itemChapterArticlePagingAdapter(
         ),
         diffCallback = articleDifferCallback
     )
+
+fun itemText1HotkeyBinder(theme: AppDynamicTheme) =
+    ItemDataViewModelBinder<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
+        getItemViewModel = { ItemTextHotkeyViewModel(it, theme) },
+        getViewDataBindingClazz = { ItemText1Binding::class.java },
+        getDataClazz = { HotKey::class.java }
+    )
+
+fun itemText2HotkeyBinder(
+    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>,
+    theme: AppDynamicTheme,
+) = ItemDataViewModelBinder<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
+    getItemViewModel = { ItemTextHotkeyViewModel(it, theme) },
+    getViewDataBindingClazz = { ItemText2Binding::class.java },
+    getDataClazz = { HotKey::class.java },
+    onItemListener = onItemListener
+)
+
+
+fun itemArticleBinder(
+    theme: AppDynamicTheme
+) = ItemDataViewModelBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
+    getItemViewModel = { ArticleItemArticleViewModel(it, theme) },
+    getViewDataBindingClazz = { ItemArticleBinding::class.java },
+    getDataClazz = { ArticleBean::class.java },
+)
