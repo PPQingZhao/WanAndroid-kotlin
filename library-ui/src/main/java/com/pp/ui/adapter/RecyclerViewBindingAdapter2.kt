@@ -12,24 +12,11 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
-class BindingPagingDataAdapter2<Data : Any>(
+class RecyclerViewBindingAdapter2<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
-    diffCallback: DiffUtil.ItemCallback<Data> = emptyDifferCallback(),
-) : PagingDataAdapter<Data, BindingItemViewHolder2>(diffCallback) {
+) : RecyclerView.Adapter<BindingItemViewHolder2>() {
 
-    companion object {
-        fun <Data : Any> emptyDifferCallback() = object : DiffUtil.ItemCallback<Data>() {
-            override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
-                return oldItem == newItem
-            }
-
-            @SuppressLint("DiffUtilEquals")
-            override fun areContentsTheSame(oldItem: Data, newItem: Data): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }
 
     private var mInflater: LayoutInflater? = null
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
@@ -43,7 +30,7 @@ class BindingPagingDataAdapter2<Data : Any>(
     }
 
     private fun getBindViewModel(
-        bind: ViewDataBinding,
+        bind: ViewDataBinding?,
         data: Data?,
     ): ItemViewModelBinder<ViewDataBinding, Data> {
         val dataClazz = if (data == null) {
@@ -56,13 +43,14 @@ class BindingPagingDataAdapter2<Data : Any>(
             if (binder.getDataClazz() != dataClazz) {
                 continue
             }
+
             val viewDataBindingClazz = binder.getViewDataBindingClazz()
-            if (!viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
+            if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
                 continue
             }
             return binder
         }
-        throw RuntimeException("No BindViewModel for {bind:${bind::class.java.simpleName},data:${dataClazz}}")
+        throw RuntimeException("No BindViewModel for {bind:${bind},data:${dataClazz}}")
     }
 
     override fun onCreateViewHolder(
@@ -98,5 +86,31 @@ class BindingPagingDataAdapter2<Data : Any>(
         val data = getItem(position)
         return getItemLayoutRes.invoke(data)
     }
+
+    override fun getItemCount(): Int {
+        return dataList.size
+    }
+
+    private val dataList by lazy { mutableListOf<Data>() }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setDataList(list: List<Data>) {
+        dataList.clear()
+        dataList.addAll(list)
+        notifyDataSetChanged()
+    }
+
+    fun getData(): List<Data> {
+        return dataList
+    }
+
+    protected fun getItem(position: Int): Data? {
+        return if (position >= 0 && position < dataList.size) {
+            dataList[position]
+        } else {
+            null
+        }
+    }
+
 
 }

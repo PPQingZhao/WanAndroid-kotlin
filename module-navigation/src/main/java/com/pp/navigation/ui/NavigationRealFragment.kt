@@ -9,13 +9,13 @@ import com.google.android.flexbox.FlexboxLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.itemText1ArticleListBindItemType
-import com.pp.common.paging.itemTextArticleListBindItemType
-import com.pp.common.paging.itemArticleText2BindItemType
+import com.pp.common.paging.itemText1ArticleListBinder
+import com.pp.common.paging.itemText2ArticleBinder
+import com.pp.common.paging.itemTextArticleListBinder
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
-import com.pp.ui.adapter.MultiRecyclerViewBindingAdapter
-import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.adapter.ViewDataBindingItemType
+import com.pp.ui.R
+import com.pp.ui.adapter.ItemViewModelBinder
+import com.pp.ui.adapter.RecyclerViewBindingAdapter2
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -85,38 +85,41 @@ class NavigationRealFragment private constructor() :
     }
 
     private val cidAdapter by lazy {
-        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemTextArticleListBindItemType(
-                inflater = layoutInflater,
-                theme = mViewModel.mTheme
-            ) { _, viewModel, position ->
-                if (selectedItem.getSelectedItem() == null && position == 0) {
-                    selectedItem.selectedItem(viewModel)
+
+        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text })
+            .apply {
+                itemTextArticleListBinder(
+                    onItemListener = mOnItemListener,
+                    theme = mViewModel.mTheme,
+                    onBindViewModel = { _, data, viewModel, position ->
+                        if (selectedItem.getSelectedItem() == null && position == 0) {
+                            selectedItem.selectedItem(viewModel)
+                        }
+                        false
+                    }).also {
+                    addItemViewModelBinder(it)
                 }
-                viewModel.setOnItemListener(mOnItemListener)
             }
-        )
     }
 
     private val articleAdapter by lazy {
-
-        val type_article_list = 0
-        val type_article = 1
-        MultiRecyclerViewBindingAdapter(getItemViewType = {
+        RecyclerViewBindingAdapter2<Any>(getItemLayoutRes = {
             if (it is ArticleListBean) {
-                type_article_list
+                R.layout.item_text1
             } else {
-                type_article
+                R.layout.item_text2
             }
         }).apply {
-            itemText1ArticleListBindItemType(
-                type_article_list, layoutInflater, mViewModel.mTheme
-            ).let {
-                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
+            itemText1ArticleListBinder(
+                theme = mViewModel.mTheme
+            ).also {
+                addItemViewModelBinder(it as ItemViewModelBinder<ViewDataBinding, Any>)
             }
 
-            itemArticleText2BindItemType(type_article, layoutInflater, mViewModel.mTheme).let {
-                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
+            itemText2ArticleBinder(
+                theme = mViewModel.mTheme,
+            ).also {
+                addItemViewModelBinder(it as ItemViewModelBinder<ViewDataBinding, Any>)
             }
         }
 

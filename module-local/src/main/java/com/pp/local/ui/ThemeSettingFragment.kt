@@ -9,7 +9,9 @@ import com.pp.local.databinding.FragmentThemeSettingBinding
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.R
+import com.pp.ui.adapter.DefaultItemViewModelBinder
+import com.pp.ui.adapter.RecyclerViewBindingAdapter2
 
 @Route(path = RouterPath.Local.fragment_theme_setting)
 class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSettingViewModel>() {
@@ -31,11 +33,24 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
 
     private val mAdapter by lazy {
 
+        RecyclerViewBindingAdapter2<ItemPreferenceThemeSettingViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
+            .apply {
+                object :
+                    DefaultItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
+                    override fun getItemViewModel(data: ItemPreferenceThemeSettingViewModel?): ItemPreferenceThemeSettingViewModel {
+                        return data!!
+                    }
 
-        RecyclerViewBindingAdapter.DefaultRecyclerViewBindingAdapter<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>(
-            onCreateBinding = { ItemThemeSettingBinding.inflate(layoutInflater, it, false) },
-            onBindItemModel = { _, item, _, _ -> item!! }
-        )
+                    override fun getViewDataBindingClazz(): Class<ItemThemeSettingBinding> {
+                        return ItemThemeSettingBinding::class.java
+                    }
+
+                    override fun getDataClazz(): Class<ItemPreferenceThemeSettingViewModel>? {
+                        return ItemPreferenceThemeSettingViewModel::class.java
+                    }
+
+                }
+            }
     }
 
     private fun initRecyclerView() {

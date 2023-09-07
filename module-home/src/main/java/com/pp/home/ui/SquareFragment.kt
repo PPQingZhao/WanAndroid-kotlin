@@ -22,7 +22,7 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+            itemArticlePagingAdapter(mViewModel.mTheme)
         )
     }
 

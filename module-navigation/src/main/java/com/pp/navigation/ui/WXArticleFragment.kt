@@ -6,12 +6,15 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.*
+import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.navigation.databinding.FragmentWxarticleBinding
+import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.adapter.RecyclerViewBindingAdapter2
 import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
@@ -55,18 +58,23 @@ class WXArticleFragment private constructor() :
     }
 
     private val mAdapter by lazy {
-        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemText3ArticleBindItemType(
-                inflater = layoutInflater,
-                theme = mViewModel.mTheme,
-                onBindItemViewModel = { _, viewModel, position ->
-                    if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(viewModel)
-                    }
-                    viewModel.setOnItemListener(mOnItemListener)
+
+
+        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
+            .apply {
+                itemText3ArticleBinder(
+                    onItemListener = mOnItemListener,
+                    theme = mViewModel.mTheme,
+                    onBindViewModel = { _, data, viewModel, position ->
+                        if (selectedItem.getSelectedItem() == null && position == 0) {
+                            selectedItem.selectedItem(viewModel)
+                        }
+                        false
+                    }).also {
+                    addItemViewModelBinder(it)
                 }
-            )
-        )
+            }
+
     }
 
     private fun initRecyclerview() {
@@ -87,14 +95,14 @@ class WXArticleFragment private constructor() :
                     viewLifecycleOwner,
                     lifecycleScope,
                     mViewModel.getWXArticle(this.data?.id ?: 0),
-                    BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
-                        bindingItemType = itemWXArticleChapterBindItemType(
-                            inflater = layoutInflater,
-                            theme = theme,
-                        ),
+                    BindingPagingDataAdapter<ArticleBean>(
+                        { R.layout.item_wx_article },
                         diffCallback = articleDifferCallback
-                    )
-                )
+                    ).apply {
+                        com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme).also {
+                            addItemViewModelBinder(it)
+                        }
+                    })
             }
         }
     }

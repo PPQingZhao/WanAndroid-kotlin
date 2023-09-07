@@ -1,73 +1,103 @@
 package com.pp.ui.adapter
 
+import android.annotation.SuppressLint
+import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 
-abstract class BindingPagingDataAdapter<
-        VB : ViewDataBinding,
-        VM : Any?,
-        Data : Any,
-        ViewBindingItemType : ViewDataBindingItemType<VB, VM, Data>,
-        >(
-    private val getItemType: Int = 0,
-    diffCallback: DiffUtil.ItemCallback<Data>,
-) : PagingDataAdapter<Data, BindingItemViewHolder<VB, VM, Data>>(diffCallback) {
+class BindingPagingDataAdapter<Data : Any>(
+    @SuppressLint("SupportAnnotationUsage") @LayoutRes
+    private val getItemLayoutRes: (data: Data?) -> Int,
+    diffCallback: DiffUtil.ItemCallback<Data> = emptyDifferCallback(),
+) : PagingDataAdapter<Data, BindingItemViewHolder2>(diffCallback) {
 
-    private val delegate = RecyclerViewAdapterDelegate<VB, VM, Data, ViewBindingItemType>()
-    abstract fun createViewBindingItemType(viewType: Int): ViewBindingItemType
+    companion object {
+        fun <Data : Any> emptyDifferCallback() = object : DiffUtil.ItemCallback<Data>() {
+            override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
+                return oldItem == newItem
+            }
+
+            @SuppressLint("DiffUtilEquals")
+            override fun areContentsTheSame(oldItem: Data, newItem: Data): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+    private var mInflater: LayoutInflater? = null
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        mInflater = LayoutInflater.from(recyclerView.context)
+    }
+
+    private val mBindViewModelList = mutableListOf<ItemViewModelBinder<ViewDataBinding, Data>>()
+
+    fun addItemViewModelBinder(itemViewModelBinder: ItemViewModelBinder<out ViewDataBinding, Data>) {
+        mBindViewModelList.add(itemViewModelBinder as ItemViewModelBinder<ViewDataBinding, Data>)
+    }
+
+    private fun getBindViewModel(
+        bind: ViewDataBinding?,
+        data: Data?,
+    ): ItemViewModelBinder<ViewDataBinding, Data> {
+        val dataClazz = if (data == null) {
+            null
+        } else {
+            data::class.java
+        }
+        for (binder in mBindViewModelList) {
+
+            if (binder.getDataClazz() != dataClazz) {
+                continue
+            }
+
+            val viewDataBindingClazz = binder.getViewDataBindingClazz()
+            if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
+                continue
+            }
+            return binder
+        }
+        throw RuntimeException("No BindViewModel for {bind:${bind},data:${dataClazz}}")
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
-        viewType: Int,
-    ): BindingItemViewHolder<VB, VM, Data> {
-        val viewBindingItemType = createViewBindingItemType(viewType)
-        return delegate.onCreateViewHolder(parent, viewBindingItemType)
+        @LayoutRes layoutId: Int,
+    ): BindingItemViewHolder2 {
+        val bind = DataBindingUtil.inflate<ViewDataBinding>(mInflater!!, layoutId, parent, false)
+            .also { binding ->
+                binding.root.addOnAttachStateChangeListener(object :
+                    View.OnAttachStateChangeListener {
+                    override fun onViewAttachedToWindow(v: View) {
+                        ViewTreeLifecycleOwner.get(v)?.also {
+                            binding.lifecycleOwner = it
+                        }
+                    }
+
+                    override fun onViewDetachedFromWindow(v: View) {}
+                })
+            }
+        return BindingItemViewHolder2(bind)
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder<VB, VM, Data>, position: Int) {
+    override fun onBindViewHolder(holder: BindingItemViewHolder2, position: Int) {
         val itemData = getItem(position)
-        delegate.onBindViewHolder(holder, itemData, position)
+        getBindViewModel(holder.bind, itemData).apply {
+            bindViewModel(holder.bind, itemData, position)
+        }
+        holder.bind.executePendingBindings()
     }
 
-    override fun onViewAttachedToWindow(holder: BindingItemViewHolder<VB, VM, Data>) {
-        super.onViewAttachedToWindow(holder)
-        delegate.onViewAttachedToWindow(holder)
-    }
-
+    @LayoutRes
     override fun getItemViewType(position: Int): Int {
-        return getItemType
+        val data = getItem(position)
+        return getItemLayoutRes.invoke(data)
     }
-
-    class DefaultBindingPagingDataAdapter<VB : ViewDataBinding, VM : Any?, Data : Any>(
-        private val onCreateViewDataBinding: (parent: ViewGroup) -> VB,
-        private val onBindItemViewModel: (binding: VB, data: Data?, position: Int, cachedItemViewModel: VM?) -> VM,
-        private val onSetVariable: (binding: VB, viewModel: VM) -> Boolean = { _, _ -> false },
-        private val getItemType: () -> Int = { 0 },
-        diffCallback: DiffUtil.ItemCallback<Data>,
-    ) : BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
-        diffCallback = diffCallback
-    ) {
-        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
-            return DefaultViewDataBindingItemType(
-                onCreateViewDataBinding,
-                onBindItemViewModel,
-                onSetVariable,
-                getItemType
-            )
-        }
-    }
-
-    class RecyclerViewBindingAdapterImpl<VB : ViewDataBinding, VM : Any?, Data : Any>(
-        private val bindingItemType: ViewDataBindingItemType<VB, VM, Data>,
-        diffCallback: DiffUtil.ItemCallback<Data>,
-    ) : BindingPagingDataAdapter<VB, VM, Data, ViewDataBindingItemType<VB, VM, Data>>(
-        diffCallback = diffCallback
-    ) {
-        override fun createViewBindingItemType(viewType: Int): ViewDataBindingItemType<VB, VM, Data> {
-            return bindingItemType
-        }
-    }
-
 
 }

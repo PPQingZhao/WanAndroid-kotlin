@@ -113,7 +113,7 @@ class RealHomeFragment :
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+            itemArticlePagingAdapter(mViewModel.mTheme)
         )
     }
 

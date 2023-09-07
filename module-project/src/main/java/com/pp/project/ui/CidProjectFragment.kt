@@ -4,9 +4,11 @@ import android.os.Bundle
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
+import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.paging.articleDifferCallback
-import com.pp.common.paging.itemProjectArticleBindItemType
+import com.pp.common.paging.itemProjectArticleBinder
 import com.pp.project.databinding.FragmentCidprojectBinding
+import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.utils.setPagingAdapter
 import kotlinx.coroutines.launch
@@ -44,13 +46,14 @@ class CidProjectFragment private constructor() :
     }
 
     private suspend fun initPagingList() {
-        val adapter = BindingPagingDataAdapter.RecyclerViewBindingAdapterImpl(
-            bindingItemType = itemProjectArticleBindItemType(
-                inflater = layoutInflater,
-                theme = mViewModel.mTheme
-            ),
+        val adapter = BindingPagingDataAdapter<ArticleBean>(
+            { R.layout.item_projectarticle },
             diffCallback = articleDifferCallback
-        )
+        ).apply {
+            itemProjectArticleBinder(mViewModel.mTheme).also {
+                addItemViewModelBinder(it)
+            }
+        }
 
         mBinding.pageList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.pageList.setPagingAdapter(

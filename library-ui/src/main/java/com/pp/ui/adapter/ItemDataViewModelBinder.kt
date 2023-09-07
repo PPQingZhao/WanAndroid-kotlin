@@ -9,15 +9,14 @@ class ItemDataViewModelBinder<VB : ViewDataBinding, Data : Any, VM : ItemDataVie
     private val getItemViewModel: (data: Data?) -> VM,
     private val getViewDataBindingClazz: () -> Class<VB>,
     private val getDataClazz: () -> Class<Data>,
-    onBindViewModel: (binding: VB, data: Data?, viewModel: VM, posiion: Int) -> Boolean = { _, _, _, _ -> false },
+    onBindViewModel: (binding: VB, data: Data?, viewModel: VM?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     private val onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
-) :
-    DefaultItemViewModelBinder<VB, Data, VM>(onBindViewModel) {
-    override fun onBindViewModel(binding: VB, data: Data?, viewModel: VM, posiion: Int) {
+) : DefaultItemViewModelBinder<VB, Data, VM>(onBindViewModel) {
+    override fun onBindViewModel(binding: VB, data: Data?, viewModel: VM?, posiion: Int) {
         super.onBindViewModel(binding, data, viewModel, posiion)
-        viewModel.data = data
+        viewModel?.data = data
         onItemListener?.also {
-            viewModel.setOnItemListener(it)
+            viewModel?.setOnItemListener(it)
         }
     }
 

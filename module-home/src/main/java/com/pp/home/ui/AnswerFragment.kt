@@ -20,8 +20,9 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
             viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(layoutInflater, mViewModel.mTheme)
+            itemArticlePagingAdapter(mViewModel.mTheme)
         )
+
     }
 
     override fun onFirstResume() {

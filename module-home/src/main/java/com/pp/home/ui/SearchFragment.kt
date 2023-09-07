@@ -13,13 +13,14 @@ import com.pp.common.app.App
 import com.pp.common.constant.Constants
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
+import com.pp.common.paging.articleDifferCallback
 import com.pp.common.paging.itemArticleBinder
 import com.pp.common.paging.itemText1HotkeyBinder
 import com.pp.common.paging.itemText2HotkeyBinder
 import com.pp.common.util.materialSharedAxis
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.BindingPagingDataAdapter2
+import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
@@ -49,9 +50,10 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private val mSearchAdapter by lazy {
 
-        BindingPagingDataAdapter2<ArticleBean>({
-            com.pp.ui.R.layout.item_article
-        }).apply {
+        BindingPagingDataAdapter<ArticleBean>(
+            { com.pp.ui.R.layout.item_article },
+            diffCallback = articleDifferCallback
+        ).apply {
             itemArticleBinder(mViewModel.mTheme).also {
                 addItemViewModelBinder(it)
             }
@@ -74,7 +76,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             }
         }
 
-        BindingPagingDataAdapter2<HotKey>({
+        BindingPagingDataAdapter<HotKey>({
             if (it is HotKey && it.id > 0) {
                 com.pp.ui.R.layout.item_text2
             } else {
@@ -110,7 +112,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                         mBinding.searchRecyclerview.post {
                             mBinding.searchRecyclerview.visibility = View.VISIBLE
                         }
-                        mSearchAdapter.submitData(it)
+                        mSearchAdapter.submitData(viewLifecycleOwner.lifecycle,it)
                     }
                 }
                 return true

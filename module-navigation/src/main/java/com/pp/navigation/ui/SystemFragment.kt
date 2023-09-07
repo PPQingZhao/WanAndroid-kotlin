@@ -2,7 +2,6 @@ package com.pp.navigation.ui
 
 import android.os.Bundle
 import android.view.View
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,14 +10,13 @@ import com.pp.base.ThemeFragment
 import com.pp.common.app.App
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
-import com.pp.common.paging.itemText1ArticleListBindItemType
-import com.pp.common.paging.itemText2ArticleListBindItemType
-import com.pp.common.paging.itemText3ArticleBindItemType
+import com.pp.common.paging.itemText1ArticleListBinder
+import com.pp.common.paging.itemText2ArticleListBinder
+import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.MultiRecyclerViewBindingAdapter
-import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.adapter.ViewDataBindingItemType
+import com.pp.ui.R
+import com.pp.ui.adapter.RecyclerViewBindingAdapter2
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -83,80 +81,74 @@ class SystemFragment private constructor() :
         }
     }
     private val mAdapter by lazy {
-        RecyclerViewBindingAdapter.RecyclerViewBindingAdapterImpl(
-            itemText3ArticleBindItemType(
-                inflater = layoutInflater,
-                theme = mViewModel.mTheme,
-                onBindItemViewModel = { _, viewModel, position ->
-                    if (selectedItem.getSelectedItem() == null && position == 0) {
-                        selectedItem.selectedItem(viewModel)
-                    }
-                    viewModel.setOnItemListener(mOnItemListener)
+        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
+            .apply {
+                itemText3ArticleBinder(
+                    onItemListener = mOnItemListener,
+                    theme = mViewModel.mTheme,
+                    onBindViewModel = { _, data, viewModel, position ->
+                        if (selectedItem.getSelectedItem() == null && position == 0) {
+                            selectedItem.selectedItem(viewModel)
+                        }
+                        false
+                    }).also {
+                    addItemViewModelBinder(it)
                 }
-            )
-        )
+            }
     }
 
     private val mArticleListAdapter by lazy {
-        val type_parent_article_list = 0
-        val type_article_list = 1
-        MultiRecyclerViewBindingAdapter(getItemViewType = {
-            if (it is ArticleListBean && it.parentChapterId == 0) {
-                type_parent_article_list
-            } else {
-                type_article_list
-            }
-        }).apply {
 
-            itemText1ArticleListBindItemType(
-                type_parent_article_list,
-                inflater = layoutInflater,
-                mViewModel.mTheme
-            ).let {
-                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
-            }
+        val onItemListener = object : OnItemListener<ItemDataViewModel<ArticleListBean>> {
+            override fun onItemClick(
+                view: View, item: ItemDataViewModel<ArticleListBean>,
+            ): Boolean {
+                var systemArticleList: ArticleListBean? = null
+                var targetPosition = 0
+                lifecycleScope.launch {
 
-            val onItemListener = object : OnItemListener<ItemDataViewModel<ArticleListBean>> {
-                override fun onItemClick(
-                    view: View, item: ItemDataViewModel<ArticleListBean>,
-                ): Boolean {
-                    var systemArticleList: ArticleListBean? = null
-                    var targetPosition = 0
-                    lifecycleScope.launch {
-
-                        mViewModel.systemList.collectLatest {
-                            it.onEach { articleListBean ->
-                                val data = item.data
-                                if (articleListBean.children?.contains(data) == true) {
-                                    systemArticleList = articleListBean
-                                    targetPosition = articleListBean.children!!.indexOf(data)
-                                    return@onEach
-                                }
+                    mViewModel.systemList.collectLatest {
+                        it.onEach { articleListBean ->
+                            val data = item.data
+                            if (articleListBean.children?.contains(data) == true) {
+                                systemArticleList = articleListBean
+                                targetPosition = articleListBean.children!!.indexOf(data)
+                                return@onEach
                             }
-                            cancel()
                         }
+                        cancel()
                     }
-                    val bundle = Bundle().apply {
-                        putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
-                        putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
-                    }
-                    App.getInstance().navigation.value =
-                        RouterPath.Navigation.fragment_tab_system to bundle
-                    return true
                 }
-            }
-            itemText2ArticleListBindItemType(
-                type_article_list,
-                layoutInflater,
-                mViewModel.mTheme,
-                onBindItemViewModel = { _, viewModel, _ ->
-                    viewModel.setOnItemListener(onItemListener)
+                val bundle = Bundle().apply {
+                    putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
+                    putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
                 }
-            ).let {
-                addBindingItem(it as ViewDataBindingItemType<ViewDataBinding, Any?, Any>)
+                App.getInstance().navigation.value =
+                    RouterPath.Navigation.fragment_tab_system to bundle
+                return true
             }
         }
 
+        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = {
+            if (it!!.parentChapterId == 0) {
+                R.layout.item_text1
+            } else {
+                R.layout.item_text2
+            }
+        }).apply {
+            itemText1ArticleListBinder(
+                theme = mViewModel.mTheme
+            ).also {
+                addItemViewModelBinder(it)
+            }
+
+            itemText2ArticleListBinder(
+                onItemListener = onItemListener,
+                theme = mViewModel.mTheme,
+            ).also {
+                addItemViewModelBinder(it)
+            }
+        }
     }
 
     private fun initRecyclerview() {
