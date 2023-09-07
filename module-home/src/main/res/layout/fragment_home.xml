@@ -17,23 +17,42 @@
         android:orientation="vertical"
         tools:context=".ui.HomeFragment">
 
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/home_tab_layout"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@{viewModel.MTheme.colorPrimary}"
             android:fitsSystemWindows="true"
-            app:SelectedTabIndicatorColor="@{viewModel.MTheme.textColorPrimary.defaultColor}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tabGravity="center"
-            app:tabIndicator="@drawable/layer_tab_indicator_media"
-            app:tabIndicatorHeight="2dp"
-            app:tabRippleColor="@color/transparent"
-            tools:background="?attr/colorPrimary"
-            tools:ignore="SpeakableTextPresentCheck" />
+            tools:background="?attr/colorPrimary">
 
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/home_tab_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:SelectedTabIndicatorColor="@{viewModel.MTheme.textColorPrimary.defaultColor}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tabGravity="center"
+                app:tabIndicator="@drawable/layer_tab_indicator_media"
+                app:tabIndicatorHeight="2dp"
+                app:tabRippleColor="@color/transparent"
+                tools:ignore="SpeakableTextPresentCheck" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/search_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/dp_16"
+                android:background="?selectableItemBackground"
+                android:clickable="true"
+                android:padding="@dimen/dp_8"
+                android:src="@drawable/ic_search"
+                android:tint="@{viewModel.MTheme.textColorSecondary}"
+                app:roundPercent="1"
+                tools:tint="?android:textColorSecondary" />
+
+        </FrameLayout>
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/home_viewpager2"

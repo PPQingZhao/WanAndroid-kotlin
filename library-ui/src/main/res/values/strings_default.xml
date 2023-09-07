@@ -5,4 +5,6 @@
     <string name="author">作者:</string>
     <string name="chapter">分类:</string>
     <string name="chapter_count">(共%d个子分类)</string>
+    <string name="search_hint">搜索关键词以空格隔开</string>
+    <string name="hot_key">热门搜索</string>
 </resources>

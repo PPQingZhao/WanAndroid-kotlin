@@ -121,6 +121,22 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                         showFragment(f, RouterPath.Navigation.fragment_tab_system)
                     }
                 }
+                RouterPath.Search.fragment_search -> {
+                    getMainFragment().let { f ->
+                        if (f::class.java.equals(showingFragment!!::class.java)) {
+                            f.exitTransition = null
+                            f.reenterTransition = null
+                        }
+                    }
+
+                    getSearchFragment().let { f ->
+                        val secondArg = it.second
+                        if (secondArg is Bundle) {
+                            f.arguments = secondArg
+                        }
+                        showFragment(f, RouterPath.Search.fragment_search)
+                    }
+                }
                 RouterPath.User.fragment_user,
                 Constants.ON_BACK_PRESSED,
                 -> {
@@ -219,5 +235,16 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     .navigation() as Fragment
         }
         return tabSystemFragment
+    }
+
+    private fun getSearchFragment(): Fragment {
+        var searchSystemFragment =
+            supportFragmentManager.findFragmentByTag(RouterPath.Search.fragment_search)
+        if (null == searchSystemFragment) {
+            searchSystemFragment =
+                ARouter.getInstance().build(RouterPath.Search.fragment_search)
+                    .navigation() as Fragment
+        }
+        return searchSystemFragment
     }
 }

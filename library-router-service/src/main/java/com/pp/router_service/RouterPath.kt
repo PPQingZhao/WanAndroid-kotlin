@@ -38,5 +38,8 @@ object RouterPath {
         const val activity_liked = "/local/activity_liked"
     }
 
+    object Search {
+        const val fragment_search = "/search/fragment_search"
+    }
 
 }

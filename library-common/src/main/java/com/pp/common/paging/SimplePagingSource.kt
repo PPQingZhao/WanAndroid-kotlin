@@ -18,7 +18,7 @@ abstract class SimplePagingSource<PageData : Any, Key : Any, Value : Any> :
             nextKey = createNextKey(pageData)
             val list = getPageValue(pageData)
 
-            if(list.isEmpty()){
+            if (list.isEmpty()) {
                 return LoadResult.Page(emptyList(), null, null)
             }
 
@@ -34,5 +34,26 @@ abstract class SimplePagingSource<PageData : Any, Key : Any, Value : Any> :
     abstract fun getPageValue(pageData: PageData?): List<Value>
 
     abstract fun createNextKey(response: PageData?): Key?
+
+}
+
+class DefaultSimplePagingSource<PageData : Any, Key : Any, Value : Any>(
+    private val  getPageData:suspend (page: Key) -> PageData?,
+    private val getPageValue: (pageData: PageData?) -> List<Value>,
+    private val createNextKey: (response: PageData?) -> Key?,
+) : SimplePagingSource<PageData, Key, Value>() {
+
+    override suspend fun getPageData(page: Key): PageData? {
+        return getPageData.invoke(page)
+    }
+
+    override fun getPageValue(pageData: PageData?): List<Value> {
+        return getPageValue.invoke(pageData)
+    }
+
+    override fun createNextKey(response: PageData?): Key? {
+        return createNextKey.invoke(response)
+    }
+
 
 }

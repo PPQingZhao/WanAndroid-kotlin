@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.model.*
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -67,6 +68,18 @@ fun itemText1ArticleListBindItemType(
     onBindItemViewModel = onBindItemViewModel
 )
 
+fun itemText1HotkeyBindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemText1Binding, viewModel: ItemTextHotkeyViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText1Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemTextHotkeyViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
 fun itemArticleText2BindItemType(
     itemType: Int = 0,
     inflater: LayoutInflater,
@@ -76,6 +89,18 @@ fun itemArticleText2BindItemType(
     itemType = itemType,
     createBinding = { ItemText2Binding.inflate(inflater, it, false) },
     onCreateViewModel = { ItemArticleTextViewModel(it, theme) },
+    onBindItemViewModel = onBindItemViewModel
+)
+
+fun itemHotkeyText2BindItemType(
+    itemType: Int = 0,
+    inflater: LayoutInflater,
+    theme: AppDynamicTheme,
+    onBindItemViewModel: (bind: ItemText2Binding, viewModel: ItemTextHotkeyViewModel, position: Int) -> Unit = { _, _, _ -> },
+) = createBindItemType<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
+    itemType = itemType,
+    createBinding = { ItemText2Binding.inflate(inflater, it, false) },
+    onCreateViewModel = { ItemTextHotkeyViewModel(it, theme) },
     onBindItemViewModel = onBindItemViewModel
 )
 

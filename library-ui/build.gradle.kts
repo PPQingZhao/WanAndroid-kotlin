@@ -65,6 +65,7 @@ dependencies {
 
     implementation(projects.libraryTheme)
 
+    api("com.github.jarryleo:PagingAdapter:1.0.2")
 
 
 }
