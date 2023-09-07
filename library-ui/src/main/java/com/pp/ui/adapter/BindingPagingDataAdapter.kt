@@ -8,9 +8,13 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.paging.PagingData
 import androidx.paging.PagingDataAdapter
+import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 class BindingPagingDataAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
@@ -46,14 +50,10 @@ class BindingPagingDataAdapter<Data : Any>(
         bind: ViewDataBinding?,
         data: Data?,
     ): ItemViewModelBinder<ViewDataBinding, Data> {
-        val dataClazz = if (data == null) {
-            null
-        } else {
-            data::class.java
-        }
+
         for (binder in mBindViewModelList) {
 
-            if (binder.getDataClazz() != dataClazz) {
+            if (null != data && binder.getDataClazz() != data::class.java) {
                 continue
             }
 
@@ -63,7 +63,7 @@ class BindingPagingDataAdapter<Data : Any>(
             }
             return binder
         }
-        throw RuntimeException("No BindViewModel for {bind:${bind},data:${dataClazz}}")
+        throw RuntimeException("No BindViewModel for {bind:${bind},data:${data}}")
     }
 
     override fun onCreateViewHolder(
@@ -100,4 +100,30 @@ class BindingPagingDataAdapter<Data : Any>(
         return getItemLayoutRes.invoke(data)
     }
 
+    private var mScope: CoroutineScope? = null
+        get() = checkNotNull(field) { "you must call 'setPagingData()' at first." }
+
+    private var mPagingData: PagingData<Data>? = null
+        get() = checkNotNull(field) { "you must call 'setPagingData()' at first." }
+
+    fun setPagingData(scope: CoroutineScope, pagingData: PagingData<Data>) {
+        mScope = scope
+        mPagingData = pagingData
+        submitPageData()
+    }
+
+    private fun submitPageData() {
+        mScope!!.launch {
+            submitData(mPagingData!!)
+        }
+    }
+
+    fun filterItem(predicate: suspend (Data) -> Boolean) {
+        mPagingData = mPagingData!!.filter(predicate)
+        submitPageData()
+    }
+
+    fun clear() {
+        filterItem { false }
+    }
 }

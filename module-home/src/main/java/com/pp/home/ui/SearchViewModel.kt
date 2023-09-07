@@ -1,7 +1,9 @@
 package com.pp.home.ui
 
 import android.app.Application
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
@@ -25,11 +27,11 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
                 } else {
                     emptyList()
                 }
-            }).flow
+            }).flow.cachedIn(viewModelScope)
     }
 
     fun searchPageData(key: String?): Flow<PagingData<ArticleBean>> {
-        return SearchRepository.searchPageData(key)
+        return SearchRepository.searchPageData(key).cachedIn(viewModelScope)
     }
 
 }

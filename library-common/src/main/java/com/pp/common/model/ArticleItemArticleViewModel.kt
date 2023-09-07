@@ -1,6 +1,7 @@
 package com.pp.common.model
 
 import android.os.Bundle
+import android.text.Html
 import android.view.View
 import android.widget.TextView
 import com.pp.base.browser.WebViewFragment
@@ -24,9 +25,10 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
 
     override fun onUpdateData(data: ArticleBean?) {
         data.let { field ->
+
             author.set(data?.getAuthor())
             niceDate.set(field?.niceDate)
-            title.set(field?.title)
+            title.set(Html.fromHtml(field?.title))
             chapterName.set(field?.getCharterName())
             tags.set(field?.getTags())
             transitionName.set("transitionName${field?.id}")
@@ -49,7 +51,7 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
 
         val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
         val bundle = Bundle().also {
-            it.putString(WebViewFragment.WEB_VIEW_TITLE, title.get())
+            it.putString(WebViewFragment.WEB_VIEW_TITLE, data!!.title)
             it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
             it.putString(
                 CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,

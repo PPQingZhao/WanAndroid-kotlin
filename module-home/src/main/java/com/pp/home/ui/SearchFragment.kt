@@ -3,6 +3,7 @@ package com.pp.home.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -112,7 +113,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                         mBinding.searchRecyclerview.post {
                             mBinding.searchRecyclerview.visibility = View.VISIBLE
                         }
-                        mSearchAdapter.submitData(viewLifecycleOwner.lifecycle,it)
+                        mSearchAdapter.setPagingData(this, it)
                     }
                 }
                 return true
@@ -120,7 +121,10 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText?.isNotEmpty() != true) {
-                    mBinding.searchRecyclerview.visibility = View.GONE
+                    mSearchAdapter.clear()
+                    mBinding.searchRecyclerview.doOnNextLayout {
+                        mBinding.searchRecyclerview.visibility = View.GONE
+                    }
                 }
                 return true
             }
@@ -138,7 +142,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     override fun onFirstResume() {
         viewLifecycleOwner.lifecycleScope.launch {
             mViewModel.getSearchHot().collectLatest {
-                mHotkeyAdapter.submitData(it)
+                mHotkeyAdapter.setPagingData(this, it)
             }
         }
     }

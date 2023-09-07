@@ -6,7 +6,7 @@ import com.pp.ui.BR
 
 interface ItemViewModelBinder<VB : ViewDataBinding, Data : Any> {
     fun getViewDataBindingClazz(): Class<VB>
-    fun getDataClazz(): Class<Data>?
+    fun getDataClazz(): Class<Data>
     fun bindViewModel(binding: VB, data: Data?, position: Int)
     fun onRemoveItem(data: List<Data?>, startPosition: Int, itemCount: Int) {}
     fun onAddItem(data: List<Data?>, startPosition: Int, itemCount: Int) {}

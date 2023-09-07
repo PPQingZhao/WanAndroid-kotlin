@@ -1,5 +1,6 @@
 package com.pp.ui.viewModel
 
+import android.text.Spanned
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
@@ -7,7 +8,7 @@ import com.pp.theme.AppDynamicTheme
 
 open class ItemArticleViewModel<Data : Any>(theme: AppDynamicTheme) :
     ItemDataViewModel<Data>(theme) {
-    val title = ObservableField<String>()
+    val title = ObservableField<Spanned>()
     val author = ObservableField<String>()
     val chapterName = ObservableField<String>()
     val niceDate = ObservableField<String>()
