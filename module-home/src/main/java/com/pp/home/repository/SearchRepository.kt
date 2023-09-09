@@ -105,15 +105,15 @@ object SearchRepository {
                 var oldItems = ""
                 oldHistory?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
                     ?.filter { item ->
-                        item != history
+                        item.isNotBlank() && item != history
                     }?.onEach { item ->
                         oldItems += "$item;"
                     }
 
                 //更新搜索记录
-                it[preferences_key_search_hotkey_history] = "$oldItems".also { history ->
+                it[preferences_key_search_hotkey_history] = oldItems.also { item ->
                     if (DEBUG) {
-                        Log.e("TAG", "remove search history: $history  $oldItems")
+                        Log.e("TAG", "remove search history: $history  $item")
                     }
                 }
             }

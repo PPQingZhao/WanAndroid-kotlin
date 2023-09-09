@@ -57,6 +57,7 @@
             android:id="@+id/tv_delete_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="?selectableItemBackground"
             android:onClick="@{viewModel.onItemClick}"
             android:padding="@dimen/dp_8"
             android:text="@string/delete_all"
@@ -77,11 +78,13 @@
             android:onClick="@{viewModel.onItemClick}"
             android:padding="@dimen/dp_4"
             android:src="@drawable/ic_delete"
+            android:tint="@{viewModel.theme.textColorSecondary}"
             android:visibility="@{viewModel.isDeleteModel ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="@id/tv_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_title"
             app:roundPercent="1"
+            tools:tint="?android:textColorSecondary"
             tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
