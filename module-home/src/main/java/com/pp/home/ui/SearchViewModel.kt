@@ -36,15 +36,24 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
         return SearchRepository.searchPageData(key).cachedIn(viewModelScope)
     }
 
+    /**
+     * 获取搜索记录
+     */
     fun getSearchHotkeyHistory(): Flow<List<HotKey>> {
         return SearchRepository.getSearchHotkeyHistory().map {
             mutableListOf<HotKey>().apply {
+                if (it.isEmpty()){
+                    return@apply
+                }
                 add(HotKey(name = getApplication<Application>().resources.getString(R.string.search_history)))
                 addAll(it)
             }
         }
     }
 
+    /**
+     * 保存搜索记录
+     */
     fun saveSearchHotKeyHistory(history: String) {
         viewModelScope.launch(Dispatchers.IO) {
             SearchRepository.saveSearchHotKeyHistory(history)

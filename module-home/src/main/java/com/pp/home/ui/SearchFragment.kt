@@ -141,8 +141,8 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                     return true
                 }
 
-                mViewModel.saveSearchHotKeyHistory(query)
                 mBinding.searchView.clearFocus()
+                mViewModel.saveSearchHotKeyHistory(query)
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     mViewModel.searchPageData(query).collectLatest {
                         mBinding.searchRecyclerview.post {

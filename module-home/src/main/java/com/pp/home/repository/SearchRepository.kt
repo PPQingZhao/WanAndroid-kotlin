@@ -23,6 +23,10 @@ import kotlinx.coroutines.flow.*
 object SearchRepository {
 
     private const val DEBUG = false
+
+    /**
+     * 获取搜索历史记录
+     */
     fun getSearchHotkeyHistory(): Flow<List<HotKey>> {
         return channelFlow<List<HotKey>> {
             App.getInstance().userDataStore.data.collectLatest {
@@ -30,18 +34,16 @@ object SearchRepository {
                 if (DEBUG) {
                     Log.e("TAG", "get search history: $history")
                 }
-                if (history?.isBlank() == true) {
-                    emptyList<HotKey>()
-                } else {
-                    mutableListOf<HotKey>().apply {
-                        history!!.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
-                            .filter {
-                                it.isNotBlank()
-                            }
-                            .forEachIndexed { index, item ->
-                                add(HotKey(id = index, name = item))
-                            }
-                    }
+
+                mutableListOf<HotKey>().apply {
+                    history?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
+                        ?.filter {
+                            it.isNotBlank()
+                        }
+                        ?.forEachIndexed { index, item ->
+                            add(HotKey(id = index, name = item))
+                        }
+
                 }.apply {
                     send(this)
                 }
@@ -49,6 +51,9 @@ object SearchRepository {
         }
     }
 
+    /**
+     * 保存搜索记录
+     */
     suspend fun saveSearchHotKeyHistory(history: String) {
         if (history.isBlank()) {
             return
