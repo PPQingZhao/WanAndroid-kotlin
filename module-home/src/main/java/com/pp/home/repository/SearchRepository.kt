@@ -15,14 +15,18 @@ import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.http.wanandroid.bean.PageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.DefaultSimplePagingSource
 import com.pp.common.paging.WanPagingSource
-import com.pp.ui.R
 import kotlinx.coroutines.flow.*
 
 object SearchRepository {
 
     private const val DEBUG = false
+
+    suspend fun clearSearchHistory() {
+        App.getInstance().userDataStore.edit {
+            it.remove(preferences_key_search_hotkey_history)
+        }
+    }
 
     /**
      * 获取搜索历史记录
@@ -59,7 +63,7 @@ object SearchRepository {
             return
         }
         App.getInstance().userDataStore.edit {
-            it.get(preferences_key_search_hotkey_history).let { oldHistory ->
+            it[preferences_key_search_hotkey_history].let { oldHistory ->
                 var oldItems = ""
                 oldHistory?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
                     ?.filter { item ->
@@ -71,6 +75,7 @@ object SearchRepository {
                     }?.onEach { item ->
                         oldItems += "$item;"
                     }
+
                 //更新搜索记录
                 it[preferences_key_search_hotkey_history] =
                     (if (oldItems.isNotBlank()) "$history$KEY_SAVE_SEARCH_HOTKEY_HISTORY$oldItems" else history).also { history ->
@@ -92,6 +97,27 @@ object SearchRepository {
             initialKey = 0,
             config = PagingConfig(15),
             pagingSourceFactory = { SearchPageSources(key) }).flow
+    }
+
+    suspend fun removeSearchHistory(history: String) {
+        App.getInstance().userDataStore.edit {
+            it[preferences_key_search_hotkey_history].let { oldHistory ->
+                var oldItems = ""
+                oldHistory?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
+                    ?.filter { item ->
+                        item != history
+                    }?.onEach { item ->
+                        oldItems += "$item;"
+                    }
+
+                //更新搜索记录
+                it[preferences_key_search_hotkey_history] = "$oldItems".also { history ->
+                    if (DEBUG) {
+                        Log.e("TAG", "remove search history: $history  $oldItems")
+                    }
+                }
+            }
+        }
     }
 
     private class SearchPageSources(private val key: String?) : WanPagingSource() {

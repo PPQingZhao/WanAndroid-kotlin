@@ -5,6 +5,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -15,11 +16,11 @@ import com.pp.common.app.App
 import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
-import com.pp.common.paging.articleDifferCallback
-import com.pp.common.paging.itemArticleBinder
-import com.pp.common.paging.itemText1HotkeyBinder
-import com.pp.common.paging.itemText2HotkeyBinder
+import com.pp.common.model.ItemDeleteBarHotkeyViewModel
+import com.pp.common.model.ItemTextDeleteHotkeyViewModel
+import com.pp.common.paging.*
 import com.pp.common.util.materialSharedAxis
+import com.pp.home.R
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -53,7 +54,64 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     private val mHistoryAdapter by lazy {
-        createFlexBoxAdapter()
+        val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
+            override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
+                when (view.id) {
+                    com.pp.ui.R.id.tv_delete_all -> {
+                        mViewModel.clearSearchHistory()
+                        mViewModel.isDeleteModel.value = false
+                    }
+                    com.pp.ui.R.id.tv_finish,
+                    com.pp.ui.R.id.iv_delete_model,
+                    -> {
+                        mViewModel.isDeleteModel.value =
+                            (item as ItemDeleteBarHotkeyViewModel).isDeleteModel.value
+                    }
+                    com.pp.ui.R.id.container_text_delete -> {
+                        (item as ItemTextDeleteHotkeyViewModel).let {
+                            it.text.get()?.let { text ->
+                                if (it.isDeleteModel.value == true) {
+                                    mViewModel.removeSearchHistory(text);
+                                } else {
+                                    mBinding.searchView.setQuery(text, true)
+                                }
+                            }
+                        }
+                    }
+                }
+                return true
+            }
+        }
+
+        BindingPagingDataAdapter<HotKey>(
+            {
+                if (it is HotKey && it.id >= 0) {
+                    com.pp.ui.R.layout.item_text_delete
+                } else {
+                    com.pp.ui.R.layout.item_delete_bar
+                }
+            },
+            diffCallback = differCallback
+        ).apply {
+            itemTextDeleteHotkeyBinder(
+                onCreateViewModel = { model ->
+                    mViewModel.isDeleteModel.observe(viewLifecycleOwner) {
+                        model.isDeleteModel.value = it
+                    }
+                },
+                onItemListener = onItemListener,
+                theme = mViewModel.mTheme
+            ).also {
+                addItemViewModelBinder(it)
+            }
+
+            itemDeleteBarHotkeyBinder(
+                onItemListener = onItemListener,
+                theme = mViewModel.mTheme
+            ).also {
+                addItemViewModelBinder(it)
+            }
+        }
     }
 
     private fun initHistoryRecyclerView() {
@@ -79,7 +137,18 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         mBinding.searchRecyclerview.adapter = mSearchAdapter
     }
 
-    private fun createFlexBoxAdapter(): BindingPagingDataAdapter<HotKey> {
+    private val differCallback = object : DiffUtil.ItemCallback<HotKey>() {
+        override fun areItemsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+            return oldItem == newItem
+        }
+
+    }
+
+    private val mHotkeyAdapter by lazy {
         val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
             override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
                 item.data?.name.let {
@@ -89,18 +158,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             }
         }
 
-        val differCallback = object : DiffUtil.ItemCallback<HotKey>() {
-            override fun areItemsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
-                return oldItem == newItem
-            }
-
-        }
-
-        return BindingPagingDataAdapter<HotKey>(
+        BindingPagingDataAdapter<HotKey>(
             {
                 if (it is HotKey && it.id >= 0) {
                     com.pp.ui.R.layout.item_text2
@@ -118,10 +176,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                 addItemViewModelBinder(it)
             }
         }
-    }
-
-    private val mHotkeyAdapter by lazy {
-        createFlexBoxAdapter()
     }
 
     private fun initHotkeyRecyclerView() {
@@ -187,7 +241,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                     mHistoryAdapter.setData(this, it)
                 }
             }
-
         }
     }
 }

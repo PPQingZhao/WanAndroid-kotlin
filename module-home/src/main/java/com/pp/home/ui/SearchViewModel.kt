@@ -1,6 +1,7 @@
 package com.pp.home.ui
 
 import android.app.Application
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
@@ -16,6 +17,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class SearchViewModel(app: Application) : ThemeViewModel(app) {
+
+    val isDeleteModel = MutableLiveData(false)
 
     // 热门搜索
     fun getSearchHot(): Flow<PagingData<HotKey>> {
@@ -42,7 +45,7 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     fun getSearchHotkeyHistory(): Flow<List<HotKey>> {
         return SearchRepository.getSearchHotkeyHistory().map {
             mutableListOf<HotKey>().apply {
-                if (it.isEmpty()){
+                if (it.isEmpty()) {
                     return@apply
                 }
                 add(HotKey(name = getApplication<Application>().resources.getString(R.string.search_history)))
@@ -57,6 +60,18 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     fun saveSearchHotKeyHistory(history: String) {
         viewModelScope.launch(Dispatchers.IO) {
             SearchRepository.saveSearchHotKeyHistory(history)
+        }
+    }
+
+    fun clearSearchHistory() {
+        viewModelScope.launch(Dispatchers.IO) {
+            SearchRepository.clearSearchHistory()
+        }
+    }
+
+    fun removeSearchHistory(history: String) {
+        viewModelScope.launch (Dispatchers.IO){
+            SearchRepository.removeSearchHistory(history)
         }
     }
 

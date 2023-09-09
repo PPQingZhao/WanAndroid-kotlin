@@ -119,3 +119,24 @@ fun itemArticleBinder(
 ) = createItemBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
     getItemViewModel = { data -> ArticleItemArticleViewModel(data, theme) },
 )
+
+fun itemTextDeleteHotkeyBinder(
+    onCreateViewModel: (model: ItemTextDeleteHotkeyViewModel) -> Unit = { _ -> },
+    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
+    onBindViewModel: (binding: ItemTextDeleteBinding, data: HotKey?, viewModel: ItemTextDeleteHotkeyViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
+    theme: AppDynamicTheme,
+) = createItemBinder<ItemTextDeleteBinding, HotKey, ItemTextDeleteHotkeyViewModel>(
+    getItemViewModel = { data -> ItemTextDeleteHotkeyViewModel(data, theme).apply(onCreateViewModel) },
+    onItemListener = onItemListener,
+    onBindViewModel = onBindViewModel
+)
+
+fun itemDeleteBarHotkeyBinder(
+    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
+    onBindViewModel: (binding: ItemDeleteBarBinding, data: HotKey?, viewModel: ItemDeleteBarHotkeyViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
+    theme: AppDynamicTheme,
+) = createItemBinder<ItemDeleteBarBinding, HotKey, ItemDeleteBarHotkeyViewModel>(
+    getItemViewModel = { data -> ItemDeleteBarHotkeyViewModel(data, theme) },
+    onItemListener = onItemListener,
+    onBindViewModel = onBindViewModel
+)

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.pp.ui.viewModel.ItemDeleteViewModel" />
+    </data>
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingStart="@dimen/dp_8"
+            android:paddingTop="@dimen/dp_8"
+            android:paddingBottom="@dimen/dp_8"
+            android:singleLine="true"
+            android:text="@{viewModel.text}"
+            android:textColor="@{viewModel.theme.textColorPrimary}"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="历史搜索"
+            tools:textColor="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_finish"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="?selectableItemBackground"
+            android:onClick="@{viewModel.onItemClick}"
+            android:padding="@dimen/dp_8"
+            android:text="@string/finish"
+            android:textColor="@{viewModel.theme.textColorSecondary}"
+            android:textSize="13sp"
+            android:visibility="@{viewModel.isDeleteModel ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:textColor="?android:textColorSecondary" />
+
+        <TextView
+            android:id="@+id/tv_delete_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="@{viewModel.onItemClick}"
+            android:padding="@dimen/dp_8"
+            android:text="@string/delete_all"
+            android:textColor="@{viewModel.theme.textColorSecondary}"
+            android:textSize="13sp"
+            android:visibility="@{viewModel.isDeleteModel ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toStartOf="@id/tv_finish"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            tools:textColor="?android:textColorSecondary" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_delete_model"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="?selectableItemBackground"
+            android:onClick="@{viewModel.onItemClick}"
+            android:padding="@dimen/dp_4"
+            android:src="@drawable/ic_delete"
+            android:visibility="@{viewModel.isDeleteModel ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:roundPercent="1"
+            tools:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
