@@ -41,7 +41,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
         }
     }
 
-    private val DEBUG = true
+    private val DEBUG = false
     override fun attachBaseContext(newBase: Context?) {
         super.attachBaseContext(newBase)
         App.getInstance().navigation.value = RouterPath.Main.fragment_main to Any()
