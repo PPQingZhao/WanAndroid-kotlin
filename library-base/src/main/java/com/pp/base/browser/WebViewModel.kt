@@ -4,10 +4,10 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.net.http.SslError
 import android.os.Build
+import android.text.Html
+import android.text.Spanned
 import android.view.View
-import android.view.ViewGroup
 import android.webkit.*
-import android.widget.FrameLayout
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import com.pp.base.ThemeViewModel
@@ -16,7 +16,7 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
     private var mOrignalUrl: String? = null
     val mProgress = MutableLiveData(0)
     val mProgressVisibility = MutableLiveData(View.GONE)
-    val mTitle = MutableLiveData<String>()
+    val mTitle = MutableLiveData<Spanned>()
     private val mWebView by lazy { WebView(getApplication()) }
     fun getWebView(): WebView {
         return mWebView
@@ -81,6 +81,7 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
         mWebView.let {
             it.clearHistory()
             it.loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+            it.destroy()
         }
     }
 
@@ -92,7 +93,7 @@ class WebViewModel(app: Application) : ThemeViewModel(app) {
         }
 
         override fun onReceivedTitle(view: WebView?, title: String?) {
-            mTitle.value = title
+            mTitle.value = Html.fromHtml(title)
 //            Log.e("TAG", "onReceivedTitle: $title")
         }
 

@@ -25,7 +25,7 @@ object AnswerRepository {
         }
 
         override fun createNextKey(response: PageBean?): Int? {
-            return response?.curPage?.plus(1)
+            return super.createNextKey(response)?.plus(1)
         }
 
     }

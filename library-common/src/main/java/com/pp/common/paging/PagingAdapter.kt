@@ -1,6 +1,7 @@
 package com.pp.common.paging
 
 import android.annotation.SuppressLint
+import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
@@ -26,70 +27,69 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     }
 }
 
+inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : ItemDataViewModel<Data>> createItemBinder(
+    crossinline getItemViewModel: (data: Data?) -> VM,
+    onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
+    noinline onBindViewModel: (binding: VB, data: Data?, viewModel: VM?, position: Int) -> Boolean = { _, _, _, _ -> false },
+) = ItemDataViewModelBinder<VB, Data, VM>(
+    getItemViewModel = { getItemViewModel.invoke(it) },
+    getViewDataBindingClazz = { VB::class.java },
+    getDataClazz = { Data::class.java },
+    onItemListener = onItemListener,
+    onBindViewModel = onBindViewModel
+)
+
 fun itemTextArticleListBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
     onBindViewModel: (binding: ItemTextBinding, data: ArticleListBean?, viewModel: ItemArticleListTextViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemTextBinding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { ItemArticleListTextViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemTextBinding::class.java },
-    getDataClazz = { ArticleListBean::class.java },
+) = createItemBinder<ItemTextBinding, ArticleListBean, ItemArticleListTextViewModel>(
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )
 
 fun itemText1ArticleListBinder(
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemText1Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { ItemArticleListTextViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemText1Binding::class.java },
-    getDataClazz = { ArticleListBean::class.java },
+) = createItemBinder<ItemText1Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
 )
+
 
 fun itemText2ArticleBinder(
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemText2Binding, ArticleBean, ItemArticleTextViewModel>(
-    getItemViewModel = { ItemArticleTextViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemText2Binding::class.java },
-    getDataClazz = { ArticleBean::class.java },
+) = createItemBinder<ItemText2Binding, ArticleBean, ItemArticleTextViewModel>(
+    getItemViewModel = { data -> ItemArticleTextViewModel(data, theme) },
 )
 
 fun itemText3ArticleBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
     onBindViewModel: (binding: ItemText3Binding, data: ArticleListBean?, viewModel: ItemArticleListTextViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemText3Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { ItemArticleListTextViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemText3Binding::class.java },
-    getDataClazz = { ArticleListBean::class.java },
-    onBindViewModel = onBindViewModel,
-    onItemListener = onItemListener
+) = createItemBinder<ItemText3Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
+    onItemListener = onItemListener,
+    onBindViewModel = onBindViewModel
 )
 
 fun itemText2ArticleListBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemText2Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { ItemArticleListTextViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemText2Binding::class.java },
-    getDataClazz = { ArticleListBean::class.java },
+) = createItemBinder<ItemText2Binding, ArticleListBean, ItemArticleListTextViewModel>(
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
     onItemListener = onItemListener
 )
 
 fun itemWXArticleBinder(
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemWxArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { ChapterItemArticleViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemWxArticleBinding::class.java },
-    getDataClazz = { ArticleBean::class.java },
+) = createItemBinder<ItemWxArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
 )
 
 fun itemProjectArticleBinder(
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemProjectarticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { ChapterItemArticleViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemProjectarticleBinding::class.java },
-    getDataClazz = { ArticleBean::class.java },
+) = createItemBinder<ItemProjectarticleBinding, ArticleBean, ChapterItemArticleViewModel>(
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
 )
 
 fun itemArticlePagingAdapter(theme: AppDynamicTheme) =
@@ -101,29 +101,21 @@ fun itemArticlePagingAdapter(theme: AppDynamicTheme) =
         }
     }
 
-
 fun itemText1HotkeyBinder(theme: AppDynamicTheme) =
-    ItemDataViewModelBinder<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
-        getItemViewModel = { ItemTextHotkeyViewModel(it, theme) },
-        getViewDataBindingClazz = { ItemText1Binding::class.java },
-        getDataClazz = { HotKey::class.java }
+    createItemBinder<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
+        getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
     )
 
 fun itemText2HotkeyBinder(
     onItemListener: OnItemListener<ItemDataViewModel<HotKey>>,
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
-    getItemViewModel = { ItemTextHotkeyViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemText2Binding::class.java },
-    getDataClazz = { HotKey::class.java },
-    onItemListener = onItemListener
+) = createItemBinder<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
+    getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
+    onItemListener = onItemListener,
 )
-
 
 fun itemArticleBinder(
     theme: AppDynamicTheme,
-) = ItemDataViewModelBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
-    getItemViewModel = { ArticleItemArticleViewModel(it, theme) },
-    getViewDataBindingClazz = { ItemArticleBinding::class.java },
-    getDataClazz = { ArticleBean::class.java },
+) = createItemBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
+    getItemViewModel = { data -> ArticleItemArticleViewModel(data, theme) },
 )

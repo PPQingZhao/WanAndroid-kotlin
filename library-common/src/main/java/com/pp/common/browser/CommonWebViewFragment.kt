@@ -6,7 +6,8 @@ import android.os.Bundle
 import com.google.android.material.transition.MaterialContainerTransform
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
-import com.pp.common.constant.Constants
+import com.pp.common.constant.ON_BACK_PRESSED
+import com.pp.common.constant.TRANSITION_DURATION
 
 class CommonWebViewFragment : WebViewFragment() {
 
@@ -27,7 +28,7 @@ class CommonWebViewFragment : WebViewFragment() {
         if (transitionName?.isNotEmpty() == true) {
             allowEnterTransitionOverlap = true
             sharedElementEnterTransition = MaterialContainerTransform().apply {
-                duration = Constants.TRANSITION_DURATION
+                duration = TRANSITION_DURATION
                 scrimColor = Color.TRANSPARENT
                 postponeEnterTransition()
                 var isCreating = true
@@ -62,7 +63,7 @@ class CommonWebViewFragment : WebViewFragment() {
 
     override fun onBack() {
         super.onBack()
-        App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+        App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
     }
 
     override fun handleOnBackPressed() {

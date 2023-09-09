@@ -2,18 +2,18 @@ package com.pp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
+import androidx.core.view.doOnAttach
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.paging.PagingData
-import androidx.paging.PagingDataAdapter
-import androidx.paging.filter
+import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.pp.common.paging.onePager
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class BindingPagingDataAdapter<Data : Any>(
@@ -46,19 +46,19 @@ class BindingPagingDataAdapter<Data : Any>(
         mBindViewModelList.add(itemViewModelBinder as ItemViewModelBinder<ViewDataBinding, Data>)
     }
 
-    private fun getBindViewModel(
+    private fun getItemViewModelBinder(
         bind: ViewDataBinding?,
         data: Data?,
     ): ItemViewModelBinder<ViewDataBinding, Data> {
 
         for (binder in mBindViewModelList) {
 
-            if (null != data && binder.getDataClazz() != data::class.java) {
+            if (null != data && !binder.getDataClazz().isAssignableFrom(data::class.java)) {
                 continue
             }
 
             val viewDataBindingClazz = binder.getViewDataBindingClazz()
-            if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
+            if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind::class.java)) {
                 continue
             }
             return binder
@@ -70,27 +70,27 @@ class BindingPagingDataAdapter<Data : Any>(
         parent: ViewGroup,
         @LayoutRes layoutId: Int,
     ): BindingItemViewHolder2 {
-        val bind = DataBindingUtil.inflate<ViewDataBinding>(mInflater!!, layoutId, parent, false)
-            .also { binding ->
-                binding.root.addOnAttachStateChangeListener(object :
-                    View.OnAttachStateChangeListener {
-                    override fun onViewAttachedToWindow(v: View) {
-                        ViewTreeLifecycleOwner.get(v)?.also {
-                            binding.lifecycleOwner = it
-                        }
-                    }
-
-                    override fun onViewDetachedFromWindow(v: View) {}
-                })
-            }
-        return BindingItemViewHolder2(bind)
+        return BindingItemViewHolder2(
+            DataBindingUtil.inflate<ViewDataBinding>(
+                mInflater!!,
+                layoutId,
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: BindingItemViewHolder2, position: Int) {
         val itemData = getItem(position)
-        getBindViewModel(holder.bind, itemData).apply {
+        getItemViewModelBinder(holder.bind, itemData).apply {
             bindViewModel(holder.bind, itemData, position)
         }
+        holder.itemView.doOnAttach {
+            ViewTreeLifecycleOwner.get(it)?.also { owern ->
+                holder.bind.lifecycleOwner = owern
+            }
+        }
+
         holder.bind.executePendingBindings()
     }
 
@@ -125,5 +125,17 @@ class BindingPagingDataAdapter<Data : Any>(
 
     fun clear() {
         filterItem { false }
+    }
+
+    fun setData(scope: CoroutineScope, dataList: List<Data>) {
+        scope.launch {
+            onePager(getPageData = { dataList },
+                getPageValue = {
+                    it ?: emptyList()
+                }).flow.cachedIn(scope)
+                .collectLatest {
+                    setPagingData(scope, it)
+                }
+        }
     }
 }

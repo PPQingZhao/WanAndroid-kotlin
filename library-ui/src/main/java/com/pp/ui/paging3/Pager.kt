@@ -17,3 +17,7 @@ fun <PageData : Any, Value : Any> onePager(
                 createNextKey = { null })
         })
 }
+
+fun <PageData : Any, Value : Any> emptyPager(): Pager<Int, Value> {
+    return onePager(getPageValue = { emptyList<Value>() }, getPageData = { emptyList<PageData>() })
+}

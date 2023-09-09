@@ -48,13 +48,21 @@
             app:searchIcon="@null" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/key_recyclerview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="@dimen/dp_8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/search_view" />
+            app:layout_constraintTop_toBottomOf="@id/history_recyclerview" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recyclerview"

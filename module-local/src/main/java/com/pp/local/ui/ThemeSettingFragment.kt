@@ -45,7 +45,7 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
                         return ItemThemeSettingBinding::class.java
                     }
 
-                    override fun getDataClazz(): Class<ItemPreferenceThemeSettingViewModel>? {
+                    override fun getDataClazz(): Class<ItemPreferenceThemeSettingViewModel> {
                         return ItemPreferenceThemeSettingViewModel::class.java
                     }
 

@@ -109,7 +109,6 @@
                 android:text="@{viewModel.title}"
                 android:textColor="@{viewModel.theme.textColor}"
                 android:textSize="15sp"
-                android:textStyle="bold"
                 android:transitionName="@{viewModel.transitionName}"
                 app:layout_constraintEnd_toEndOf="@id/tv_nicedate"
                 app:layout_constraintHorizontal_bias="0"

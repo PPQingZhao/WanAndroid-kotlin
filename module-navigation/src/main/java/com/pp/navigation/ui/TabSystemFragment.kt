@@ -8,7 +8,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
-import com.pp.common.constant.Constants
+import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.util.materialSharedAxis
 import com.pp.navigation.databinding.FragmentTabSystemBinding
@@ -57,12 +57,12 @@ class TabSystemFragment :
     }
 
     override fun handleOnBackPressed() {
-        App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+        App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
     }
 
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
-            App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+            App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
         }
     }
 

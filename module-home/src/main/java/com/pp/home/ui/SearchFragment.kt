@@ -5,13 +5,14 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
-import com.pp.common.constant.Constants
+import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.paging.articleDifferCallback
@@ -25,6 +26,7 @@ import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -38,15 +40,26 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         return SearchViewModel::class.java
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         enterTransition = materialSharedAxis(MaterialSharedAxis.Z, true)
         exitTransition = materialSharedAxis(MaterialSharedAxis.Z, false)
         initView()
         initSearchView()
+        initHistoryRecyclerView()
         initHotkeyRecyclerView()
         initSearchRecyclerView()
+
+    }
+
+    private val mHistoryAdapter by lazy {
+        createFlexBoxAdapter()
+    }
+
+    private fun initHistoryRecyclerView() {
+        mBinding.historyRecyclerview.layoutManager = FlexboxLayoutManager(requireContext()).apply {
+        }
+        mBinding.historyRecyclerview.adapter = mHistoryAdapter
     }
 
     private val mSearchAdapter by lazy {
@@ -66,8 +79,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         mBinding.searchRecyclerview.adapter = mSearchAdapter
     }
 
-    private val mHotkeyAdapter by lazy {
-
+    private fun createFlexBoxAdapter(): BindingPagingDataAdapter<HotKey> {
         val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
             override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
                 item.data?.name.let {
@@ -77,13 +89,27 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             }
         }
 
-        BindingPagingDataAdapter<HotKey>({
-            if (it is HotKey && it.id > 0) {
-                com.pp.ui.R.layout.item_text2
-            } else {
-                com.pp.ui.R.layout.item_text1
+        val differCallback = object : DiffUtil.ItemCallback<HotKey>() {
+            override fun areItemsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+                return oldItem.id == newItem.id
             }
-        }).apply {
+
+            override fun areContentsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+                return oldItem == newItem
+            }
+
+        }
+
+        return BindingPagingDataAdapter<HotKey>(
+            {
+                if (it is HotKey && it.id >= 0) {
+                    com.pp.ui.R.layout.item_text2
+                } else {
+                    com.pp.ui.R.layout.item_text1
+                }
+            },
+            diffCallback = differCallback
+        ).apply {
             itemText1HotkeyBinder(mViewModel.mTheme).also {
                 addItemViewModelBinder(it)
             }
@@ -91,8 +117,11 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             itemText2HotkeyBinder(onItemListener, mViewModel.mTheme).also {
                 addItemViewModelBinder(it)
             }
-
         }
+    }
+
+    private val mHotkeyAdapter by lazy {
+        createFlexBoxAdapter()
     }
 
     private fun initHotkeyRecyclerView() {
@@ -108,6 +137,12 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         mBinding.searchView.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query?.isNotBlank() != true) {
+                    return true
+                }
+
+                mViewModel.saveSearchHotKeyHistory(query)
+                mBinding.searchView.clearFocus()
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     mViewModel.searchPageData(query).collectLatest {
                         mBinding.searchRecyclerview.post {
@@ -135,15 +170,24 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
             mBinding.searchView.clearFocus()
-            App.getInstance().navigation.value = Constants.ON_BACK_PRESSED to Any()
+            App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
         }
     }
 
     override fun onFirstResume() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            mViewModel.getSearchHot().collectLatest {
-                mHotkeyAdapter.setPagingData(this, it)
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            async {
+                mViewModel.getSearchHot().collectLatest {
+                    mHotkeyAdapter.setPagingData(this, it)
+                }
             }
+
+            async {
+                mViewModel.getSearchHotkeyHistory().collectLatest {
+                    mHistoryAdapter.setData(this, it)
+                }
+            }
+
         }
     }
 }

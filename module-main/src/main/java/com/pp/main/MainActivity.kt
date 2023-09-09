@@ -17,7 +17,7 @@ import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeActivity
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
-import com.pp.common.constant.Constants
+import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.util.ShareElementNavigation
 import com.pp.common.util.materialElevationScale
 import com.pp.common.util.materialSharedAxis
@@ -138,7 +138,7 @@ class MainActivity : ThemeActivity<ActivityMainBinding, MainViewModel>() {
                     }
                 }
                 RouterPath.User.fragment_user,
-                Constants.ON_BACK_PRESSED,
+                ON_BACK_PRESSED,
                 -> {
                     popBackStack()
                 }

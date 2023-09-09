@@ -1,10 +1,10 @@
 package com.pp.ui.adapter
 
-import androidx.core.util.rangeTo
 import androidx.databinding.ViewDataBinding
 import com.pp.ui.BR
 
 interface ItemViewModelBinder<VB : ViewDataBinding, Data : Any> {
+
     fun getViewDataBindingClazz(): Class<VB>
     fun getDataClazz(): Class<Data>
     fun bindViewModel(binding: VB, data: Data?, position: Int)

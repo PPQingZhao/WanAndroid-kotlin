@@ -2,7 +2,7 @@ package com.pp.base.browser
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.text.Html
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
@@ -56,7 +56,7 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
             mViewModel.setUrl(webUrl)
             (if (webTitle?.isNotEmpty() == true) webTitle else "加载中...").let {
 //                mBinding.webTvTitle.text = it
-                mViewModel.mTitle.value = it
+                mViewModel.mTitle.value = Html.fromHtml(webTitle)
             }
         }
     }
@@ -78,11 +78,6 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
         enableBackPressed(false)
     }
 
-    private val mWebLayoutParams = FrameLayout.LayoutParams(
-        FrameLayout.LayoutParams.MATCH_PARENT,
-        FrameLayout.LayoutParams.MATCH_PARENT
-    )
-
     @SuppressLint("SetJavaScriptEnabled")
     fun initWeb() {
 
@@ -90,7 +85,12 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
             if (null != parent) {
                 (parent as ViewGroup).removeView(this)
             }
-            mBinding.webContainer.addView(mViewModel.getWebView(), 0, mWebLayoutParams)
+            mBinding.webContainer.addView(
+                mViewModel.getWebView(), 0, FrameLayout.LayoutParams(
+                    FrameLayout.LayoutParams.MATCH_PARENT,
+                    FrameLayout.LayoutParams.MATCH_PARENT
+                )
+            )
         }
     }
 
@@ -121,6 +121,7 @@ open class WebViewFragment : ThemeFragment<WebViewBinding, WebViewModel>() {
 
     override fun onDestroy() {
         super.onDestroy()
+
         if (null == sharedElementEnterTransition) {
             clearWebView()
         }

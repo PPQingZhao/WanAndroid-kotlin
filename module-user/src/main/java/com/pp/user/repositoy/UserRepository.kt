@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.pp.common.app.App
+import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
 import com.pp.database.AppDataBase
 import com.pp.database.user.User
@@ -18,7 +19,6 @@ import kotlinx.coroutines.withContext
 
 object UserRepository {
     private const val TAG = "UserRepository"
-    private val userNameKey = stringPreferencesKey("user_name")
 
     private val userApi by lazy { WanAndroidService.userApi }
     private val userDao by lazy {
@@ -31,7 +31,7 @@ object UserRepository {
     suspend fun loginPreferenceUser(): Pair<ResponseBean<LoginBean>, User?> {
         var userName: String?
         App.getInstance().baseContext.userDataStore.data.first().run {
-            userName = get(userNameKey)
+            userName = get(preferences_key_user_name)
         }
 
         val user = userDao.findUser(userName ?: "")
@@ -52,7 +52,7 @@ object UserRepository {
         val result = login(userName, password)
         result.second?.apply {
             App.getInstance().baseContext.userDataStore.edit {
-                it[userNameKey] = this.name.toString()
+                it[preferences_key_user_name] = this.name.toString()
             }
         }
         return result
@@ -61,7 +61,10 @@ object UserRepository {
     /**
      * 用户名&密码 登录
      */
-    private suspend fun login(userName: String?, password: String?): Pair<ResponseBean<LoginBean>, User?> {
+    private suspend fun login(
+        userName: String?,
+        password: String?,
+    ): Pair<ResponseBean<LoginBean>, User?> {
 
         Log.v(TAG, "start login: $userName}")
         // 执行登录逻辑
@@ -99,13 +102,17 @@ object UserRepository {
         withContext(Dispatchers.IO) {
             userApi.logout()
             App.getInstance().baseContext.userDataStore.edit {
-                it[userNameKey] = ""
+                it[preferences_key_user_name] = ""
             }
         }
     }
 
-    suspend fun register(username: String?, password: String?,repassword:String?): ResponseBean<LoginBean> {
-        return userApi.registerByUserName(username, password,repassword)
+    suspend fun register(
+        username: String?,
+        password: String?,
+        repassword: String?,
+    ): ResponseBean<LoginBean> {
+        return userApi.registerByUserName(username, password, repassword)
     }
 
 }
