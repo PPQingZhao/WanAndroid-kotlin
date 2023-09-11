@@ -3,12 +3,14 @@ package com.pp.common.browser
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialContainerTransform
 import com.pp.base.browser.WebViewFragment
-import com.pp.common.app.App
-import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.constant.TRANSITION_DURATION
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
+import com.pp.router_service.RouterPath
 
+@Route(path = RouterPath.Web.fragment_web)
 class CommonWebViewFragment : WebViewFragment() {
 
     companion object {
@@ -63,7 +65,9 @@ class CommonWebViewFragment : WebViewFragment() {
 
     override fun onBack() {
         super.onBack()
-        App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
+        ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+            popBackStack(RouterPath.Web.fragment_web)
+        }
     }
 
     override fun handleOnBackPressed() {

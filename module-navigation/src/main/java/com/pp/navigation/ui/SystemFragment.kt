@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.app.App
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemText1ArticleListBinder
 import com.pp.common.paging.itemText2ArticleListBinder
 import com.pp.common.paging.itemText3ArticleBinder
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
@@ -123,8 +123,13 @@ class SystemFragment private constructor() :
                     putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
                     putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
                 }
-                App.getInstance().navigation.value =
-                    RouterPath.Navigation.fragment_tab_system to bundle
+                ViewTreeMultiRouterFragmentViewModel[view]?.run {
+                    showFragment(
+                        targetFragment = RouterPath.Navigation.fragment_tab_system,
+                        tag = RouterPath.Navigation.fragment_tab_system,
+                        arguments = bundle
+                    )
+                }
                 return true
             }
         }

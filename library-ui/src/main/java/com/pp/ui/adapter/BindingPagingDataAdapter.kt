@@ -20,7 +20,7 @@ class BindingPagingDataAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
     diffCallback: DiffUtil.ItemCallback<Data> = emptyDifferCallback(),
-) : PagingDataAdapter<Data, BindingItemViewHolder2>(diffCallback) {
+) : PagingDataAdapter<Data, BindingItemViewHolder>(diffCallback) {
 
     companion object {
         fun <Data : Any> emptyDifferCallback() = object : DiffUtil.ItemCallback<Data>() {
@@ -67,27 +67,23 @@ class BindingPagingDataAdapter<Data : Any>(
     }
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        @LayoutRes layoutId: Int,
-    ): BindingItemViewHolder2 {
-        return BindingItemViewHolder2(
+        parent: ViewGroup, @LayoutRes layoutId: Int,
+    ): BindingItemViewHolder {
+        return BindingItemViewHolder(
             DataBindingUtil.inflate<ViewDataBinding>(
-                mInflater!!,
-                layoutId,
-                parent,
-                false
+                mInflater!!, layoutId, parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder2, position: Int) {
+    override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getItemViewModelBinder(holder.bind, itemData).apply {
             bindViewModel(holder.bind, itemData, position)
         }
         holder.itemView.doOnAttach {
-            ViewTreeLifecycleOwner.get(it)?.also { owern ->
-                holder.bind.lifecycleOwner = owern
+            ViewTreeLifecycleOwner.get(it)?.also { owner ->
+                holder.bind.lifecycleOwner = owner
             }
         }
 

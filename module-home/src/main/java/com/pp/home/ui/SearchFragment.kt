@@ -19,6 +19,7 @@ import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.model.ItemDeleteBarHotkeyViewModel
 import com.pp.common.model.ItemTextDeleteHotkeyViewModel
 import com.pp.common.paging.*
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.home.R
 import com.pp.home.databinding.FragmentSearchBinding
@@ -61,16 +62,16 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                         mViewModel.clearSearchHistory()
                         mViewModel.isDeleteModel.value = false
                     }
-                    com.pp.ui.R.id.tv_finish,
-                    com.pp.ui.R.id.iv_delete_model,
-                    -> {
-                        mViewModel.isDeleteModel.value =
-                            (item as ItemDeleteBarHotkeyViewModel).isDeleteModel.value
+                    com.pp.ui.R.id.tv_finish -> {
+                        mViewModel.isDeleteModel.value = false
+                    }
+                    com.pp.ui.R.id.iv_delete_model -> {
+                        mViewModel.isDeleteModel.value = true
                     }
                     com.pp.ui.R.id.container_text_delete -> {
                         (item as ItemTextDeleteHotkeyViewModel).let {
                             it.text.get()?.let { text ->
-                                if (it.isDeleteModel.value == true) {
+                                if (mViewModel.isDeleteModel.value == true) {
                                     mViewModel.removeSearchHistory(text);
                                 } else {
                                     mBinding.searchView.setQuery(text, true)
@@ -79,7 +80,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                         }
                     }
                 }
-                return true
+                return false
             }
         }
 
@@ -106,6 +107,11 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             }
 
             itemDeleteBarHotkeyBinder(
+                /*onCreateViewModel = { model ->
+                    mViewModel.isDeleteModel.observe(viewLifecycleOwner) {
+                        model.isDeleteModel.value = it
+                    }
+                },*/
                 onItemListener = onItemListener,
                 theme = mViewModel.mTheme
             ).also {
@@ -224,7 +230,9 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
             mBinding.searchView.clearFocus()
-            App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
+            ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+                popBackStack(RouterPath.Search.fragment_search)
+            }
         }
     }
 

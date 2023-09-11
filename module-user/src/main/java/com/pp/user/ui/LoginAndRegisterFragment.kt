@@ -9,7 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
-import com.pp.common.constant.ON_BACK_PRESSED
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.router_service.RouterPath
 import com.pp.user.databinding.FragmentLoginAndRegisterBinding
@@ -44,7 +44,13 @@ class LoginAndRegisterFragment :
 
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
-            App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
+            onBackPressed()
+        }
+    }
+
+    private fun onBackPressed() {
+        ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+            popBackStack(RouterPath.User.fragment_login)
         }
     }
 
@@ -81,7 +87,10 @@ class LoginAndRegisterFragment :
         lifecycleScope.launch {
             mViewModel.loginViewModel.loginResult.collect {
                 if (it) {
-                    App.getInstance().navigation.value = RouterPath.User.fragment_user to Any()
+
+                    ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+                        popBackStack(RouterPath.User.fragment_login)
+                    }
                 }
             }
         }

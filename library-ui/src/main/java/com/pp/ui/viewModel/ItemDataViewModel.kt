@@ -26,11 +26,16 @@ open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
         mOnItemListener = listener
     }
 
-    open fun onItemClick(view: View) {
+    fun onItemClick(view: View) {
         if (mOnItemListener?.onItemClick(view, this) == true) {
             return
         }
+        onItemViewModelClick(view)
+    }
+
+    open fun onItemViewModelClick(view: View): Boolean {
         isSelected.set(isSelected.get().not())
+        return false
     }
 
 }

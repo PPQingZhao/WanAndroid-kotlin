@@ -8,14 +8,12 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
-import androidx.paging.PagingDataAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerViewBindingAdapter2<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
-) : RecyclerView.Adapter<BindingItemViewHolder2>() {
+) : RecyclerView.Adapter<BindingItemViewHolder>() {
 
 
     private var mInflater: LayoutInflater? = null
@@ -56,7 +54,7 @@ class RecyclerViewBindingAdapter2<Data : Any>(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         @LayoutRes layoutId: Int,
-    ): BindingItemViewHolder2 {
+    ): BindingItemViewHolder {
         val bind = DataBindingUtil.inflate<ViewDataBinding>(mInflater!!, layoutId, parent, false)
             .also { binding ->
                 binding.root.addOnAttachStateChangeListener(object :
@@ -70,10 +68,10 @@ class RecyclerViewBindingAdapter2<Data : Any>(
                     override fun onViewDetachedFromWindow(v: View) {}
                 })
             }
-        return BindingItemViewHolder2(bind)
+        return BindingItemViewHolder(bind)
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder2, position: Int) {
+    override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getBindViewModel(holder.bind, itemData).apply {
             bindViewModel(holder.bind, itemData, position)

@@ -1,7 +1,6 @@
 package com.pp.common.paging
 
 import android.annotation.SuppressLint
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
@@ -10,7 +9,7 @@ import com.pp.common.model.*
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.adapter.ItemDataViewModelBinder
+import com.pp.ui.adapter.ItemDataViewModelBinder.Companion.createItemBinder
 import com.pp.ui.databinding.*
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -26,18 +25,6 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
         return oldItem == newItem
     }
 }
-
-inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : ItemDataViewModel<Data>> createItemBinder(
-    crossinline getItemViewModel: (data: Data?) -> VM,
-    onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
-    noinline onBindViewModel: (binding: VB, data: Data?, viewModel: VM?, position: Int) -> Boolean = { _, _, _, _ -> false },
-) = ItemDataViewModelBinder<VB, Data, VM>(
-    getItemViewModel = { getItemViewModel.invoke(it) },
-    getViewDataBindingClazz = { VB::class.java },
-    getDataClazz = { Data::class.java },
-    onItemListener = onItemListener,
-    onBindViewModel = onBindViewModel
-)
 
 fun itemTextArticleListBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
@@ -126,17 +113,22 @@ fun itemTextDeleteHotkeyBinder(
     onBindViewModel: (binding: ItemTextDeleteBinding, data: HotKey?, viewModel: ItemTextDeleteHotkeyViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemBinder<ItemTextDeleteBinding, HotKey, ItemTextDeleteHotkeyViewModel>(
-    getItemViewModel = { data -> ItemTextDeleteHotkeyViewModel(data, theme).apply(onCreateViewModel) },
+    getItemViewModel = { data ->
+        ItemTextDeleteHotkeyViewModel(data, theme).apply(onCreateViewModel)
+    },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )
 
 fun itemDeleteBarHotkeyBinder(
+    onCreateViewModel: (model: ItemDeleteBarHotkeyViewModel) -> Unit = { _ -> },
     onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
     onBindViewModel: (binding: ItemDeleteBarBinding, data: HotKey?, viewModel: ItemDeleteBarHotkeyViewModel?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemBinder<ItemDeleteBarBinding, HotKey, ItemDeleteBarHotkeyViewModel>(
-    getItemViewModel = { data -> ItemDeleteBarHotkeyViewModel(data, theme) },
+    getItemViewModel = { data ->
+        ItemDeleteBarHotkeyViewModel(data, theme).apply(onCreateViewModel)
+    },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )

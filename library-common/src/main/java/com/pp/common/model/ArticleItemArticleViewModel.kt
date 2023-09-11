@@ -5,10 +5,9 @@ import android.text.Html
 import android.view.View
 import android.widget.TextView
 import com.pp.base.browser.WebViewFragment
-import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.util.ShareElementNavigation
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.getAuthor
 import com.pp.common.util.getCharterName
 import com.pp.common.util.getTags
@@ -44,23 +43,31 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
     }
 
 
-    override fun onItemClick(view: View) {
-        if (null == data) {
-            return
-        }
+    override fun onItemViewModelClick(view: View): Boolean {
+        super.onItemViewModelClick(view)
+        ViewTreeMultiRouterFragmentViewModel[view]?.run {
+            if (null == data) {
+                return false
+            }
 
-        val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
-        val bundle = Bundle().also {
-            it.putString(WebViewFragment.WEB_VIEW_TITLE, data!!.title)
-            it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
-            it.putString(
-                CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
-                shareElement.transitionName
+            val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
+            val bundle = Bundle().also {
+                it.putString(WebViewFragment.WEB_VIEW_TITLE, data!!.title)
+                it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
+                it.putString(
+                    CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
+                    shareElement.transitionName
+                )
+            }
+
+            showFragment(
+                targetFragment = RouterPath.Web.fragment_web,
+                tag = RouterPath.Web.fragment_web,
+                arguments = bundle,
+                sharedElement = shareElement
             )
         }
-
-        App.getInstance().navigation.value =
-            RouterPath.Web.fragment_web to ShareElementNavigation(shareElement, bundle)
+        return true
     }
 
     override fun onCollect(v: View) {

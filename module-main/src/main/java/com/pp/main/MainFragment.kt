@@ -4,14 +4,19 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.MotionEvent
 import androidx.fragment.app.Fragment
+import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
+import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
+import com.pp.common.util.materialSharedAxis
 import com.pp.main.databinding.FragmentMainBinding
 import com.pp.main.widget.WanAndroidTabImageSwitcher
 import com.pp.router_service.RouterPath
 
+@Route(path = RouterPath.Main.fragment_main)
 class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
     override val mBinding: FragmentMainBinding by lazy {
         FragmentMainBinding.inflate(layoutInflater)
@@ -70,26 +75,9 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
             )
 
             add(
-                TabPagerFragmentHelper.TabPager(
-                    {
-                        ARouter.getInstance().build(RouterPath.User.fragment_user)
-                            .navigation() as Fragment
-                    },
-                    WanAndroidTabImageSwitcher(
-                        requireContext(),
-                        mViewModel.mTheme,
-                        "ic_tab_selected_mine",
-                        "ic_tab_unselected_mine"
-                    ).apply {
-                        setOnTouchListener { v, event ->
-                            if (event.action == MotionEvent.ACTION_DOWN) {
-                                App.getInstance().navigation.value =
-                                    RouterPath.User.fragment_login to Any()
-                                return@setOnTouchListener true
-                            }
-                            return@setOnTouchListener false
-                        }
-                    }
+                createTagPager(
+                    RouterPath.User.fragment_user, "ic_tab_selected_mine",
+                    "ic_tab_unselected_mine"
                 )
             )
         }

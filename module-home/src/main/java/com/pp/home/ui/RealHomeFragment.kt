@@ -13,6 +13,7 @@ import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.util.ShareElementNavigation
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.IndicatorTransitionListener
@@ -69,11 +70,13 @@ class RealHomeFragment :
                                 it.putString(CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME, null)
                             }
 
-                            App.getInstance().navigation.value =
-                                RouterPath.Web.fragment_web to ShareElementNavigation(
-                                    null,
-                                    bundle
+                            ViewTreeMultiRouterFragmentViewModel[view]?.run {
+                                showFragment(
+                                    targetFragment = RouterPath.Web.fragment_web,
+                                    tag = RouterPath.Web.fragment_web,
+                                    arguments = bundle
                                 )
+                            }
                         }
                     }
 
@@ -119,7 +122,7 @@ class RealHomeFragment :
 
     override fun onFirstResume() {
         super.onFirstResume()
-        mViewModel.getBanner2()
+        mViewModel.getBanner()
         initPagingList()
     }
 }

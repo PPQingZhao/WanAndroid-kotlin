@@ -8,5 +8,4 @@ open class ItemDeleteViewModel<Data : Any>(theme: AppDynamicTheme) :
     ItemDataViewModel<Data>(theme) {
     val text = ObservableField<String>()
     val isDeleteModel = MutableLiveData<Boolean>()
-
 }

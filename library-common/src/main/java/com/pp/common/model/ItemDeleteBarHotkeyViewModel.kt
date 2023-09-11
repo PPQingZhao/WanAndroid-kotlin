@@ -16,7 +16,8 @@ class ItemDeleteBarHotkeyViewModel(hotKey: HotKey?, theme: AppDynamicTheme) :
         text.set(data?.name ?: "")
     }
 
-    override fun onItemClick(view: View) {
+    override fun onItemViewModelClick(view: View): Boolean {
+        val result = super.onItemViewModelClick(view)
         when (view.id) {
             com.pp.ui.R.id.tv_delete_all,
             com.pp.ui.R.id.tv_finish,
@@ -27,6 +28,6 @@ class ItemDeleteBarHotkeyViewModel(hotKey: HotKey?, theme: AppDynamicTheme) :
                 isDeleteModel.value = true
             }
         }
-        super.onItemClick(view)
+        return result
     }
 }

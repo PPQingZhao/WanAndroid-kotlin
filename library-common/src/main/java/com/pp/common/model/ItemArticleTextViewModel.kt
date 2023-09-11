@@ -8,6 +8,7 @@ import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.util.ShareElementNavigation
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
@@ -23,9 +24,10 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
         text.set(data?.title)
     }
 
-    override fun onItemClick(view: View) {
+    override fun onItemViewModelClick(view: View): Boolean {
+        super.onItemViewModelClick(view)
         if (null == data) {
-            return
+            return false
         }
 
         val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_text)
@@ -39,8 +41,16 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
             )
         }
 
-        App.getInstance().navigation.value =
-            RouterPath.Web.fragment_web to ShareElementNavigation(shareElement, bundle)
+        ViewTreeMultiRouterFragmentViewModel[view]?.run {
+
+            showFragment(
+                targetFragment = RouterPath.Web.fragment_web,
+                tag = RouterPath.Web.fragment_web,
+                arguments = bundle,
+                sharedElement = shareElement
+            )
+        }
+        return true
     }
 
 }

@@ -1,4 +1,4 @@
-package com.pp.common.routerservice
+package com.pp.common.router
 
 import com.alibaba.android.arouter.launcher.ARouter
 import com.pp.router_service.IUserService

@@ -10,6 +10,7 @@ import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
 import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.navigation.databinding.FragmentTabSystemBinding
 import com.pp.router_service.RouterPath
@@ -57,12 +58,18 @@ class TabSystemFragment :
     }
 
     override fun handleOnBackPressed() {
-        App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
+        onBackPressed()
     }
 
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
-            App.getInstance().navigation.value = ON_BACK_PRESSED to Any()
+            onBackPressed()
+        }
+    }
+
+    private fun onBackPressed() {
+        ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+            popBackStack(RouterPath.Navigation.fragment_tab_system)
         }
     }
 

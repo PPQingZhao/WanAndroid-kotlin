@@ -18,7 +18,7 @@ class RealHomeViewModel(app: Application) : ThemeViewModel(app) {
     private val _bannerFlow = MutableStateFlow<List<BannerBean>>(emptyList())
     val bannerFlow = _bannerFlow.asStateFlow()
 
-    fun getBanner2() {
+    fun getBanner() {
         viewModelScope.launch(Dispatchers.IO) {
             _bannerFlow.value = HomeRepository.getBanner()
         }
