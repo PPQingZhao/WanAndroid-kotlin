@@ -32,9 +32,9 @@ class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
      * 添加展示路由fragment
      * @param targetFragment fragment路由路径
      * @param tag @see [Fragment.getTag]
-     * @param arguments @see [Fragment.getArguments]
-     * @param mainExitTransition @see [Fragment.getExitTransition]
-     * @param mainReenterTransition @see [Fragment.getReenterTransition]
+     * @param arguments @see [Fragment.setArguments]
+     * @param mainExitTransition @see [Fragment.setExitTransition]
+     * @param mainReenterTransition @see [Fragment.setReenterTransition]
      * @param sharedElement @see [FragmentTransaction.addSharedElement]
      */
     fun showFragment(

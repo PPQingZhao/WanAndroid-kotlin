@@ -42,7 +42,6 @@ class SplashActivity : ThemeActivity<ActivitySplashBinding, ThemeViewModel>() {
         Handler(Looper.myLooper()!!).postDelayed({
 
             startMultiRouterFragmentActivity(this, RouterPath.Main.fragment_main)
-//            MainActivity.start(this)
             finish()
         }, 500)
     }

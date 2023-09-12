@@ -147,7 +147,7 @@ class MultiRouterFragmentActivity :
      *
      * 在这里使用  @see [FragmentTransaction.add]方式配合 @see [FragmentTransaction.hide]使转场动画生效,
      * 并且使用 @see [FragmentTransaction.setMaxLifecycle]控制fragment生命周期
-     * 值得注意的是 @see [FragmentTransaction.hide]之后,再次显示时没有使用@see [FragmentTransaction.show],
+     * 值得注意的是 @see [FragmentTransaction.hide]之后,再次显示时不是使用@see [FragmentTransaction.show]时,
      * 比如:按下回退键(系统处理fragment退栈  @see [FragmentManager.popBackStackImmediate])
      * 会导致 @see [Fragment.isVisible]为false,就不能使用该属性判断fragment是否可见([mShowingFragment]的更新判断就不可以使用该条件)
      */
