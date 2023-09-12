@@ -8,6 +8,8 @@ import com.pp.base.ThemeViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
 
@@ -17,12 +19,24 @@ class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
     private val _showFragment = MutableSharedFlow<RouterInfo>()
     val showFragment = _showFragment.asSharedFlow()
 
+    /**
+     * fragment出栈
+     */
     fun popBackStack(fragmentTag: String) {
         viewModelScope.launch {
             _popBackStack.emit(fragmentTag)
         }
     }
 
+    /**
+     * 添加展示路由fragment
+     * @param targetFragment fragment路由路径
+     * @param tag @see [Fragment.getTag]
+     * @param arguments @see [Fragment.getArguments]
+     * @param mainExitTransition @see [Fragment.getExitTransition]
+     * @param mainReenterTransition @see [Fragment.getReenterTransition]
+     * @param sharedElement @see [FragmentTransaction.addSharedElement]
+     */
     fun showFragment(
         targetFragment: String,
         tag: String?,

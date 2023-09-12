@@ -1,17 +1,11 @@
 package com.pp.main
 
 import android.annotation.SuppressLint
-import android.os.Bundle
-import android.view.MotionEvent
 import androidx.fragment.app.Fragment
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.alibaba.android.arouter.launcher.ARouter
-import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
-import com.pp.common.app.App
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
-import com.pp.common.util.materialSharedAxis
 import com.pp.main.databinding.FragmentMainBinding
 import com.pp.main.widget.WanAndroidTabImageSwitcher
 import com.pp.router_service.RouterPath
@@ -24,17 +18,6 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
 
     override fun getModelClazz(): Class<MainViewModel> {
         return MainViewModel::class.java
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        App.getInstance().navigation.observe(this) { it ->
-            when (it.first) {
-                RouterPath.User.fragment_user -> {
-                    mBinding.mainViewpager2.setCurrentItem(3, false)
-                }
-            }
-        }
     }
 
     override fun onFirstResume() {

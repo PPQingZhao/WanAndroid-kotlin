@@ -20,14 +20,11 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-private val MultiRouterFragmentActivity.s: String?
-    get() {
-        val routerMainFragment = intent.getStringExtra(MultiRouterFragmentActivity.MAIN_FRAGMENT)
-        return routerMainFragment
-    }
-
 /**
  * 单activity 管理多个路由Fragment
+ *
+ * 启动MultiRouterFragmentActivity时,需要通过 @see [startMultiRouterFragmentActivity] 设置 main fragment
+ *
  */
 class MultiRouterFragmentActivity :
     ThemeActivity<ActivityMultiRouterFragmentBinding, MultiRouterFragmentViewModel>() {
@@ -42,7 +39,7 @@ class MultiRouterFragmentActivity :
     private val DEBUG = false
 
     companion object {
-        const val MAIN_FRAGMENT = "main_fragment"
+        private const val MAIN_FRAGMENT = "main_fragment"
 
         fun startMultiRouterFragmentActivity(context: Context, targetFragment: String) {
             context.startActivity(
@@ -59,9 +56,15 @@ class MultiRouterFragmentActivity :
 
         ViewTreeMultiRouterFragmentViewModel.set(mBinding.root, mViewModel)
 
+        // 监听 fragment resumed 状态,更新 showing fragment
         supportFragmentManager.registerFragmentLifecycleCallbacks(object :
             FragmentManager.FragmentLifecycleCallbacks() {
             override fun onFragmentResumed(fm: FragmentManager, f: Fragment) {
+                /**
+                 * 注意:
+                 * 使用 @see [FragmentTransaction.hide] @see [FragmentManager.popBackStackImmediate]情况下,
+                 *  @see[Fragment.isVisible] 不能判断当前resumed fragment是否可见
+                 */
                 if (null != f.view?.parent && !f.isHidden) {
                     mShowingFragment = f
                 }
@@ -98,12 +101,13 @@ class MultiRouterFragmentActivity :
     }
 
     private var tagMainFragment: String? = null
-    private fun parseMainIntent() {
-        if (null == intent) {
-            return
-        }
 
-        val routerMainFragment = intent.getStringExtra(MAIN_FRAGMENT)
+    /**
+     * 解析intent, 设置main fragment
+     */
+    private fun parseMainIntent() {
+
+        val routerMainFragment = intent?.getStringExtra(MAIN_FRAGMENT)
         if (routerMainFragment?.isEmpty() == true) {
             throw RuntimeException("you must set ‘main fragment’.")
         }
@@ -113,14 +117,26 @@ class MultiRouterFragmentActivity :
         showFragment(mainFragment, tag = tagMainFragment, addToBackStack = false)
     }
 
+    /**
+     * fragment 出栈
+     */
     @SuppressLint("CommitTransaction")
     private fun popBackStack(popTag: String) {
         if (popTag != mShowingFragment?.tag) {
+            if (DEBUG) {
+                Log.e(
+                    "RouterContainerActivity",
+                    "popBackStack failed:{pop:$popTag},showing:${mShowingFragment?.tag}"
+                )
+            }
             return
         }
         supportFragmentManager.popBackStackImmediate()
     }
 
+    /**
+     * 记录当前展示的fragment
+     */
     private var mShowingFragment: Fragment? = null
 
     /**
@@ -133,7 +149,7 @@ class MultiRouterFragmentActivity :
      * 并且使用 @see [FragmentTransaction.setMaxLifecycle]控制fragment生命周期
      * 值得注意的是 @see [FragmentTransaction.hide]之后,再次显示时没有使用@see [FragmentTransaction.show],
      * 比如:按下回退键(系统处理fragment退栈  @see [FragmentManager.popBackStackImmediate])
-     * 会导致 @see [Fragment.isVisible]为false,就不能使用该属性判断fragment是否可见([mShowingFragment]的判断就不可以使用该条件)
+     * 会导致 @see [Fragment.isVisible]为false,就不能使用该属性判断fragment是否可见([mShowingFragment]的更新判断就不可以使用该条件)
      */
     @SuppressLint("CommitTransaction")
     private fun showFragment(
@@ -165,6 +181,7 @@ class MultiRouterFragmentActivity :
                 if (addToBackStack) {
                     transaction.addToBackStack("main")
                 }
+
                 transaction
                     .show(f)
                     .setMaxLifecycle(f, Lifecycle.State.RESUMED)
