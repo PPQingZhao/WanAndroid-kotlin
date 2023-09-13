@@ -1,17 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="viewModel"
+            type="com.pp.navigation.ui.ArticleListViewModel" />
     </data>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/pageList"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.HomeFragment">
+        android:layout_height="match_parent">
 
-    </androidx.recyclerview.widget.RecyclerView>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/pageList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:gravity="center"
+            android:onFloatingClick="@{pageList}"
+            android:src="@drawable/ic_top"
+            android:tint="@{viewModel.MTheme.colorPrimary}"
+            app:fabSize="mini"
+            app:layout_anchor="@id/pageList"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
+            tools:tint="?colorPrimary" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

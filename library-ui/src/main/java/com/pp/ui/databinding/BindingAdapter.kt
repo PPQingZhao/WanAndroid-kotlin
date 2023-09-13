@@ -10,6 +10,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.textfield.TextInputLayout
 import com.pp.ui.utils.load
 
@@ -78,10 +81,10 @@ object BindingAdapter {
     }
 
     @JvmStatic
-    @androidx.databinding.BindingAdapter("android:webUrl")
-    fun loadWebUrl(webView: WebView, webUrl: String?) {
-        webUrl?.let {
-            webView.loadUrl(it)
+    @androidx.databinding.BindingAdapter("android:onFloatingClick")
+    fun loadWebUrl(floatButton: FloatingActionButton, recyclerView: RecyclerView) {
+        floatButton.setOnClickListener {
+            recyclerView.scrollToPosition(0)
         }
     }
 

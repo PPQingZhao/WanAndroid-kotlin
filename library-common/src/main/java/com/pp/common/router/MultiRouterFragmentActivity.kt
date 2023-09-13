@@ -26,7 +26,7 @@ import kotlinx.coroutines.launch
  * 启动MultiRouterFragmentActivity时,需要通过 @see [startMultiRouterFragmentActivity] 设置 main fragment
  *
  */
-class MultiRouterFragmentActivity :
+open class MultiRouterFragmentActivity :
     ThemeActivity<ActivityMultiRouterFragmentBinding, MultiRouterFragmentViewModel>() {
     override val mBinding: ActivityMultiRouterFragmentBinding by lazy {
         ActivityMultiRouterFragmentBinding.inflate(layoutInflater)
@@ -39,11 +39,11 @@ class MultiRouterFragmentActivity :
     private val DEBUG = false
 
     companion object {
-        private const val MAIN_FRAGMENT = "main_fragment"
+        const val MAIN_FRAGMENT = "main_fragment"
 
-        fun startMultiRouterFragmentActivity(context: Context, targetFragment: String) {
+        inline fun <reified RouterActivity:MultiRouterFragmentActivity> startMultiRouterFragmentActivity(context: Context, targetFragment: String) {
             context.startActivity(
-                Intent(context, MultiRouterFragmentActivity::class.java).apply {
+                Intent(context, RouterActivity::class.java).apply {
                     putExtra(MAIN_FRAGMENT, targetFragment)
                 }
             )

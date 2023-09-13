@@ -7,6 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialContainerTransform
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.constant.TRANSITION_DURATION
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 
@@ -65,7 +66,7 @@ class CommonWebViewFragment : WebViewFragment() {
 
     override fun onBack() {
         super.onBack()
-        ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(mBinding.root)?.run {
             popBackStack(RouterPath.Web.fragment_web)
         }
     }

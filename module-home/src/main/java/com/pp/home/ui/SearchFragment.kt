@@ -19,6 +19,7 @@ import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.model.ItemDeleteBarHotkeyViewModel
 import com.pp.common.model.ItemTextDeleteHotkeyViewModel
 import com.pp.common.paging.*
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.home.R
@@ -207,6 +208,9 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                     mViewModel.searchPageData(query).collectLatest {
                         mBinding.searchRecyclerview.post {
                             mBinding.searchRecyclerview.visibility = View.VISIBLE
+                            mBinding.searchRecyclerview.doOnNextLayout {
+                                mBinding.floatingButton.visibility = View.VISIBLE
+                            }
                         }
                         mSearchAdapter.setPagingData(this, it)
                     }
@@ -219,6 +223,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                     mSearchAdapter.clear()
                     mBinding.searchRecyclerview.doOnNextLayout {
                         mBinding.searchRecyclerview.visibility = View.GONE
+                        mBinding.floatingButton.visibility = View.GONE
                     }
                 }
                 return true
@@ -230,7 +235,9 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
             mBinding.searchView.clearFocus()
-            ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+                mBinding.root
+            )?.run {
                 popBackStack(RouterPath.Search.fragment_search)
             }
         }

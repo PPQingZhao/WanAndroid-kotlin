@@ -7,6 +7,7 @@ import com.pp.base.browser.WebViewFragment
 import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ShareElementNavigation
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
@@ -41,7 +42,7 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
             )
         }
 
-        ViewTreeMultiRouterFragmentViewModel[view]?.run {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
 
             showFragment(
                 targetFragment = RouterPath.Web.fragment_web,

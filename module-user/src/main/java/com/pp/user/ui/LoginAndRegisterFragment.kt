@@ -9,6 +9,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.app.App
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.router_service.RouterPath
@@ -49,7 +50,9 @@ class LoginAndRegisterFragment :
     }
 
     private fun onBackPressed() {
-        ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+            mBinding.root
+        )?.run {
             popBackStack(RouterPath.User.fragment_login)
         }
     }
@@ -87,8 +90,9 @@ class LoginAndRegisterFragment :
         lifecycleScope.launch {
             mViewModel.loginViewModel.loginResult.collect {
                 if (it) {
-
-                    ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
+                    ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+                        mBinding.root
+                    )?.run {
                         popBackStack(RouterPath.User.fragment_login)
                     }
                 }

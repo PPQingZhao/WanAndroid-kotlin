@@ -7,5 +7,6 @@
             android:configChanges="keyboardHidden|orientation|keyboard|screenLayout|locale"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Dynamic" />
+
     </application>
 </manifest>

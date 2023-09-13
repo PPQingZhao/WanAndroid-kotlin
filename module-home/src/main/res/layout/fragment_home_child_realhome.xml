@@ -10,137 +10,158 @@
             type="com.pp.home.ui.RealHomeViewModel" />
     </data>
 
-    <androidx.constraintlayout.motion.widget.MotionLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutDescription="@xml/fragment_home_child_realhome_scene">
+        android:layout_height="match_parent">
 
-        <com.pp.ui.widget.NestedScrollableHost
-            android:id="@+id/banner"
+        <androidx.constraintlayout.motion.widget.MotionLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintDimensionRatio="16:7"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layoutDescription="@xml/fragment_home_child_realhome_scene">
 
-            <com.pp.ui.widget.CustomMotionLayout
-                android:id="@+id/bannermotionlayout"
+            <com.pp.ui.widget.NestedScrollableHost
+                android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutDescription="@xml/fragment_home_child_realhome_banner_scene">
+                app:layout_constraintDimensionRatio="16:7"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.05" />
+                <com.pp.ui.widget.CustomMotionLayout
+                    android:id="@+id/bannermotionlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutDescription="@xml/fragment_home_child_realhome_banner_scene">
 
-                <androidx.constraintlayout.widget.Guideline
-                    android:id="@+id/guideline_end"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintGuide_percent="0.95" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.05" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/iv1"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toStartOf="@id/iv2"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.85"
-                    app:roundPercent="0.1"
-                    tools:src="@mipmap/ic_launcher" />
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guideline_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.95" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/iv2"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintEnd_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.85"
-                    app:roundPercent="0.1"
-                    tools:src="@mipmap/ic_launcher" />
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/iv1"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintEnd_toStartOf="@id/iv2"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85"
+                        app:roundPercent="0.1"
+                        tools:src="@mipmap/ic_launcher" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/iv3"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:layout_marginBottom="@dimen/dp_4"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/guideline_end"
-                    app:layout_constraintStart_toStartOf="@id/guideline_start"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.85"
-                    app:roundPercent="0.1"
-                    tools:src="@mipmap/ic_launcher" />
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/iv2"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintEnd_toStartOf="@id/guideline_start"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85"
+                        app:roundPercent="0.1"
+                        tools:src="@mipmap/ic_launcher" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/iv4"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintDimensionRatio="16:9"
-                    app:layout_constraintStart_toEndOf="@id/guideline_end"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.85"
-                    app:roundPercent="0.1"
-                    tools:src="@mipmap/ic_launcher" />
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/iv3"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:layout_marginBottom="@dimen/dp_4"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+                        app:layout_constraintStart_toStartOf="@id/guideline_start"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85"
+                        app:roundPercent="0.1"
+                        tools:src="@mipmap/ic_launcher" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
-                    android:id="@+id/iv5"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginTop="@dimen/dp_4"
-                    android:scaleType="centerCrop"
-                    app:layout_constraintDimensionRatio="16:9"
-                    app:layout_constraintStart_toEndOf="@id/iv4"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.85"
-                    app:roundPercent="0.1"
-                    tools:src="@mipmap/ic_launcher" />
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/iv4"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintDimensionRatio="16:9"
+                        app:layout_constraintStart_toEndOf="@id/guideline_end"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85"
+                        app:roundPercent="0.1"
+                        tools:src="@mipmap/ic_launcher" />
 
-                <com.pp.ui.utils.BannerCarousel
-                    android:id="@+id/carousel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:autoBanner="true"
-                    app:carousel_backwardTransition="@+id/backward"
-                    app:carousel_firstView="@id/iv3"
-                    app:carousel_forwardTransition="@+id/forward"
-                    app:carousel_infinite="true"
-                    app:carousel_nextState="@+id/next"
-                    app:carousel_previousState="@+id/previous"
-                    app:constraint_referenced_ids="iv1,iv2,iv3,iv4,iv5" />
+                    <androidx.constraintlayout.utils.widget.ImageFilterView
+                        android:id="@+id/iv5"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintDimensionRatio="16:9"
+                        app:layout_constraintStart_toEndOf="@id/iv4"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.85"
+                        app:roundPercent="0.1"
+                        tools:src="@mipmap/ic_launcher" />
 
-                <com.pp.ui.indicator.RoundIndicatorView
-                    android:id="@+id/indicator"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_16"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    <com.pp.ui.utils.BannerCarousel
+                        android:id="@+id/carousel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:autoBanner="true"
+                        app:carousel_backwardTransition="@+id/backward"
+                        app:carousel_firstView="@id/iv3"
+                        app:carousel_forwardTransition="@+id/forward"
+                        app:carousel_infinite="true"
+                        app:carousel_nextState="@+id/next"
+                        app:carousel_previousState="@+id/previous"
+                        app:constraint_referenced_ids="iv1,iv2,iv3,iv4,iv5" />
 
-            </com.pp.ui.widget.CustomMotionLayout>
+                    <com.pp.ui.indicator.RoundIndicatorView
+                        android:id="@+id/indicator"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_16"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent" />
 
-        </com.pp.ui.widget.NestedScrollableHost>
+                </com.pp.ui.widget.CustomMotionLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerview"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/banner" />
+            </com.pp.ui.widget.NestedScrollableHost>
 
-    </androidx.constraintlayout.motion.widget.MotionLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/banner" />
+
+        </androidx.constraintlayout.motion.widget.MotionLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:gravity="center"
+            android:onFloatingClick="@{recyclerview}"
+            android:src="@drawable/ic_top"
+            android:tint="@{viewModel.MTheme.colorPrimary}"
+            app:fabSize="mini"
+            app:layout_anchor="@id/recyclerview"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
+            tools:tint="?colorPrimary" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>

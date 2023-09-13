@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -9,22 +10,44 @@
             type="com.pp.navigation.ui.NavigationRealViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/cid_recyclerview"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="3" />
+            android:orientation="horizontal">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/article_recyclerview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="7" />
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cid_recyclerview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="3" />
 
-    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/articleRecyclerview"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="7" />
+
+        </LinearLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/dp_16"
+            android:gravity="center"
+            android:onFloatingClick="@{articleRecyclerview}"
+            android:src="@drawable/ic_top"
+            android:tint="@{viewModel.MTheme.colorPrimary}"
+            app:fabSize="mini"
+            app:layout_anchor="@id/articleRecyclerview"
+            app:layout_anchorGravity="bottom|end"
+            app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
+            tools:tint="?colorPrimary" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </layout>

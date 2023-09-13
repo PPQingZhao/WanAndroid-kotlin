@@ -6,6 +6,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
 import com.pp.common.app.App
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.R
 import com.pp.home.databinding.FragmentHomeBinding
@@ -32,10 +33,13 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         mBinding.searchView.setOnClickListener {
-
-            ViewTreeMultiRouterFragmentViewModel[mBinding.root]?.run {
-                showFragment(RouterPath.Search.fragment_search, RouterPath.Search.fragment_search)
-            }
+            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(mBinding.root)
+                ?.run {
+                    showFragment(
+                        RouterPath.Search.fragment_search,
+                        RouterPath.Search.fragment_search
+                    )
+                }
         }
     }
 

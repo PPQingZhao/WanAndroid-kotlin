@@ -8,6 +8,7 @@
     <dimen name="dp_6">6dp</dimen>
     <dimen name="dp_8">8dp</dimen>
     <dimen name="dp_16">16dp</dimen>
+    <dimen name="dp_50">50dp</dimen>
     <dimen name="margin_large">30dp</dimen>
     <dimen name="strokeWidth">1dp</dimen>
     <dimen name="strokeWidth_small">0.2dp</dimen>

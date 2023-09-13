@@ -12,6 +12,7 @@ import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemText1ArticleListBinder
 import com.pp.common.paging.itemText2ArticleListBinder
 import com.pp.common.paging.itemText3ArticleBinder
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
@@ -123,7 +124,9 @@ class SystemFragment private constructor() :
                     putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
                     putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
                 }
-                ViewTreeMultiRouterFragmentViewModel[view]?.run {
+                ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+                    mBinding.root
+                )?.run {
                     showFragment(
                         targetFragment = RouterPath.Navigation.fragment_tab_system,
                         tag = RouterPath.Navigation.fragment_tab_system,

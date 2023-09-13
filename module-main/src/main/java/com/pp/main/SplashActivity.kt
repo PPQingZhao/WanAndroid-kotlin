@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.pp.base.ThemeActivity
 import com.pp.base.ThemeViewModel
+import com.pp.common.router.MultiRouterFragmentActivity
 import com.pp.common.router.MultiRouterFragmentActivity.Companion.startMultiRouterFragmentActivity
 import com.pp.main.databinding.ActivitySplashBinding
 import com.pp.router_service.RouterPath
@@ -41,7 +42,10 @@ class SplashActivity : ThemeActivity<ActivitySplashBinding, ThemeViewModel>() {
     private fun startIntent() {
         Handler(Looper.myLooper()!!).postDelayed({
 
-            startMultiRouterFragmentActivity(this, RouterPath.Main.fragment_main)
+            startMultiRouterFragmentActivity<MultiRouterFragmentActivity>(
+                this,
+                RouterPath.Main.fragment_main
+            )
             finish()
         }, 500)
     }

@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 
-class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
+open class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
 
     private val _popBackStack = MutableSharedFlow<String>()
     val popBackStack = _popBackStack.asSharedFlow()

@@ -12,6 +12,7 @@ import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.itemArticlePagingAdapter
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ShareElementNavigation
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
@@ -69,8 +70,9 @@ class RealHomeFragment :
                                 it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
                                 it.putString(CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME, null)
                             }
-
-                            ViewTreeMultiRouterFragmentViewModel[view]?.run {
+                            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+                                mBinding.root
+                            )?.run {
                                 showFragment(
                                     targetFragment = RouterPath.Web.fragment_web,
                                     tag = RouterPath.Web.fragment_web,

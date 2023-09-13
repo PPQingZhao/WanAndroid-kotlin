@@ -7,6 +7,7 @@ import android.widget.TextView
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.getAuthor
 import com.pp.common.util.getCharterName
@@ -45,7 +46,7 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
 
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
-        ViewTreeMultiRouterFragmentViewModel[view]?.run {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
             if (null == data) {
                 return false
             }
