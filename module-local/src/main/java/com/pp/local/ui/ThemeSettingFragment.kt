@@ -10,8 +10,8 @@ import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
-import com.pp.ui.adapter.DefaultItemViewModelBinder
-import com.pp.ui.adapter.RecyclerViewBindingAdapter2
+import com.pp.ui.adapter.ItemViewModelBinder
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
 
 @Route(path = RouterPath.Local.fragment_theme_setting)
 class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSettingViewModel>() {
@@ -33,19 +33,19 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
 
     private val mAdapter by lazy {
 
-        RecyclerViewBindingAdapter2<ItemPreferenceThemeSettingViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
+        RecyclerViewBindingAdapter<ItemPreferenceThemeSettingViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
             .apply {
                 object :
-                    DefaultItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
+                    ItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
                     override fun getItemViewModel(data: ItemPreferenceThemeSettingViewModel?): ItemPreferenceThemeSettingViewModel {
                         return data!!
                     }
 
-                    override fun getViewDataBindingClazz(): Class<ItemThemeSettingBinding> {
+                    override fun getItemViewBindingClazz(): Class<ItemThemeSettingBinding> {
                         return ItemThemeSettingBinding::class.java
                     }
 
-                    override fun getDataClazz(): Class<ItemPreferenceThemeSettingViewModel> {
+                    override fun getItemDataClazz(): Class<ItemPreferenceThemeSettingViewModel> {
                         return ItemPreferenceThemeSettingViewModel::class.java
                     }
 

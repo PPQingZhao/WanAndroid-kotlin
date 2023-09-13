@@ -10,7 +10,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
 
-class RecyclerViewBindingAdapter2<Data : Any>(
+class RecyclerViewBindingAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
 ) : RecyclerView.Adapter<BindingItemViewHolder>() {
@@ -21,16 +21,16 @@ class RecyclerViewBindingAdapter2<Data : Any>(
         mInflater = LayoutInflater.from(recyclerView.context)
     }
 
-    private val mBindViewModelList = mutableListOf<ItemViewModelBinder<ViewDataBinding, Data>>()
+    private val mBindViewModelList = mutableListOf<ItemBinder<ViewDataBinding, Data>>()
 
-    fun addItemViewModelBinder(itemViewModelBinder: ItemViewModelBinder<out ViewDataBinding, Data>) {
-        mBindViewModelList.add(itemViewModelBinder as ItemViewModelBinder<ViewDataBinding, Data>)
+    fun addItemViewModelBinder(itemViewModelBinder: ItemBinder<out ViewDataBinding, Data>) {
+        mBindViewModelList.add(itemViewModelBinder as ItemBinder<ViewDataBinding, Data>)
     }
 
     private fun getBindViewModel(
         bind: ViewDataBinding?,
         data: Data?,
-    ): ItemViewModelBinder<ViewDataBinding, Data> {
+    ): ItemBinder<ViewDataBinding, Data> {
         val dataClazz = if (data == null) {
             null
         } else {
@@ -38,11 +38,11 @@ class RecyclerViewBindingAdapter2<Data : Any>(
         }
         for (binder in mBindViewModelList) {
 
-            if (binder.getDataClazz() != dataClazz) {
+            if (binder.getItemDataClazz() != dataClazz) {
                 continue
             }
 
-            val viewDataBindingClazz = binder.getViewDataBindingClazz()
+            val viewDataBindingClazz = binder.getItemViewBindingClazz()
             if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind.javaClass)) {
                 continue
             }
@@ -74,7 +74,7 @@ class RecyclerViewBindingAdapter2<Data : Any>(
     override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getBindViewModel(holder.bind, itemData).apply {
-            bindViewModel(holder.bind, itemData, position)
+            bindItem(holder.bind, itemData, position)
         }
         holder.bind.executePendingBindings()
     }

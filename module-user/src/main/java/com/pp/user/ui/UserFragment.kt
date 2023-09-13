@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.DefaultItemViewModelBinder
-import com.pp.ui.adapter.RecyclerViewBindingAdapter2
+import com.pp.ui.adapter.ItemViewModelBinder
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.databinding.ItemAllowRightBinding
 import com.pp.user.R
 import com.pp.user.databinding.FragmentUserBinding
@@ -30,19 +30,19 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
 
     private val mAdapter by lazy {
 
-        RecyclerViewBindingAdapter2<UserItemAllowRightModel>(getItemLayoutRes = { com.pp.ui.R.layout.item_allow_right })
+        RecyclerViewBindingAdapter<UserItemAllowRightModel>(getItemLayoutRes = { com.pp.ui.R.layout.item_allow_right })
             .apply {
                 object :
-                    DefaultItemViewModelBinder<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>() {
+                    ItemViewModelBinder<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>() {
                     override fun getItemViewModel(data: UserItemAllowRightModel?): UserItemAllowRightModel {
                         return data!!
                     }
 
-                    override fun getViewDataBindingClazz(): Class<ItemAllowRightBinding> {
+                    override fun getItemViewBindingClazz(): Class<ItemAllowRightBinding> {
                         return ItemAllowRightBinding::class.java
                     }
 
-                    override fun getDataClazz(): Class<UserItemAllowRightModel> {
+                    override fun getItemDataClazz(): Class<UserItemAllowRightModel> {
                         return UserItemAllowRightModel::class.java
                     }
 

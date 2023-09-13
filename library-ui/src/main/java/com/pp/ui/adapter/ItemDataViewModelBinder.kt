@@ -10,7 +10,7 @@ class ItemDataViewModelBinder<VB : ViewDataBinding, Data : Any, VM : ItemDataVie
     private val getDataClazz: () -> Class<Data>,
     onBindViewModel: (binding: VB, data: Data?, viewModel: VM?, posiion: Int) -> Boolean = { _, _, _, _ -> false },
     private val onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
-) : DefaultItemViewModelBinder<VB, Data, VM>(onBindViewModel) {
+) : ItemViewModelBinder<VB, Data, VM>(onBindViewModel) {
 
     companion object {
         inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : ItemDataViewModel<Data>> createItemBinder(
@@ -38,11 +38,11 @@ class ItemDataViewModelBinder<VB : ViewDataBinding, Data : Any, VM : ItemDataVie
         return getItemViewModel.invoke(data)
     }
 
-    override fun getViewDataBindingClazz(): Class<VB> {
+    override fun getItemViewBindingClazz(): Class<VB> {
         return getViewDataBindingClazz.invoke()
     }
 
-    override fun getDataClazz(): Class<Data> {
+    override fun getItemDataClazz(): Class<Data> {
         return getDataClazz.invoke()
     }
 }

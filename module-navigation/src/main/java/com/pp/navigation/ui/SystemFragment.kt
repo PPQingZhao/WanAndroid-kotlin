@@ -16,7 +16,7 @@ import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
-import com.pp.ui.adapter.RecyclerViewBindingAdapter2
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -81,7 +81,7 @@ class SystemFragment private constructor() :
         }
     }
     private val mAdapter by lazy {
-        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
+        RecyclerViewBindingAdapter<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
             .apply {
                 itemText3ArticleBinder(
                     onItemListener = mOnItemListener,
@@ -134,7 +134,7 @@ class SystemFragment private constructor() :
             }
         }
 
-        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = {
+        RecyclerViewBindingAdapter<ArticleListBean>(getItemLayoutRes = {
             if (it!!.parentChapterId == 0) {
                 R.layout.item_text1
             } else {

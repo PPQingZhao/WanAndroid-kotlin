@@ -14,7 +14,7 @@ import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.adapter.RecyclerViewBindingAdapter2
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
@@ -60,7 +60,7 @@ class WXArticleFragment private constructor() :
     private val mAdapter by lazy {
 
 
-        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
+        RecyclerViewBindingAdapter<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
             .apply {
                 itemText3ArticleBinder(
                     onItemListener = mOnItemListener,

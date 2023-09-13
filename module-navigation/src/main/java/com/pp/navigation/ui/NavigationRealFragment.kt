@@ -14,8 +14,8 @@ import com.pp.common.paging.itemText2ArticleBinder
 import com.pp.common.paging.itemTextArticleListBinder
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
 import com.pp.ui.R
-import com.pp.ui.adapter.ItemViewModelBinder
-import com.pp.ui.adapter.RecyclerViewBindingAdapter2
+import com.pp.ui.adapter.ItemBinder
+import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -86,7 +86,7 @@ class NavigationRealFragment private constructor() :
 
     private val cidAdapter by lazy {
 
-        RecyclerViewBindingAdapter2<ArticleListBean>(getItemLayoutRes = { R.layout.item_text })
+        RecyclerViewBindingAdapter<ArticleListBean>(getItemLayoutRes = { R.layout.item_text })
             .apply {
                 itemTextArticleListBinder(
                     onItemListener = mOnItemListener,
@@ -103,7 +103,7 @@ class NavigationRealFragment private constructor() :
     }
 
     private val articleAdapter by lazy {
-        RecyclerViewBindingAdapter2<Any>(getItemLayoutRes = {
+        RecyclerViewBindingAdapter<Any>(getItemLayoutRes = {
             if (it is ArticleListBean) {
                 R.layout.item_text1
             } else {
@@ -113,13 +113,13 @@ class NavigationRealFragment private constructor() :
             itemText1ArticleListBinder(
                 theme = mViewModel.mTheme
             ).also {
-                addItemViewModelBinder(it as ItemViewModelBinder<ViewDataBinding, Any>)
+                addItemViewModelBinder(it as ItemBinder<ViewDataBinding, Any>)
             }
 
             itemText2ArticleBinder(
                 theme = mViewModel.mTheme,
             ).also {
-                addItemViewModelBinder(it as ItemViewModelBinder<ViewDataBinding, Any>)
+                addItemViewModelBinder(it as ItemBinder<ViewDataBinding, Any>)
             }
         }
 

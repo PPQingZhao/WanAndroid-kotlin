@@ -12,6 +12,7 @@ import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.pp.common.paging.onePager
+import com.pp.ui.viewModel.ItemDataViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -40,24 +41,24 @@ class BindingPagingDataAdapter<Data : Any>(
         mInflater = LayoutInflater.from(recyclerView.context)
     }
 
-    private val mBindViewModelList = mutableListOf<ItemViewModelBinder<ViewDataBinding, Data>>()
+    private val mBindViewModelList = mutableListOf<ItemBinder<ViewDataBinding, Data>>()
 
-    fun addItemViewModelBinder(itemViewModelBinder: ItemViewModelBinder<out ViewDataBinding, Data>) {
-        mBindViewModelList.add(itemViewModelBinder as ItemViewModelBinder<ViewDataBinding, Data>)
+    fun addItemViewModelBinder(itemViewModelBinder: ItemBinder<out ViewDataBinding, Data>) {
+        mBindViewModelList.add(itemViewModelBinder as ItemBinder<ViewDataBinding, Data>)
     }
 
     private fun getItemViewModelBinder(
         bind: ViewDataBinding?,
         data: Data?,
-    ): ItemViewModelBinder<ViewDataBinding, Data> {
+    ): ItemBinder<ViewDataBinding, Data> {
 
         for (binder in mBindViewModelList) {
 
-            if (null != data && !binder.getDataClazz().isAssignableFrom(data::class.java)) {
+            if (null != data && !binder.getItemDataClazz().isAssignableFrom(data::class.java)) {
                 continue
             }
 
-            val viewDataBindingClazz = binder.getViewDataBindingClazz()
+            val viewDataBindingClazz = binder.getItemViewBindingClazz()
             if (null != bind && !viewDataBindingClazz.isAssignableFrom(bind::class.java)) {
                 continue
             }
@@ -79,7 +80,7 @@ class BindingPagingDataAdapter<Data : Any>(
     override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getItemViewModelBinder(holder.bind, itemData).apply {
-            bindViewModel(holder.bind, itemData, position)
+            bindItem(holder.bind, itemData, position)
         }
         holder.itemView.doOnAttach {
             ViewTreeLifecycleOwner.get(it)?.also { owner ->
@@ -134,4 +135,33 @@ class BindingPagingDataAdapter<Data : Any>(
                 }
         }
     }
+}
+
+fun <Data : Any, VM : ItemDataViewModel<Data>> createItemDataBindingPagingDataAdapter(
+    getItemLayoutRes: (data: VM?) -> Int,
+    areContentsTheSame: (oldItem: VM, newItem: VM) -> Boolean,
+    areItemsTheSame: (oldItem: VM, newItem: VM) -> Boolean,
+): BindingPagingDataAdapter<VM> {
+    return BindingPagingDataAdapter(
+        getItemLayoutRes = getItemLayoutRes,
+        diffCallback = getItemDataDifferCallback(
+            areContentsTheSame = areContentsTheSame,
+            areItemsTheSame = areItemsTheSame
+        )
+    )
+}
+
+fun <Data : Any, Item : ItemDataViewModel<Data>> getItemDataDifferCallback(
+    areItemsTheSame: (oldItem: Item, newItem: Item) -> Boolean,
+    areContentsTheSame: (oldItem: Item, newItem: Item) -> Boolean,
+) = object : DiffUtil.ItemCallback<Item>() {
+    override fun areItemsTheSame(
+        oldItem: Item,
+        newItem: Item,
+    ): Boolean = areItemsTheSame.invoke(oldItem, newItem)
+
+    override fun areContentsTheSame(
+        oldItem: Item,
+        newItem: Item,
+    ): Boolean = areContentsTheSame.invoke(oldItem, newItem)
 }
