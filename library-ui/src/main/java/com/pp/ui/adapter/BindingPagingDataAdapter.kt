@@ -2,6 +2,8 @@ package com.pp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.view.doOnAttach
@@ -11,6 +13,7 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.LayoutManager
 import com.pp.common.paging.onePager
 import com.pp.ui.viewModel.ItemDataViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -21,7 +24,7 @@ class BindingPagingDataAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
     diffCallback: DiffUtil.ItemCallback<Data> = emptyDifferCallback(),
-) : PagingDataAdapter<Data, BindingItemViewHolder>(diffCallback) {
+) : PagingDataAdapter<Data, ViewDataBindingItemViewHolder>(diffCallback) {
 
     companion object {
         fun <Data : Any> emptyDifferCallback() = object : DiffUtil.ItemCallback<Data>() {
@@ -69,15 +72,15 @@ class BindingPagingDataAdapter<Data : Any>(
 
     override fun onCreateViewHolder(
         parent: ViewGroup, @LayoutRes layoutId: Int,
-    ): BindingItemViewHolder {
-        return BindingItemViewHolder(
+    ): ViewDataBindingItemViewHolder {
+        return ViewDataBindingItemViewHolder(
             DataBindingUtil.inflate<ViewDataBinding>(
                 mInflater!!, layoutId, parent, false
             )
         )
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewDataBindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getItemViewModelBinder(holder.bind, itemData).apply {
             bindItem(holder.bind, itemData, position)
@@ -164,4 +167,22 @@ fun <Data : Any, Item : ItemDataViewModel<Data>> getItemDataDifferCallback(
         oldItem: Item,
         newItem: Item,
     ): Boolean = areContentsTheSame.invoke(oldItem, newItem)
+}
+
+fun <VH : RecyclerView.ViewHolder, adapter : PagingDataAdapter<*, VH>> adapter.attachRecyclerView(
+    recyclerView: RecyclerView,
+    layoutManager: LayoutManager,
+    getStateViewType: (loadState: LoadState) -> Int = { 0 },
+    withLoadMore: Boolean = true,
+    onErrorListener: OnClickListener? = View.OnClickListener {
+        // 默认重试
+        retry()
+    },
+) {
+    recyclerView.layoutManager = layoutManager
+    recyclerView.adapter = if (withLoadMore) withLoadStateFooter(
+        DefaultLoadMoreStateAdapter(
+            getStateViewType = getStateViewType, onErrorListener = onErrorListener
+        )
+    ) else this
 }

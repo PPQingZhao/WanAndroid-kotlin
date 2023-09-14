@@ -26,6 +26,7 @@ import com.pp.home.R
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.adapter.attachRecyclerView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
@@ -140,8 +141,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     }
 
     private fun initSearchRecyclerView() {
-        mBinding.searchRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-        mBinding.searchRecyclerview.adapter = mSearchAdapter
+        mSearchAdapter.attachRecyclerView(mBinding.searchRecyclerview, LinearLayoutManager(context))
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<HotKey>() {

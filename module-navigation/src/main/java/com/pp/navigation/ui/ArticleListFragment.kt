@@ -56,12 +56,11 @@ class ArticleListFragment private constructor() :
             }
         }
 
-        mBinding.pageList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.pageList.setPagingAdapter(
-            viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getSystemArticle(),
-            adapter
+            adapter,
+            layoutManager = LinearLayoutManager(requireContext())
         )
     }
 

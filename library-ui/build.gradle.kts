@@ -56,16 +56,11 @@ dependencies {
     api(libs.swiperefreshlayout.get())
     api(libs.recyclerview.get())
 
-
-
-
     api(libs.glide)
     kapt(libs.glide.compiler)
     api(libs.paging3)
 
     implementation(projects.libraryTheme)
-
-    api("com.github.jarryleo:PagingAdapter:1.0.2")
 
 
 }

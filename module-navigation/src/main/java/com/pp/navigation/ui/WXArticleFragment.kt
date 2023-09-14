@@ -84,15 +84,11 @@ class WXArticleFragment private constructor() :
         }
         mBinding.authorRecyclerview.adapter = mAdapter
 
-        mBinding.wxarticleRecyclerview.layoutManager = LinearLayoutManager(requireContext())
-
-
         selectedItem.observerSelectedItem(
             viewLifecycleOwner
         ) {
             it?.run {
                 mBinding.wxarticleRecyclerview.setPagingAdapter(
-                    viewLifecycleOwner,
                     lifecycleScope,
                     mViewModel.getWXArticle(this.data?.id ?: 0),
                     BindingPagingDataAdapter<ArticleBean>(
@@ -102,7 +98,9 @@ class WXArticleFragment private constructor() :
                         com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme).also {
                             addItemViewModelBinder(it)
                         }
-                    })
+                    },
+                    layoutManager = LinearLayoutManager(requireContext())
+                )
             }
         }
     }

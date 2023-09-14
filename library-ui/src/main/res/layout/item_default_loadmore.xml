@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="theme"
+            type="com.pp.theme.AppDynamicTheme" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?selectableItemBackground"
+        android:clickable="true">
+
+        <LinearLayout
+            android:id="@+id/loading"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ProgressBar
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:padding="5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/dp_16"
+                android:text="@string/loading"
+                android:textColor="@{theme.textColorSecondary}"
+                android:textSize="13sp"
+                tools:textColor="?android:textColorSecondary" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/load_error"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:scaleType="fitCenter"
+            android:src="@drawable/load_error" />
+
+        <TextView
+            android:id="@+id/load_data_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/data_end"
+            android:textColor="@{theme.textColorSecondary}"
+            android:textSize="13sp"
+            tools:textColor="?android:textColorSecondary" />
+
+
+    </FrameLayout>
+</layout>

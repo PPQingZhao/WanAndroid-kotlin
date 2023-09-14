@@ -113,12 +113,11 @@ class RealHomeFragment :
 
     private fun initPagingList() {
 
-        mBinding.recyclerview.layoutManager = LinearLayoutManager(requireContext())
         mBinding.recyclerview.setPagingAdapter(
-            viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(mViewModel.mTheme)
+            itemArticlePagingAdapter(mViewModel.mTheme),
+            layoutManager = LinearLayoutManager(requireContext())
         )
     }
 

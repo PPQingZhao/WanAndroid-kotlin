@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 class RecyclerViewBindingAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
     private val getItemLayoutRes: (data: Data?) -> Int,
-) : RecyclerView.Adapter<BindingItemViewHolder>() {
+) : RecyclerView.Adapter<ViewDataBindingItemViewHolder>() {
 
 
     private var mInflater: LayoutInflater? = null
@@ -54,7 +54,7 @@ class RecyclerViewBindingAdapter<Data : Any>(
     override fun onCreateViewHolder(
         parent: ViewGroup,
         @LayoutRes layoutId: Int,
-    ): BindingItemViewHolder {
+    ): ViewDataBindingItemViewHolder {
         val bind = DataBindingUtil.inflate<ViewDataBinding>(mInflater!!, layoutId, parent, false)
             .also { binding ->
                 binding.root.addOnAttachStateChangeListener(object :
@@ -68,10 +68,10 @@ class RecyclerViewBindingAdapter<Data : Any>(
                     override fun onViewDetachedFromWindow(v: View) {}
                 })
             }
-        return BindingItemViewHolder(bind)
+        return ViewDataBindingItemViewHolder(bind)
     }
 
-    override fun onBindViewHolder(holder: BindingItemViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewDataBindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getBindViewModel(holder.bind, itemData).apply {
             bindItem(holder.bind, itemData, position)

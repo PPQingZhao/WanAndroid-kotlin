@@ -30,7 +30,7 @@
                 android:id="@+id/iv_cover"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:errorDrawable="@{@drawable/error}"
+                android:errorDrawable="@{@drawable/cover_error}"
                 android:imageUrl="@{viewModel.envelopePic}"
                 android:scaleType="fitXY"
                 app:layout_constraintDimensionRatio="140:230"
@@ -38,7 +38,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintWidth_percent="0.3"
                 app:round="@dimen/dp_8"
-                tools:src="@drawable/error" />
+                tools:src="@drawable/cover_error" />
 
             <TextView
                 android:id="@+id/tv_title"

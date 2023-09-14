@@ -55,12 +55,11 @@ class CidProjectFragment private constructor() :
             }
         }
 
-        mBinding.pageList.layoutManager = LinearLayoutManager(requireContext())
         mBinding.pageList.setPagingAdapter(
-            viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            adapter
+            adapter,
+            layoutManager = LinearLayoutManager(requireContext())
         )
     }
 

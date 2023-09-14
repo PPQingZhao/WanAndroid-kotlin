@@ -15,12 +15,11 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
 
     private fun initPagingList() {
 
-        mBinding.pageListView.layoutManager = LinearLayoutManager(requireContext())
         mBinding.pageListView.setPagingAdapter(
-            viewLifecycleOwner,
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(mViewModel.mTheme)
+            itemArticlePagingAdapter(mViewModel.mTheme),
+            layoutManager = LinearLayoutManager(requireContext())
         )
 
     }
