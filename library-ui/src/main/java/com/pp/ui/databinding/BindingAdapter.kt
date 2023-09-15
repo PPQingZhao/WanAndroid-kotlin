@@ -82,7 +82,7 @@ object BindingAdapter {
 
     @JvmStatic
     @androidx.databinding.BindingAdapter("android:onFloatingClick")
-    fun loadWebUrl(floatButton: FloatingActionButton, recyclerView: RecyclerView) {
+    fun loadWebUrl(floatButton: View, recyclerView: RecyclerView) {
         floatButton.setOnClickListener {
             recyclerView.scrollToPosition(0)
         }

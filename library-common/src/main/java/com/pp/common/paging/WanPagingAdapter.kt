@@ -22,7 +22,7 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
 
     @SuppressLint("DiffUtilEquals")
     override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
-        return oldItem === newItem
+        return oldItem == newItem
     }
 }
 
