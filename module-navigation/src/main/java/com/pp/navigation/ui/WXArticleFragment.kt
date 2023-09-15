@@ -99,7 +99,8 @@ class WXArticleFragment private constructor() :
                             addItemViewModelBinder(it)
                         }
                     },
-                    layoutManager = LinearLayoutManager(requireContext())
+                    layoutManager = LinearLayoutManager(requireContext()),
+                    refreshLayout = mBinding.refreshLayout
                 )
             }
         }

@@ -14,6 +14,7 @@ import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.LayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pp.common.paging.onePager
 import com.pp.ui.viewModel.ItemDataViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -169,7 +170,7 @@ fun <Data : Any, Item : ItemDataViewModel<Data>> getItemDataDifferCallback(
     ): Boolean = areContentsTheSame.invoke(oldItem, newItem)
 }
 
-fun <VH : RecyclerView.ViewHolder, adapter : PagingDataAdapter<*, VH>> adapter.attachRecyclerView(
+fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.attachRecyclerView(
     recyclerView: RecyclerView,
     layoutManager: LayoutManager,
     getStateViewType: (loadState: LoadState) -> Int = { 0 },
@@ -185,4 +186,16 @@ fun <VH : RecyclerView.ViewHolder, adapter : PagingDataAdapter<*, VH>> adapter.a
             getStateViewType = getStateViewType, onErrorListener = onErrorListener
         )
     ) else this
+}
+
+fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.attachRefreshView(
+    refreshView: SwipeRefreshLayout,
+) {
+
+    refreshView.setOnRefreshListener {
+        this.refresh()
+    }
+    addLoadStateListener {
+        refreshView.isRefreshing = itemCount > 0 && it.refresh is LoadState.Loading
+    }
 }

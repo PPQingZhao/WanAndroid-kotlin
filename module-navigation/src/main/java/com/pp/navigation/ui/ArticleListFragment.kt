@@ -60,7 +60,8 @@ class ArticleListFragment private constructor() :
             lifecycleScope,
             mViewModel.getSystemArticle(),
             adapter,
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext()),
+            refreshLayout = mBinding.refreshLayout
         )
     }
 

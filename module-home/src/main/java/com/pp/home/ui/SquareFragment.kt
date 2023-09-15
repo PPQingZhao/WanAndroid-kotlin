@@ -21,7 +21,8 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
             lifecycleScope,
             mViewModel.getPageData(),
             itemArticlePagingAdapter(mViewModel.mTheme),
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext()),
+            refreshLayout = mBinding.refreshLayout
         )
     }
 

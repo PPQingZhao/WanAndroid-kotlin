@@ -27,6 +27,7 @@ import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.attachRecyclerView
+import com.pp.ui.adapter.attachRefreshView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
@@ -142,6 +143,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
     private fun initSearchRecyclerView() {
         mSearchAdapter.attachRecyclerView(mBinding.searchRecyclerview, LinearLayoutManager(context))
+        mSearchAdapter.attachRefreshView(mBinding.refreshLayout)
     }
 
     private val differCallback = object : DiffUtil.ItemCallback<HotKey>() {
@@ -206,9 +208,9 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                 mViewModel.saveSearchHotKeyHistory(query)
                 viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                     mViewModel.searchPageData(query).collectLatest {
-                        mBinding.searchRecyclerview.post {
-                            mBinding.searchRecyclerview.visibility = View.VISIBLE
-                            mBinding.searchRecyclerview.doOnNextLayout {
+                        mBinding.refreshLayout.post {
+                            mBinding.refreshLayout.visibility = View.VISIBLE
+                            mBinding.refreshLayout.doOnNextLayout {
                                 mBinding.floatingButton.visibility = View.VISIBLE
                             }
                         }
@@ -222,7 +224,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                 if (newText?.isNotEmpty() != true) {
                     mSearchAdapter.clear()
                     mBinding.searchRecyclerview.doOnNextLayout {
-                        mBinding.searchRecyclerview.visibility = View.GONE
+                        mBinding.refreshLayout.visibility = View.GONE
                         mBinding.floatingButton.visibility = View.GONE
                     }
                 }

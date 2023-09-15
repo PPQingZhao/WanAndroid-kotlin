@@ -1,5 +1,8 @@
 package com.pp.home.ui
 
+import android.os.Bundle
+import android.util.Log
+import android.view.View
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
@@ -19,7 +22,8 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
             lifecycleScope,
             mViewModel.getPageData(),
             itemArticlePagingAdapter(mViewModel.mTheme),
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext()),
+            refreshLayout = mBinding.refreshLayout
         )
 
     }

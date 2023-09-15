@@ -10,12 +10,14 @@
             type="com.pp.home.ui.RealHomeViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.motion.widget.MotionLayout
             android:layout_width="match_parent"
+            android:id="@+id/contentMotionLayout"
             android:layout_height="match_parent"
             app:layoutDescription="@xml/fragment_home_child_realhome_scene">
 
@@ -163,5 +165,5 @@
             app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
             tools:tint="?colorPrimary" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

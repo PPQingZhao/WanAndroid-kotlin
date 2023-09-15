@@ -8,12 +8,10 @@ import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
-import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ShareElementNavigation
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.router_service.RouterPath
@@ -37,6 +35,7 @@ class RealHomeFragment :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initBanner()
         initIndicator()
     }
@@ -117,7 +116,9 @@ class RealHomeFragment :
             lifecycleScope,
             mViewModel.getPageData(),
             itemArticlePagingAdapter(mViewModel.mTheme),
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext()),
+            refreshLayout = mBinding.refreshLayout,
+            onReFreshChildScrollUp = { mBinding.contentMotionLayout.progress > 0 }
         )
     }
 

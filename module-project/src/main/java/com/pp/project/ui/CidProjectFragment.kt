@@ -59,7 +59,8 @@ class CidProjectFragment private constructor() :
             lifecycleScope,
             mViewModel.getPageData(),
             adapter,
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(requireContext()),
+            refreshLayout = mBinding.refreshLayout
         )
     }
 
