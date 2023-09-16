@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import androidx.paging.insertSeparators
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
@@ -24,15 +25,18 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     fun getSearchHot(): Flow<PagingData<HotKey>> {
         return onePager(getPageData = { SearchRepository.getHotKey().data },
             getPageValue = {
-                mutableListOf<HotKey>().apply {
-                    if (it?.isNotEmpty() == true) {
-                        HotKey(name = getApplication<Application>().resources.getString(R.string.hot_key)).also {
-                            add(it)
-                        }
-                        addAll(it)
-                    }
+                it ?: emptyList()
+            }).flow.map {
+            it.insertSeparators { before, after ->
+                if (before == null && after != null) {
+                    HotKey(
+                        name = getApplication<Application>().resources.getString(R.string.hot_key)
+                    )
+                } else {
+                    null
                 }
-            }).flow.cachedIn(viewModelScope)
+            }
+        }.cachedIn(viewModelScope)
     }
 
     fun searchPageData(key: String?): Flow<PagingData<ArticleBean>> {
@@ -70,7 +74,7 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     }
 
     fun removeSearchHistory(history: String) {
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             SearchRepository.removeSearchHistory(history)
         }
     }

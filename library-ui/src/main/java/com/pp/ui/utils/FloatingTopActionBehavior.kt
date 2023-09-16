@@ -51,7 +51,7 @@ class FloatingTopActionBehavior : CoordinatorLayout.Behavior<FloatingActionButto
             consumed
         )
 
-        Log.e("TAG","onNestedScroll")
+//        Log.e("TAG","onNestedScroll")
 
         if (dyConsumed > 0) { // 向下滑动
             animateOut(child)

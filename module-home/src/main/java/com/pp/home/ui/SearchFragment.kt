@@ -110,11 +110,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             }
 
             itemDeleteBarHotkeyBinder(
-                /*onCreateViewModel = { model ->
-                    mViewModel.isDeleteModel.observe(viewLifecycleOwner) {
-                        model.isDeleteModel.value = it
-                    }
-                },*/
                 onItemListener = onItemListener,
                 theme = mViewModel.mTheme
             ).also {

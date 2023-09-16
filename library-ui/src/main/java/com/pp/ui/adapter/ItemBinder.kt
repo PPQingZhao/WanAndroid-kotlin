@@ -1,5 +1,6 @@
 package com.pp.ui.adapter
 
+import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.pp.ui.BR
@@ -68,6 +69,10 @@ abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
             }
             mItemModelCaches[itemPosition] = vewModelValue
         }
-
     }
+
+    override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
+        Log.e("TAG", "onItemRangeMoved")
+    }
+
 }

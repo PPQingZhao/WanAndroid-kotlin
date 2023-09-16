@@ -24,6 +24,7 @@ class RecyclerViewBindingAdapter<Data : Any>(
     private val mBindViewModelList = mutableListOf<ItemBinder<ViewDataBinding, Data>>()
 
     fun addItemViewModelBinder(itemViewModelBinder: ItemBinder<out ViewDataBinding, Data>) {
+        registerAdapterDataObserver(itemViewModelBinder)
         mBindViewModelList.add(itemViewModelBinder as ItemBinder<ViewDataBinding, Data>)
     }
 
