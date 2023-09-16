@@ -65,7 +65,7 @@ class WXArticleFragment private constructor() :
                 itemText3ArticleBinder(
                     onItemListener = mOnItemListener,
                     theme = mViewModel.mTheme,
-                    onBindViewModel = { _, data, viewModel, position ->
+                    onBindViewModel = { _, viewModel, position, _ ->
                         if (selectedItem.getSelectedItem() == null && position == 0) {
                             selectedItem.selectedItem(viewModel)
                         }
@@ -90,7 +90,7 @@ class WXArticleFragment private constructor() :
             it?.run {
                 mBinding.wxarticleRecyclerview.setPagingAdapter(
                     lifecycleScope,
-                    mViewModel.getWXArticle(this.data?.id ?: 0),
+                    mViewModel.getWXArticle(this.data?.invoke()?.id ?: 0),
                     BindingPagingDataAdapter<ArticleBean>(
                         { R.layout.item_wx_article },
                         diffCallback = articleDifferCallback

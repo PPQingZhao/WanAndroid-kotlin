@@ -12,17 +12,13 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.flexbox.FlexboxLayoutManager
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
-import com.pp.common.app.App
-import com.pp.common.constant.ON_BACK_PRESSED
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKey
-import com.pp.common.model.ItemDeleteBarHotkeyViewModel
 import com.pp.common.model.ItemTextDeleteHotkeyViewModel
 import com.pp.common.paging.*
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
-import com.pp.home.R
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -155,7 +151,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private val mHotkeyAdapter by lazy {
         val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
             override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
-                item.data?.name.let {
+                item.data?.invoke()?.name.let {
                     mBinding.searchView.setQuery(it, true)
                 }
                 return true

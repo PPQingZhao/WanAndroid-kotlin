@@ -37,8 +37,8 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
             .apply {
                 object :
                     ItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
-                    override fun getItemViewModel(data: ItemPreferenceThemeSettingViewModel?): ItemPreferenceThemeSettingViewModel {
-                        return data!!
+                    override fun getItemViewModel(getItem: () -> ItemPreferenceThemeSettingViewModel?): ItemPreferenceThemeSettingViewModel {
+                        return getItem.invoke()!!
                     }
 
                     override fun getItemViewBindingClazz(): Class<ItemThemeSettingBinding> {

@@ -14,7 +14,7 @@ import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
 
-class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
+class ItemArticleTextViewModel(cidBean: () -> ArticleBean?, theme: AppDynamicTheme) :
     ItemTextViewModel<ArticleBean>(theme) {
 
     init {
@@ -27,15 +27,13 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
 
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
-        if (null == data) {
-            return false
-        }
+        val data = data?.invoke() ?: return false
 
         val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_text)
-        shareElement.transitionName = "transitionName${data!!.id}"
+        shareElement.transitionName = "transitionName${data.id}"
         val bundle = Bundle().also {
             it.putString(WebViewFragment.WEB_VIEW_TITLE, text.get())
-            it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
+            it.putString(WebViewFragment.WEB_VIEW_URL, data.link)
             it.putString(
                 CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
                 shareElement.transitionName

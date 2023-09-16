@@ -34,8 +34,8 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
             .apply {
                 object :
                     ItemViewModelBinder<ItemAllowRightBinding, UserItemAllowRightModel, UserItemAllowRightModel>() {
-                    override fun getItemViewModel(data: UserItemAllowRightModel?): UserItemAllowRightModel {
-                        return data!!
+                    override fun getItemViewModel(getItem: () -> UserItemAllowRightModel?): UserItemAllowRightModel {
+                        return getItem.invoke()!!
                     }
 
                     override fun getItemViewBindingClazz(): Class<ItemAllowRightBinding> {

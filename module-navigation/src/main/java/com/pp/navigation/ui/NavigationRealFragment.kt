@@ -52,7 +52,7 @@ class NavigationRealFragment private constructor() :
             item?.run {
                 lifecycleScope.launch {
                     mViewModel.articles.collectLatest {
-                        val pos = it.indexOf(item.data as Any)
+                        val pos = it.indexOf(item.data?.invoke() as Any)
                         mBinding.articleRecyclerview.scrollToPosition(pos)
 
                     }
@@ -91,7 +91,7 @@ class NavigationRealFragment private constructor() :
                 itemTextArticleListBinder(
                     onItemListener = mOnItemListener,
                     theme = mViewModel.mTheme,
-                    onBindViewModel = { _, data, viewModel, position ->
+                    onBindViewModel = { _, viewModel, position, _ ->
                         if (selectedItem.getSelectedItem() == null && position == 0) {
                             selectedItem.selectedItem(viewModel)
                         }

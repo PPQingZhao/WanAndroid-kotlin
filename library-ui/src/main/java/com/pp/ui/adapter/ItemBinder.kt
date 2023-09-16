@@ -10,28 +10,34 @@ abstract class ItemBinder<VB : ViewDataBinding, Data : Any> :
 
     abstract fun getItemViewBindingClazz(): Class<VB>
     abstract fun getItemDataClazz(): Class<Data>
-    abstract fun bindItem(binding: VB, data: Data?, position: Int)
+    abstract fun bindItem(binding: VB, position: Int, getItem: (position: Int) -> Data?)
+
 }
 
 abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
-    (private val onBindViewModel: (binding: VB, data: Data?, viewModel: VM?, posiion: Int) -> Boolean = { _, _, _, _ -> false }) :
+    (private val onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false }) :
     ItemBinder<VB, Data>() {
 
     private val mItemModelCaches by lazy { mutableMapOf<Int, VM?>() }
-    abstract fun getItemViewModel(data: Data?): VM?
+    abstract fun getItemViewModel(getItem: () -> Data?): VM?
 
-    override fun bindItem(binding: VB, data: Data?, position: Int) {
+    override fun bindItem(binding: VB, position: Int, getItem: (position: Int) -> Data?) {
         var itemViewModel = mItemModelCaches[position]
         if (null == itemViewModel) {
-            itemViewModel = getItemViewModel(data)
+            itemViewModel = getItemViewModel { getItem.invoke(position) }
             mItemModelCaches[position] = itemViewModel
         }
-        onBindViewModel(binding, data, itemViewModel, position)
+        onBindViewModel(binding, itemViewModel, position, getItem)
     }
 
-    open fun onBindViewModel(binding: VB, data: Data?, viewModel: VM?, posiion: Int) {
+    open fun onBindViewModel(
+        binding: VB,
+        viewModel: VM?,
+        position: Int,
+        getItem: (position: Int) -> Data?,
+    ) {
 
-        if (onBindViewModel.invoke(binding, data, viewModel, posiion)) {
+        if (onBindViewModel.invoke(binding, viewModel, position, getItem)) {
             return
         }
 

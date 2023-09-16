@@ -5,7 +5,7 @@ import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
 
 class ItemArticleListTextViewModel(
-    cidBean: ArticleListBean?,
+    cidBean: () -> ArticleListBean?,
     theme: AppDynamicTheme,
 ) :
     ItemTextViewModel<ArticleListBean>(theme) {

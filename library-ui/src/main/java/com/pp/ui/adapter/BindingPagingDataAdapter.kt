@@ -2,8 +2,6 @@ package com.pp.ui.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnClickListener
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.core.view.doOnAttach
@@ -13,10 +11,7 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.LayoutManager
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.pp.common.paging.onePager
-import com.pp.ui.viewModel.ItemDataViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -43,6 +38,10 @@ class BindingPagingDataAdapter<Data : Any>(
     private var mInflater: LayoutInflater? = null
     override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
         mInflater = LayoutInflater.from(recyclerView.context)
+    }
+
+    override fun onDetachedFromRecyclerView(recyclerView: RecyclerView) {
+        mInflater = null
     }
 
     private val mBindViewModelList = mutableListOf<ItemBinder<ViewDataBinding, Data>>()
@@ -85,7 +84,7 @@ class BindingPagingDataAdapter<Data : Any>(
     override fun onBindViewHolder(holder: ViewDataBindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getItemViewModelBinder(holder.bind, itemData).apply {
-            bindItem(holder.bind, itemData, position)
+            bindItem(holder.bind, position) { pos -> getItem(pos) }
         }
         holder.itemView.doOnAttach {
             ViewTreeLifecycleOwner.get(it)?.also { owner ->

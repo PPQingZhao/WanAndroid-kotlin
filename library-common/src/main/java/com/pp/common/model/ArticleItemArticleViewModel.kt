@@ -16,7 +16,7 @@ import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemArticleViewModel
 
-open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
+open class ArticleItemArticleViewModel(articleBean: () -> ArticleBean?, theme: AppDynamicTheme) :
     ItemArticleViewModel<ArticleBean>(theme) {
 
     init {
@@ -47,9 +47,7 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
-            if (null == data) {
-                return false
-            }
+            val data = data?.invoke() ?: return false
 
             val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
             val bundle = Bundle().also {
@@ -74,7 +72,7 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
     override fun onCollect(v: View) {
         isCollect.let {
             it.set(it.get().not())
-            data?.collect = it.get()
+            data?.invoke()?.collect = it.get()
         }
     }
 }

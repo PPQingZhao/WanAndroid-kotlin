@@ -75,7 +75,9 @@ class RecyclerViewBindingAdapter<Data : Any>(
     override fun onBindViewHolder(holder: ViewDataBindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getBindViewModel(holder.bind, itemData).apply {
-            bindItem(holder.bind, itemData, position)
+            bindItem(holder.bind, position) { pos ->
+                getItem(pos)
+            }
         }
         holder.bind.executePendingBindings()
     }

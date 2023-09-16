@@ -87,7 +87,7 @@ class SystemFragment private constructor() :
                 itemText3ArticleBinder(
                     onItemListener = mOnItemListener,
                     theme = mViewModel.mTheme,
-                    onBindViewModel = { _, data, viewModel, position ->
+                    onBindViewModel = { _, viewModel, position, _ ->
                         if (selectedItem.getSelectedItem() == null && position == 0) {
                             selectedItem.selectedItem(viewModel)
                         }
@@ -110,7 +110,7 @@ class SystemFragment private constructor() :
 
                     mViewModel.systemList.collectLatest {
                         it.onEach { articleListBean ->
-                            val data = item.data
+                            val data = item.data?.invoke()
                             if (articleListBean.children?.contains(data) == true) {
                                 systemArticleList = articleListBean
                                 targetPosition = articleListBean.children!!.indexOf(data)
