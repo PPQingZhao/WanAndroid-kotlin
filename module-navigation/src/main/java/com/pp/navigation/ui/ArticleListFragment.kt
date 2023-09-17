@@ -69,6 +69,9 @@ class ArticleListFragment private constructor() :
         mBinding.refreshLayout.doOnAttach {
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    mWXArticleAdapter.refresh()
+                }
                 .build()
                 .also {
                     mWXArticleAdapter.attachStateView(it)

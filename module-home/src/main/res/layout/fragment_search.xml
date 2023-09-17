@@ -68,8 +68,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/history_recyclerview" />
 
-            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                android:id="@+id/refreshLayout"
+            <FrameLayout
+                android:id="@+id/contentParent"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_8"
@@ -79,12 +79,18 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/search_view">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/searchRecyclerview"
+                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                    android:id="@+id/refreshLayout"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                    android:layout_height="match_parent">
 
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/searchRecyclerview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+            </FrameLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -100,7 +106,7 @@
             android:tint="@{viewModel.MTheme.colorPrimary}"
             android:visibility="gone"
             app:fabSize="mini"
-            app:layout_anchor="@id/searchRecyclerview"
+            app:layout_anchor="@id/contentParent"
             app:layout_anchorGravity="bottom|end"
             app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
             tools:tint="?colorPrimary"

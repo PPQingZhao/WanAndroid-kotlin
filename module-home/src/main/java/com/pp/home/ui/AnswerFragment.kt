@@ -43,6 +43,9 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
         mBinding.refreshLayout.doOnAttach {
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    mArticleAdapter.refresh()
+                }
                 .build()
                 .also {
                     mArticleAdapter.attachStateView(it)

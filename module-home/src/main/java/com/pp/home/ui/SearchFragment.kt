@@ -22,14 +22,17 @@ import com.pp.common.util.materialSharedAxis
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.utils.StateView
 import com.pp.ui.utils.attachRecyclerView
 import com.pp.ui.utils.attachRefreshView
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Route(path = RouterPath.Search.fragment_search)
 class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
@@ -50,7 +53,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         initHistoryRecyclerView()
         initHotkeyRecyclerView()
         initSearchRecyclerView()
-
     }
 
     private val mHistoryAdapter by lazy {
@@ -129,7 +131,23 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             itemArticleBinder(mViewModel.mTheme).also {
                 addItemViewModelBinder(it)
             }
+
+            StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    refresh()
+                }.build()
+                .let {
+                    attachStateView(it)
+                }
         }
+    }
+
+    private val mStateView by lazy {
+        StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+            .setOnRetry {
+                mSearchAdapter.refresh()
+            }
+            .build()
     }
 
     private fun initSearchRecyclerView() {
@@ -197,15 +215,26 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
                 mBinding.searchView.clearFocus()
                 mViewModel.saveSearchHotKeyHistory(query)
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    mViewModel.searchPageData(query).collectLatest {
-                        mBinding.refreshLayout.post {
-                            mBinding.refreshLayout.visibility = View.VISIBLE
-                            mBinding.refreshLayout.doOnNextLayout {
+//                mStateView.showLoading()
+                viewLifecycleOwner.lifecycleScope.launch {
+                    if (mSearchAdapter.itemCount > 0) {
+                        mSearchAdapter.clear()
+                    }
+                    kotlin.runCatching {
+                        mViewModel.searchPageData(query).collectLatest {
+
+                            mBinding.contentParent.visibility = View.VISIBLE
+                            mBinding.contentParent.doOnNextLayout {
                                 mBinding.floatingButton.visibility = View.VISIBLE
                             }
+                            mBinding.searchRecyclerview.scrollToPosition(0)
+
+                            withContext(Dispatchers.IO) {
+                                mSearchAdapter.setPagingData(this, it)
+                            }
                         }
-                        mSearchAdapter.setPagingData(this, it)
+                    }.getOrElse {
+//                        mStateView.showError(it)
                     }
                 }
                 return true
@@ -215,8 +244,8 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                 if (newText?.isNotEmpty() != true) {
                     mSearchAdapter.clear()
                     mBinding.searchRecyclerview.doOnNextLayout {
-                        mBinding.refreshLayout.visibility = View.GONE
-                        mBinding.floatingButton.visibility = View.GONE
+                        mBinding.contentParent.visibility = View.GONE
+                        mBinding.contentParent.visibility = View.GONE
                     }
                 }
                 return true

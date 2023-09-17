@@ -69,7 +69,9 @@ class NavigationRealFragment private constructor() :
             mBinding.contentParent,
             mViewModel.mTheme,
             viewLifecycleOwner
-        ).build()
+        ).setOnRetry {
+            mViewModel.getNavigation()
+        }.build()
 
     }
 

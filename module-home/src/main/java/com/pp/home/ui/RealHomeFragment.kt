@@ -49,6 +49,10 @@ class RealHomeFragment :
         mBinding.refreshLayout.doOnAttach {
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    mViewModel.getBanner()
+                    mArticleAdapter.refresh()
+                }
                 .build()
                 .also {
                     mArticleAdapter.attachStateView(it)

@@ -1,8 +1,5 @@
 package com.pp.project.ui
 
-import android.os.Bundle
-import android.view.View
-import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
@@ -11,7 +8,6 @@ import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.project.databinding.FragmentProjectBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.utils.StateView
-import com.pp.ui.utils.attachStateView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -30,27 +26,46 @@ class ProjectFragment : ThemeFragment<FragmentProjectBinding, ProjectViewModel>(
     private val mStateView by lazy {
 
         StateView.DefaultBuilder(mBinding.contenParent, mViewModel.mTheme, viewLifecycleOwner)
+            .setOnRetry {
+                viewLifecycleOwner.lifecycleScope.launch {
+                    getProjects()
+                }
+            }
             .build()
     }
 
     override fun onFirstResume() {
 
         mStateView.showLoading()
-        lifecycleScope.launch(Dispatchers.IO) {
+        lifecycleScope.launch {
+            getProjects()
+        }
+    }
 
-            val projectCid = mViewModel.getProjectCid()
+    private suspend fun getProjects() {
 
-            val pagers = getPagers(projectCid)
-            withContext(Dispatchers.Main) {
+        withContext(Dispatchers.Main) {
+
+            kotlin.runCatching {
+                val projectCid =
+                    withContext(Dispatchers.IO) {
+                        mViewModel.getProjectCid()
+                    }
+
+                val pagers = getPagers(projectCid)
                 if (projectCid.isEmpty()) {
                     mStateView.showEmpty()
                 } else {
                     mStateView.showContent()
+                    mBinding.viewpager2.offscreenPageLimit = 1
+                    TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
+                        .addPagers(pagers)
+                        .attach(mBinding.tablayout, mBinding.viewpager2)
                 }
-                mBinding.viewpager2.offscreenPageLimit = 1
-                TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
-                    .addPagers(pagers)
-                    .attach(mBinding.tablayout, mBinding.viewpager2)
+            }.getOrElse {
+                withContext(Dispatchers.Main) {
+                    mStateView.showError(it)
+                }
             }
         }
     }

@@ -60,6 +60,9 @@ class CidProjectFragment private constructor() :
 
 
         StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+            .setOnRetry {
+                adapter.refresh()
+            }
             .build()
             .also {
                 adapter.attachStateView(it)

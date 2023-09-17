@@ -33,6 +33,10 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
         mBinding.refreshLayout.doOnAttach {
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+
+                    mArticleAdapter.refresh()
+                }
                 .build()
                 .also {
                     mArticleAdapter.attachStateView(it)

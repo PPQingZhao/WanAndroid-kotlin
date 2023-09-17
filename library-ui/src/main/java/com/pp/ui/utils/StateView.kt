@@ -7,14 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LifecycleOwner
 import com.pp.theme.AppDynamicTheme
-import com.pp.ui.BR
-import com.pp.ui.R
 import com.pp.ui.databinding.LayoutDataEmptyBinding
-import com.pp.ui.databinding.LayoutDataEmptyBindingImpl
 import com.pp.ui.databinding.LayoutLoadErrorBinding
 import com.pp.ui.databinding.LayoutLoadingBinding
 
@@ -257,7 +252,7 @@ class StateView {
                 setLoadingView(it.root)
             }
 
-            LayoutDataEmptyBindingImpl.inflate(inflater).also {
+            LayoutDataEmptyBinding.inflate(inflater).also {
                 it.theme = theme
                 it.lifecycleOwner = lifecycleOwner
                 setEmptyView(it.root)
@@ -266,9 +261,20 @@ class StateView {
             LayoutLoadErrorBinding.inflate(inflater).also {
                 it.theme = theme
                 it.lifecycleOwner = lifecycleOwner
-                setEmptyView(it.root)
+                it.loadIvError.setOnClickListener {
+                    mRetry?.invoke(it)
+                }
+                it.loadIvError.setOnClickListener {
+                    mRetry?.invoke(it)
+                }
+                setErrorView(it.root)
             }
+        }
 
+        private var mRetry: ((view: View) -> Unit)? = null
+        fun setOnRetry(retry: ((view: View) -> Unit)?): DefaultBuilder {
+            mRetry = retry
+            return this
         }
     }
 }

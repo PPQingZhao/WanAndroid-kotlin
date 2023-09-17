@@ -54,7 +54,9 @@ class WXArticleFragment private constructor() :
                 mBinding.contentParent,
                 mViewModel.mTheme,
                 viewLifecycleOwner
-            )
+            ).setOnRetry {
+                mViewModel.getWXArticleList()
+            }
                 .build()
                 .also {
                     it.showLoading()
@@ -116,6 +118,9 @@ class WXArticleFragment private constructor() :
                 addItemViewModelBinder(it)
             }
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    refresh()
+                }
                 .build()
                 .let {
                     attachStateView(it)

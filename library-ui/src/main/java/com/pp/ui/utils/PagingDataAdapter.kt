@@ -80,17 +80,20 @@ fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.a
             return@addLoadStateListener
         }
 
+        if (it.refresh is LoadState.Loading) {
+            stateView.showLoading()
+            return@addLoadStateListener
+        }
+
+        if (it.refresh is LoadState.Error) {
+            stateView.showError((it.refresh as LoadState.Error).error)
+            return@addLoadStateListener
+        }
+
         if (it.append.endOfPaginationReached) {
             stateView.showEmpty()
             return@addLoadStateListener
         }
 
-        when (val refresh = it.refresh) {
-            is LoadState.Loading -> stateView.showLoading()
-            is LoadState.Error -> stateView.showError(refresh.error)
-            else -> {
-                stateView.showContent()
-            }
-        }
     }
 }

@@ -71,7 +71,6 @@ class SystemFragment private constructor() :
             }
         }
 
-
         mViewModel.getSystemList()
     }
 
@@ -88,7 +87,9 @@ class SystemFragment private constructor() :
             mBinding.contentParent,
             mViewModel.mTheme,
             viewLifecycleOwner
-        ).build()
+        ).setOnRetry {
+            mViewModel.getSystemList()
+        }.build()
 
     }
 
