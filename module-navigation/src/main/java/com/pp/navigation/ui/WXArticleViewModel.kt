@@ -3,10 +3,10 @@ package com.pp.navigation.ui
 import android.app.Application
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.navigation.repository.NavigationRepository
 import com.pp.navigation.repository.WXArticleRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,7 +26,7 @@ class WXArticleViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
-    fun getWXArticle(id : Int): Flow<PagingData<ArticleBean>> {
-        return WXArticleRepository.getWXArticle(id)
+    fun getWXArticle(id: Int): Flow<PagingData<ArticleBean>> {
+        return WXArticleRepository.getWXArticle(id).cachedIn(viewModelScope)
     }
 }

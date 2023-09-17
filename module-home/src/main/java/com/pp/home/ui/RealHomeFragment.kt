@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.core.view.doOnAttach
 import androidx.lifecycle.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
@@ -14,9 +15,12 @@ import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
+import com.pp.home.databinding.FragmentHomeChildRealhomeBindingImpl
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.IndicatorTransitionListener
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.BannerCarousel.Adapter
+import com.pp.ui.utils.StateView
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
@@ -26,7 +30,7 @@ import kotlinx.coroutines.launch
 class RealHomeFragment :
     ThemeFragment<FragmentHomeChildRealhomeBinding, RealHomeViewModel>() {
     override val mBinding: FragmentHomeChildRealhomeBinding by lazy {
-        FragmentHomeChildRealhomeBinding.inflate(layoutInflater)
+        FragmentHomeChildRealhomeBindingImpl.inflate(layoutInflater)
     }
 
     override fun getModelClazz(): Class<RealHomeViewModel> {
@@ -38,6 +42,19 @@ class RealHomeFragment :
 
         initBanner()
         initIndicator()
+        initStateView()
+    }
+
+    private fun initStateView() {
+        mBinding.refreshLayout.doOnAttach {
+
+            StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .build()
+                .also {
+                    mArticleAdapter.attachStateView(it)
+                }
+        }
+
     }
 
     private fun initIndicator() {
@@ -110,12 +127,16 @@ class RealHomeFragment :
         mBinding.indicator.initIndicator(mBinding.carousel.count)
     }
 
+    private val mArticleAdapter by lazy {
+        itemArticlePagingAdapter(mViewModel.mTheme)
+    }
+
     private fun initPagingList() {
 
         mBinding.recyclerview.setPagingAdapter(
             lifecycleScope,
             mViewModel.getPageData(),
-            itemArticlePagingAdapter(mViewModel.mTheme),
+            mArticleAdapter,
             layoutManager = LinearLayoutManager(requireContext()),
             refreshLayout = mBinding.refreshLayout,
             onReFreshChildScrollUp = { mBinding.contentMotionLayout.progress > 0 }

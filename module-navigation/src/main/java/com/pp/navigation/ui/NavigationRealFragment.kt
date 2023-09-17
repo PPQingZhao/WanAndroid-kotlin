@@ -16,6 +16,7 @@ import com.pp.navigation.databinding.FragmentRealnavigationBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.ItemBinder
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.utils.StateView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -54,13 +55,22 @@ class NavigationRealFragment private constructor() :
                     mViewModel.articles.collectLatest {
                         val pos = it.indexOf(item.data?.invoke() as Any)
                         mBinding.articleRecyclerview.scrollToPosition(pos)
-
+                        cancel()
                     }
-                    cancel()
                 }
             }
         }
         initRecyclerView()
+    }
+
+    private val mStateView by lazy {
+
+        StateView.DefaultBuilder(
+            mBinding.contentParent,
+            mViewModel.mTheme,
+            viewLifecycleOwner
+        ).build()
+
     }
 
     private fun initRecyclerView() {
@@ -128,7 +138,19 @@ class NavigationRealFragment private constructor() :
     override fun onFirstResume() {
         lifecycleScope.launch {
             async {
+                var isInit = true
                 mViewModel.navigation.collectLatest {
+                    if (isInit) {
+                        mStateView.showLoading()
+                        isInit = false
+                        return@collectLatest
+                    }
+
+                    if (it.isEmpty()) {
+                        mStateView.showEmpty()
+                    } else {
+                        mStateView.showContent()
+                    }
                     cidAdapter.setDataList(it)
                 }
             }

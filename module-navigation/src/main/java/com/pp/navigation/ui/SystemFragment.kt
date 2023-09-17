@@ -18,6 +18,7 @@ import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.utils.StateView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
@@ -46,7 +47,18 @@ class SystemFragment private constructor() :
 
         lifecycleScope.launch {
             async {
+                var isInit = true
                 mViewModel.systemList.collectLatest { it ->
+                    if (isInit) {
+                        mStateView.showLoading()
+                        isInit = false
+                        return@collectLatest
+                    }
+                    if (it.isEmpty()) {
+                        mStateView.showEmpty()
+                    } else {
+                        mStateView.showContent()
+                    }
                     mAdapter.setDataList(it)
                 }
             }
@@ -65,7 +77,19 @@ class SystemFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         initRecyclerview()
+    }
+
+
+    private val mStateView by lazy {
+
+        StateView.DefaultBuilder(
+            mBinding.contentParent,
+            mViewModel.mTheme,
+            viewLifecycleOwner
+        ).build()
+
     }
 
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
@@ -178,11 +202,10 @@ class SystemFragment private constructor() :
             item?.run {
                 lifecycleScope.launch {
                     mViewModel.articleList.collectLatest {
-                        val pos = it.indexOf(item.data as Any)
+                        val pos = it.indexOf(item.data?.invoke() as Any)
                         mBinding.articleListRecyclerview.scrollToPosition(pos)
-
+                        cancel()
                     }
-                    cancel()
                 }
             }
         }

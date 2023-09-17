@@ -2,6 +2,7 @@ package com.pp.navigation.ui
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +16,8 @@ import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.utils.StateView
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
@@ -40,7 +43,34 @@ class WXArticleFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initStateView()
         initRecyclerview()
+    }
+
+    private fun initStateView() {
+        mBinding.refreshLayout.doOnAttach {
+
+            val stateView = StateView.DefaultBuilder(
+                mBinding.contentParent,
+                mViewModel.mTheme,
+                viewLifecycleOwner
+            )
+                .build()
+                .also {
+                    it.showLoading()
+                }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                mViewModel.wxArticleList.collectLatest {
+                    if (it.isEmpty()) {
+                        stateView.showEmpty()
+                    } else {
+                        stateView.showContent()
+                    }
+                }
+            }
+        }
+
     }
 
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =
@@ -76,6 +106,23 @@ class WXArticleFragment private constructor() :
             }
 
     }
+    private val pagingDataAdapter by lazy {
+
+        BindingPagingDataAdapter<ArticleBean>(
+            { R.layout.item_wx_article },
+            diffCallback = articleDifferCallback
+        ).apply {
+            com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme).also {
+                addItemViewModelBinder(it)
+            }
+            StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .build()
+                .let {
+                    attachStateView(it)
+                }
+        }
+
+    }
 
     private fun initRecyclerview() {
         mBinding.authorRecyclerview.layoutManager = LinearLayoutManager(requireContext())
@@ -88,17 +135,14 @@ class WXArticleFragment private constructor() :
             viewLifecycleOwner
         ) {
             it?.run {
+
+                if (pagingDataAdapter.itemCount > 0) {
+                    pagingDataAdapter.clear()
+                }
                 mBinding.wxarticleRecyclerview.setPagingAdapter(
                     lifecycleScope,
                     mViewModel.getWXArticle(this.data?.invoke()?.id ?: 0),
-                    BindingPagingDataAdapter<ArticleBean>(
-                        { R.layout.item_wx_article },
-                        diffCallback = articleDifferCallback
-                    ).apply {
-                        com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme).also {
-                            addItemViewModelBinder(it)
-                        }
-                    },
+                    pagingDataAdapter,
                     layoutManager = LinearLayoutManager(requireContext()),
                     refreshLayout = mBinding.refreshLayout
                 )

@@ -1,6 +1,8 @@
 package com.pp.navigation.ui
 
 import android.os.Bundle
+import android.view.View
+import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
@@ -10,6 +12,8 @@ import com.pp.common.paging.itemWXArticleBinder
 import com.pp.navigation.databinding.FragmentArticleListBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.utils.StateView
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.setPagingAdapter
 import kotlinx.coroutines.launch
 
@@ -45,9 +49,13 @@ class ArticleListFragment private constructor() :
         }
     }
 
-    private fun initPagingList() {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initStateView()
+    }
 
-        val adapter = BindingPagingDataAdapter<ArticleBean>(
+    private val mWXArticleAdapter by lazy {
+        BindingPagingDataAdapter<ArticleBean>(
             { R.layout.item_wx_article },
             diffCallback = articleDifferCallback
         ).apply {
@@ -55,11 +63,27 @@ class ArticleListFragment private constructor() :
                 addItemViewModelBinder(it)
             }
         }
+    }
+
+    private fun initStateView() {
+        mBinding.refreshLayout.doOnAttach {
+
+            StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .build()
+                .also {
+                    mWXArticleAdapter.attachStateView(it)
+                }
+        }
+
+    }
+
+    private fun initPagingList() {
+
 
         mBinding.pageList.setPagingAdapter(
             lifecycleScope,
             mViewModel.getSystemArticle(),
-            adapter,
+            mWXArticleAdapter,
             layoutManager = LinearLayoutManager(requireContext()),
             refreshLayout = mBinding.refreshLayout
         )

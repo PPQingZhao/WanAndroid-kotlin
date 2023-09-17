@@ -77,8 +77,5 @@ abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
         }
     }
 
-    override fun onItemRangeMoved(fromPosition: Int, toPosition: Int, itemCount: Int) {
-        Log.e("TAG", "onItemRangeMoved")
-    }
 
 }

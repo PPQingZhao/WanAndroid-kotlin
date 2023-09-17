@@ -1,6 +1,7 @@
 package com.pp.project.ui
 
 import android.os.Bundle
+import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
@@ -10,6 +11,8 @@ import com.pp.common.paging.itemProjectArticleBinder
 import com.pp.project.databinding.FragmentCidprojectBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.utils.StateView
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.setPagingAdapter
 import kotlinx.coroutines.launch
 
@@ -54,6 +57,13 @@ class CidProjectFragment private constructor() :
                 addItemViewModelBinder(it)
             }
         }
+
+
+        StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+            .build()
+            .also {
+                adapter.attachStateView(it)
+            }
 
         mBinding.pageList.setPagingAdapter(
             lifecycleScope,

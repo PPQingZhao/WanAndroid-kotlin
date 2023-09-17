@@ -22,8 +22,8 @@ import com.pp.common.util.materialSharedAxis
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.adapter.attachRecyclerView
-import com.pp.ui.adapter.attachRefreshView
+import com.pp.ui.utils.attachRecyclerView
+import com.pp.ui.utils.attachRefreshView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers

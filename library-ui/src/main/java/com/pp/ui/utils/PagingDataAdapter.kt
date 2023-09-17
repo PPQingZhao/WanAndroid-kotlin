@@ -1,4 +1,4 @@
-package com.pp.ui.adapter
+package com.pp.ui.utils
 
 import android.view.View
 import androidx.paging.LoadState
@@ -6,6 +6,8 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.adapter.DefaultLoadMoreStateAdapter
 import com.pp.ui.viewModel.ItemDataViewModel
 
 
@@ -65,5 +67,30 @@ fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.a
     }
     addLoadStateListener {
         refreshView.isRefreshing = itemCount > 0 && it.refresh is LoadState.Loading
+    }
+}
+
+fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.attachStateView(
+    stateView: StateView,
+) {
+
+    addLoadStateListener {
+        if (itemCount > 0) {
+            stateView.showContent()
+            return@addLoadStateListener
+        }
+
+        if (it.append.endOfPaginationReached) {
+            stateView.showEmpty()
+            return@addLoadStateListener
+        }
+
+        when (val refresh = it.refresh) {
+            is LoadState.Loading -> stateView.showLoading()
+            is LoadState.Error -> stateView.showError(refresh.error)
+            else -> {
+                stateView.showContent()
+            }
+        }
     }
 }

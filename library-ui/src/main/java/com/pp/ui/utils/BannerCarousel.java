@@ -376,6 +376,9 @@ public class BannerCarousel extends MotionHelper {
         super.onDetachedFromWindow();
         mList.clear();
         cancelBanner();
+        if (null == mMotionLayout) {
+            return;
+        }
         LifecycleOwner lifecycleOwner = ViewTreeLifecycleOwner.get(mMotionLayout);
         if (null != lifecycleOwner) {
             lifecycleOwner.getLifecycle().removeObserver(mLifecycleObserver);
