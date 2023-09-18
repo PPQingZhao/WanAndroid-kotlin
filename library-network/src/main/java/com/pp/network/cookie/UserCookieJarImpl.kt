@@ -25,7 +25,9 @@ class UserCookieJarImpl(private val cookieCacheHelper: CookieCacheHelper) : Cook
             "loadForRequest: url:$url - expired: $expiredCookies - valid: $validCookies"
         )
         cookieCacheHelper.removeAll(expiredCookies)
-        return validCookies.filter { it.matches(url) }
+        return validCookies.filter { it.matches(url) }.also {
+            Log.e("loadForRequest", "matches: $it")
+        }
     }
 
     @Synchronized
@@ -36,7 +38,9 @@ class UserCookieJarImpl(private val cookieCacheHelper: CookieCacheHelper) : Cook
             "saveFromResponse: url:$url - expired: $expiredCookies - valid: $validCookies"
         )
         cookieCacheHelper.removeAll(expiredCookies)
-        cookieCacheHelper.saveAll(validCookies.filter { it.persistent() })
+        cookieCacheHelper.saveAll(validCookies.filter { it.persistent() }.also {
+            Log.e("saveFromResponse", "persistent: $it")
+        })
     }
 
     fun clear() {
