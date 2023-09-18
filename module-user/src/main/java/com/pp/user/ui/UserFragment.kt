@@ -10,17 +10,14 @@ import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.router_service.RouterPath
-import com.pp.ui.adapter.ItemViewModelBinder
+import com.pp.ui.R
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
-import com.pp.ui.adapter.createItemDataBinder
 import com.pp.ui.adapter.createItemViewModelBinder
 import com.pp.ui.databinding.ItemAllowRightBinding
 import com.pp.ui.viewModel.ItemAllowRightViewModel
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
-import com.pp.user.R
 import com.pp.user.databinding.FragmentUserBinding
-import com.pp.user.model.UserItemAllowRightModel
 
 @Route(path = RouterPath.User.fragment_user)
 class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
@@ -89,6 +86,14 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
                         ): Boolean {
                             ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
                                 mBinding.root
+                            )?.showFragment(
+                                RouterPath.Local.fragment_collected,
+                                RouterPath.Local.fragment_collected,
+                                mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
+                                mainReenterTransition = materialSharedAxis(
+                                    MaterialSharedAxis.X,
+                                    false
+                                )
                             )
                             return true
                         }

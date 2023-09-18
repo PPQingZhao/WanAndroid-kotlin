@@ -41,7 +41,7 @@ class StateView {
 
     private fun showStateView(target: ViewState) {
 
-        if (target.equals(curViewState)) {
+        if (target == curViewState) {
             if (DEBUG) {
                 Log.i("StateView", "target: ${target::javaClass} is showing")
             }
@@ -60,6 +60,9 @@ class StateView {
         }
 
         target.view?.let {
+            if (it.parent != null){
+                (it.parent as ViewGroup).removeView(it)
+            }
             contentParent.addView(it, indexOfContentView, contentLayoutParams)
         }
 

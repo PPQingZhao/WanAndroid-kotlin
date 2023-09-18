@@ -14,4 +14,20 @@
     <string name="data_end">没有更多数据了.</string>
     <string name="data_empty">没有数据.</string>
     <string name="retry">重试</string>
+
+
+    <string name="user_login">用户登录</string>
+    <string name="user_register">用户注册</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="hint_username">输入账号</string>
+    <string name="hint_password">输入密码</string>
+    <string name="hint_new_user">新用户</string>
+    <string name="hint_confirm_password">确认密码</string>
+
+    <string name="message_center">消息中心</string>
+    <string name="share_articles">我的分享</string>
+    <string name="collect_articles">我的收藏</string>
+    <string name="tool_list">工具列表</string>
+    <string name="theme_setting">主题设置</string>
 </resources>

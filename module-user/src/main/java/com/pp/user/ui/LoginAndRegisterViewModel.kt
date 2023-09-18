@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
 import com.pp.base.ThemeViewModel
-import com.pp.user.R
+import com.pp.ui.R
 import com.pp.user.model.UserLoginViewModel
 import com.pp.user.model.UserRegisterViewModel
 
