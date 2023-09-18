@@ -255,6 +255,9 @@ class StateView {
             LayoutDataEmptyBinding.inflate(inflater).also {
                 it.theme = theme
                 it.lifecycleOwner = lifecycleOwner
+                it.ivEmpty.setOnClickListener {
+                    mRetry?.invoke(it)
+                }
                 setEmptyView(it.root)
             }
 
@@ -264,7 +267,7 @@ class StateView {
                 it.loadIvError.setOnClickListener {
                     mRetry?.invoke(it)
                 }
-                it.loadIvError.setOnClickListener {
+                it.loadTvError.setOnClickListener {
                     mRetry?.invoke(it)
                 }
                 setErrorView(it.root)

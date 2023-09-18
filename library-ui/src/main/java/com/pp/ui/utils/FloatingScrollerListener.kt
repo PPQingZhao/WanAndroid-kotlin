@@ -2,6 +2,7 @@ package com.pp.ui.utils
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.util.Log
 import android.view.View
 import android.view.ViewPropertyAnimator
 import android.view.animation.LinearInterpolator
@@ -18,6 +19,7 @@ class FloatingScrollerListener(private val floatButton: View) : OnScrollListener
     }
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+//        Log.e("TAG", "newState: $newState")
         if (newState != RecyclerView.SCROLL_STATE_IDLE) {
             return
         }
@@ -31,9 +33,11 @@ class FloatingScrollerListener(private val floatButton: View) : OnScrollListener
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         val floatDistance = if (dx == 0) dy else dx
 
-        if (floatDistance >= 0) {
+//        Log.e("TAG", "distance: $floatDistance  dx: $dx  dy: $dy")
+        // floatDistance == 0 时不处理,在滑动过程中可能会接收多个 dy = 0,dx =0   比如 TabSystemFragment页面(猜测motionLayout嵌套viewpager2再嵌套recyclerview原因)
+        if (floatDistance > 0) {
             animateOut(floatButton)
-        } else {
+        } else if (floatDistance < 0) {
             animateIn(floatButton)
         }
     }

@@ -9,15 +9,22 @@
             type="com.pp.theme.AppDynamicTheme" />
     </data>
 
-    <TextView
-        android:id="@+id/iv_empty"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@{theme.windowBackground}"
-        android:gravity="center"
-        android:paddingTop="30dp"
-        android:text="@string/data_empty"
-        android:textColor="@{theme.textColorSecondary}"
-        android:textSize="15sp"
-        tools:textColor="?android:textColorSecondary" />
+        android:background="@{theme.windowBackground}">
+
+        <TextView
+            android:id="@+id/iv_empty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="?selectableItemBackground"
+            android:gravity="center"
+            android:padding="@dimen/dp_8"
+            android:text="@string/data_empty"
+            android:textColor="@{theme.textColorSecondary}"
+            android:textSize="15sp"
+            tools:textColor="?android:textColorSecondary" />
+    </FrameLayout>
 </layout>
