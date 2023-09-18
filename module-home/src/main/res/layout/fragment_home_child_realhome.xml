@@ -13,7 +13,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/dp_4">
 
         <androidx.constraintlayout.motion.widget.MotionLayout
             android:id="@+id/contentMotionLayout"
@@ -158,6 +159,7 @@
                 android:gravity="center"
                 android:onFloatingClick="@{recyclerview}"
                 android:padding="@dimen/dp_8"
+                android:setupFloating="@{recyclerview}"
                 android:src="@drawable/ic_top"
                 android:tint="@{viewModel.MTheme.colorPrimary}"
                 app:layout_constraintBottom_toBottomOf="parent"

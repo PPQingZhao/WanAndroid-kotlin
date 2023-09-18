@@ -11,106 +11,96 @@
 
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@{viewModel.MTheme.windowBackground}"
+        android:fitsSystemWindows="true">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_8"
+            android:background="?android:selectableItemBackground"
+            android:clickable="true"
+            android:padding="@dimen/dp_8"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@{viewModel.MTheme.textColorPrimary}"
+            app:layout_constraintBottom_toBottomOf="@id/search_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/search_view"
+            app:roundPercent="1"
+            tools:tint="?android:textColorSecondary" />
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:goIcon="@drawable/ic_search"
+            app:iconifiedByDefault="false"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintTop_toTopOf="parent"
+            app:queryHint="@string/search_hint"
+            app:searchIcon="@null" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/history_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/key_recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/history_recyclerview" />
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/dp_8"
             android:background="@{viewModel.MTheme.windowBackground}"
-            android:fitsSystemWindows="true">
-
-            <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:id="@+id/iv_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="@dimen/dp_8"
-                android:background="?android:selectableItemBackground"
-                android:clickable="true"
-                android:padding="@dimen/dp_8"
-                android:src="@drawable/ic_arrow_back"
-                android:tint="@{viewModel.MTheme.textColorPrimary}"
-                app:layout_constraintBottom_toBottomOf="@id/search_view"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/search_view"
-                app:roundPercent="1"
-                tools:tint="?android:textColorSecondary" />
-
-            <androidx.appcompat.widget.SearchView
-                android:id="@+id/search_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:goIcon="@drawable/ic_search"
-                app:iconifiedByDefault="false"
-                app:layout_constrainedWidth="true"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/iv_back"
-                app:layout_constraintTop_toTopOf="parent"
-                app:queryHint="@string/search_hint"
-                app:searchIcon="@null" />
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_view">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/history_recyclerview"
+                android:id="@+id/searchRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_8"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_view" />
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/key_recyclerview"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dp_8"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/history_recyclerview" />
-
-            <FrameLayout
-                android:id="@+id/contentParent"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dp_8"
-                android:background="@{viewModel.MTheme.windowBackground}"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search_view">
-
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/refreshLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/searchRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-            </FrameLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/floatingButton"
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/floating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_large"
-            android:layout_marginBottom="@dimen/dp_16"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:background="@{viewModel.MTheme.colorAccent}"
             android:gravity="center"
             android:onFloatingClick="@{searchRecyclerview}"
+            android:padding="@dimen/dp_8"
+            android:setupFloating="@{searchRecyclerview}"
             android:src="@drawable/ic_top"
             android:tint="@{viewModel.MTheme.colorPrimary}"
-            android:visibility="gone"
-            app:fabSize="mini"
-            app:layout_anchor="@id/contentParent"
-            app:layout_anchorGravity="bottom|end"
-            app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
-            tools:tint="?colorPrimary"
-            tools:visibility="gone" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:roundPercent="1"
+            tools:background="?colorAccent"
+            tools:tint="?colorPrimary" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </layout>

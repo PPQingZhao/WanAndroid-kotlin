@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
@@ -24,21 +24,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/floating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end|bottom"
                 android:layout_marginEnd="@dimen/margin_large"
                 android:layout_marginBottom="@dimen/dp_16"
+                android:background="@{viewModel.MTheme.colorAccent}"
                 android:gravity="center"
                 android:onFloatingClick="@{pageListView}"
+                android:padding="@dimen/dp_8"
+                android:setupFloating="@{pageListView}"
                 android:src="@drawable/ic_top"
                 android:tint="@{viewModel.MTheme.colorPrimary}"
-                app:fabSize="mini"
-                app:layout_anchor="@id/pageListView"
-                app:layout_anchorGravity="bottom|end"
-                app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
+                app:roundPercent="1"
+                tools:background="?colorAccent"
                 tools:tint="?colorPrimary" />
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        </FrameLayout>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

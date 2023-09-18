@@ -142,14 +142,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         }
     }
 
-    private val mStateView by lazy {
-        StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
-            .setOnRetry {
-                mSearchAdapter.refresh()
-            }
-            .build()
-    }
-
     private fun initSearchRecyclerView() {
         mSearchAdapter.attachRecyclerView(mBinding.searchRecyclerview, LinearLayoutManager(context))
         mSearchAdapter.attachRefreshView(mBinding.refreshLayout)
@@ -215,7 +207,6 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
                 mBinding.searchView.clearFocus()
                 mViewModel.saveSearchHotKeyHistory(query)
-//                mStateView.showLoading()
                 viewLifecycleOwner.lifecycleScope.launch {
                     if (mSearchAdapter.itemCount > 0) {
                         mSearchAdapter.clear()
@@ -223,18 +214,14 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
                     kotlin.runCatching {
                         mViewModel.searchPageData(query).collectLatest {
 
-                            mBinding.contentParent.visibility = View.VISIBLE
-                            mBinding.contentParent.doOnNextLayout {
-                                mBinding.floatingButton.visibility = View.VISIBLE
-                            }
+                            mBinding.refreshLayout.visibility = View.VISIBLE
+
                             mBinding.searchRecyclerview.scrollToPosition(0)
 
                             withContext(Dispatchers.IO) {
                                 mSearchAdapter.setPagingData(this, it)
                             }
                         }
-                    }.getOrElse {
-//                        mStateView.showError(it)
                     }
                 }
                 return true
@@ -242,10 +229,11 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 if (newText?.isNotEmpty() != true) {
-                    mSearchAdapter.clear()
+                    if (mSearchAdapter.itemCount > 0) {
+                        mSearchAdapter.clear()
+                    }
                     mBinding.searchRecyclerview.doOnNextLayout {
-                        mBinding.contentParent.visibility = View.GONE
-                        mBinding.contentParent.visibility = View.GONE
+                        mBinding.refreshLayout.visibility = View.GONE
                     }
                 }
                 return true

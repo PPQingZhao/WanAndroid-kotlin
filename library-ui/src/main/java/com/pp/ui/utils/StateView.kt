@@ -180,8 +180,8 @@ class StateView {
         private var emptyView: View? = null
         private val contentView: View
 
-        private val mContext: Context
-        private val mLayoutInflater: LayoutInflater
+        protected val mContext: Context
+        protected val mLayoutInflater: LayoutInflater
 
         constructor(contentView: View) {
             this.contentView = contentView
@@ -244,7 +244,7 @@ class StateView {
             theme: AppDynamicTheme?,
             lifecycleOwner: LifecycleOwner,
         ) : super(contentView) {
-            val inflater = LayoutInflater.from(contentView.context)
+            val inflater = mLayoutInflater
 
             LayoutLoadingBinding.inflate(inflater).also {
                 it.theme = theme

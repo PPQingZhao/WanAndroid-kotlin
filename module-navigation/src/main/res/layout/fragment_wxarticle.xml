@@ -10,56 +10,53 @@
             type="com.pp.navigation.ui.WXArticleViewModel" />
     </data>
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/contentParent"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/authorRecyclerview"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3" />
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/authorRecyclerview">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/authorRecyclerview"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="3" />
+                android:id="@+id/wxarticleRecyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-            <FrameLayout
-                android:id="@+id/wxarticleParent"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="7">
 
-                <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-                    android:id="@+id/refreshLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/wxarticleRecyclerview"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
-                </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-            </FrameLayout>
-
-        </LinearLayout>
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/floating"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_large"
             android:layout_marginBottom="@dimen/dp_16"
+            android:background="@{viewModel.MTheme.colorAccent}"
             android:gravity="center"
             android:onFloatingClick="@{wxarticleRecyclerview}"
+            android:padding="@dimen/dp_8"
+            android:setupFloating="@{wxarticleRecyclerview}"
             android:src="@drawable/ic_top"
             android:tint="@{viewModel.MTheme.colorPrimary}"
-            app:fabSize="mini"
-            app:layout_anchor="@id/wxarticleParent"
-            app:layout_anchorGravity="bottom|end"
-            app:layout_behavior="com.pp.ui.utils.FloatingTopActionBehavior"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:roundPercent="1"
+            tools:background="?colorAccent"
             tools:tint="?colorPrimary" />
 
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

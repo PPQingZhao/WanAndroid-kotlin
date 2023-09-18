@@ -11,6 +11,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.textfield.TextInputLayout
+import com.pp.ui.utils.FloatingScrollerListener
 import com.pp.ui.utils.load
 
 object BindingAdapter {
@@ -79,11 +80,15 @@ object BindingAdapter {
 
     @JvmStatic
     @androidx.databinding.BindingAdapter("android:onFloatingClick")
-    fun loadWebUrl(floatButton: View, recyclerView: RecyclerView) {
+    fun onFloatingClick(floatButton: View, recyclerView: RecyclerView) {
         floatButton.setOnClickListener {
             recyclerView.scrollToPosition(0)
         }
     }
 
-
+    @JvmStatic
+    @androidx.databinding.BindingAdapter("android:setupFloating")
+    fun setupFloating(floatButton: View, recyclerView: RecyclerView) {
+        recyclerView.addOnScrollListener(FloatingScrollerListener(floatButton))
+    }
 }
