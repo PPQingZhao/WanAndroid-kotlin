@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.pp.ui.BR
+import com.pp.ui.viewModel.ItemDataViewModel
+import com.pp.ui.viewModel.OnItemListener
 
 abstract class ItemBinder<VB : ViewDataBinding, Data : Any> :
     RecyclerView.AdapterDataObserver() {
@@ -77,5 +79,23 @@ abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
         }
     }
 
+}
+
+inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : Any> createItemViewModelBinder(
+    crossinline getItemViewModel: (getItem: () -> Data?) -> VM?,
+    onItemListener: OnItemListener<Any>? = null,
+    noinline onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false },
+) = object : ItemViewModelBinder<VB, Data, VM>(onBindViewModel = onBindViewModel) {
+    override fun getItemViewModel(getItem: () -> Data?): VM? {
+        return getItemViewModel.invoke { getItem.invoke() }
+    }
+
+    override fun getItemViewBindingClazz(): Class<VB> {
+        return VB::class.java
+    }
+
+    override fun getItemDataClazz(): Class<Data> {
+        return Data::class.java
+    }
 
 }

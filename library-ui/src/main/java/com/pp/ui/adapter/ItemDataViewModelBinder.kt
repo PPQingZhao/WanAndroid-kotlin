@@ -12,20 +12,6 @@ class ItemDataViewModelBinder<VB : ViewDataBinding, Data : Any, VM : ItemDataVie
     private val onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
 ) : ItemViewModelBinder<VB, Data, VM>(onBindViewModel) {
 
-    companion object {
-        inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : ItemDataViewModel<Data>> createItemBinder(
-            crossinline getItemViewModel: (getItem: () -> Data?) -> VM,
-            onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
-            noinline onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false },
-        ) = ItemDataViewModelBinder<VB, Data, VM>(
-            getItemViewModel = { getItemViewModel.invoke(it) },
-            getViewDataBindingClazz = { VB::class.java },
-            getDataClazz = { Data::class.java },
-            onItemListener = onItemListener,
-            onBindViewModel = onBindViewModel
-        )
-    }
-
     override fun onBindViewModel(
         binding: VB,
         viewModel: VM?,
@@ -51,3 +37,15 @@ class ItemDataViewModelBinder<VB : ViewDataBinding, Data : Any, VM : ItemDataVie
         return getDataClazz.invoke()
     }
 }
+
+inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : ItemDataViewModel<Data>> createItemDataBinder(
+    crossinline getItemViewModel: (getItem: () -> Data?) -> VM,
+    onItemListener: OnItemListener<ItemDataViewModel<Data>>? = null,
+    noinline onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false },
+) = ItemDataViewModelBinder<VB, Data, VM>(
+    getItemViewModel = { getItemViewModel.invoke(it) },
+    getViewDataBindingClazz = { VB::class.java },
+    getDataClazz = { Data::class.java },
+    onItemListener = onItemListener,
+    onBindViewModel = onBindViewModel
+)

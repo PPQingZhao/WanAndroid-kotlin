@@ -14,5 +14,6 @@
     <string name="share_articles">分享文章</string>
     <string name="collect_articles">收藏文章</string>
     <string name="tool_list">工具列表</string>
+    <string name="theme_setting">主题设置</string>
 
 </resources>

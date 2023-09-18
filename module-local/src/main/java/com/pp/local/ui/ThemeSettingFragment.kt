@@ -3,15 +3,17 @@ package com.pp.local.ui
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
+import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.base.WanAndroidTheme
+import com.pp.common.util.materialSharedAxis
 import com.pp.local.databinding.FragmentThemeSettingBinding
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
 import com.pp.router_service.RouterPath
-import com.pp.ui.R
 import com.pp.ui.adapter.ItemViewModelBinder
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
+import com.pp.ui.adapter.createItemViewModelBinder
 
 @Route(path = RouterPath.Local.fragment_theme_setting)
 class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSettingViewModel>() {
@@ -25,31 +27,25 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
         return ThemeSettingViewModel::class.java
     }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enterTransition = materialSharedAxis(MaterialSharedAxis.X, true)
+        exitTransition = materialSharedAxis(MaterialSharedAxis.X, false)
         initRecyclerView()
     }
 
     private val mAdapter by lazy {
 
-        RecyclerViewBindingAdapter<ItemPreferenceThemeSettingViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
+        RecyclerViewBindingAdapter<ItemPreferenceThemeSettingViewModel>(getItemLayoutRes = { com.pp.local.R.layout.item_theme_setting })
             .apply {
-                object :
-                    ItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>() {
-                    override fun getItemViewModel(getItem: () -> ItemPreferenceThemeSettingViewModel?): ItemPreferenceThemeSettingViewModel {
-                        return getItem.invoke()!!
-                    }
 
-                    override fun getItemViewBindingClazz(): Class<ItemThemeSettingBinding> {
-                        return ItemThemeSettingBinding::class.java
-                    }
-
-                    override fun getItemDataClazz(): Class<ItemPreferenceThemeSettingViewModel> {
-                        return ItemPreferenceThemeSettingViewModel::class.java
-                    }
-
+                createItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>(
+                    getItemViewModel = {
+                        it.invoke()
+                    }).let {
+                        addItemViewModelBinder(it)
                 }
+
             }
     }
 

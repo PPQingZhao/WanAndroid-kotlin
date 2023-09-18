@@ -21,8 +21,8 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
         Log.e("TAG", coinInfo(userModel.user))
     }
 
-    fun nickName(nickName: String?): String {
-        return "用户名: $nickName"
+    fun nickName(user: User?): String {
+        return "用户名: ${user?.nickName}"
     }
 
     fun userId(user: User?): String {
