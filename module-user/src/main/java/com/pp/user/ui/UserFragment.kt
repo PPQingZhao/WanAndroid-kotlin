@@ -40,9 +40,7 @@ class UserFragment : ThemeFragment<FragmentUserBinding, UserViewModel>() {
             .apply {
 
                 createItemViewModelBinder<ItemAllowRightBinding, ItemAllowRightViewModel, ItemAllowRightViewModel>(
-                    getItemViewModel = {
-                        it.invoke()
-                    }
+                    getItemViewModel = { it }
                 ).also {
                     addItemViewModelBinder(it)
                 }

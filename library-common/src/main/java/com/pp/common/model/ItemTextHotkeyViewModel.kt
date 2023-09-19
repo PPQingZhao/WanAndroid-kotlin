@@ -4,7 +4,7 @@ import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
 
-class ItemTextHotkeyViewModel(hotKey: () -> HotKey?, theme: AppDynamicTheme) :
+class ItemTextHotkeyViewModel(hotKey:HotKey?, theme: AppDynamicTheme) :
     ItemTextViewModel<HotKey>(theme) {
 
     init {

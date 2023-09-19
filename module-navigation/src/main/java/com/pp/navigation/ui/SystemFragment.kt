@@ -135,7 +135,7 @@ class SystemFragment private constructor() :
 
                     mViewModel.systemList.collectLatest {
                         it.onEach { articleListBean ->
-                            val data = item.data?.invoke()
+                            val data = item.data
                             if (articleListBean.children?.contains(data) == true) {
                                 systemArticleList = articleListBean
                                 targetPosition = articleListBean.children!!.indexOf(data)
@@ -203,7 +203,7 @@ class SystemFragment private constructor() :
             item?.run {
                 lifecycleScope.launch {
                     mViewModel.articleList.collectLatest {
-                        val pos = it.indexOf(item.data?.invoke() as Any)
+                        val pos = it.indexOf(item.data as Any)
                         mBinding.articleListRecyclerview.scrollToPosition(pos)
                         cancel()
                     }

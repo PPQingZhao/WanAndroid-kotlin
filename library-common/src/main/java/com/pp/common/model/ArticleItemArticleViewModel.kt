@@ -20,7 +20,7 @@ import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemArticleViewModel
 import kotlinx.coroutines.launch
 
-open class ArticleItemArticleViewModel(articleBean: () -> ArticleBean?, theme: AppDynamicTheme) :
+open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
     ItemArticleViewModel<ArticleBean>(theme) {
 
     init {
@@ -47,16 +47,15 @@ open class ArticleItemArticleViewModel(articleBean: () -> ArticleBean?, theme: A
         }
     }
 
-
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
-            val data = data?.invoke() ?: return false
+            val data = data ?: return false
 
             val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
             val bundle = Bundle().also {
-                it.putString(WebViewFragment.WEB_VIEW_TITLE, data!!.title)
-                it.putString(WebViewFragment.WEB_VIEW_URL, data!!.link)
+                it.putString(WebViewFragment.WEB_VIEW_TITLE, data.title)
+                it.putString(WebViewFragment.WEB_VIEW_URL, data.link)
                 it.putString(
                     CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
                     shareElement.transitionName
@@ -74,7 +73,7 @@ open class ArticleItemArticleViewModel(articleBean: () -> ArticleBean?, theme: A
     }
 
     override fun onCollect(v: View) {
-        val articleBean = data?.invoke() ?: return
+        val articleBean = data ?: return
         ViewTreeLifecycleOwner.get(v)?.apply {
             lifecycleScope.launch {
                 if (isCollect.get()) {

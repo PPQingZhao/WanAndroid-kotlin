@@ -3,7 +3,7 @@ package com.pp.common.model
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.theme.AppDynamicTheme
 
-class ChapterItemArticleViewModel(articleBean: () -> ArticleBean?, theme: AppDynamicTheme) :
+class ChapterItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
     ArticleItemArticleViewModel(articleBean, theme) {
 
     override fun onUpdateData(data: ArticleBean?) {

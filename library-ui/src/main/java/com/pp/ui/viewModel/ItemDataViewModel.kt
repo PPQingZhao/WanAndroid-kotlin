@@ -7,14 +7,14 @@ import com.pp.theme.AppDynamicTheme
 open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
 
     val isSelected = ObservableBoolean()
-    var data: (() -> Data?)? = null
+    var data: Data? = null
         set(value) {
             if (field == value) {
                 return
             }
             field = value
 
-            onUpdateData(field?.invoke())
+            onUpdateData(field)
         }
 
     protected open fun onUpdateData(data: Data?) {

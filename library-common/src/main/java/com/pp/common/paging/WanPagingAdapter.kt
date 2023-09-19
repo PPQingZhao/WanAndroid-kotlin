@@ -28,10 +28,10 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
 
 fun itemTextArticleListBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
-    onBindViewModel: (binding: ItemTextBinding, viewModel: ItemArticleListTextViewModel?, position: Int, getItem: (position: Int) -> ArticleListBean?) -> Boolean = { _, _, _, _ -> false },
+    onBindViewModel: (binding: ItemTextBinding, viewModel: ItemArticleListTextViewModel?, position: Int, data: ArticleListBean?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemTextBinding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { getItem -> ItemArticleListTextViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )
@@ -39,22 +39,22 @@ fun itemTextArticleListBinder(
 fun itemText1ArticleListBinder(
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemText1Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { getItem -> ItemArticleListTextViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
 )
 
 
 fun itemText2ArticleBinder(
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemText2Binding, ArticleBean, ItemArticleTextViewModel>(
-    getItemViewModel = { getItem -> ItemArticleTextViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemArticleTextViewModel(data, theme) },
 )
 
 fun itemText3ArticleBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
-    onBindViewModel: (binding: ItemText3Binding, viewModel: ItemArticleListTextViewModel?, position: Int, getItem: (position: Int) -> ArticleListBean?) -> Boolean = { _, _, _, _ -> false },
+    onBindViewModel: (binding: ItemText3Binding, viewModel: ItemArticleListTextViewModel?, position: Int, data: ArticleListBean?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemText3Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { getItem -> ItemArticleListTextViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )
@@ -63,20 +63,20 @@ fun itemText2ArticleListBinder(
     onItemListener: OnItemListener<ItemDataViewModel<ArticleListBean>>? = null,
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemText2Binding, ArticleListBean, ItemArticleListTextViewModel>(
-    getItemViewModel = { getItem -> ItemArticleListTextViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemArticleListTextViewModel(data, theme) },
     onItemListener = onItemListener
 )
 
 fun itemWXArticleBinder(
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemWxArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { getItem -> ChapterItemArticleViewModel(getItem, theme) },
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
 )
 
 fun itemProjectArticleBinder(
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemProjectarticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { getItem -> ChapterItemArticleViewModel(getItem, theme) },
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
 )
 
 fun itemArticlePagingAdapter(theme: AppDynamicTheme) =
@@ -90,31 +90,39 @@ fun itemArticlePagingAdapter(theme: AppDynamicTheme) =
 
 fun itemText1HotkeyBinder(theme: AppDynamicTheme) =
     createItemDataBinder<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
-        getItemViewModel = { getItem -> ItemTextHotkeyViewModel(getItem, theme) },
+        getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
     )
 
 fun itemText2HotkeyBinder(
     onItemListener: OnItemListener<ItemDataViewModel<HotKey>>,
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
-    getItemViewModel = { getItem -> ItemTextHotkeyViewModel(getItem, theme) },
+    getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
     onItemListener = onItemListener,
 )
 
 fun itemArticleBinder(
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
-    getItemViewModel = { getItem -> ArticleItemArticleViewModel(getItem, theme) },
+    getItemViewModel = { data -> ArticleItemArticleViewModel(data, theme) },
+)
+
+fun itemArticleCollectedBinder(
+    theme: AppDynamicTheme,
+    onItemListener: OnItemListener<ItemDataViewModel<ArticleBean>>? = null,
+) = createItemDataBinder<ItemArticleCollectedBinding, ArticleBean, ChapterItemArticleViewModel>(
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
+    onItemListener = onItemListener
 )
 
 fun itemTextDeleteHotkeyBinder(
     onCreateViewModel: (model: ItemTextDeleteHotkeyViewModel) -> Unit = { _ -> },
     onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
-    onBindViewModel: (binding: ItemTextDeleteBinding, viewModel: ItemTextDeleteHotkeyViewModel?, position: Int, getItem: (pos: Int) -> HotKey?) -> Boolean = { _, _, _, _ -> false },
+    onBindViewModel: (binding: ItemTextDeleteBinding, viewModel: ItemTextDeleteHotkeyViewModel?, position: Int, data: HotKey?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemTextDeleteBinding, HotKey, ItemTextDeleteHotkeyViewModel>(
-    getItemViewModel = { getItem ->
-        ItemTextDeleteHotkeyViewModel(getItem, theme).apply(onCreateViewModel)
+    getItemViewModel = { data ->
+        ItemTextDeleteHotkeyViewModel(data, theme).apply(onCreateViewModel)
     },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
@@ -123,11 +131,11 @@ fun itemTextDeleteHotkeyBinder(
 fun itemDeleteBarHotkeyBinder(
     onCreateViewModel: (model: ItemDeleteBarHotkeyViewModel) -> Unit = { _ -> },
     onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
-    onBindViewModel: (binding: ItemDeleteBarBinding, viewModel: ItemDeleteBarHotkeyViewModel?, position: Int, getItem: (pos: Int) -> HotKey?) -> Boolean = { _, _, _, _ -> false },
+    onBindViewModel: (binding: ItemDeleteBarBinding, viewModel: ItemDeleteBarHotkeyViewModel?, position: Int, data: HotKey?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
 ) = createItemDataBinder<ItemDeleteBarBinding, HotKey, ItemDeleteBarHotkeyViewModel>(
-    getItemViewModel = { getItem ->
-        ItemDeleteBarHotkeyViewModel(getItem, theme).apply(onCreateViewModel)
+    getItemViewModel = { data ->
+        ItemDeleteBarHotkeyViewModel(data, theme).apply(onCreateViewModel)
     },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel

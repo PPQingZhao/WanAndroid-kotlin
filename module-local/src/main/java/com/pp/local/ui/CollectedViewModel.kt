@@ -11,11 +11,13 @@ import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.paging.WanPagingSource
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 class CollectedViewModel(app: Application) : ThemeViewModel(app) {
 
@@ -32,6 +34,10 @@ class CollectedViewModel(app: Application) : ThemeViewModel(app) {
             initialKey = 0,
             config = PagingConfig(15),
             pagingSourceFactory = { CollectedPageSources() }).flow.cachedIn(viewModelScope)
+    }
+
+    suspend fun unCollected(id: Int, originId: Long): ResponseBean<Any> {
+        return WanAndroidService.wanApi.unCollectedArticle2(id, originId)
     }
 
     private class CollectedPageSources() : WanPagingSource() {

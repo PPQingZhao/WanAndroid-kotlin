@@ -84,7 +84,7 @@ class BindingPagingDataAdapter<Data : Any>(
     override fun onBindViewHolder(holder: ViewDataBindingItemViewHolder, position: Int) {
         val itemData = getItem(position)
         getItemViewModelBinder(holder.bind, itemData).apply {
-            bindItem(holder.bind, position) { pos -> getItem(pos) }
+            bindItem(holder.bind, position, itemData)
         }
         holder.itemView.doOnAttach {
             ViewTreeLifecycleOwner.get(it)?.also { owner ->
@@ -117,6 +117,10 @@ class BindingPagingDataAdapter<Data : Any>(
         mScope!!.launch {
             submitData(mPagingData!!)
         }
+    }
+
+    fun remove(item: Data) {
+        filterItem { item != it }
     }
 
     fun filterItem(predicate: suspend (Data) -> Boolean) {

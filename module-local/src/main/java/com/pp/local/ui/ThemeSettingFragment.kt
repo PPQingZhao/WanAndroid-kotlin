@@ -40,11 +40,10 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
             .apply {
 
                 createItemViewModelBinder<ItemThemeSettingBinding, ItemPreferenceThemeSettingViewModel, ItemPreferenceThemeSettingViewModel>(
-                    getItemViewModel = {
-                        it.invoke()
-                    }).let {
+                    getItemViewModel = { it })
+                    .let {
                         addItemViewModelBinder(it)
-                }
+                    }
 
             }
     }

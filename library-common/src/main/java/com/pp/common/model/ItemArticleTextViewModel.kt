@@ -14,7 +14,7 @@ import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
 
-class ItemArticleTextViewModel(cidBean: () -> ArticleBean?, theme: AppDynamicTheme) :
+class ItemArticleTextViewModel(cidBean:ArticleBean?, theme: AppDynamicTheme) :
     ItemTextViewModel<ArticleBean>(theme) {
 
     init {
@@ -27,7 +27,7 @@ class ItemArticleTextViewModel(cidBean: () -> ArticleBean?, theme: AppDynamicThe
 
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
-        val data = data?.invoke() ?: return false
+        val data = data?: return false
 
         val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_text)
         shareElement.transitionName = "transitionName${data.id}"

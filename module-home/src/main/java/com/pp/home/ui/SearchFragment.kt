@@ -161,7 +161,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private val mHotkeyAdapter by lazy {
         val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
             override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
-                item.data?.invoke()?.name.let {
+                item.data?.name.let {
                     mBinding.searchView.setQuery(it, true)
                 }
                 return true

@@ -53,7 +53,7 @@ class NavigationRealFragment private constructor() :
             item?.run {
                 lifecycleScope.launch {
                     mViewModel.articles.collectLatest {
-                        val pos = it.indexOf(item.data?.invoke() as Any)
+                        val pos = it.indexOf(item.data as Any)
                         mBinding.articleRecyclerview.scrollToPosition(pos)
                         cancel()
                     }

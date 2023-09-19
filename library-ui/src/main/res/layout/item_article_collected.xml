@@ -131,20 +131,19 @@
                 tools:text="问答/官方"
                 tools:textColor="?android:textColorSecondary" />
 
-            <androidx.constraintlayout.utils.widget.ImageFilterView
+            <TextView
                 android:id="@+id/tv_uncollected"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="@dimen/dp_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="?android:selectableItemBackground"
-                android:onClick="@{viewModel.onCollect}"
-                android:src="@{viewModel.isCollect ? @drawable/ic_favorite_on:@drawable/ic_favorite}"
-                app:layout_constraintDimensionRatio="1:1"
+                android:onClick="@{viewModel::onItemClick}"
+                android:padding="@dimen/dp_4"
+                android:text="@string/uncollected"
+                android:textColor="@{viewModel.theme.textColorPrimary}"
+                android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
-                app:layout_constraintWidth_percent="0.085"
-                app:roundPercent="1"
-                tools:src="@drawable/ic_favorite_on" />
+                tools:textColor="?android:textColorPrimary" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

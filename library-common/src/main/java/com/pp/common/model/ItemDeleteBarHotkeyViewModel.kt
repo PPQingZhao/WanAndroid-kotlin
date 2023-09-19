@@ -5,7 +5,7 @@ import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemDeleteViewModel
 
-class ItemDeleteBarHotkeyViewModel(hotKey: () -> HotKey?, theme: AppDynamicTheme) :
+class ItemDeleteBarHotkeyViewModel(hotKey:HotKey?, theme: AppDynamicTheme) :
     ItemDeleteViewModel<HotKey>(theme) {
 
     init {

@@ -1,45 +1,42 @@
 package com.pp.ui.adapter
 
-import android.util.Log
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.pp.ui.BR
-import com.pp.ui.viewModel.ItemDataViewModel
-import com.pp.ui.viewModel.OnItemListener
 
 abstract class ItemBinder<VB : ViewDataBinding, Data : Any> :
     RecyclerView.AdapterDataObserver() {
 
     abstract fun getItemViewBindingClazz(): Class<VB>
     abstract fun getItemDataClazz(): Class<Data>
-    abstract fun bindItem(binding: VB, position: Int, getItem: (position: Int) -> Data?)
+    abstract fun bindItem(binding: VB, position: Int, data: Data?)
 
 }
 
 abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
-    (private val onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false }) :
+    (private val onBindViewModel: (binding: VB, viewModel: VM?, position: Int, data: Data?) -> Boolean = { _, _, _, _ -> false }) :
     ItemBinder<VB, Data>() {
 
     private val mItemModelCaches by lazy { mutableMapOf<Int, VM?>() }
-    abstract fun getItemViewModel(getItem: () -> Data?): VM?
+    abstract fun getItemViewModel(data: Data?): VM?
 
-    override fun bindItem(binding: VB, position: Int, getItem: (position: Int) -> Data?) {
+    override fun bindItem(binding: VB, position: Int, data: Data?) {
         var itemViewModel = mItemModelCaches[position]
         if (null == itemViewModel) {
-            itemViewModel = getItemViewModel { getItem.invoke(position) }
+            itemViewModel = getItemViewModel(data)
             mItemModelCaches[position] = itemViewModel
         }
-        onBindViewModel(binding, itemViewModel, position, getItem)
+        onBindViewModel(binding, itemViewModel, position, data)
     }
 
     open fun onBindViewModel(
         binding: VB,
         viewModel: VM?,
         position: Int,
-        getItem: (position: Int) -> Data?,
+        data: Data?,
     ) {
 
-        if (onBindViewModel.invoke(binding, viewModel, position, getItem)) {
+        if (onBindViewModel.invoke(binding, viewModel, position, data)) {
             return
         }
 
@@ -82,12 +79,11 @@ abstract class ItemViewModelBinder<VB : ViewDataBinding, Data : Any, VM : Any>
 }
 
 inline fun <reified VB : ViewDataBinding, reified Data : Any, VM : Any> createItemViewModelBinder(
-    crossinline getItemViewModel: (getItem: () -> Data?) -> VM?,
-    onItemListener: OnItemListener<Any>? = null,
-    noinline onBindViewModel: (binding: VB, viewModel: VM?, position: Int, getItem: (position: Int) -> Data?) -> Boolean = { _, _, _, _ -> false },
+    crossinline getItemViewModel: (data: Data?) -> VM?,
+    noinline onBindViewModel: (binding: VB, viewModel: VM?, position: Int, data: Data?) -> Boolean = { _, _, _, _ -> false },
 ) = object : ItemViewModelBinder<VB, Data, VM>(onBindViewModel = onBindViewModel) {
-    override fun getItemViewModel(getItem: () -> Data?): VM? {
-        return getItemViewModel.invoke { getItem.invoke() }
+    override fun getItemViewModel(data: Data?): VM? {
+        return getItemViewModel.invoke(data)
     }
 
     override fun getItemViewBindingClazz(): Class<VB> {

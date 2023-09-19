@@ -78,6 +78,7 @@ data class ArticleBean(
     val userId: Int = 0,
     val visible: Int = 0,
     val zan: Int = 0,
+    val originId: Long? = -1,
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readByte() != 0.toByte(),
@@ -114,7 +115,8 @@ data class ArticleBean(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readInt()
+        parcel.readInt(),
+        parcel.readValue(Long::class.java.classLoader) as? Long
     ) {
     }
 
@@ -153,6 +155,7 @@ data class ArticleBean(
         parcel.writeInt(userId)
         parcel.writeInt(visible)
         parcel.writeInt(zan)
+        parcel.writeValue(originId)
     }
 
     override fun describeContents(): Int {
@@ -168,4 +171,5 @@ data class ArticleBean(
             return arrayOfNulls(size)
         }
     }
+
 }

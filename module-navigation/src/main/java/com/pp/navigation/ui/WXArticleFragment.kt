@@ -146,7 +146,7 @@ class WXArticleFragment private constructor() :
                 }
                 mBinding.wxarticleRecyclerview.setPagingAdapter(
                     lifecycleScope,
-                    mViewModel.getWXArticle(this.data?.invoke()?.id ?: 0),
+                    mViewModel.getWXArticle(this.data?.id ?: 0),
                     pagingDataAdapter,
                     layoutManager = LinearLayoutManager(requireContext()),
                     refreshLayout = mBinding.refreshLayout

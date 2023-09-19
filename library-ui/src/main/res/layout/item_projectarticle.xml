@@ -106,14 +106,14 @@
                 android:textSize="13sp"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@id/tv_niceDate"
-                app:layout_constraintEnd_toStartOf="@id/iv_favorite"
+                app:layout_constraintEnd_toStartOf="@id/tv_uncollected"
                 app:layout_constraintHorizontal_bias="0"
                 app:layout_constraintStart_toStartOf="@id/tv_niceDate"
                 tools:text="用户111edstewtwtwtwtwdsadsgdsgfdgdgfd111"
                 tools:textColor="?android:textColorSecondary" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:id="@+id/iv_favorite"
+                android:id="@+id/tv_uncollected"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_4"

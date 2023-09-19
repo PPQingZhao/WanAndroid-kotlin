@@ -156,7 +156,7 @@
             </com.google.android.material.card.MaterialCardView>
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:id="@+id/iv_favorite"
+                android:id="@+id/tv_uncollected"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginTop="@dimen/dp_4"
