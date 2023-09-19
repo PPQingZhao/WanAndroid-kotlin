@@ -13,6 +13,7 @@ import com.pp.ui.adapter.createItemDataBinder
 import com.pp.ui.databinding.*
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
+import kotlinx.coroutines.CoroutineScope
 
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
@@ -67,22 +68,23 @@ fun itemText2ArticleListBinder(
 )
 
 fun itemWXArticleBinder(
-    theme: AppDynamicTheme,
+    theme: AppDynamicTheme, scope: CoroutineScope,
 ) = createItemDataBinder<ItemWxArticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme, scope) },
 )
 
 fun itemProjectArticleBinder(
     theme: AppDynamicTheme,
+    scope: CoroutineScope,
 ) = createItemDataBinder<ItemProjectarticleBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme, scope) },
 )
 
-fun itemArticlePagingAdapter(theme: AppDynamicTheme) =
+fun itemArticlePagingAdapter(theme: AppDynamicTheme, scope: CoroutineScope) =
     BindingPagingDataAdapter<ArticleBean>({
         R.layout.item_article
     }, diffCallback = articleDifferCallback).apply {
-        itemArticleBinder(theme).also {
+        itemArticleBinder(theme, scope).also {
             addItemViewModelBinder(it)
         }
     }
@@ -102,15 +104,17 @@ fun itemText2HotkeyBinder(
 
 fun itemArticleBinder(
     theme: AppDynamicTheme,
+    scope: CoroutineScope,
 ) = createItemDataBinder<ItemArticleBinding, ArticleBean, ArticleItemArticleViewModel>(
-    getItemViewModel = { data -> ArticleItemArticleViewModel(data, theme) },
+    getItemViewModel = { data -> ArticleItemArticleViewModel(data, theme, scope) },
 )
 
 fun itemArticleCollectedBinder(
     theme: AppDynamicTheme,
+    scope: CoroutineScope,
     onItemListener: OnItemListener<ItemDataViewModel<ArticleBean>>? = null,
 ) = createItemDataBinder<ItemArticleCollectedBinding, ArticleBean, ChapterItemArticleViewModel>(
-    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme) },
+    getItemViewModel = { data -> ChapterItemArticleViewModel(data, theme, scope) },
     onItemListener = onItemListener
 )
 

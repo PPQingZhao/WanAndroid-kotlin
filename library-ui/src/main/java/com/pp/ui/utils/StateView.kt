@@ -24,7 +24,7 @@ class StateView {
 
     private var curViewState: ViewState? = null
     private val indexOfContentView: Int
-    private val DEBUG = true
+    private val DEBUG = false
 
     private constructor(contentView: View, loadingView: View?, errorView: View?, emptyView: View?) {
         this.mContentView = contentView

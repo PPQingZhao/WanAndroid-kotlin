@@ -4,7 +4,9 @@ import android.view.View
 import androidx.databinding.ObservableBoolean
 import com.pp.theme.AppDynamicTheme
 
-open class ItemDataViewModel<Data : Any>(val theme: AppDynamicTheme) {
+open class ItemDataViewModel<Data : Any>(
+    val theme: AppDynamicTheme,
+) {
 
     val isSelected = ObservableBoolean()
     var data: Data? = null

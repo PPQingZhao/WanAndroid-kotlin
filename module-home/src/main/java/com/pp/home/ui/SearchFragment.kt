@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.doOnNextLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.observe
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alibaba.android.arouter.facade.annotation.Route
@@ -128,7 +129,7 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
             { com.pp.ui.R.layout.item_article },
             diffCallback = articleDifferCallback
         ).apply {
-            itemArticleBinder(mViewModel.mTheme).also {
+            itemArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
                 addItemViewModelBinder(it)
             }
 

@@ -4,9 +4,13 @@ import android.text.Spanned
 import android.view.View
 import androidx.databinding.ObservableBoolean
 import androidx.databinding.ObservableField
+import androidx.lifecycle.LifecycleOwner
 import com.pp.theme.AppDynamicTheme
+import kotlinx.coroutines.CoroutineScope
 
-open class ItemArticleViewModel<Data : Any>(theme: AppDynamicTheme) :
+open class ItemArticleViewModel<Data : Any>(
+    theme: AppDynamicTheme,
+) :
     ItemDataViewModel<Data>(theme) {
     val title = ObservableField<Spanned>()
     val author = ObservableField<String>()

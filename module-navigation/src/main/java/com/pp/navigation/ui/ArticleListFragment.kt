@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
@@ -59,7 +60,7 @@ class ArticleListFragment private constructor() :
             { R.layout.item_wx_article },
             diffCallback = articleDifferCallback
         ).apply {
-            itemWXArticleBinder(mViewModel.mTheme).also {
+            itemWXArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
                 addItemViewModelBinder(it)
             }
         }

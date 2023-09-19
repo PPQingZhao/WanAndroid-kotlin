@@ -58,6 +58,22 @@ fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.a
     ) else this
 }
 
+fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.attachRecyclerView(
+    recyclerView: RecyclerView,
+    getStateViewType: (loadState: LoadState) -> Int = { 0 },
+    withLoadMore: Boolean = true,
+    onErrorListener: View.OnClickListener? = View.OnClickListener {
+        // 默认重试
+        retry()
+    },
+) {
+    recyclerView.adapter = if (withLoadMore) withLoadStateFooter(
+        DefaultLoadMoreStateAdapter(
+            getStateViewType = getStateViewType, onErrorListener = onErrorListener
+        )
+    ) else this
+}
+
 fun <VH : RecyclerView.ViewHolder, Adapter : PagingDataAdapter<*, VH>> Adapter.attachRefreshView(
     refreshView: SwipeRefreshLayout,
 ) {

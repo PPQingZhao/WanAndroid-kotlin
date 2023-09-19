@@ -132,7 +132,7 @@ class RealHomeFragment :
     }
 
     private val mArticleAdapter by lazy {
-        itemArticlePagingAdapter(mViewModel.mTheme)
+        itemArticlePagingAdapter(mViewModel.mTheme, mViewModel.viewModelScope)
     }
 
     private fun initPagingList() {

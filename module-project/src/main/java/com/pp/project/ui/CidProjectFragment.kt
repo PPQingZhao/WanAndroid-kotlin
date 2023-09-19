@@ -3,6 +3,7 @@ package com.pp.project.ui
 import android.os.Bundle
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
@@ -49,11 +50,12 @@ class CidProjectFragment private constructor() :
     }
 
     private suspend fun initPagingList() {
+        viewLifecycleOwner.lifecycleScope
         val adapter = BindingPagingDataAdapter<ArticleBean>(
             { R.layout.item_projectarticle },
             diffCallback = articleDifferCallback
         ).apply {
-            itemProjectArticleBinder(mViewModel.mTheme).also {
+            itemProjectArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
                 addItemViewModelBinder(it)
             }
         }

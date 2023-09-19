@@ -10,8 +10,12 @@ import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.textfield.TextInputLayout
+import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.utils.FloatingScrollerListener
+import com.pp.ui.utils.attachRecyclerView
+import com.pp.ui.utils.attachRefreshView
 import com.pp.ui.utils.load
 
 object BindingAdapter {
@@ -90,5 +94,27 @@ object BindingAdapter {
     @androidx.databinding.BindingAdapter("android:setupFloating")
     fun setupFloating(floatButton: View, recyclerView: RecyclerView) {
         recyclerView.addOnScrollListener(FloatingScrollerListener(floatButton))
+    }
+
+    @JvmStatic
+    @androidx.databinding.BindingAdapter(
+        value = ["android:pagingAdapter", "android:withLoadMore"],
+        requireAll = true
+    )
+    fun setPagingAdapter(
+        recyclerView: RecyclerView,
+        pagingDataAdapter: BindingPagingDataAdapter<*>,
+        withLoadMore: Boolean,
+    ) {
+        pagingDataAdapter.attachRecyclerView(recyclerView, withLoadMore = withLoadMore)
+    }
+
+    @JvmStatic
+    @androidx.databinding.BindingAdapter("android:attachPagingAdapter")
+    fun attachPagingAdapter(
+        refreshLayout: SwipeRefreshLayout,
+        pagingDataAdapter: BindingPagingDataAdapter<*>,
+    ) {
+        pagingDataAdapter.attachRefreshView(refreshLayout)
     }
 }

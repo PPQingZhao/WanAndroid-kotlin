@@ -2,25 +2,82 @@ package com.pp.local.ui
 
 import android.app.Application
 import android.view.View
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.pp.base.ThemeViewModel
-import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.PageBean
-import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.WanPagingSource
+import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.itemArticleCollectedBinder
+import com.pp.common.repository.CollectedRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
-import kotlinx.coroutines.flow.Flow
+import com.pp.ui.R
+import com.pp.ui.adapter.BindingPagingDataAdapter
+import com.pp.ui.viewModel.ItemDataViewModel
+import com.pp.ui.viewModel.OnItemListener
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class CollectedViewModel(app: Application) : ThemeViewModel(app) {
 
+    val mAdapter by lazy {
+        BindingPagingDataAdapter<ArticleBean>({
+            R.layout.item_article_collected
+        }, diffCallback = articleDifferCallback).apply {
+            itemArticleCollectedBinder(
+                theme = mTheme,
+                scope = viewModelScope,
+                onItemListener = object : OnItemListener<ItemDataViewModel<ArticleBean>> {
+                    override fun onItemClick(
+                        view: View,
+                        item: ItemDataViewModel<ArticleBean>,
+                    ): Boolean {
+                        if (R.id.tv_uncollected != view.id) return false
+                        val articleBean = item.data ?: return false
+
+                        viewModelScope.launch(Dispatchers.IO) {
+                            // 取消收藏
+                            // item刷新 -- 通过监听 CollectedRepository.getCollectedPageData().collectLatest {} 处理
+                            CollectedRepository.unCollected2(articleBean)
+                        }
+                        return true
+                    }
+                }
+            ).also {
+                addItemViewModelBinder(it)
+            }
+        }
+    }
+
+    override fun onCreate(owner: LifecycleOwner) {
+        viewModelScope.launch {
+            // 监听 收藏/取消收藏
+            // 在收藏页面只能取消收藏,所以直接删除已被取消收藏的item
+            CollectedRepository.collected.collectLatest {
+                mAdapter.remove(it)
+            }
+        }
+    }
+
+    // 获取收藏列表
+    private fun loadCollectedList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            CollectedRepository.getCollectedPageData().cachedIn(viewModelScope).collectLatest {
+                mAdapter.setPagingData(this, it)
+            }
+        }
+    }
+
+    override fun onFirstResume(owner: LifecycleOwner) {
+        loadCollectedList()
+    }
+
+    /**
+     * 返回按钮点击事件
+     */
     fun onBack(view: View) {
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
             view
@@ -28,28 +85,4 @@ class CollectedViewModel(app: Application) : ThemeViewModel(app) {
             popBackStack(RouterPath.Local.fragment_collected)
         }
     }
-
-    fun getCollectedPageData(): Flow<PagingData<ArticleBean>> {
-        return Pager(
-            initialKey = 0,
-            config = PagingConfig(15),
-            pagingSourceFactory = { CollectedPageSources() }).flow.cachedIn(viewModelScope)
-    }
-
-    suspend fun unCollected(id: Int, originId: Long): ResponseBean<Any> {
-        return WanAndroidService.wanApi.unCollectedArticle2(id, originId)
-    }
-
-    private class CollectedPageSources() : WanPagingSource() {
-
-        override suspend fun getPageData(page: Int): PageBean? {
-            return WanAndroidService.wanApi.getCollectedArticles(page).data
-        }
-
-        override fun createNextKey(response: PageBean?): Int? {
-            return super.createNextKey(response)?.plus(1)
-        }
-
-    }
-
 }

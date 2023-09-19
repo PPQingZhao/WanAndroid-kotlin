@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
@@ -114,9 +115,10 @@ class WXArticleFragment private constructor() :
             { R.layout.item_wx_article },
             diffCallback = articleDifferCallback
         ).apply {
-            com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme).also {
-                addItemViewModelBinder(it)
-            }
+            com.pp.common.paging.itemWXArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope)
+                .also {
+                    addItemViewModelBinder(it)
+                }
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
                 .setOnRetry {
                     refresh()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.paging.itemArticlePagingAdapter
@@ -26,7 +27,7 @@ class SquareFragment : ThemeFragment<FragmentHomeChildSquareBinding, SquareViewM
     }
 
     private val mArticleAdapter by lazy {
-        itemArticlePagingAdapter(mViewModel.mTheme)
+        itemArticlePagingAdapter(mViewModel.mTheme, mViewModel.viewModelScope)
     }
 
     private fun initStateView() {

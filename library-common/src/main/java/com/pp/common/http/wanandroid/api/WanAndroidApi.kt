@@ -42,7 +42,7 @@ interface WanAndroidApi {
     ): ResponseBean<Any>
 
     /**
-     * 列表中使用
+     * 文章列表中使用
      * https://www.wanandroid.com/lg/uncollect_originId/27241/json
      * 取消收藏
      */
@@ -56,8 +56,8 @@ interface WanAndroidApi {
      */
     @FormUrlEncoded
     @POST("lg/uncollect/{id}/json")
-    suspend fun unCollectedArticle2(
+    suspend fun unCollectedArticle(
         @Path(value = "id") id: Int,
-        @Field(value = "originId") originId: Long = -1,
+        @Field(value = "originId") originId: Int = -1,
     ): ResponseBean<Any>
 }

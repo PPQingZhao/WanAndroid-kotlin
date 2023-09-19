@@ -10,6 +10,7 @@ import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
+import com.pp.common.repository.CollectedRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.getAuthor
@@ -18,12 +19,28 @@ import com.pp.common.util.getTags
 import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemArticleViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDynamicTheme) :
+open class ArticleItemArticleViewModel(
+    articleBean: ArticleBean?,
+    theme: AppDynamicTheme,
+    scope: CoroutineScope,
+) :
     ItemArticleViewModel<ArticleBean>(theme) {
 
     init {
+        scope.launch {
+            CollectedRepository.collected.collectLatest {
+                // 更新收藏状态
+                // 收藏页面取消收藏时,更新对应 其它页面item
+                if (it.originId == data?.id) {
+                    data?.collect = it.collect
+                    isCollect.set(it.collect)
+                }
+            }
+        }
         data = articleBean
     }
 
@@ -77,9 +94,9 @@ open class ArticleItemArticleViewModel(articleBean: ArticleBean?, theme: AppDyna
         ViewTreeLifecycleOwner.get(v)?.apply {
             lifecycleScope.launch {
                 if (isCollect.get()) {
-                    WanAndroidService.wanApi.unCollectedArticle(articleBean.id)
+                    CollectedRepository.unCollected(articleBean)
                 } else {
-                    WanAndroidService.wanApi.collectArticle(articleBean.id)
+                    CollectedRepository.collected(articleBean)
                 }.let {
                     if (it.errorCode != WanAndroidService.ErrorCode.SUCCESS) {
                         return@launch
