@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.collectedListener
 import com.pp.common.paging.itemWXArticleBinder
 import com.pp.navigation.databinding.FragmentArticleListBinding
 import com.pp.ui.R
@@ -63,6 +64,8 @@ class ArticleListFragment private constructor() :
             itemWXArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
                 addItemViewModelBinder(it)
             }
+
+            collectedListener(viewLifecycleOwner.lifecycleScope)
         }
     }
 

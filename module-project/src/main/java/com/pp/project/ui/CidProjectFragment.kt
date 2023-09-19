@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.collectedListener
 import com.pp.common.paging.itemProjectArticleBinder
 import com.pp.project.databinding.FragmentCidprojectBinding
 import com.pp.ui.R
@@ -58,6 +59,8 @@ class CidProjectFragment private constructor() :
             itemProjectArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
                 addItemViewModelBinder(it)
             }
+
+            collectedListener(viewLifecycleOwner.lifecycleScope)
         }
 
 

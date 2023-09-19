@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import cn.leo.paging_ktx.SimplePagingAdapter
 import com.pp.common.paging.onePager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
@@ -126,6 +127,17 @@ class BindingPagingDataAdapter<Data : Any>(
     fun filterItem(predicate: suspend (Data) -> Boolean) {
         mPagingData = mPagingData!!.filter(predicate)
         submitPageData()
+    }
+
+    fun update(notify: Boolean = false, block: (data: Data?) -> Boolean) {
+        for (pos in 0 until itemCount) {
+            if (block.invoke(getItem(pos))) {
+                if (notify) {
+                    notifyItemChanged(pos)
+                }
+                break
+            }
+        }
     }
 
     fun clear() {

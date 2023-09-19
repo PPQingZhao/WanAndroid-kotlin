@@ -11,6 +11,7 @@ import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
+import com.pp.common.paging.collectedListener
 import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel

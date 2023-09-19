@@ -8,7 +8,6 @@ import com.pp.ui.viewModel.ItemDataViewModel
 
 class ItemSelectedModel<Data : Any, Item : ItemDataViewModel<Data>> {
 
-
     fun selectedItem(item: Item?) {
         if (_SeletedItemModel.value == item) {
             return

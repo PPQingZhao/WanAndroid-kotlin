@@ -12,6 +12,7 @@ import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.articleDifferCallback
+import com.pp.common.paging.collectedListener
 import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.R
@@ -119,6 +120,9 @@ class WXArticleFragment private constructor() :
                 .also {
                     addItemViewModelBinder(it)
                 }
+
+            collectedListener(viewLifecycleOwner.lifecycleScope)
+
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
                 .setOnRetry {
                     refresh()

@@ -1,11 +1,13 @@
 package com.pp.common.paging
 
 import android.annotation.SuppressLint
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
 import com.pp.common.http.wanandroid.bean.HotKey
 import com.pp.common.model.*
+import com.pp.common.repository.CollectedRepository
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -14,6 +16,7 @@ import com.pp.ui.databinding.*
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
@@ -24,6 +27,17 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     override fun areContentsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
         return oldItem == newItem
     }
+}
+
+val hotKeyDifferCallback = object : DiffUtil.ItemCallback<HotKey>() {
+    override fun areItemsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+        return oldItem == newItem
+    }
+
 }
 
 fun itemTextArticleListBinder(
@@ -87,6 +101,8 @@ fun itemArticlePagingAdapter(theme: AppDynamicTheme, scope: CoroutineScope) =
         itemArticleBinder(theme, scope).also {
             addItemViewModelBinder(it)
         }
+
+        collectedListener(scope)
     }
 
 fun itemText1HotkeyBinder(theme: AppDynamicTheme) =
@@ -143,3 +159,21 @@ fun itemDeleteBarHotkeyBinder(
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
 )
+
+/**
+ * 收藏监听,刷新adapter对应 item data
+ */
+fun BindingPagingDataAdapter<ArticleBean>.collectedListener(scope: CoroutineScope) {
+    scope.launch {
+        CollectedRepository.collected.collect { collectBean ->
+            update {
+                if (it?.id == collectBean.originId || it?.id == collectBean.id) {
+                    it?.collect = collectBean.collect
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+    }
+}
