@@ -14,7 +14,6 @@ import com.pp.ui.databinding.*
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 
-
 val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     override fun areItemsTheSame(oldItem: ArticleBean, newItem: ArticleBean): Boolean {
         return oldItem.id == newItem.id
