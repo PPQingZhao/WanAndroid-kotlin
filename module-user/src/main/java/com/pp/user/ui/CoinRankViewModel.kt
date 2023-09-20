@@ -2,6 +2,7 @@ package com.pp.user.ui
 
 import android.app.Application
 import android.view.View
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import com.pp.common.paging.itemCoinRankBinder
 import com.pp.common.repository.CoinRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
+import com.pp.module_user.repositoy.UserRepository
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -33,11 +35,24 @@ class CoinRankViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
+    val avatar = ObservableField<String>()
+    val nickname = ObservableField<String>()
+    val coinCount = ObservableField<String>()
+    val rank = ObservableField<String>()
     override fun onFirstResume(owner: LifecycleOwner) {
         viewModelScope.launch {
             async {
                 CoinRepository.getCoinRank().collectLatest {
                     mAdapter.setPagingData(this@launch, it)
+                }
+            }
+
+            async {
+                UserRepository.getUserInfo().apply {
+                    avatar.set(data?.userInfo?.icon)
+                    nickname.set(data?.userInfo?.nickname)
+                    coinCount.set(data?.coinInfo?.coinCount.toString())
+                    rank.set(data?.coinInfo?.rank)
                 }
             }
         }
@@ -52,6 +67,14 @@ class CoinRankViewModel(app: Application) : ThemeViewModel(app) {
         )?.run {
             popBackStack(RouterPath.User.fragment_coin_range)
         }
+    }
+
+    fun coinCount(coin: String?): String {
+        return getApplication<Application>().getString(R.string.coin_value).format(coin ?: "0")
+    }
+
+    fun rank(rank: String?): String {
+        return getApplication<Application>().getString(R.string.rank_value).format(rank ?: "0")
     }
 
 }

@@ -12,6 +12,7 @@ import com.pp.database.user.User
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.user.LoginBean
+import com.pp.common.http.wanandroid.bean.user.UserInfoBean
 import com.pp.user.repositoy.setInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -58,6 +59,10 @@ object UserRepository {
         return result
     }
 
+    suspend fun getUserInfo(): ResponseBean<UserInfoBean> {
+        return userApi.getUserInfo()
+    }
+
     /**
      * 用户名&密码 登录
      */
@@ -79,7 +84,7 @@ object UserRepository {
             }
 
             // 获取uer info
-            val userInfoResponse = userApi.getUserInfo()
+            val userInfoResponse = getUserInfo()
 
             if (userInfoResponse.errorCode == WanAndroidService.ErrorCode.SUCCESS) {
                 userInfoResponse.data?.apply {

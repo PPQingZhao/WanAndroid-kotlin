@@ -50,8 +50,9 @@
             android:text="@string/coin_rank"
             android:textColor="@{viewModel.MTheme.textColorPrimary}"
             android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@id/fl_title_bar"
-            app:layout_constraintStart_toEndOf="@id/iv_back"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/fl_title_bar"
             tools:textColor="?android:textColorPrimary" />
 
 
@@ -81,6 +82,63 @@
                     tools:listitem="@layout/item_coin_rank" />
             </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
         </FrameLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
+            android:layout_marginBottom="@dimen/dp_4"
+            android:errorDrawable="@{@drawable/ic_avatar}"
+            android:imageUrl="@{viewModel.avatar}"
+            app:roundPercent="1"
+            tools:src="@drawable/ic_avatar" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.nickname}"
+            android:textColor="@{viewModel.MTheme.textColor}"
+            android:textSize="13sp"
+            app:layout_constrainedWidth="true"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
+            tools:text="pptest"
+            tools:textColor="?android:textColor" />
+
+        <TextView
+            android:id="@+id/tv_coin_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="@{viewModel.coinCount(viewModel.coinCount)}"
+            android:textColor="@{viewModel.MTheme.textColorSecondary}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toBottomOf="@id/tv_username"
+            tools:text="积分: 1006"
+            tools:textColor="?android:textColorSecondary" />
+
+        <TextView
+            android:id="@+id/tv_coin_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="@{viewModel.rank(viewModel.rank)}"
+            android:textColor="@{viewModel.MTheme.textColorSecondary}"
+            android:textSize="12sp"
+            app:layout_constraintStart_toEndOf="@id/tv_coin_count"
+            app:layout_constraintTop_toBottomOf="@id/tv_username"
+            tools:text="排名: 122"
+            tools:textColor="?android:textColorSecondary" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/floating"

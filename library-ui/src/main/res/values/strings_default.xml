@@ -33,4 +33,6 @@
     <string name="theme_setting">主题设置</string>
     <string name="uncollected">取消收藏</string>
     <string name="coin_rank">积分排行榜</string>
+    <string name="coin_value">积分: %s</string>
+    <string name="rank_value">排名: %s</string>
 </resources>
