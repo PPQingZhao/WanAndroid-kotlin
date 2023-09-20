@@ -1,4 +1,4 @@
-package com.pp.local.ui
+package com.pp.user.ui
 
 import android.app.Application
 import android.view.View
@@ -82,7 +82,7 @@ class CollectedViewModel(app: Application) : ThemeViewModel(app) {
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
             view
         )?.run {
-            popBackStack(RouterPath.Local.fragment_collected)
+            popBackStack(RouterPath.User.fragment_collected)
         }
     }
 }

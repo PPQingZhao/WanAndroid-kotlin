@@ -1,6 +1,6 @@
 package com.pp.common.http.wanandroid.bean
 
-data class HotKey(
+data class HotKeyBean(
     val id: Int = -1,
     val link: String = "",
     val name: String = "",

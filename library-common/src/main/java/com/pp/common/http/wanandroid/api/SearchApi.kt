@@ -1,7 +1,7 @@
 package com.pp.common.http.wanandroid.api
 
-import com.pp.common.http.wanandroid.bean.HotKey
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.HotKeyBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -21,12 +21,12 @@ interface SearchApi {
     suspend fun queryArticle(
         @Path("page") @androidx.annotation.IntRange(from = 0, to = 40) page: Int = 0,
         @Field("k") key: String?,
-    ): ResponseBean<PageBean>
+    ): ResponseBean<ArticlePageBean>
 
     /**
      * https://www.wanandroid.com/hotkey/json
      * 搜索热词
      */
     @GET("hotkey/json")
-    suspend fun getHotkey(): ResponseBean<List<HotKey>>
+    suspend fun getHotkey(): ResponseBean<List<HotKeyBean>>
 }

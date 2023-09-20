@@ -1,6 +1,6 @@
 package com.pp.common.http.wanandroid.api
 
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface WanAndroidApi {
+interface CollectedApi {
 
     /**
      *
@@ -18,7 +18,7 @@ interface WanAndroidApi {
      * @param page 页码：拼接在链接中，从0开始。
      */
     @GET("lg/collect/list/{page}/json")
-    suspend fun getCollectedArticles(@Path(value = "page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<PageBean>
+    suspend fun getCollectedArticles(@Path(value = "page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<ArticlePageBean>
 
     /**
      * https://www.wanandroid.com/lg/collect/27241/json

@@ -5,9 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
-import com.pp.common.paging.WanPagingSource
+import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
@@ -26,9 +26,9 @@ object HomeRepository {
             pagingSourceFactory = { HomeArticlePagingSource() }).flow
     }
 
-    private class HomeArticlePagingSource : WanPagingSource() {
+    private class HomeArticlePagingSource : ArticlePagingSource() {
 
-        override suspend fun getPageData(page: Int): PageBean? {
+        override suspend fun getPageData(page: Int): ArticlePageBean? {
             return WanAndroidService.homeApi.getArticles(page).data
         }
 

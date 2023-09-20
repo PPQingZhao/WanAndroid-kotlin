@@ -1,5 +1,6 @@
 package com.pp.ui.utils
 
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -60,10 +61,12 @@ class StateView {
         }
 
         target.view?.let {
-            if (it.parent != null){
+            if (it.parent != null) {
                 (it.parent as ViewGroup).removeView(it)
             }
             contentParent.addView(it, indexOfContentView, contentLayoutParams)
+
+            ObjectAnimator.ofFloat(it, "alpha", 0f, 0.2f, 0.4f, 1f).setDuration(500).start()
         }
 
         onShowStateView(target, oldStateView)

@@ -1,4 +1,7 @@
 package com.pp.common.http.wanandroid.bean.user
+
+import com.pp.common.http.wanandroid.bean.CoinInfoBean
+
 /*
 {
 		"coinInfo": {
@@ -32,18 +35,10 @@ package com.pp.common.http.wanandroid.bean.user
 */
 
 data class UserInfoBean(
-    val coinInfo: CoinInfo = CoinInfo(),
+    val coinInfo: CoinInfoBean = CoinInfoBean(),
     val collectArticleInfo: CollectArticleInfo = CollectArticleInfo(),
     val userInfo: LoginBean = LoginBean(),
 ) {
-    data class CoinInfo(
-        val coinCount: Long = 0,
-        val level: Long = 0,
-        val nickname: String = "",
-        val rank: String = "",
-        val userId: Long = 0,
-        val username: String = "",
-    )
 
     data class CollectArticleInfo(
         val count: Long = 0,

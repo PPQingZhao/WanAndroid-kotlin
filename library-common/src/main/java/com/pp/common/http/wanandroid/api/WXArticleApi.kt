@@ -1,7 +1,7 @@
 package com.pp.common.http.wanandroid.api
 
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -23,5 +23,5 @@ interface WXArticleApi {
     suspend fun getWXArticle(
         @Path("id") id: Int,
         @Path("page") @androidx.annotation.IntRange(from = 1) page: Int,
-    ): ResponseBean<PageBean>
+    ): ResponseBean<ArticlePageBean>
 }

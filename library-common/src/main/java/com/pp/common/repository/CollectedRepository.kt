@@ -5,9 +5,9 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.WanPagingSource
+import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -32,7 +32,7 @@ object CollectedRepository {
      * 收藏
      */
     suspend fun collected(articleBean: ArticleBean): ResponseBean<Any> {
-        return WanAndroidService.wanApi.collectArticle(articleBean.id).apply {
+        return WanAndroidService.collectedApi.collectArticle(articleBean.id).apply {
             if (errorCode == WanAndroidService.ErrorCode.SUCCESS) {
                 articleBean.collect = true
                 _collected.emit(articleBean)
@@ -44,7 +44,7 @@ object CollectedRepository {
      * 收藏列表使用该方法取消收藏
      */
     suspend fun unCollected2(articleBean: ArticleBean): ResponseBean<Any> {
-        return WanAndroidService.wanApi.unCollectedArticle(
+        return WanAndroidService.collectedApi.unCollectedArticle(
             articleBean.id, articleBean.originId ?: -1
         ).apply {
             if (errorCode == WanAndroidService.ErrorCode.SUCCESS) {
@@ -58,7 +58,7 @@ object CollectedRepository {
      * 文章列表使用该方法取消收藏
      */
     suspend fun unCollected(articleBean: ArticleBean): ResponseBean<Any> {
-        return WanAndroidService.wanApi.unCollectedArticle(articleBean.id).apply {
+        return WanAndroidService.collectedApi.unCollectedArticle(articleBean.id).apply {
             if (errorCode == WanAndroidService.ErrorCode.SUCCESS) {
                 articleBean.collect = false
                 _collected.emit(articleBean)
@@ -66,13 +66,13 @@ object CollectedRepository {
         }
     }
 
-    private class CollectedPageSources() : WanPagingSource() {
+    private class CollectedPageSources() : ArticlePagingSource() {
 
-        override suspend fun getPageData(page: Int): PageBean? {
-            return WanAndroidService.wanApi.getCollectedArticles(page).data
+        override suspend fun getPageData(page: Int): ArticlePageBean? {
+            return WanAndroidService.collectedApi.getCollectedArticles(page).data
         }
 
-        override fun createNextKey(response: PageBean?): Int? {
+        override fun createNextKey(response: ArticlePageBean?): Int? {
             return super.createNextKey(response)?.plus(1)
         }
 

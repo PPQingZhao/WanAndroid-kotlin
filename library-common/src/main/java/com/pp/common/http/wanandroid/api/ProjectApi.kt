@@ -1,7 +1,7 @@
 package com.pp.common.http.wanandroid.api
 
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,5 +28,5 @@ interface ProjectApi {
     suspend fun getProject(
         @Path("page") @androidx.annotation.IntRange(from = 1) page: Int = 1,
         @Query("cid") cid: Int,
-    ): ResponseBean<PageBean>
+    ): ResponseBean<ArticlePageBean>
 }

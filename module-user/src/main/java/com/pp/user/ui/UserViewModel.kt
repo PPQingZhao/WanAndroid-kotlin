@@ -1,7 +1,6 @@
 package com.pp.user.ui
 
 import android.app.Application
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import com.google.android.material.transition.MaterialSharedAxis
@@ -45,18 +44,11 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                     mTheme
                 )
             )
-            add(
-                ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_share,
-                    R.string.share_articles,
-                    mTheme
-                )
-            )
 
             add(
                 ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_favorite_on,
-                    R.string.collect_articles,
+                    com.pp.skin.R.drawable.ic_coin,
+                    R.string.self_coin,
                     mTheme
                 ).apply {
                     setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
@@ -64,17 +56,25 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                             view: View,
                             item: ItemDataViewModel<Any>,
                         ): Boolean {
-                            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                                view
-                            )?.showFragment(
-                                RouterPath.Local.fragment_collected,
-                                RouterPath.Local.fragment_collected,
-                                mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
-                                mainReenterTransition = materialSharedAxis(
-                                    MaterialSharedAxis.X,
-                                    false
-                                )
-                            )
+                            showFragment(view, RouterPath.User.fragment_coin)
+                            return true
+                        }
+                    })
+                }
+            )
+
+            add(
+                ItemAllowRightViewModel(
+                    com.pp.skin.R.drawable.ic_favorite_on,
+                    R.string.self_collected,
+                    mTheme
+                ).apply {
+                    setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
+                        override fun onItemClick(
+                            view: View,
+                            item: ItemDataViewModel<Any>,
+                        ): Boolean {
+                            showFragment(view, RouterPath.User.fragment_collected)
                             return true
                         }
                     })
@@ -92,17 +92,7 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                             view: View,
                             item: ItemDataViewModel<Any>,
                         ): Boolean {
-                            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                                view
-                            )?.showFragment(
-                                RouterPath.Local.fragment_theme_setting,
-                                RouterPath.Local.fragment_theme_setting,
-                                mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
-                                mainReenterTransition = materialSharedAxis(
-                                    MaterialSharedAxis.X,
-                                    false
-                                )
-                            )
+                            showFragment(view, RouterPath.Local.fragment_theme_setting)
                             return true
                         }
                     })
@@ -110,6 +100,17 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
             )
 
         }
+    }
+
+    private fun showFragment(view: View, tagFragment: String) {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+            view
+        )?.showFragment(
+            tagFragment,
+            tagFragment,
+            mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
+            mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+        )
     }
 
     override fun onFirstResume(owner: LifecycleOwner) {

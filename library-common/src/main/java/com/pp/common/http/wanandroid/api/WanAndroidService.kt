@@ -23,7 +23,7 @@ interface WanAndroidService {
         /**
          * api impl
          */
-        val wanApi: WanAndroidApi by lazy { retrofit.create(WanAndroidApi::class.java) }
+        val collectedApi: CollectedApi by lazy { retrofit.create(CollectedApi::class.java) }
         val userApi: UserApi by lazy { retrofit.create(UserApi::class.java) }
         val homeApi: HomeApi by lazy { retrofit.create(HomeApi::class.java) }
         val projectApi: ProjectApi by lazy { retrofit.create(ProjectApi::class.java) }
@@ -31,12 +31,14 @@ interface WanAndroidService {
         val wxArticleApi: WXArticleApi by lazy { retrofit.create(WXArticleApi::class.java) }
         val systemApi: SystemApi by lazy { retrofit.create(SystemApi::class.java) }
         val searchApi: SearchApi by lazy { retrofit.create(SearchApi::class.java) }
+        val coinApi: CoinApi by lazy { retrofit.create(CoinApi::class.java) }
 
     }
 
     object ErrorCode {
         const val FAILED = -1
         const val SUCCESS = 0
+        const val LOGIN_FAILED = -1001
     }
 
 }

@@ -6,9 +6,9 @@ import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.WanPagingSource
+import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.flow.Flow
 
 object WXArticleRepository {
@@ -24,13 +24,13 @@ object WXArticleRepository {
         }).flow
     }
 
-    private class WXArticlePagingSource(val id: Int) : WanPagingSource() {
+    private class WXArticlePagingSource(val id: Int) : ArticlePagingSource() {
 
-        override suspend fun getPageData(page: Int): PageBean? {
+        override suspend fun getPageData(page: Int): ArticlePageBean? {
             return WanAndroidService.wxArticleApi.getWXArticle(id, page).data
         }
 
-        override fun createNextKey(response: PageBean?): Int? {
+        override fun createNextKey(response: ArticlePageBean?): Int? {
             return super.createNextKey(response)?.plus(1)
         }
 

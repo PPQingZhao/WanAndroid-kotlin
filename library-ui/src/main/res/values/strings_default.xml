@@ -27,8 +27,8 @@
     <string name="hint_confirm_password">确认密码</string>
 
     <string name="message_center">消息中心</string>
-    <string name="share_articles">我的分享</string>
-    <string name="collect_articles">我的收藏</string>
+    <string name="self_coin">我的积分</string>
+    <string name="self_collected">我的收藏</string>
     <string name="tool_list">工具列表</string>
     <string name="theme_setting">主题设置</string>
     <string name="uncollected">取消收藏</string>

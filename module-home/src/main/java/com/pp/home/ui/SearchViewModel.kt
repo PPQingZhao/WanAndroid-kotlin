@@ -11,10 +11,9 @@ import androidx.paging.cachedIn
 import androidx.paging.insertSeparators
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.HotKey
+import com.pp.common.http.wanandroid.bean.HotKeyBean
 import com.pp.common.model.ItemTextDeleteHotkeyViewModel
 import com.pp.common.paging.*
-import com.pp.common.repository.CollectedRepository
 import com.pp.home.repository.SearchRepository
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -36,8 +35,8 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     val searchText: LiveData<String> = _searchText
 
     val mHistoryAdapter by lazy {
-        val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
-            override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
+        val onItemListener = object : OnItemListener<ItemDataViewModel<HotKeyBean>> {
+            override fun onItemClick(view: View, item: ItemDataViewModel<HotKeyBean>): Boolean {
                 when (view.id) {
                     R.id.tv_delete_all -> {
                         clearSearchHistory()
@@ -65,9 +64,9 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
             }
         }
 
-        BindingPagingDataAdapter<HotKey>(
+        BindingPagingDataAdapter<HotKeyBean>(
             {
-                if (it is HotKey && it.id >= 0) {
+                if (it is HotKeyBean && it.id >= 0) {
                     R.layout.item_text_delete
                 } else {
                     R.layout.item_delete_bar
@@ -99,8 +98,8 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     }
 
     val mHotkeyAdapter by lazy {
-        val onItemListener = object : OnItemListener<ItemDataViewModel<HotKey>> {
-            override fun onItemClick(view: View, item: ItemDataViewModel<HotKey>): Boolean {
+        val onItemListener = object : OnItemListener<ItemDataViewModel<HotKeyBean>> {
+            override fun onItemClick(view: View, item: ItemDataViewModel<HotKeyBean>): Boolean {
                 item.data?.name.let {
                     _searchText.value = it
                 }
@@ -108,9 +107,9 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
             }
         }
 
-        BindingPagingDataAdapter<HotKey>(
+        BindingPagingDataAdapter<HotKeyBean>(
             {
-                if (it is HotKey && it.id >= 0) {
+                if (it is HotKeyBean && it.id >= 0) {
                     com.pp.ui.R.layout.item_text2
                 } else {
                     com.pp.ui.R.layout.item_text1
@@ -145,14 +144,14 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     }
 
     // 热门搜索
-    private fun getSearchHot(): Flow<PagingData<HotKey>> {
+    private fun getSearchHot(): Flow<PagingData<HotKeyBean>> {
         return onePager(getPageData = { SearchRepository.getHotKey().data },
             getPageValue = {
                 it ?: emptyList()
             }).flow.map {
             it.insertSeparators { before, after ->
                 if (before == null && after != null) {
-                    HotKey(
+                    HotKeyBean(
                         name = getApplication<Application>().resources.getString(R.string.hot_key)
                     )
                 } else {
@@ -169,13 +168,13 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     /**
      * 获取搜索记录
      */
-    private fun getSearchHotkeyHistory(): Flow<List<HotKey>> {
+    private fun getSearchHotkeyHistory(): Flow<List<HotKeyBean>> {
         return SearchRepository.getSearchHotkeyHistory().map {
-            mutableListOf<HotKey>().apply {
+            mutableListOf<HotKeyBean>().apply {
                 if (it.isEmpty()) {
                     return@apply
                 }
-                add(HotKey(name = getApplication<Application>().resources.getString(R.string.search_history)))
+                add(HotKeyBean(name = getApplication<Application>().resources.getString(R.string.search_history)))
                 addAll(it)
             }
         }

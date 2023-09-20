@@ -1,4 +1,4 @@
-package com.pp.local.ui
+package com.pp.user.ui
 
 import android.os.Bundle
 import android.view.View
@@ -6,19 +6,19 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.util.materialSharedAxis
-import com.pp.local.databinding.FragmentCollectedBinding
+import com.pp.user.databinding.FragmentCoinBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.attachStateView
 
-@Route(path = RouterPath.Local.fragment_collected)
-class CollectedFragment : ThemeFragment<FragmentCollectedBinding, CollectedViewModel>() {
+@Route(path = RouterPath.User.fragment_coin)
+class CoinFragment : ThemeFragment<FragmentCoinBinding, CoinViewModel>() {
     override val mBinding by lazy {
-        FragmentCollectedBinding.inflate(layoutInflater)
+        FragmentCoinBinding.inflate(layoutInflater)
     }
 
-    override fun getModelClazz(): Class<CollectedViewModel> {
-        return CollectedViewModel::class.java
+    override fun getModelClazz(): Class<CoinViewModel> {
+        return CoinViewModel::class.java
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

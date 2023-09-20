@@ -1,11 +1,11 @@
 package com.pp.common.paging
 
 import android.annotation.SuppressLint
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.HotKey
+import com.pp.common.http.wanandroid.bean.CoinReasonBean
+import com.pp.common.http.wanandroid.bean.HotKeyBean
 import com.pp.common.model.*
 import com.pp.common.repository.CollectedRepository
 import com.pp.theme.AppDynamicTheme
@@ -29,12 +29,22 @@ val articleDifferCallback = object : DiffUtil.ItemCallback<ArticleBean>() {
     }
 }
 
-val hotKeyDifferCallback = object : DiffUtil.ItemCallback<HotKey>() {
-    override fun areItemsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+val hotKeyDifferCallback = object : DiffUtil.ItemCallback<HotKeyBean>() {
+    override fun areItemsTheSame(oldItem: HotKeyBean, newItem: HotKeyBean): Boolean {
         return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: HotKey, newItem: HotKey): Boolean {
+    override fun areContentsTheSame(oldItem: HotKeyBean, newItem: HotKeyBean): Boolean {
+        return oldItem == newItem
+    }
+}
+
+val coinReasonDifferCallback = object : DiffUtil.ItemCallback<CoinReasonBean>() {
+    override fun areItemsTheSame(oldItem: CoinReasonBean, newItem: CoinReasonBean): Boolean {
+        return oldItem.id == newItem.id
+    }
+
+    override fun areContentsTheSame(oldItem: CoinReasonBean, newItem: CoinReasonBean): Boolean {
         return oldItem == newItem
     }
 
@@ -106,14 +116,14 @@ fun itemArticlePagingAdapter(theme: AppDynamicTheme, scope: CoroutineScope) =
     }
 
 fun itemText1HotkeyBinder(theme: AppDynamicTheme) =
-    createItemDataBinder<ItemText1Binding, HotKey, ItemTextHotkeyViewModel>(
+    createItemDataBinder<ItemText1Binding, HotKeyBean, ItemTextHotkeyViewModel>(
         getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
     )
 
 fun itemText2HotkeyBinder(
-    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>,
+    onItemListener: OnItemListener<ItemDataViewModel<HotKeyBean>>,
     theme: AppDynamicTheme,
-) = createItemDataBinder<ItemText2Binding, HotKey, ItemTextHotkeyViewModel>(
+) = createItemDataBinder<ItemText2Binding, HotKeyBean, ItemTextHotkeyViewModel>(
     getItemViewModel = { data -> ItemTextHotkeyViewModel(data, theme) },
     onItemListener = onItemListener,
 )
@@ -136,10 +146,10 @@ fun itemArticleCollectedBinder(
 
 fun itemTextDeleteHotkeyBinder(
     onCreateViewModel: (model: ItemTextDeleteHotkeyViewModel) -> Unit = { _ -> },
-    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
-    onBindViewModel: (binding: ItemTextDeleteBinding, viewModel: ItemTextDeleteHotkeyViewModel?, position: Int, data: HotKey?) -> Boolean = { _, _, _, _ -> false },
+    onItemListener: OnItemListener<ItemDataViewModel<HotKeyBean>>? = null,
+    onBindViewModel: (binding: ItemTextDeleteBinding, viewModel: ItemTextDeleteHotkeyViewModel?, position: Int, data: HotKeyBean?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
-) = createItemDataBinder<ItemTextDeleteBinding, HotKey, ItemTextDeleteHotkeyViewModel>(
+) = createItemDataBinder<ItemTextDeleteBinding, HotKeyBean, ItemTextDeleteHotkeyViewModel>(
     getItemViewModel = { data ->
         ItemTextDeleteHotkeyViewModel(data, theme).apply(onCreateViewModel)
     },
@@ -149,15 +159,23 @@ fun itemTextDeleteHotkeyBinder(
 
 fun itemDeleteBarHotkeyBinder(
     onCreateViewModel: (model: ItemDeleteBarHotkeyViewModel) -> Unit = { _ -> },
-    onItemListener: OnItemListener<ItemDataViewModel<HotKey>>? = null,
-    onBindViewModel: (binding: ItemDeleteBarBinding, viewModel: ItemDeleteBarHotkeyViewModel?, position: Int, data: HotKey?) -> Boolean = { _, _, _, _ -> false },
+    onItemListener: OnItemListener<ItemDataViewModel<HotKeyBean>>? = null,
+    onBindViewModel: (binding: ItemDeleteBarBinding, viewModel: ItemDeleteBarHotkeyViewModel?, position: Int, data: HotKeyBean?) -> Boolean = { _, _, _, _ -> false },
     theme: AppDynamicTheme,
-) = createItemDataBinder<ItemDeleteBarBinding, HotKey, ItemDeleteBarHotkeyViewModel>(
+) = createItemDataBinder<ItemDeleteBarBinding, HotKeyBean, ItemDeleteBarHotkeyViewModel>(
     getItemViewModel = { data ->
         ItemDeleteBarHotkeyViewModel(data, theme).apply(onCreateViewModel)
     },
     onItemListener = onItemListener,
     onBindViewModel = onBindViewModel
+)
+
+fun itemCoinReasonBinder(
+    theme: AppDynamicTheme,
+) = createItemDataBinder<ItemCoinReasonBinding, CoinReasonBean, ItemCoinReasonItemViewModel>(
+    getItemViewModel = { data ->
+        ItemCoinReasonItemViewModel(data, theme)
+    }
 )
 
 /**

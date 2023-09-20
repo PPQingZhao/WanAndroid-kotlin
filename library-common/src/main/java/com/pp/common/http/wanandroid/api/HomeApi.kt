@@ -1,12 +1,11 @@
 package com.pp.common.http.wanandroid.api
 
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Url
 
 interface HomeApi {
 
@@ -31,7 +30,7 @@ interface HomeApi {
      * page:从0开始
      */
     @GET("article/list/{page}/json")
-    suspend fun getArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<PageBean>
+    suspend fun getArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<ArticlePageBean>
 
     /**
      * 广场文章列表分页加载
@@ -39,7 +38,7 @@ interface HomeApi {
      * page: 从0开始
      */
     @GET("user_article/list/{page}/json")
-    suspend fun getSquareArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<PageBean>
+    suspend fun getSquareArticles(@Path("page") @androidx.annotation.IntRange(from = 0) page: Int = 0): ResponseBean<ArticlePageBean>
 
     /**
      * 问答文章列表分页加载
@@ -48,5 +47,5 @@ interface HomeApi {
      * page:从1开始
      */
     @GET("wenda/list/{page}/json")
-    suspend fun getAnswerArticles(@Path("page") @androidx.annotation.IntRange(from = 1) page: Int = 1): ResponseBean<PageBean>
+    suspend fun getAnswerArticles(@Path("page") @androidx.annotation.IntRange(from = 1) page: Int = 1): ResponseBean<ArticlePageBean>
 }

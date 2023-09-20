@@ -12,10 +12,10 @@ import com.pp.common.constant.preferences_key_search_hotkey_history
 import com.pp.common.datastore.userDataStore
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.HotKey
-import com.pp.common.http.wanandroid.bean.PageBean
+import com.pp.common.http.wanandroid.bean.HotKeyBean
+import com.pp.common.http.wanandroid.bean.ArticlePageBean
 import com.pp.common.http.wanandroid.bean.ResponseBean
-import com.pp.common.paging.WanPagingSource
+import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.flow.*
 
 object SearchRepository {
@@ -31,21 +31,21 @@ object SearchRepository {
     /**
      * 获取搜索历史记录
      */
-    fun getSearchHotkeyHistory(): Flow<List<HotKey>> {
-        return channelFlow<List<HotKey>> {
+    fun getSearchHotkeyHistory(): Flow<List<HotKeyBean>> {
+        return channelFlow<List<HotKeyBean>> {
             App.getInstance().userDataStore.data.collectLatest {
                 val history = it[preferences_key_search_hotkey_history]
                 if (DEBUG) {
                     Log.e("TAG", "get search history: $history")
                 }
 
-                mutableListOf<HotKey>().apply {
+                mutableListOf<HotKeyBean>().apply {
                     history?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
                         ?.filter {
                             it.isNotBlank()
                         }
                         ?.forEachIndexed { index, item ->
-                            add(HotKey(id = index, name = item))
+                            add(HotKeyBean(id = index, name = item))
                         }
 
                 }.apply {
@@ -88,7 +88,7 @@ object SearchRepository {
         }
     }
 
-    suspend fun getHotKey(): ResponseBean<List<HotKey>> {
+    suspend fun getHotKey(): ResponseBean<List<HotKeyBean>> {
         return WanAndroidService.searchApi.getHotkey()
     }
 
@@ -120,13 +120,13 @@ object SearchRepository {
         }
     }
 
-    private class SearchPageSources(private val key: String?) : WanPagingSource() {
+    private class SearchPageSources(private val key: String?) : ArticlePagingSource() {
 
-        override suspend fun getPageData(page: Int): PageBean? {
+        override suspend fun getPageData(page: Int): ArticlePageBean? {
             return WanAndroidService.searchApi.queryArticle(page, key).data
         }
 
-        override fun createNextKey(response: PageBean?): Int? {
+        override fun createNextKey(response: ArticlePageBean?): Int? {
             return super.createNextKey(response)?.plus(1)
         }
 
