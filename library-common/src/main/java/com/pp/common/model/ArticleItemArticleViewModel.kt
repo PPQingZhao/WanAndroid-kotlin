@@ -29,7 +29,6 @@ open class ArticleItemArticleViewModel(
     scope: CoroutineScope,
 ) :
     ItemArticleViewModel<ArticleBean>(theme) {
-
     init {
         scope.launch {
             CollectedRepository.collected.collectLatest {

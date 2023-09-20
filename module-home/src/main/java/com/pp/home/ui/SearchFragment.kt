@@ -40,17 +40,14 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
         return SearchViewModel::class.java
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        mViewModel.searchText.observe(viewLifecycleOwner) {
-            mBinding.searchView.setQuery(it, true)
-        }
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         enterTransition = materialSharedAxis(MaterialSharedAxis.Z, true)
         exitTransition = materialSharedAxis(MaterialSharedAxis.Z, false)
+
+        mViewModel.searchText.observe(viewLifecycleOwner) {
+            mBinding.searchView.setQuery(it, true)
+        }
 
         initView()
         initSearchView()

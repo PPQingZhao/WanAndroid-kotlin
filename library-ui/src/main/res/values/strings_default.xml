@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="anonymity">匿名</string>
     <string name="pinned">置顶</string>
     <string name="fresh">新</string>
     <string name="author">作者:</string>

@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.textfield.TextInputLayout
@@ -19,7 +20,6 @@ import com.pp.ui.utils.attachRefreshView
 import com.pp.ui.utils.load
 
 object BindingAdapter {
-
 
     @JvmStatic
     @androidx.databinding.BindingAdapter("android:background")
@@ -116,5 +116,14 @@ object BindingAdapter {
         pagingDataAdapter: BindingPagingDataAdapter<*>,
     ) {
         pagingDataAdapter.attachRefreshView(refreshLayout)
+    }
+
+    @JvmStatic
+    @androidx.databinding.BindingAdapter("android:itemDecoration")
+    fun itemDecoration(
+        recyclerView: RecyclerView,
+        itemDecoration: RecyclerView.ItemDecoration,
+    ) {
+        recyclerView.addItemDecoration(itemDecoration)
     }
 }

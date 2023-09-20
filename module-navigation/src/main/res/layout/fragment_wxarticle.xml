@@ -15,27 +15,37 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/authorRecyclerview"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:adapter="@{viewModel.mAdapter}"
+            android:itemDecoration="@{viewModel.dividerItemDecoration}"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.3" />
+            app:layout_constraintWidth_percent="0.3"
+            tools:listitem="@layout/item_text1" />
 
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/refreshLayout"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:attachPagingAdapter="@{viewModel.pagingDataAdapter}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/authorRecyclerview">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/wxarticleRecyclerview"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:pagingAdapter="@{viewModel.pagingDataAdapter}"
+                android:withLoadMore="@{true}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_wx_article" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
@@ -57,6 +67,13 @@
             app:roundPercent="1"
             tools:background="?colorAccent"
             tools:tint="?colorPrimary" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="20dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
