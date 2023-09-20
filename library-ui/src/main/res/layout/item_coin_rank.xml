@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.pp.ui.viewModel.ItemCoinReasonViewModel" />
+            type="com.pp.ui.viewModel.ItemCoinRankViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -22,39 +22,41 @@
         android:background="?selectableItemBackground">
 
         <TextView
-            android:id="@+id/tv_coin_reason"
+            android:id="@+id/tv_rank"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.coinReason}"
-            android:textColor="@{viewModel.theme.textColor}"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="签到" />
-
-        <TextView
-            android:id="@+id/tv_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{viewModel.desc}"
+            android:text="@{viewModel.rank}"
             android:textColor="@{viewModel.theme.textColorSecondary}"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@id/tv_coin"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_coin_reason"
-            tools:text="2023-09-09 00:11:11 签到,积分:11+13"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1" />
+
+        <TextView
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:text="@{viewModel.username}"
+            android:textColor="@{viewModel.theme.textColor}"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rank"
+            app:layout_constraintStart_toEndOf="@id/tv_rank"
+            app:layout_constraintTop_toTopOf="@id/tv_rank"
+            tools:text="pp***test"
             tools:textColor="?android:textColorSecondary" />
 
         <TextView
-            android:id="@+id/tv_coin"
+            android:id="@+id/tv_coin_count"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.coin}"
+            android:text="@{viewModel.coinCount}"
             android:textColor="@{viewModel.theme.textColorPrimary}"
-            android:textSize="18sp"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rank"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_coin_reason"
-            tools:text="+23"
+            app:layout_constraintTop_toTopOf="@id/tv_rank"
+            tools:text="5555"
             tools:textColor="?android:textColorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 

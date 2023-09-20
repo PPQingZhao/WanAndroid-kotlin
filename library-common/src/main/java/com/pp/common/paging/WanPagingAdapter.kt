@@ -2,10 +2,7 @@ package com.pp.common.paging
 
 import android.annotation.SuppressLint
 import androidx.recyclerview.widget.DiffUtil
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.CoinReasonBean
-import com.pp.common.http.wanandroid.bean.HotKeyBean
+import com.pp.common.http.wanandroid.bean.*
 import com.pp.common.model.*
 import com.pp.common.repository.CollectedRepository
 import com.pp.theme.AppDynamicTheme
@@ -47,7 +44,16 @@ val coinReasonDifferCallback = object : DiffUtil.ItemCallback<CoinReasonBean>() 
     override fun areContentsTheSame(oldItem: CoinReasonBean, newItem: CoinReasonBean): Boolean {
         return oldItem == newItem
     }
+}
 
+val coinRankDifferCallback = object : DiffUtil.ItemCallback<CoinInfoBean>() {
+    override fun areItemsTheSame(oldItem: CoinInfoBean, newItem: CoinInfoBean): Boolean {
+        return oldItem.userId == newItem.userId
+    }
+
+    override fun areContentsTheSame(oldItem: CoinInfoBean, newItem: CoinInfoBean): Boolean {
+        return oldItem == newItem
+    }
 }
 
 fun itemTextArticleListBinder(
@@ -175,6 +181,14 @@ fun itemCoinReasonBinder(
 ) = createItemDataBinder<ItemCoinReasonBinding, CoinReasonBean, ItemCoinReasonItemViewModel>(
     getItemViewModel = { data ->
         ItemCoinReasonItemViewModel(data, theme)
+    }
+)
+
+fun itemCoinRankBinder(
+    theme: AppDynamicTheme,
+) = createItemDataBinder<ItemCoinRankBinding, CoinInfoBean, ItemCoinRankItemViewModel>(
+    getItemViewModel = { data ->
+        ItemCoinRankItemViewModel(data, theme)
     }
 )
 

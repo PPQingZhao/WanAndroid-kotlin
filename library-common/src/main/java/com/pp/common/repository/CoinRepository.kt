@@ -30,11 +30,11 @@ object CoinRepository {
     /**
      * 积分排行榜
      */
-    fun getCoinRange(): Flow<PagingData<CoinInfoBean>> {
+    fun getCoinRank(): Flow<PagingData<CoinInfoBean>> {
         return Pager(
             initialKey = 1,
             config = PagingConfig(15),
-            pagingSourceFactory = { CoinRangePageSources() }).flow
+            pagingSourceFactory = { CoinRankPageSources() }).flow
     }
 
     private class CoinListPageSources() : WanPagingSource<CoinReasonBean>() {
@@ -47,7 +47,7 @@ object CoinRepository {
         }
     }
 
-    private class CoinRangePageSources() : WanPagingSource<CoinInfoBean>() {
+    private class CoinRankPageSources() : WanPagingSource<CoinInfoBean>() {
         override suspend fun getPageData(page: Int): PageBean<CoinInfoBean>? {
             return WanAndroidService.coinApi.getCoinRank(page).data
         }

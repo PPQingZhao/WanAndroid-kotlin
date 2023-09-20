@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.user.ui.CoinRankViewModel" />
+    </data>
+
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@{viewModel.MTheme.colorPrimary}"
+        android:fitsSystemWindows="true"
+        app:layoutDescription="@xml/fragment_coin_rank_scene"
+        tools:background="?colorPrimary">
+
+        <FrameLayout
+            android:id="@+id/fl_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize" />
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/iv_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:background="?selectableItemBackground"
+            android:onClick="@{viewModel::onBack}"
+            android:padding="@dimen/dp_8"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@{viewModel.MTheme.textColorPrimary}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:roundPercent="1"
+            tools:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:layout_gravity="center"
+            android:layout_marginStart="@dimen/dp_8"
+            android:gravity="center"
+            android:text="@string/coin_rank"
+            android:textColor="@{viewModel.MTheme.textColorPrimary}"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@id/fl_title_bar"
+            app:layout_constraintStart_toEndOf="@id/iv_back"
+            tools:textColor="?android:textColorPrimary" />
+
+
+        <FrameLayout
+            android:id="@+id/contentParent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_title_bar">
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/refreshLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:attachPagingAdapter="@{viewModel.mAdapter}">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@{viewModel.MTheme.windowBackground}"
+                    android:orientation="vertical"
+                    android:pagingAdapter="@{viewModel.mAdapter}"
+                    android:withLoadMore="@{true}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:background="?android:windowBackground"
+                    tools:listitem="@layout/item_coin_rank" />
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+        </FrameLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:id="@+id/floating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginBottom="@dimen/margin_large"
+            android:background="@{viewModel.MTheme.colorAccent}"
+            android:gravity="center"
+            android:onFloatingClick="@{recyclerview}"
+            android:padding="@dimen/dp_8"
+            android:setupFloating="@{recyclerview}"
+            android:src="@drawable/ic_top"
+            android:tint="@{viewModel.MTheme.colorPrimary}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:roundPercent="1"
+            tools:background="?colorAccent"
+            tools:tint="?colorPrimary" />
+    </androidx.constraintlayout.motion.widget.MotionLayout>
+</layout>

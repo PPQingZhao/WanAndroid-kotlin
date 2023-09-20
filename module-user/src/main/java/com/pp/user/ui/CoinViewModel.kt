@@ -77,6 +77,7 @@ class CoinViewModel(app: Application) : ThemeViewModel(app) {
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
             view
         )?.run {
+            showFragment(RouterPath.User.fragment_coin_range,RouterPath.User.fragment_coin_range)
         }
     }
 

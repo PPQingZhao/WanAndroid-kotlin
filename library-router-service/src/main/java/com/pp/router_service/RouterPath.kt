@@ -15,11 +15,11 @@ object RouterPath {
     }
 
     object User {
-        const val activity_login = "/user/activity_login"
         const val fragment_login = "/user/fragment_login"
         const val fragment_user = "/user/fragment_user"
         const val fragment_collected = "/user/fragment_collected"
         const val fragment_coin = "/user/fragment_coin"
+        const val fragment_coin_range = "/user/fragment_coin_range"
     }
 
     object Navigation {
