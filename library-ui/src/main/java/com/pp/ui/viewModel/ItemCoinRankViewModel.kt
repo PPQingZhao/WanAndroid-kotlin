@@ -52,7 +52,11 @@ fun setLinearGradient(
         textView.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC)
         startColor = Color.parseColor("#FFFF00")
         endColor = Color.parseColor("#EEC591")
-    } else if (rank == "2" || rank == "3") {
+    } else if (rank == "2"
+        || rank == "3"
+        || rank == "4"
+        || rank == "5"
+    ) {
         textView.textSize = 16f
         textView.setTypeface(Typeface.SANS_SERIF, Typeface.BOLD_ITALIC)
         startColor = Color.parseColor("#EEC591")

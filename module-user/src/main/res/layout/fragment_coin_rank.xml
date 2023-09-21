@@ -103,14 +103,14 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{viewModel.nickname}"
-            android:textColor="@{viewModel.MTheme.textColor}"
-            android:textSize="13sp"
+            android:textColor="@{viewModel.MTheme.textColorPrimary}"
+            android:textSize="14sp"
             app:layout_constrainedWidth="true"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toEndOf="@id/iv_avatar"
             app:layout_constraintTop_toTopOf="@id/iv_avatar"
             tools:text="pptest"
-            tools:textColor="?android:textColor" />
+            tools:textColor="?android:textColorPrimary" />
 
         <TextView
             android:id="@+id/tv_coin_count"

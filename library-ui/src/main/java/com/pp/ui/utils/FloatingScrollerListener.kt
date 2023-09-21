@@ -23,22 +23,29 @@ class FloatingScrollerListener(private val floatButton: View) : OnScrollListener
         if (newState != RecyclerView.SCROLL_STATE_IDLE) {
             return
         }
-        val canScrollToTop =
-            recyclerView.canScrollVertically(-1) || recyclerView.canScrollHorizontally(-1)
-        if (!canScrollToTop) {
-            animateOut(floatButton)
-        }
+
+        shouldAnimateOut(recyclerView)
     }
 
     override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         val floatDistance = if (dx == 0) dy else dx
 
 //        Log.e("TAG", "distance: $floatDistance  dx: $dx  dy: $dy")
-        // floatDistance == 0 时不处理,在滑动过程中可能会接收多个 dy = 0,dx =0   比如 TabSystemFragment页面(猜测motionLayout嵌套viewpager2再嵌套recyclerview原因)
+        // floatDistance == 0 时: 在滑动过程中可能会接收多个 dy = 0,dx =0   比如 TabSystemFragment页面(猜测motionLayout嵌套viewpager2再嵌套recyclerview原因)
         if (floatDistance > 0) {
             animateOut(floatButton)
         } else if (floatDistance < 0) {
             animateIn(floatButton)
+        } else {
+            shouldAnimateOut(recyclerView)
+        }
+    }
+
+    private fun shouldAnimateOut(recyclerView: RecyclerView) {
+        val canScrollToTop =
+            recyclerView.canScrollVertically(-1) || recyclerView.canScrollHorizontally(-1)
+        if (!canScrollToTop) {
+            animateOut(floatButton)
         }
     }
 
