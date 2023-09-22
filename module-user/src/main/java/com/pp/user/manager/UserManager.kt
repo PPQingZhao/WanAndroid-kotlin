@@ -5,7 +5,7 @@ import androidx.annotation.UiThread
 import androidx.lifecycle.LiveData
 import com.pp.database.user.User
 import com.pp.user.repositoy.UserModel
-import com.pp.module_user.repositoy.UserRepository
+import com.pp.user.repositoy.UserRepository
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.user.LoginBean
 import com.pp.router_service.IUserService

@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
+import androidx.core.view.doOnAttach
 import androidx.lifecycle.LifecycleOwner
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.databinding.LayoutDataEmptyBinding
@@ -66,7 +67,10 @@ class StateView {
             }
             contentParent.addView(it, indexOfContentView, contentLayoutParams)
 
-            ObjectAnimator.ofFloat(it, "alpha", 0f, 0.2f, 0.4f, 1f).setDuration(500).start()
+            it.doOnAttach {
+                ObjectAnimator.ofFloat(it, "alpha", 0.2f, 0.3f, 0.4f, 0.5f, 1f).setDuration(500)
+                    .start()
+            }
         }
 
         onShowStateView(target, oldStateView)

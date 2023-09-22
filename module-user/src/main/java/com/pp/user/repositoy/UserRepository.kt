@@ -1,9 +1,7 @@
-package com.pp.module_user.repositoy
-
+package com.pp.user.repositoy
 
 import android.util.Log
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
 import com.pp.common.app.App
 import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
@@ -13,13 +11,13 @@ import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.user.LoginBean
 import com.pp.common.http.wanandroid.bean.user.UserInfoBean
-import com.pp.user.repositoy.setInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
 
 object UserRepository {
     private const val TAG = "UserRepository"
+    private val DEBUG = true
 
     private val userApi by lazy { WanAndroidService.userApi }
     private val userDao by lazy {
@@ -71,11 +69,15 @@ object UserRepository {
         password: String?,
     ): Pair<ResponseBean<LoginBean>, User?> {
 
-        Log.v(TAG, "start login: $userName}")
+        if (DEBUG) {
+            Log.v(TAG, "start login: $userName}")
+        }
         // 执行登录逻辑
         val loginResponse = userApi.loginByUserName(userName, password)
 
-        Log.v(TAG, "login code: ${loginResponse.errorCode}")
+        if (DEBUG) {
+            Log.v(TAG, "login code: ${loginResponse.errorCode}")
+        }
         if (loginResponse.errorCode == WanAndroidService.ErrorCode.SUCCESS) {
             val user = User(name = userName, password = password)
             val loginBean = loginResponse.data
@@ -115,9 +117,9 @@ object UserRepository {
     suspend fun register(
         username: String?,
         password: String?,
-        repassword: String?,
+        rePassword: String?,
     ): ResponseBean<LoginBean> {
-        return userApi.registerByUserName(username, password, repassword)
+        return userApi.registerByUserName(username, password, rePassword)
     }
 
 }

@@ -10,9 +10,7 @@ import androidx.core.graphics.ColorUtils
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleActivity
-import com.pp.theme.ViewTreeAppThemeViewModel
-import com.pp.theme.collectTheme
-import com.pp.theme.init
+import com.pp.theme.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -24,13 +22,10 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         mViewModel.mTheme.init(this)
+        initDynamicTheme(mViewModel.mTheme)
         ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
-        lifecycleScope.launch(Dispatchers.IO) {
-            mViewModel.mTheme.collectTheme(
-                themeFactory(theme, resources.displayMetrics, resources.configuration)
-            )
-        }
 
         /**
          * 应用主要色调(toolbar)
@@ -38,10 +33,18 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
         mViewModel.mTheme.colorPrimary.observe(this) { it ->
             // 计算颜色亮度
             val luminance = ColorUtils.calculateLuminance(it.defaultColor)
-            Log.e("TAG", "luminance: $luminance")
+//            Log.e("TAG", "luminance: $luminance")
             // 亮度大于0.5,则认为主题色为亮色,需设置状态栏亮色(字体深色)
             requireLightStatusBar(luminance > 0.5)
 
+        }
+    }
+
+    fun initDynamicTheme(theme: AppDynamicTheme) {
+        lifecycleScope.launch(Dispatchers.IO) {
+            theme.collectTheme(
+                themeFactory(getTheme(), resources.displayMetrics, resources.configuration)
+            )
         }
     }
 

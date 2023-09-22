@@ -1,5 +1,7 @@
 package com.pp.ui.databinding
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.drawable.ColorDrawable
@@ -19,111 +21,119 @@ import com.pp.ui.utils.attachRecyclerView
 import com.pp.ui.utils.attachRefreshView
 import com.pp.ui.utils.load
 
-object BindingAdapter {
-
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:background")
-    fun setBackground(iv: View, color: ColorStateList) {
+@androidx.databinding.BindingAdapter("android:background")
+fun setBackground(iv: View, color: ColorStateList) {
 //        Log.e("TAG", "res: $res")
-        iv.background = ColorDrawable(color.defaultColor)
-    }
+    iv.background = ColorDrawable(color.defaultColor)
+}
 
-    @SuppressLint("ResourceType")
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:text")
-    fun setText(view: TextView, @StringRes resId: Int) {
+@SuppressLint("ResourceType")
+@androidx.databinding.BindingAdapter("android:text")
+fun setText(view: TextView, @StringRes resId: Int) {
 //        Log.e("TAG", "res: $res")
-        if (resId > 0) {
-            view.setText(resId)
-        } else {
-            view.text = ""
-        }
+    if (resId > 0) {
+        view.setText(resId)
+    } else {
+        view.text = ""
     }
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("enable")
-    fun setEnable(iv: View, enable: Boolean) {
+@androidx.databinding.BindingAdapter("enable")
+fun setEnable(iv: View, enable: Boolean) {
 //        Log.e("TAG", "res: $res")
-        iv.isEnabled = enable
-    }
+    iv.isEnabled = enable
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("errorMessage")
-    fun setErrorMessage(inputLayout: TextInputLayout, error: CharSequence) {
+@androidx.databinding.BindingAdapter("errorMessage")
+fun setErrorMessage(inputLayout: TextInputLayout, error: CharSequence) {
 //        Log.e("TAG", "$error")
-        inputLayout.error = error
-    }
+    inputLayout.error = error
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("helperText")
-    fun setHelperText(inputLayout: TextInputLayout, text: CharSequence) {
+@androidx.databinding.BindingAdapter("helperText")
+fun setHelperText(inputLayout: TextInputLayout, text: CharSequence) {
 //        Log.e("TAG", "$error")
-        inputLayout.helperText = text
-    }
+    inputLayout.helperText = text
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:tint")
-    fun setImageTint(iv: ImageView, color: ColorStateList?) {
-        iv.imageTintList = color
-    }
+@androidx.databinding.BindingAdapter("android:tint")
+fun setImageTint(iv: ImageView, color: ColorStateList?) {
+    iv.imageTintList = color
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter(
-        value = ["android:imageUrl", "android:errorDrawable"],
-        requireAll = true
-    )
-    fun setImageUrl(iv: ImageView, url: String?, error: Drawable?) {
-        iv.load(url, error)
-    }
+@androidx.databinding.BindingAdapter(
+    value = ["android:imageUrl", "android:errorDrawable"],
+    requireAll = true
+)
+fun setImageUrl(iv: ImageView, url: String?, error: Drawable?) {
+    iv.load(url, error)
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:src")
-    fun setImageSrc(iv: ImageView, @DrawableRes src: Int) {
-        iv.setImageResource(src)
-    }
+@androidx.databinding.BindingAdapter("android:src")
+fun setImageSrc(iv: ImageView, @DrawableRes src: Int) {
+    iv.setImageResource(src)
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:onFloatingClick")
-    fun onFloatingClick(floatButton: View, recyclerView: RecyclerView) {
-        floatButton.setOnClickListener {
-            recyclerView.scrollToPosition(0)
-        }
+@androidx.databinding.BindingAdapter("android:onFloatingClick")
+fun onFloatingClick(floatButton: View, recyclerView: RecyclerView) {
+    floatButton.setOnClickListener {
+        recyclerView.scrollToPosition(0)
     }
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:setupFloating")
-    fun setupFloating(floatButton: View, recyclerView: RecyclerView) {
-        recyclerView.addOnScrollListener(FloatingScrollerListener(floatButton))
-    }
+@androidx.databinding.BindingAdapter("android:setupFloating")
+fun setupFloating(floatButton: View, recyclerView: RecyclerView) {
+    recyclerView.addOnScrollListener(FloatingScrollerListener(floatButton))
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter(
-        value = ["android:pagingAdapter", "android:withLoadMore"],
-        requireAll = true
-    )
-    fun setPagingAdapter(
-        recyclerView: RecyclerView,
-        pagingDataAdapter: BindingPagingDataAdapter<*>,
-        withLoadMore: Boolean,
-    ) {
-        pagingDataAdapter.attachRecyclerView(recyclerView, withLoadMore = withLoadMore)
-    }
+@androidx.databinding.BindingAdapter(
+    value = ["android:pagingAdapter", "android:withLoadMore"],
+    requireAll = true
+)
+fun setPagingAdapter(
+    recyclerView: RecyclerView,
+    pagingDataAdapter: BindingPagingDataAdapter<*>,
+    withLoadMore: Boolean,
+) {
+    pagingDataAdapter.attachRecyclerView(recyclerView, withLoadMore = withLoadMore)
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:attachPagingAdapter")
-    fun attachPagingAdapter(
-        refreshLayout: SwipeRefreshLayout,
-        pagingDataAdapter: BindingPagingDataAdapter<*>,
-    ) {
-        pagingDataAdapter.attachRefreshView(refreshLayout)
-    }
+@androidx.databinding.BindingAdapter("android:attachPagingAdapter")
+fun attachPagingAdapter(
+    refreshLayout: SwipeRefreshLayout,
+    pagingDataAdapter: BindingPagingDataAdapter<*>,
+) {
+    pagingDataAdapter.attachRefreshView(refreshLayout)
+}
 
-    @JvmStatic
-    @androidx.databinding.BindingAdapter("android:itemDecoration")
-    fun itemDecoration(
-        recyclerView: RecyclerView,
-        itemDecoration: RecyclerView.ItemDecoration,
-    ) {
-        recyclerView.addItemDecoration(itemDecoration)
+@androidx.databinding.BindingAdapter("android:animateVisibility")
+fun animateVisibility(
+    view: View,
+    show: Boolean,
+) {
+    if (show) {
+        view.visibility = View.VISIBLE
+        val start = -view.height * 1f
+        val end = 0f
+        view.animate().translationY(start).translationY(end).setDuration(200).setListener(null)
+            .start()
+    } else {
+        val start = 0f
+        val end = -view.height * 1f
+        view.animate().translationY(start).translationY(end).setDuration(200)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.visibility = View.GONE
+                }
+            }).start()
+
     }
+}
+
+@androidx.databinding.BindingAdapter("android:itemDecoration")
+fun itemDecoration(
+    recyclerView: RecyclerView,
+    itemDecoration: RecyclerView.ItemDecoration,
+) {
+    recyclerView.addItemDecoration(itemDecoration)
 }

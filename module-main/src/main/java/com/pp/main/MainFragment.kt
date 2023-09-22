@@ -36,33 +36,34 @@ class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
     private fun pagerFragments(): List<TabPagerFragmentHelper.TabPager> {
 
         return mutableListOf<TabPagerFragmentHelper.TabPager>().apply {
-            add(
-                createTagPager(
-                    RouterPath.Home.fragment_home, "ic_tab_selected_home",
-                    "ic_tab_unselected_home"
-                )
+            val homeTagPager = createTagPager(
+                RouterPath.Home.fragment_home,
+                "ic_tab_selected_home",
+                "ic_tab_unselected_home"
             )
 
-            add(
-                createTagPager(
-                    RouterPath.Project.fragment_project, "ic_tab_selected_project",
-                    "ic_tab_unselected_project"
-                )
+            val projectTagPager = createTagPager(
+                RouterPath.Project.fragment_project,
+                "ic_tab_selected_project",
+                "ic_tab_unselected_project"
             )
 
-            add(
-                createTagPager(
-                    RouterPath.Navigation.fragment_navigation, "ic_tab_selected_navigation",
-                    "ic_tab_unselected_navigation"
-                )
+            val navigationTagPager = createTagPager(
+                RouterPath.Navigation.fragment_navigation,
+                "ic_tab_selected_navigation",
+                "ic_tab_unselected_navigation"
             )
 
-            add(
-                createTagPager(
-                    RouterPath.User.fragment_user, "ic_tab_selected_mine",
-                    "ic_tab_unselected_mine"
-                )
+            val userTagPager = createTagPager(
+                RouterPath.User.fragment_user,
+                "ic_tab_selected_mine",
+                "ic_tab_unselected_mine"
             )
+
+            add(homeTagPager)
+            add(projectTagPager)
+            add(navigationTagPager)
+            add(userTagPager)
         }
     }
 

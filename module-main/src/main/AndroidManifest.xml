@@ -14,6 +14,11 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:configChanges="locale|orientation|keyboardHidden|keyboard"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

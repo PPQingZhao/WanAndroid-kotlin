@@ -4,7 +4,6 @@ import android.app.Application
 import android.view.View
 import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.CoinInfoBean
@@ -13,7 +12,7 @@ import com.pp.common.paging.itemCoinRankBinder
 import com.pp.common.repository.CoinRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
-import com.pp.module_user.repositoy.UserRepository
+import com.pp.user.repositoy.UserRepository
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter

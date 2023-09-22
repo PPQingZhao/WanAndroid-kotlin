@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 /**
@@ -24,6 +25,7 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
     private var supportManager: FragmentManager? = null
     private var contentView: View? = null
     private val mDispatchInsets = MutableLiveData<WindowInsets>()
+    val dispatchInsets: LiveData<WindowInsets> = mDispatchInsets
 
     private var fragmentLifecycleCallbacks: FragmentManager.FragmentLifecycleCallbacks? = null
 
@@ -34,14 +36,16 @@ class ActivityWindowInsetsDispatcher : DefaultLifecycleObserver {
     }
 
     companion object {
-        fun dispatch(a: FragmentActivity) {
-            ActivityWindowInsetsDispatcher().dispatch(a)
+        fun dispatch(a: FragmentActivity): ActivityWindowInsetsDispatcher {
+            return ActivityWindowInsetsDispatcher().apply {
+                dispatch(a)
+            }
         }
     }
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
-        contentView?.setOnApplyWindowInsetsListener { view, windowInsets ->
+        contentView?.setOnApplyWindowInsetsListener { _, windowInsets ->
             // 记录windowInsets
             mDispatchInsets.value = WindowInsets(windowInsets)
 

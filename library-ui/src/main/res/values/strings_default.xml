@@ -35,4 +35,6 @@
     <string name="coin_rank">积分排行榜</string>
     <string name="coin_value">积分: %s</string>
     <string name="rank_value">排名: %s</string>
+
+    <string name="network_error_tip">网络已断开,请重新连接。</string>
 </resources>

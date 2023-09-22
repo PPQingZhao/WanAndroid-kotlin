@@ -28,12 +28,17 @@ abstract class LifecycleActivity<VB : ViewDataBinding, VM : LifecycleViewModel> 
             沉浸式状态栏: window flags = LayoutParams.FLAG_TRANSLUCENT_STATUS 配合布局中 android:fitsSystemWindows="true"进行实现
         */
 
-        ActivityWindowInsetsDispatcher.dispatch(this)
+        ActivityWindowInsetsDispatcher.dispatch(this).dispatchInsets.observe(this) {
+            onDispatchWindowInsets(WindowInsets(it))
+        }
 
         setVariable(mBinding, mViewModel)
         lifecycle.addObserver(mViewModel)
         mBinding.setLifecycleOwner { this.lifecycle }
 
+    }
+
+    open fun onDispatchWindowInsets(insets: WindowInsets) {
     }
 
     private fun setVariable(binding: VB, viewModel: VM) {
