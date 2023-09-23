@@ -1,4 +1,4 @@
-package com.pp.user.repositoy
+package com.pp.common.repository
 
 import com.pp.database.user.User
 import com.pp.common.http.wanandroid.bean.user.UserInfoBean

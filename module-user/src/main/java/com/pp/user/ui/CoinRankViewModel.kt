@@ -12,7 +12,7 @@ import com.pp.common.paging.itemCoinRankBinder
 import com.pp.common.repository.CoinRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
-import com.pp.user.repositoy.UserRepository
+import com.pp.common.repository.UserRepository
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter

@@ -14,6 +14,8 @@ import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.HotKeyBean
 import com.pp.common.model.ItemTextDeleteHotkeyViewModel
 import com.pp.common.paging.*
+import com.pp.common.repository.UserRepository
+import com.pp.database.user.User
 import com.pp.home.repository.SearchRepository
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -130,8 +132,8 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     override fun onFirstResume(owner: LifecycleOwner) {
         viewModelScope.launch(Dispatchers.IO) {
             async {
-                getSearchHotkeyHistory().collectLatest {
-                    mHistoryAdapter.setData(this, it)
+                UserRepository.getPreferenceUser {
+                    updateSearchHistory(it)
                 }
             }
 
@@ -139,6 +141,14 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
                 getSearchHot().collectLatest {
                     mHotkeyAdapter.setPagingData(this, it)
                 }
+            }
+        }
+    }
+
+    private fun updateSearchHistory(user: User?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            getSearchHotkeyHistory(user?.userId).collectLatest {
+                mHistoryAdapter.setData(this, it)
             }
         }
     }
@@ -168,8 +178,8 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     /**
      * 获取搜索记录
      */
-    private fun getSearchHotkeyHistory(): Flow<List<HotKeyBean>> {
-        return SearchRepository.getSearchHotkeyHistory().map {
+    private fun getSearchHotkeyHistory(userId: Long?): Flow<List<HotKeyBean>> {
+        return SearchRepository.getSearchHotkeyHistory(userId).map {
             mutableListOf<HotKeyBean>().apply {
                 if (it.isEmpty()) {
                     return@apply
@@ -185,19 +195,25 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
      */
     fun saveSearchHotKeyHistory(history: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            SearchRepository.saveSearchHotKeyHistory(history)
+            SearchRepository.saveSearchHotKeyHistory(
+                UserRepository.getPreferenceUser()?.userId,
+                history
+            )
         }
     }
 
     fun clearSearchHistory() {
         viewModelScope.launch(Dispatchers.IO) {
-            SearchRepository.clearSearchHistory()
+            SearchRepository.clearSearchHistory(UserRepository.getPreferenceUser()?.userId)
         }
     }
 
     fun removeSearchHistory(history: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            SearchRepository.removeSearchHistory(history)
+            SearchRepository.removeSearchHistory(
+                UserRepository.getPreferenceUser()?.userId,
+                history
+            )
         }
     }
 

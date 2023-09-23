@@ -1,10 +1,9 @@
-package com.pp.user.repositoy
+package com.pp.common.repository
 
 import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.lifecycle.LiveData
 import com.pp.common.app.App
 import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
@@ -42,6 +41,11 @@ object UserRepository {
         }
     }
 
+    suspend fun getPreferenceUser(): User? {
+        val userName = getUserPreferences().first()[preferences_key_user_name]
+        return findUser(userName)
+    }
+
     suspend fun getPreferenceUserName(block: (userName: String?) -> Unit) {
         getUserPreferences().collectLatest {
             val userName = it[preferences_key_user_name]
@@ -61,9 +65,7 @@ object UserRepository {
      * 登录preference 缓存中的user
      */
     suspend fun loginPreferenceUser(): Pair<ResponseBean<LoginBean>, User?> {
-        val userName: String? = getUserPreferences().first().run {
-            get(preferences_key_user_name)
-        }
+        val userName: String? = getUserPreferences().first()[preferences_key_user_name]
 
         val user = findUser(userName ?: "")
         return try {

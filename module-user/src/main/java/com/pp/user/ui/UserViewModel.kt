@@ -20,7 +20,7 @@ import com.pp.ui.databinding.ItemAllowRightBinding
 import com.pp.ui.viewModel.ItemAllowRightViewModel
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
-import com.pp.user.repositoy.UserRepository
+import com.pp.common.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

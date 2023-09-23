@@ -7,7 +7,7 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.database.AppDataBase
 import com.pp.router_service.IAppService
 import com.pp.router_service.RouterServiceImpl
-import com.pp.user.repositoy.UserRepository
+import com.pp.common.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

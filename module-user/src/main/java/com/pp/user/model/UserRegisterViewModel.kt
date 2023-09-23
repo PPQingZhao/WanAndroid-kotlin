@@ -2,7 +2,7 @@ package com.pp.user.model
 
 import android.view.View
 import androidx.lifecycle.*
-import com.pp.user.repositoy.UserRepository
+import com.pp.common.repository.UserRepository
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow

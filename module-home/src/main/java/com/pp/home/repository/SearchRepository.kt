@@ -13,25 +13,27 @@ import com.pp.common.datastore.userDataStore
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.*
 import com.pp.common.paging.ArticlePagingSource
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.collectLatest
 
 object SearchRepository {
 
     private const val DEBUG = false
 
-    suspend fun clearSearchHistory() {
+    suspend fun clearSearchHistory(userId: Long?) {
         App.getInstance().userDataStore.edit {
-            it.remove(preferences_key_search_hotkey_history)
+            it.remove(preferences_key_search_hotkey_history(userId))
         }
     }
 
     /**
      * 获取搜索历史记录
      */
-    fun getSearchHotkeyHistory(): Flow<List<HotKeyBean>> {
+    fun getSearchHotkeyHistory(userId: Long?): Flow<List<HotKeyBean>> {
         return channelFlow<List<HotKeyBean>> {
             App.getInstance().userDataStore.data.collectLatest {
-                val history = it[preferences_key_search_hotkey_history]
+                val history = it[preferences_key_search_hotkey_history(userId)]
                 if (DEBUG) {
                     Log.e("TAG", "get search history: $history")
                 }
@@ -55,12 +57,12 @@ object SearchRepository {
     /**
      * 保存搜索记录
      */
-    suspend fun saveSearchHotKeyHistory(history: String) {
+    suspend fun saveSearchHotKeyHistory(userId: Long?, history: String) {
         if (history.isBlank()) {
             return
         }
         App.getInstance().userDataStore.edit {
-            it[preferences_key_search_hotkey_history].let { oldHistory ->
+            it[preferences_key_search_hotkey_history(userId)].let { oldHistory ->
                 var oldItems = ""
                 oldHistory?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
                     ?.filter { item ->
@@ -74,7 +76,7 @@ object SearchRepository {
                     }
 
                 //更新搜索记录
-                it[preferences_key_search_hotkey_history] =
+                it[preferences_key_search_hotkey_history(userId)] =
                     (if (oldItems.isNotBlank()) "$history$KEY_SAVE_SEARCH_HOTKEY_HISTORY$oldItems" else history).also { history ->
                         if (DEBUG) {
                             Log.e("TAG", "save search history: $history")
@@ -98,9 +100,9 @@ object SearchRepository {
             pagingSourceFactory = { SearchPageSources(key) }).flow
     }
 
-    suspend fun removeSearchHistory(history: String) {
+    suspend fun removeSearchHistory(userId: Long?, history: String) {
         App.getInstance().userDataStore.edit {
-            it[preferences_key_search_hotkey_history].let { oldHistory ->
+            it[preferences_key_search_hotkey_history(userId)].let { oldHistory ->
                 var oldItems = ""
                 oldHistory?.split(KEY_SAVE_SEARCH_HOTKEY_HISTORY)
                     ?.filter { item ->
@@ -110,7 +112,7 @@ object SearchRepository {
                     }
 
                 //更新搜索记录
-                it[preferences_key_search_hotkey_history] = oldItems.also { item ->
+                it[preferences_key_search_hotkey_history(userId)] = oldItems.also { item ->
                     if (DEBUG) {
                         Log.e("TAG", "remove search history: $history  $item")
                     }
