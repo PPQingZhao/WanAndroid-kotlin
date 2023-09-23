@@ -43,20 +43,26 @@ class CoinViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
-    override fun onFirstResume(owner: LifecycleOwner) {
-        viewModelScope.launch {
-            async {
-                CoinRepository.getCoinInfo().data.let {
-                    coin.value = (it?.coinCount ?: 0).toString()
-                }
-            }
 
-            async {
-                CoinRepository.getCoinList().collectLatest {
-                    mAdapter.setPagingData(viewModelScope, it)
-                }
+    fun getCoinInfo() {
+        viewModelScope.launch {
+            CoinRepository.getCoinInfo().data.let {
+                coin.value = (it?.coinCount ?: 0).toString()
             }
         }
+    }
+
+    private fun getCoinList() {
+        viewModelScope.launch(Dispatchers.IO) {
+            CoinRepository.getCoinList().collectLatest {
+                mAdapter.setPagingData(viewModelScope, it)
+            }
+        }
+    }
+
+    override fun onFirstResume(owner: LifecycleOwner) {
+        getCoinInfo()
+        getCoinList()
     }
 
     /**
@@ -77,7 +83,7 @@ class CoinViewModel(app: Application) : ThemeViewModel(app) {
         ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
             view
         )?.run {
-            showFragment(RouterPath.User.fragment_coin_range,RouterPath.User.fragment_coin_range)
+            showFragment(RouterPath.User.fragment_coin_range, RouterPath.User.fragment_coin_range)
         }
     }
 

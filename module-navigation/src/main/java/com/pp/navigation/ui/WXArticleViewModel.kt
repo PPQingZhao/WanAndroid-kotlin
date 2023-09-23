@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import com.pp.base.ThemeViewModel
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.articleDifferCallback
 import com.pp.common.paging.collectedListener
@@ -35,11 +36,9 @@ class WXArticleViewModel(app: Application) : ThemeViewModel(app) {
 
     private val _wxArticleList = MutableSharedFlow<List<ArticleListBean>>()
     val wxArticleList = _wxArticleList.asSharedFlow()
-    fun getWXArticleList() {
-        viewModelScope.launch {
-            WXArticleRepository.getWXArticleList().data.let {
-                _wxArticleList.emit(it ?: emptyList())
-            }
+    suspend fun getWXArticleList(): ResponseBean<List<ArticleListBean>> {
+        return WXArticleRepository.getWXArticleList().also {
+            _wxArticleList.emit(it.data ?: emptyList())
         }
     }
 
@@ -70,10 +69,6 @@ class WXArticleViewModel(app: Application) : ThemeViewModel(app) {
                 }
             }
         }
-    }
-
-    override fun onFirstResume(owner: LifecycleOwner) {
-        getWXArticleList()
     }
 
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =

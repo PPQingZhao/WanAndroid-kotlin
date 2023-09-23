@@ -5,14 +5,15 @@ import androidx.datastore.preferences.core.edit
 import com.pp.common.app.App
 import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
-import com.pp.database.AppDataBase
-import com.pp.database.user.User
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ResponseBean
+import com.pp.common.http.wanandroid.bean.runCatchingResponse
 import com.pp.common.http.wanandroid.bean.user.LoginBean
 import com.pp.common.http.wanandroid.bean.user.UserInfoBean
+import com.pp.database.AppDataBase
+import com.pp.database.user.User
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
 object UserRepository {
@@ -58,7 +59,9 @@ object UserRepository {
     }
 
     suspend fun getUserInfo(): ResponseBean<UserInfoBean> {
-        return userApi.getUserInfo()
+        return runCatchingResponse {
+            userApi.getUserInfo()
+        }
     }
 
     /**
@@ -73,7 +76,9 @@ object UserRepository {
             Log.v(TAG, "start login: $userName}")
         }
         // 执行登录逻辑
-        val loginResponse = userApi.loginByUserName(userName, password)
+        val loginResponse = runCatchingResponse {
+            userApi.loginByUserName(userName, password)
+        }
 
         if (DEBUG) {
             Log.v(TAG, "login code: ${loginResponse.errorCode}")
@@ -107,7 +112,9 @@ object UserRepository {
      */
     suspend fun logoutWithPreferenceClear() {
         withContext(Dispatchers.IO) {
-            userApi.logout()
+            kotlin.runCatching {
+                userApi.logout()
+            }
             App.getInstance().baseContext.userDataStore.edit {
                 it[preferences_key_user_name] = ""
             }
@@ -119,7 +126,9 @@ object UserRepository {
         password: String?,
         rePassword: String?,
     ): ResponseBean<LoginBean> {
-        return userApi.registerByUserName(username, password, rePassword)
+        return runCatchingResponse {
+            userApi.registerByUserName(username, password, rePassword)
+        }
     }
 
 }

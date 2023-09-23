@@ -14,6 +14,7 @@ import com.pp.common.paging.itemText2ArticleListBinder
 import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
+import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
@@ -22,10 +23,8 @@ import com.pp.ui.utils.StateView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class SystemFragment private constructor() :
     ThemeFragment<FragmentSystemBinding, SystemViewModel>() {
@@ -71,7 +70,7 @@ class SystemFragment private constructor() :
             }
         }
 
-        mViewModel.getSystemList()
+        getSystemList()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -88,9 +87,19 @@ class SystemFragment private constructor() :
             mViewModel.mTheme,
             viewLifecycleOwner
         ).setOnRetry {
-            mViewModel.getSystemList()
+            getSystemList()
         }.build()
 
+    }
+
+    private fun getSystemList() {
+        mStateView.showLoading()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val response = withContext(Dispatchers.IO) {
+                mViewModel.getSystemList()
+            }
+            mStateView.showResponse(response)
+        }
     }
 
     private val selectedItem: ItemSelectedModel<ArticleListBean, ItemTextViewModel<ArticleListBean>> =

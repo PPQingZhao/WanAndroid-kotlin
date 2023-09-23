@@ -20,9 +20,7 @@ class RealHomeViewModel(app: Application) : ThemeViewModel(app) {
 
     fun getBanner() {
         viewModelScope.launch(Dispatchers.IO) {
-            kotlin.runCatching {
-                _bannerFlow.value = HomeRepository.getBanner()
-            }
+            _bannerFlow.value = HomeRepository.getBanner().data ?: emptyList()
         }
     }
 

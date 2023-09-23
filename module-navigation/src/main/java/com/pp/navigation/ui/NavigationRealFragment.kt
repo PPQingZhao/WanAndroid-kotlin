@@ -12,6 +12,7 @@ import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemText1ArticleListBinder
 import com.pp.common.paging.itemText2ArticleBinder
 import com.pp.common.paging.itemTextArticleListBinder
+import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
 import com.pp.ui.R
 import com.pp.ui.adapter.ItemBinder
@@ -20,10 +21,8 @@ import com.pp.ui.utils.StateView
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.ItemTextViewModel
 import com.pp.ui.viewModel.OnItemListener
-import kotlinx.coroutines.async
-import kotlinx.coroutines.cancel
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 class NavigationRealFragment private constructor() :
     ThemeFragment<FragmentRealnavigationBinding, NavigationRealViewModel>() {
@@ -70,9 +69,20 @@ class NavigationRealFragment private constructor() :
             mViewModel.mTheme,
             viewLifecycleOwner
         ).setOnRetry {
-            mViewModel.getNavigation()
+            getNavigation()
         }.build()
 
+    }
+
+    private fun getNavigation() {
+        mStateView.showLoading()
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            mViewModel.getNavigation().let {
+                withContext(Dispatchers.Main) {
+                    mStateView.showResponse(it)
+                }
+            }
+        }
     }
 
     private fun initRecyclerView() {
@@ -140,19 +150,7 @@ class NavigationRealFragment private constructor() :
     override fun onFirstResume() {
         lifecycleScope.launch {
             async {
-                var isInit = true
                 mViewModel.navigation.collectLatest {
-                    if (isInit) {
-                        mStateView.showLoading()
-                        isInit = false
-                        return@collectLatest
-                    }
-
-                    if (it.isEmpty()) {
-                        mStateView.showEmpty()
-                    } else {
-                        mStateView.showContent()
-                    }
                     cidAdapter.setDataList(it)
                 }
             }
@@ -164,7 +162,9 @@ class NavigationRealFragment private constructor() :
                 }
             }
         }
-        mViewModel.getNavigation()
+
+        getNavigation()
+
     }
 
 

@@ -37,7 +37,10 @@ class CoinFragment : ThemeFragment<FragmentCoinBinding, CoinViewModel>() {
         StateView.DefaultBuilder(
             mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner
         )
-            .setOnRetry { mViewModel.mAdapter.refresh() }
+            .setOnRetry {
+                mViewModel.getCoinInfo()
+                mViewModel.mAdapter.refresh()
+            }
             .build()
             .also {
                 mViewModel.mAdapter.attachStateView(it)

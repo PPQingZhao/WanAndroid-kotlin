@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 class FloatingScrollerListener(private val floatButton: View) : OnScrollListener() {
 
     init {
-        floatButton.visibility = View.GONE
+        animateOut(floatButton)
     }
 
     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

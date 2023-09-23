@@ -11,10 +11,7 @@ import com.pp.common.constant.MAX_COUNT_SEARCH_HOTKEY_HISTORY
 import com.pp.common.constant.preferences_key_search_hotkey_history
 import com.pp.common.datastore.userDataStore
 import com.pp.common.http.wanandroid.api.WanAndroidService
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.HotKeyBean
-import com.pp.common.http.wanandroid.bean.ArticlePageBean
-import com.pp.common.http.wanandroid.bean.ResponseBean
+import com.pp.common.http.wanandroid.bean.*
 import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.flow.*
 
@@ -89,7 +86,9 @@ object SearchRepository {
     }
 
     suspend fun getHotKey(): ResponseBean<List<HotKeyBean>> {
-        return WanAndroidService.searchApi.getHotkey()
+        return runCatchingResponse {
+            WanAndroidService.searchApi.getHotkey()
+        }
     }
 
     fun searchPageData(key: String?): Flow<PagingData<ArticleBean>> {

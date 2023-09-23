@@ -14,7 +14,9 @@ object CoinRepository {
      * 获取个人积分
      */
     suspend fun getCoinInfo(): ResponseBean<CoinInfoBean> {
-        return WanAndroidService.coinApi.getCoinInfo()
+        return runCatchingResponse {
+            WanAndroidService.coinApi.getCoinInfo()
+        }
     }
 
     /**

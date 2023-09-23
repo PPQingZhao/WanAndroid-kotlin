@@ -5,12 +5,15 @@ import android.view.View
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import com.pp.base.ThemeFragment
+import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.attachStateView
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class WXArticleFragment private constructor() :
     ThemeFragment<FragmentWxarticleBinding, WXArticleViewModel>() {
@@ -30,51 +33,45 @@ class WXArticleFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initStateView()
+        StateView.DefaultBuilder(
+            mBinding.refreshLayout,
+            mViewModel.mTheme,
+            viewLifecycleOwner
+        )
+            .setOnRetry {
+                mViewModel.pagingDataAdapter.refresh()
+            }
+            .build()
+            .let {
+                mViewModel.pagingDataAdapter.attachStateView(it)
+            }
     }
 
-    private fun initStateView() {
+    private val mStateView by lazy {
 
-        mBinding.contentParent.doOnAttach {
+        StateView.DefaultBuilder(
+            mBinding.contentParent,
+            mViewModel.mTheme,
+            viewLifecycleOwner
+        ).setOnRetry {
+            getWXArticleList()
+        }.build()
 
-            StateView.DefaultBuilder(
-                mBinding.refreshLayout,
-                mViewModel.mTheme,
-                viewLifecycleOwner
-            )
-                .setOnRetry {
-                    mViewModel.pagingDataAdapter.refresh()
-                }
-                .build()
-                .let {
-                    mViewModel.pagingDataAdapter.attachStateView(it)
-                }
+    }
 
-            val stateView = StateView.DefaultBuilder(
-                mBinding.contentParent,
-                mViewModel.mTheme,
-                viewLifecycleOwner
-            ).setOnRetry {
+    private fun getWXArticleList() {
+        mStateView.showLoading()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val response = withContext(Dispatchers.IO) {
                 mViewModel.getWXArticleList()
             }
-                .build()
-                .also {
-                    it.showLoading()
-                }
+            mStateView.showResponse(response)
 
-            viewLifecycleOwner.lifecycleScope.launch {
-                mViewModel.wxArticleList.collectLatest {
-                    cancel()
-                    if (it.isEmpty()) {
-                        stateView.showEmpty()
-                    } else {
-                        stateView.showContent()
-                    }
-                }
-            }
         }
-
     }
 
+    override fun onFirstResume() {
+        getWXArticleList()
+    }
 
 }

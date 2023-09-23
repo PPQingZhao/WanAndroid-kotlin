@@ -4,18 +4,16 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.http.wanandroid.bean.ArticleListBean
-import com.pp.common.http.wanandroid.bean.ArticlePageBean
-import com.pp.common.http.wanandroid.bean.ResponseBean
+import com.pp.common.http.wanandroid.bean.*
 import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.flow.Flow
 
 object WXArticleRepository {
 
-
     suspend fun getWXArticleList(): ResponseBean<List<ArticleListBean>> {
-        return WanAndroidService.wxArticleApi.getWXArticleList()
+        return runCatchingResponse {
+            WanAndroidService.wxArticleApi.getWXArticleList()
+        }
     }
 
     fun getWXArticle(id: Int): Flow<PagingData<ArticleBean>> {

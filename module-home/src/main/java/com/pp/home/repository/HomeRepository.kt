@@ -6,7 +6,9 @@ import androidx.paging.PagingData
 import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.ArticlePageBean
+import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.home.BannerBean
+import com.pp.common.http.wanandroid.bean.runCatchingResponse
 import com.pp.common.paging.ArticlePagingSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -15,8 +17,10 @@ import kotlinx.coroutines.withContext
 
 object HomeRepository {
     private const val startPage = 0
-    suspend fun getBanner(): List<BannerBean> {
-        return WanAndroidService.homeApi.getBanner().data ?: emptyList()
+    suspend fun getBanner(): ResponseBean<List<BannerBean>> {
+        return runCatchingResponse {
+            WanAndroidService.homeApi.getBanner()
+        }
     }
 
     fun getPageData(): Flow<PagingData<ArticleBean>> {

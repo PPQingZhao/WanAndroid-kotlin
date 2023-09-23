@@ -4,7 +4,9 @@ import androidx.lifecycle.lifecycleScope
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
+import com.pp.common.http.wanandroid.api.WanAndroidService
 import com.pp.common.http.wanandroid.bean.ArticleListBean
+import com.pp.common.util.showResponse
 import com.pp.project.databinding.FragmentProjectBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.utils.StateView
@@ -46,26 +48,22 @@ class ProjectFragment : ThemeFragment<FragmentProjectBinding, ProjectViewModel>(
 
         withContext(Dispatchers.Main) {
 
-            kotlin.runCatching {
-                val projectCid =
-                    withContext(Dispatchers.IO) {
-                        mViewModel.getProjectCid()
-                    }
+            val response = withContext(Dispatchers.IO) {
+                mViewModel.getProjectCid()
+            }
 
-                val pagers = getPagers(projectCid)
-                if (projectCid.isEmpty()) {
-                    mStateView.showEmpty()
-                } else {
-                    mStateView.showContent()
-                    mBinding.viewpager2.offscreenPageLimit = 1
-                    TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
-                        .addPagers(pagers)
-                        .attach(mBinding.tablayout, mBinding.viewpager2)
-                }
-            }.getOrElse {
-                withContext(Dispatchers.Main) {
-                    mStateView.showError(it)
-                }
+            mStateView.showResponse(response)
+
+            if (response.errorCode != WanAndroidService.ErrorCode.SUCCESS) {
+                return@withContext
+            }
+
+            response.data?.let {
+                val pagers = getPagers(it)
+                mBinding.viewpager2.offscreenPageLimit = 1
+                TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
+                    .addPagers(pagers)
+                    .attach(mBinding.tablayout, mBinding.viewpager2)
             }
         }
     }
