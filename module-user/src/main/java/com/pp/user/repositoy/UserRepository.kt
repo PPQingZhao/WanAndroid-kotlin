@@ -1,7 +1,10 @@
 package com.pp.user.repositoy
 
 import android.util.Log
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.LiveData
 import com.pp.common.app.App
 import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
@@ -13,6 +16,8 @@ import com.pp.common.http.wanandroid.bean.user.UserInfoBean
 import com.pp.database.AppDataBase
 import com.pp.database.user.User
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 
@@ -22,19 +27,45 @@ object UserRepository {
 
     private val userApi by lazy { WanAndroidService.userApi }
     private val userDao by lazy {
-        AppDataBase.instance.getUserDao()
+        AppDataBase.instance.value!!.getUserDao()
+    }
+
+    private fun getUserDataStore(): DataStore<Preferences> {
+        return App.getInstance().baseContext.userDataStore
+    }
+
+    suspend fun getPreferenceUser(block: (user: User?) -> Unit) {
+        getUserPreferences().collectLatest {
+            val userName = it[preferences_key_user_name]
+            val user = findUser(userName)
+            block.invoke(user)
+        }
+    }
+
+    suspend fun getPreferenceUserName(block: (userName: String?) -> Unit) {
+        getUserPreferences().collectLatest {
+            val userName = it[preferences_key_user_name]
+            block.invoke(userName)
+        }
+    }
+
+    private fun getUserPreferences(): Flow<Preferences> {
+        return getUserDataStore().data
+    }
+
+    suspend fun findUser(name: String?): User? {
+        return userDao.findUser(name)
     }
 
     /**
      * 登录preference 缓存中的user
      */
     suspend fun loginPreferenceUser(): Pair<ResponseBean<LoginBean>, User?> {
-        var userName: String?
-        App.getInstance().baseContext.userDataStore.data.first().run {
-            userName = get(preferences_key_user_name)
+        val userName: String? = getUserPreferences().first().run {
+            get(preferences_key_user_name)
         }
 
-        val user = userDao.findUser(userName ?: "")
+        val user = findUser(userName ?: "")
         return try {
             login(user?.name, user?.password)
         } catch (e: Throwable) {
@@ -51,7 +82,7 @@ object UserRepository {
     ): Pair<ResponseBean<LoginBean>, User?> {
         val result = login(userName, password)
         result.second?.apply {
-            App.getInstance().baseContext.userDataStore.edit {
+            getUserDataStore().edit {
                 it[preferences_key_user_name] = this.name.toString()
             }
         }
@@ -115,7 +146,7 @@ object UserRepository {
             kotlin.runCatching {
                 userApi.logout()
             }
-            App.getInstance().baseContext.userDataStore.edit {
+            getUserDataStore().edit {
                 it[preferences_key_user_name] = ""
             }
         }

@@ -2,7 +2,6 @@ package com.pp.database
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.provider.ContactsContract.Data
 import android.util.Log
 import androidx.lifecycle.*
 import androidx.room.Database
@@ -12,7 +11,6 @@ import com.pp.database.details.FeedDetails
 import com.pp.database.user.User
 import com.pp.database.user.UserDao
 import kotlinx.coroutines.*
-import kotlin.properties.Delegates
 
 /**
  * 数据库
@@ -31,18 +29,16 @@ abstract class AppDataBase : RoomDatabase() {
         @SuppressLint("StaticFieldLeak")
         private var context: Context? = null
             set(value) {
-                if (context != null) {
+                if (field != null) {
                     throw RuntimeException("Do not initialize AppDataBase again")
                 }
 
                 field = value
             }
+            get() = checkNotNull(field) { "you should call init(context) at first" }
 
-        val instance by lazy {
-            if (context == null) {
-                throw RuntimeException("you should call init(context) at first")
-            }
 
+        val instance: LiveData<AppDataBase> by lazy {
 //            val v1_to_v2 = object : Migration(1, 2) {
 //                override fun migrate(database: SupportSQLiteDatabase) {
 //                    // do nothing
@@ -61,11 +57,16 @@ abstract class AppDataBase : RoomDatabase() {
 //
 //                }
 //            }
-
-            Room.databaseBuilder(context!!, AppDataBase::class.java, DB_NAME)
+//            Room.databaseBuilder(context!!, AppDataBase::class.java, DB_NAME)
 //                .addMigrations(v1_to_v2)
 //                .addMigrations(v2_to_v3)
-                .build()
+//                .build()
+
+            MutableLiveData<AppDataBase>().apply {
+                postValue(
+                    Room.databaseBuilder(context!!, AppDataBase::class.java, DB_NAME).build()
+                )
+            }
         }
 
         private fun init() {
@@ -96,7 +97,6 @@ abstract class AppDataBase : RoomDatabase() {
                 // 数据库初始化
                 init()
             }
-            // 初始化完成，移除监听
             ProcessLifecycleOwner.get().lifecycle.removeObserver(this)
         }
     }

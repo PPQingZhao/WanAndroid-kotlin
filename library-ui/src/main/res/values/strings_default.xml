@@ -35,6 +35,9 @@
     <string name="coin_rank">积分排行榜</string>
     <string name="coin_value">积分: %s</string>
     <string name="rank_value">排名: %s</string>
+    <string name="username_value">用户名: %s</string>
+    <string name="coin_info_value">"积分:%s 等级:%s 排名:%s"</string>
+    <string name="id_value">id:%s</string>
 
     <string name="network_error_tip">网络已断开,请重新连接。</string>
 </resources>

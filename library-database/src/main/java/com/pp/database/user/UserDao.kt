@@ -1,5 +1,6 @@
 package com.pp.database.user;
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -25,14 +26,10 @@ interface UserDao {
     fun delete(user: User)
 
     @Query("SELECT * FROM User where name = :username")
-    fun findUser(username: String): User?
+    fun findUser(username: String?): User?
 
-    /**
-     * 表中有数据就返回第一条数据
-     *
-     * @return
-     */
-    @Query("SELECT * FROM User")
-    fun findSingleUser(): User?
+    @Query("SELECT * FROM User where name = :username")
+    fun getUser(username: String?): LiveData<User>
+
 
 }

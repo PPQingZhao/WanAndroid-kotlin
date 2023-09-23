@@ -3,6 +3,9 @@ package com.pp.user.ui
 import android.app.Application
 import android.view.View
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeViewModel
 import com.pp.common.router.MultiRouterFragmentViewModel
@@ -17,10 +20,13 @@ import com.pp.ui.databinding.ItemAllowRightBinding
 import com.pp.ui.viewModel.ItemAllowRightViewModel
 import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
-import com.pp.user.manager.UserManager
+import com.pp.user.repositoy.UserRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class UserViewModel(app: Application) : ThemeViewModel(app) {
-    val userModel = UserManager.userModel()
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> = _user
 
     val mAdapter by lazy {
         RecyclerViewBindingAdapter<ItemAllowRightViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
@@ -37,68 +43,64 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
 
     private fun getItems(): List<ItemAllowRightViewModel> {
         return mutableListOf<ItemAllowRightViewModel>().apply {
-            add(
-                ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_message_center,
-                    R.string.message_center,
-                    mTheme
-                )
+            val itemMessageCenter = ItemAllowRightViewModel(
+                com.pp.skin.R.drawable.ic_message_center,
+                R.string.message_center,
+                mTheme
             )
 
-            add(
-                ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_coin,
-                    R.string.self_coin,
-                    mTheme
-                ).apply {
-                    setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
-                        override fun onItemClick(
-                            view: View,
-                            item: ItemDataViewModel<Any>,
-                        ): Boolean {
-                            showFragment(view, RouterPath.User.fragment_coin)
-                            return true
-                        }
-                    })
-                }
-            )
+            val itemCoin = ItemAllowRightViewModel(
+                com.pp.skin.R.drawable.ic_coin,
+                R.string.self_coin,
+                mTheme
+            ).apply {
+                setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
+                    override fun onItemClick(
+                        view: View,
+                        item: ItemDataViewModel<Any>,
+                    ): Boolean {
+                        showFragment(view, RouterPath.User.fragment_coin)
+                        return true
+                    }
+                })
+            }
 
-            add(
-                ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_favorite_on,
-                    R.string.self_collected,
-                    mTheme
-                ).apply {
-                    setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
-                        override fun onItemClick(
-                            view: View,
-                            item: ItemDataViewModel<Any>,
-                        ): Boolean {
-                            showFragment(view, RouterPath.User.fragment_collected)
-                            return true
-                        }
-                    })
-                }
-            )
+            val itemCollected = ItemAllowRightViewModel(
+                com.pp.skin.R.drawable.ic_favorite_on,
+                R.string.self_collected,
+                mTheme
+            ).apply {
+                setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
+                    override fun onItemClick(
+                        view: View,
+                        item: ItemDataViewModel<Any>,
+                    ): Boolean {
+                        showFragment(view, RouterPath.User.fragment_collected)
+                        return true
+                    }
+                })
+            }
 
-            add(
-                ItemAllowRightViewModel(
-                    com.pp.skin.R.drawable.ic_skin,
-                    R.string.theme_setting,
-                    mTheme
-                ).apply {
-                    setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
-                        override fun onItemClick(
-                            view: View,
-                            item: ItemDataViewModel<Any>,
-                        ): Boolean {
-                            showFragment(view, RouterPath.Local.fragment_theme_setting)
-                            return true
-                        }
-                    })
-                }
-            )
+            val itemSkin = ItemAllowRightViewModel(
+                com.pp.skin.R.drawable.ic_skin,
+                R.string.theme_setting,
+                mTheme
+            ).apply {
+                setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
+                    override fun onItemClick(
+                        view: View,
+                        item: ItemDataViewModel<Any>,
+                    ): Boolean {
+                        showFragment(view, RouterPath.Local.fragment_theme_setting)
+                        return true
+                    }
+                })
+            }
 
+            add(itemMessageCenter)
+            add(itemCoin)
+            add(itemCollected)
+            add(itemSkin)
         }
     }
 
@@ -113,19 +115,36 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
         )
     }
 
+    override fun onCreate(owner: LifecycleOwner) {
+        viewModelScope.launch(Dispatchers.IO) {
+            UserRepository.getPreferenceUser {
+                _user.postValue(it)
+            }
+        }
+    }
+
     override fun onFirstResume(owner: LifecycleOwner) {
         mAdapter.setDataList(getItems())
     }
 
     fun nickName(user: User?): String {
-        return "用户名: ${user?.nickName}"
+        return user?.let {
+            getApplication<Application>().getString(R.string.username_value)
+                .format(it.nickName)
+        } ?: ""
     }
 
     fun userId(user: User?): String {
-        return "id: ${user?.userId}"
+        return user?.let {
+            getApplication<Application>().getString(R.string.id_value)
+                .format(it.userId)
+        } ?: ""
     }
 
     fun coinInfo(user: User?): String {
-        return "积分:${user?.coinCount} 等级:${user?.level} 排名:${user?.rank}"
+        return user?.let {
+            getApplication<Application>().getString(R.string.coin_info_value)
+                .format(it.coinCount.toString(), it.level.toString(), it.rank)
+        } ?: ""
     }
 }
