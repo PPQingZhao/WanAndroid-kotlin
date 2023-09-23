@@ -40,4 +40,6 @@
     <string name="id_value">id:%s</string>
 
     <string name="network_error_tip">网络已断开,请重新连接。</string>
+    <string name="error_network">网络错误。</string>
+    <string name="error_unknown">未知错误。</string>
 </resources>

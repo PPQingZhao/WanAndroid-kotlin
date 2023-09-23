@@ -36,27 +36,21 @@ class UserRegisterViewModel : RegisterViewModel(), DefaultLifecycleObserver {
         helperMessage.value = ""
         succeed.value = false
 
-    /*    if (password.value != confirmPassword.value) {
-            helperMessage.value = "请确认密码"
-            return
-        }*/
+        /*    if (password.value != confirmPassword.value) {
+                helperMessage.value = "请确认密码"
+                return
+            }*/
 
         ViewTreeLifecycleOwner.get(view)?.lifecycleScope?.launch {
-            try {
-                val response = UserRepository.register(username.value, password.value,confirmPassword.value)
+            val response =
+                UserRepository.register(username.value, password.value, confirmPassword.value)
 
-                val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
-                _registerResult.emit(result)
+            val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
+            _registerResult.emit(result)
 
-                withContext(Dispatchers.Main) {
-                    helperMessage.value = response.errorMsg
-                    succeed.value = result
-                }
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                withContext(Dispatchers.Main) {
-                    errorMessage.value = "发生错误"
-                }
+            withContext(Dispatchers.Main) {
+                helperMessage.value = response.errorMsg
+                succeed.value = result
             }
         }
     }

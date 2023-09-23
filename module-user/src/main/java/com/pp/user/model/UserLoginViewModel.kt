@@ -1,10 +1,9 @@
 package com.pp.user.model
 
-import android.util.Log
 import android.view.View
 import androidx.lifecycle.*
 import com.pp.common.http.wanandroid.api.WanAndroidService
-import com.pp.user.manager.UserManager
+import com.pp.user.repositoy.UserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -14,8 +13,12 @@ import kotlinx.coroutines.withContext
 class UserLoginViewModel : LoginViewModel(), DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
-        username.value = UserManager.userModel().userName.value
-        password.value = UserManager.userModel().password.value
+        owner.lifecycleScope.launch(Dispatchers.IO) {
+            UserRepository.getPreferenceUser {
+                username.postValue(it?.nickName)
+                password.postValue(it?.password)
+            }
+        }
 
         val observer = { v: String? ->
             errorMessage.value = ""
@@ -38,21 +41,14 @@ class UserLoginViewModel : LoginViewModel(), DefaultLifecycleObserver {
         errorMessage.value = ""
         helperMessage.value = ""
         ViewTreeLifecycleOwner.get(view)?.lifecycleScope?.launch(Dispatchers.IO) {
+            val response =
+                UserRepository.loginWithPreferenceCache(username.value, password.value).first
+            val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
 
-            try {
-                val response = UserManager.loginWithPreferenceCache(username.value, password.value)
-                val result = response.errorCode == WanAndroidService.ErrorCode.SUCCESS
-
-                _loginResult.emit(result)
-                withContext(Dispatchers.Main) {
-                    helperMessage.value = response.errorMsg
-                    succeed.value = result
-                }
-            } catch (e: Throwable) {
-                Log.e("UserLoginViewModel", "${e.message}")
-                withContext(Dispatchers.Main) {
-                    errorMessage.value = "发生错误"
-                }
+            _loginResult.emit(result)
+            withContext(Dispatchers.Main) {
+                helperMessage.value = response.errorMsg
+                succeed.value = result
             }
         }
     }

@@ -27,6 +27,7 @@ import kotlinx.coroutines.launch
 class UserViewModel(app: Application) : ThemeViewModel(app) {
     private val _user = MutableLiveData<User>()
     val user: LiveData<User> = _user
+    val loginEnable = MutableLiveData<Boolean>(false)
 
     val mAdapter by lazy {
         RecyclerViewBindingAdapter<ItemAllowRightViewModel>(getItemLayoutRes = { R.layout.item_allow_right })
@@ -118,6 +119,7 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
     override fun onCreate(owner: LifecycleOwner) {
         viewModelScope.launch(Dispatchers.IO) {
             UserRepository.getPreferenceUser {
+                loginEnable.postValue(it == null)
                 _user.postValue(it)
             }
         }
@@ -146,5 +148,19 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
             getApplication<Application>().getString(R.string.coin_info_value)
                 .format(it.coinCount.toString(), it.level.toString(), it.rank)
         } ?: ""
+    }
+
+    /**
+     * 跳转登录界面
+     */
+    fun onLogin(view: View) {
+        showFragment(view, RouterPath.User.fragment_login)
+    }
+
+    /**
+     * 跳转设置界面
+     */
+    fun onSetting(view: View) {
+        showFragment(view, RouterPath.Local.fragment_setting)
     }
 }

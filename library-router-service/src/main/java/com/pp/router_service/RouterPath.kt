@@ -32,6 +32,7 @@ object RouterPath {
     }
 
     object Local {
+        const val fragment_setting = "/local/fragment_setting"
         const val fragment_theme_setting = "/local/fragment_theme_setting"
     }
 

@@ -14,7 +14,6 @@ object RouterServiceImpl {
      */
     object User{
         private const val base = "/user_service"
-        const val SERVICE_USER = "$base/user"
         const val USER_APP = "$base/app"
     }
 

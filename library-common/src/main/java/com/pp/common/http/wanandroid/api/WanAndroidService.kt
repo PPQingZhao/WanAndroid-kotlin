@@ -36,6 +36,8 @@ interface WanAndroidService {
         const val FAILED = -1
         const val SUCCESS = 0
         const val LOGIN_FAILED = -1001
+        const val UNKNOWN_HOST = -2002
+        const val UNKNOWN_ERROR = UNKNOWN_HOST - 1
     }
 
 }

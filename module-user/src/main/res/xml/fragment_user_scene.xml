@@ -57,7 +57,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
 
         <Constraint
-            android:id="@+id/tv_show"
+            android:id="@+id/tv_coin_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
@@ -78,9 +78,14 @@
             android:paddingTop="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+        <Constraint
+            android:id="@+id/tv_login"
+            app:visibilityMode="ignore" />
     </ConstraintSet>
 
     <ConstraintSet android:id="@+id/end">
+
         <Constraint
             android:id="@+id/iv_avatar"
             android:layout_width="0dp"
@@ -133,7 +138,7 @@
             app:layout_constraintTop_toBottomOf="@id/tv_nickname" />
 
         <Constraint
-            android:id="@+id/tv_show"
+            android:id="@+id/tv_coin_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_16"
@@ -153,6 +158,10 @@
             android:paddingTop="@dimen/dp_16"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/iv_avatar" />
+
+        <Constraint
+            android:id="@+id/tv_login"
+            app:visibilityMode="ignore" />
     </ConstraintSet>
 
     <Transition
