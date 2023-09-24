@@ -5,6 +5,8 @@ import android.view.View
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.lifecycleScope
 import com.pp.base.ThemeFragment
+import com.pp.common.repository.UserRepository
+import com.pp.common.repository.getPreferenceUserWhenResume
 import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentWxarticleBinding
 import com.pp.ui.utils.StateView
@@ -45,6 +47,10 @@ class WXArticleFragment private constructor() :
             .let {
                 mViewModel.pagingDataAdapter.attachStateView(it)
             }
+
+        UserRepository.getPreferenceUserWhenResume(viewLifecycleOwner){
+            getWXArticleList()
+        }
     }
 
     private val mStateView by lazy {

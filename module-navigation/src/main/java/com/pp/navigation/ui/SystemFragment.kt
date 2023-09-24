@@ -12,6 +12,8 @@ import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemText1ArticleListBinder
 import com.pp.common.paging.itemText2ArticleListBinder
 import com.pp.common.paging.itemText3ArticleBinder
+import com.pp.common.repository.UserRepository
+import com.pp.common.repository.getPreferenceUserWhenResume
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.showResponse
@@ -75,7 +77,9 @@ class SystemFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        UserRepository.getPreferenceUserWhenResume(viewLifecycleOwner){
+            getSystemList()
+        }
         initRecyclerview()
     }
 
@@ -115,6 +119,7 @@ class SystemFragment private constructor() :
             return true
         }
     }
+
     private val mAdapter by lazy {
         RecyclerViewBindingAdapter<ArticleListBean>(getItemLayoutRes = { R.layout.item_text3 })
             .apply {

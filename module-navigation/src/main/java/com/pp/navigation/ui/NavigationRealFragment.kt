@@ -12,6 +12,8 @@ import com.pp.common.model.ItemSelectedModel
 import com.pp.common.paging.itemText1ArticleListBinder
 import com.pp.common.paging.itemText2ArticleBinder
 import com.pp.common.paging.itemTextArticleListBinder
+import com.pp.common.repository.UserRepository
+import com.pp.common.repository.getPreferenceUserWhenResume
 import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentRealnavigationBinding
 import com.pp.ui.R
@@ -45,7 +47,9 @@ class NavigationRealFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        UserRepository.getPreferenceUserWhenResume(viewLifecycleOwner){
+            getNavigation()
+        }
         selectedItem.observerSelectedItem(
             viewLifecycleOwner
         ) { item ->

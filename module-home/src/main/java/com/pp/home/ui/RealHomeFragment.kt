@@ -6,13 +6,10 @@ import android.view.View
 import android.widget.ImageView
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.*
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
-import com.pp.common.paging.collectedListener
-import com.pp.common.paging.itemArticlePagingAdapter
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
@@ -23,7 +20,6 @@ import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.BannerCarousel.Adapter
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.loadOriginal
-import com.pp.ui.utils.setPagingAdapter
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -44,6 +40,7 @@ class RealHomeFragment :
         initBanner()
         initIndicator()
         initStateView()
+        initRefreshLayout()
     }
 
     private fun initStateView() {
@@ -51,12 +48,11 @@ class RealHomeFragment :
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
                 .setOnRetry {
-                    mViewModel.getBanner()
-                    mArticleAdapter.refresh()
+                    mViewModel.refresh()
                 }
                 .build()
                 .also {
-                    mArticleAdapter.attachStateView(it)
+                    mViewModel.mArticleAdapter.attachStateView(it)
                 }
         }
 
@@ -132,25 +128,8 @@ class RealHomeFragment :
         mBinding.indicator.initIndicator(mBinding.carousel.count)
     }
 
-    private val mArticleAdapter by lazy {
-        itemArticlePagingAdapter(mViewModel.mTheme, mViewModel.viewModelScope)
+    private fun initRefreshLayout() {
+        mBinding.refreshLayout.setOnChildScrollUpCallback { parent, child -> mBinding.contentMotionLayout.progress > 0 }
     }
 
-    private fun initPagingList() {
-
-        mBinding.recyclerview.setPagingAdapter(
-            lifecycleScope,
-            mViewModel.getPageData(),
-            mArticleAdapter,
-            layoutManager = LinearLayoutManager(requireContext()),
-            refreshLayout = mBinding.refreshLayout,
-            onReFreshChildScrollUp = { mBinding.contentMotionLayout.progress > 0 }
-        )
-    }
-
-    override fun onFirstResume() {
-        super.onFirstResume()
-        mViewModel.getBanner()
-        initPagingList()
-    }
 }

@@ -19,22 +19,6 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
         return AnswerViewModel::class.java
     }
 
-    private val mArticleAdapter by lazy {
-        itemArticlePagingAdapter(mViewModel.mTheme, mViewModel.viewModelScope)
-    }
-
-    private fun initPagingList() {
-
-        mBinding.pageListView.setPagingAdapter(
-            lifecycleScope,
-            mViewModel.getPageData(),
-            mArticleAdapter,
-            layoutManager = LinearLayoutManager(requireContext()),
-            refreshLayout = mBinding.refreshLayout
-        )
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initStateView()
@@ -45,18 +29,13 @@ class AnswerFragment : ThemeFragment<FragmentHomeChildAnswerBinding, AnswerViewM
 
             StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
                 .setOnRetry {
-                    mArticleAdapter.refresh()
+                    mViewModel.refresh()
                 }
                 .build()
                 .also {
-                    mArticleAdapter.attachStateView(it)
+                    mViewModel.mArticleAdapter.attachStateView(it)
                 }
         }
 
-    }
-
-    override fun onFirstResume() {
-        super.onFirstResume()
-        initPagingList()
     }
 }

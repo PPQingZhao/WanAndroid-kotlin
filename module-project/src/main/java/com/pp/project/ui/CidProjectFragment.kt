@@ -1,22 +1,12 @@
 package com.pp.project.ui
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.view.doOnAttach
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.viewModelScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.pp.base.ThemeFragment
-import com.pp.common.http.wanandroid.bean.ArticleBean
-import com.pp.common.paging.articleDifferCallback
-import com.pp.common.paging.collectedListener
-import com.pp.common.paging.itemProjectArticleBinder
 import com.pp.project.databinding.FragmentCidprojectBinding
-import com.pp.ui.R
-import com.pp.ui.adapter.BindingPagingDataAdapter
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.attachStateView
-import com.pp.ui.utils.setPagingAdapter
-import kotlinx.coroutines.launch
 
 class CidProjectFragment private constructor() :
     ThemeFragment<FragmentCidprojectBinding, CidProjectViewModel>() {
@@ -50,43 +40,18 @@ class CidProjectFragment private constructor() :
         }
     }
 
-    private suspend fun initPagingList() {
-        viewLifecycleOwner.lifecycleScope
-        val adapter = BindingPagingDataAdapter<ArticleBean>(
-            { R.layout.item_projectarticle },
-            diffCallback = articleDifferCallback
-        ).apply {
-            itemProjectArticleBinder(mViewModel.mTheme, mViewModel.viewModelScope).also {
-                addItemViewModelBinder(it)
-            }
-
-            collectedListener(viewLifecycleOwner.lifecycleScope)
-        }
-
-
-        StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
-            .setOnRetry {
-                adapter.refresh()
-            }
-            .build()
-            .also {
-                adapter.attachStateView(it)
-            }
-
-        mBinding.pageList.setPagingAdapter(
-            lifecycleScope,
-            mViewModel.getPageData(),
-            adapter,
-            layoutManager = LinearLayoutManager(requireContext()),
-            refreshLayout = mBinding.refreshLayout
-        )
-    }
-
-    override fun onFirstResume() {
-        super.onFirstResume()
-
-        lifecycleScope.launch {
-            initPagingList()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mBinding.refreshLayout.doOnAttach {
+            StateView.DefaultBuilder(mBinding.refreshLayout, mViewModel.mTheme, viewLifecycleOwner)
+                .setOnRetry {
+                    mViewModel.refresh()
+                }
+                .build()
+                .also {
+                    mViewModel.mAdapter.attachStateView(it)
+                }
         }
     }
+
 }

@@ -14,7 +14,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:attachPagingAdapter="@{viewModel.MArticleAdapter}">
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -23,7 +24,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/pageListView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:pagingAdapter="@{viewModel.MArticleAdapter}"
+                android:withLoadMore="@{true}"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 
             <androidx.constraintlayout.utils.widget.ImageFilterView

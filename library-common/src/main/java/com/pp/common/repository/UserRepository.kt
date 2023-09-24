@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.lifecycleScope
 import com.pp.common.app.App
 import com.pp.common.constant.preferences_key_user_name
 import com.pp.common.datastore.userDataStore
@@ -12,12 +14,14 @@ import com.pp.common.http.wanandroid.bean.ResponseBean
 import com.pp.common.http.wanandroid.bean.runCatchingResponse
 import com.pp.common.http.wanandroid.bean.user.LoginBean
 import com.pp.common.http.wanandroid.bean.user.UserInfoBean
+import com.pp.common.util.getSingleDataWhenResume
 import com.pp.database.AppDataBase
 import com.pp.database.user.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 object UserRepository {
@@ -33,7 +37,7 @@ object UserRepository {
         return App.getInstance().baseContext.userDataStore
     }
 
-    suspend fun getPreferenceUser(block: (user: User?) -> Unit) {
+    suspend fun getPreferenceUser(block:suspend (user: User?) -> Unit) {
         getUserPreferences().collectLatest {
             val userName = it[preferences_key_user_name]
             val user = findUser(userName)
@@ -164,4 +168,24 @@ object UserRepository {
         }
     }
 
+}
+
+/**
+ * 监听 Preference中user更新变化,并且在Resume状态通知更新的user
+ */
+fun UserRepository.getPreferenceUserWhenResume(
+    owner: LifecycleOwner,
+    block: (user: User?) -> Unit,
+) {
+    owner.lifecycleScope.launch(Dispatchers.IO) {
+        owner.getSingleDataWhenResume(
+            getPreferenceUser(),
+            getData = { dataFlow ->
+                getPreferenceUser {
+                    dataFlow.emit(it)
+                }
+            }).collectLatest {
+            block.invoke(it)
+        }
+    }
 }
