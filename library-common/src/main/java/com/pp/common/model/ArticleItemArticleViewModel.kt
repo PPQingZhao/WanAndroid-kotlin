@@ -34,7 +34,7 @@ open class ArticleItemArticleViewModel(
             CollectedRepository.collected.collectLatest {
                 // 更新收藏状态
                 // 收藏页面取消收藏时,更新对应 其它页面item
-                if (it.originId == data?.id) {
+                if (it.originId == data?.id || it.id == data?.id) {
                     data?.collect = it.collect
                     isCollect.set(it.collect)
                 }
@@ -92,7 +92,8 @@ open class ArticleItemArticleViewModel(
         val articleBean = data ?: return
         ViewTreeLifecycleOwner.get(v)?.apply {
             lifecycleScope.launch {
-                if (isCollect.get()) {
+                val isCollected = isCollect.get()
+                if (isCollected) {
                     CollectedRepository.unCollected(articleBean)
                 } else {
                     CollectedRepository.collected(articleBean)
@@ -100,8 +101,8 @@ open class ArticleItemArticleViewModel(
                     if (it.errorCode != WanAndroidService.ErrorCode.SUCCESS) {
                         return@launch
                     }
-                    isCollect.set(isCollect.get().not())
-                    articleBean.collect = isCollect.get()
+                    isCollect.set(isCollected.not())
+                    articleBean.collect = isCollected.not()
                 }
             }
         }
