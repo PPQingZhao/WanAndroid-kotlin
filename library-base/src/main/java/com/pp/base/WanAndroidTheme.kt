@@ -8,9 +8,8 @@ import android.util.DisplayMetrics
 import androidx.annotation.IntDef
 import androidx.annotation.RestrictTo
 import androidx.annotation.StringRes
-import com.pp.theme.DynamicTheme
-import com.pp.theme.DynamicThemeManager
 import com.pp.theme.factory.SkinThemeFactory
+import com.pp.ui.R
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import java.io.File
@@ -25,42 +24,6 @@ var skinPath =
             File.separator + "skin" +
             File.separator
 
-fun themeFactory(
-    defaultTheme: Theme,
-    displayMetrics: DisplayMetrics,
-    configuration: Configuration,
-    themeName: String = "Theme.Dynamic",
-    themePackage: String = "com.pp.skin",
-    skin: String = "",
-) = object : DynamicThemeManager.ThemeInfoFactory {
-    override fun create(themeId: Int?): DynamicTheme.Info {
-        // 创建 WanAndroidTheme
-        val wanAndroidTheme = WanAndroidTheme.getThemeById(
-            themeId ?: WanAndroidTheme.Default,
-            defaultTheme,
-            displayMetrics,
-            configuration,
-            themeName,
-            themePackage,
-            skin
-        )
-        return DynamicTheme.Info(wanAndroidTheme.getTheme(), wanAndroidTheme.getPackage())
-    }
-}
-
-/**
- * 更新主题
- */
-suspend fun updateTheme(@WanAndroidTheme.ThemeId themeId: Int) {
-    DynamicThemeManager.updateTheme(themeId)
-}
-
-/**
- * 本地缓存主题发射器
- */
-fun getPreferenceTheme(): Flow<Int?> {
-    return DynamicThemeManager.getPreferenceTheme()
-}
 
 /**
  * 主题类型
@@ -124,7 +87,7 @@ sealed class WanAndroidTheme(
     abstract fun getName(): Int
 
     class Default(defaultTheme: Resources.Theme, themePackage: String = "com.pp.wanandroid") :
-        WanAndroidTheme(defaultTheme,themePackage) {
+        WanAndroidTheme(defaultTheme, themePackage) {
         override fun getTheme(): Theme {
             return defaultTheme
         }

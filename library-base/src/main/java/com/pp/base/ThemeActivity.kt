@@ -2,17 +2,13 @@ package com.pp.base
 
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowInsetsController
 import android.view.WindowManager
 import androidx.core.graphics.ColorUtils
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleActivity
 import com.pp.theme.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * theme activity
@@ -24,7 +20,9 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
         super.onCreate(savedInstanceState)
 
         mViewModel.mTheme.init(this)
-        initDynamicTheme(mViewModel.mTheme)
+
+        applySkinTheme(mViewModel)
+
         ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
 
         /**
@@ -40,12 +38,8 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
         }
     }
 
-    fun initDynamicTheme(theme: AppDynamicTheme) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            theme.collectTheme(
-                themeFactory(getTheme(), resources.displayMetrics, resources.configuration)
-            )
-        }
+    fun applySkinTheme(viewModel: ThemeViewModel) {
+        viewModel.applySkinTheme(theme)
     }
 
     override fun onAttachedToWindow() {

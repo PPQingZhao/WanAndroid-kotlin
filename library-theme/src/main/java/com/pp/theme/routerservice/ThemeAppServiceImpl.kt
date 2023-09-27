@@ -4,7 +4,6 @@ import android.app.Application
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.router_service.IAppService
 import com.pp.router_service.RouterServiceImpl
-import com.pp.theme.DynamicThemeManager
 
 /**
  * 监听app 生命周期
@@ -13,8 +12,6 @@ import com.pp.theme.DynamicThemeManager
 class ThemeAppServiceImpl : IAppService() {
 
     override fun onCreate(application: Application) {
-        // 主题
-        DynamicThemeManager.init(application)
     }
 
 }

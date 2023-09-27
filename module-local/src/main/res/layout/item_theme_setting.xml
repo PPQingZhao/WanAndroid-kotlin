@@ -23,13 +23,13 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:padding="2dp"
-            android:src="@{viewModel.appTheme.windowBackground}"
+            android:src="@{viewModel.theme.windowBackground}"
             app:layout_constraintDimensionRatio="3:4"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/StyleRoundImageView"
-            app:strokeColor="@{viewModel.appTheme.strokeColor}"
-            app:strokeWidth="@{viewModel.checked ? @dimen/strokeWidth : @dimen/strokeWidth_small}" />
+            app:strokeColor="@{viewModel.theme.strokeColor}"
+            app:strokeWidth="@{viewModel.isSelected ? @dimen/strokeWidth : @dimen/strokeWidth_small}" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,7 +38,7 @@
             android:ellipsize="end"
             android:maxLines="1"
             android:text="@{viewModel.themeName}"
-            android:textColor="@{viewModel.appTheme.textColor}"
+            android:textColor="@{viewModel.theme.textColor}"
             android:textSize="13sp"
             app:layout_constraintBottom_toBottomOf="@id/iv"
             app:layout_constraintEnd_toEndOf="@id/iv"

@@ -32,7 +32,7 @@ class SkinThemeFactory : Factory<Theme?> {
         defPackage: String,
     ) {
         this.skinFile = skinFile
-        this.displayMetrics = DisplayMetrics().apply {
+        this.displayMetrics = DisplayMetrics().apply{
             setTo(displayMetrics)
         }
         this.configuration = Configuration().apply {
@@ -41,7 +41,6 @@ class SkinThemeFactory : Factory<Theme?> {
         this.themeName = themeName
         this.defPackage = defPackage
     }
-
 
     @SuppressLint("DiscouragedPrivateApi", "DiscouragedApi")
     override fun create(): Resources.Theme? {

@@ -2,8 +2,10 @@ package com.pp.theme
 
 import android.content.Context
 import android.content.res.Resources
+import android.util.Log
+import androidx.annotation.StringRes
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.firstOrNull
@@ -18,58 +20,123 @@ object DynamicThemeManager {
 
     private const val THEME_SETTING = "theme_setting"
     private val Context.themeDataStore by preferencesDataStore(name = THEME_SETTING)
-    private val themeKey by lazy { intPreferencesKey("theme") }
-
-    private var sContext: Context? = null
+    private val skinPreferenceKey by lazy { stringPreferencesKey("theme") }
+    private var defaultApplySkinTheme: ApplySkinTheme? = null
         set(value) {
-            check(null == field) { "Do not initialize AppDataBase again" }
+            check(field == null) { "The default Apply Skin Theme is already set." }
             field = value
         }
         get() {
-            return checkNotNull(field) { "you should call DynamicThemeManager.init(context) at first" }
+            checkNotNull(field) { "you should call DynamicThemeManager.init(context) at first." }
+            return field
         }
 
-    fun init(ctx: Context) {
+    // 皮肤包集
+    private val skinMap = mutableMapOf<String, ApplySkinTheme>()
+
+    private var sContext: Context? = null
+        set(value) {
+            check(null == field) { "Don't initialize context again" }
+            field = value
+        }
+        get() {
+            return checkNotNull(field) { "you should call DynamicThemeManager.init(context) at first." }
+        }
+
+    fun init(ctx: Context, default: ApplySkinTheme): DynamicThemeManager {
         sContext = ctx
+        defaultApplySkinTheme = default
+        return addSkinInfo(default)
     }
+
+    /**
+     * 添加皮肤包
+     */
+    fun addSkinInfo(skinTheme: ApplySkinTheme): DynamicThemeManager {
+        if (skinMap.containsKey(skinTheme.skinPath)) throw RuntimeException("Adding repeated dynamic theme is not supported.")
+
+        skinMap[skinTheme.skinPath] = skinTheme
+        return this
+    }
+
+    /**
+     * 删除皮肤包
+     */
+    fun removeSkinInfo(info: ApplySkinTheme) {
+        skinMap.remove(info.skinPath)
+    }
+
+    fun getSkinTheme(): Collection<ApplySkinTheme> {
+        return skinMap.values
+    }
+
 
     /**
      * 缓存主题
      */
-    private suspend fun Context.setPreferenceTheme(theme: Int) {
+    private suspend fun Context.setPreferenceSkinTheme(theme: String) {
         themeDataStore.edit {
-            it[themeKey] = theme
+            it[skinPreferenceKey] = theme
         }
     }
 
     /**
      * 获取缓存的主题
      */
-    private fun Context.getPreferenceTheme(): Flow<Int?> {
+    private fun Context.getPreferenceSkinTheme(): Flow<ApplySkinTheme> {
         return themeDataStore.data.map {
-            it[themeKey]
+            val key = it[skinPreferenceKey]
+            Log.e("TAG", "$key")
+            skinMap.get(key) ?: defaultApplySkinTheme!!
         }
     }
 
-    fun getPreferenceTheme(): Flow<Int?> {
-        return sContext!!.getPreferenceTheme()
+    internal fun getPreferenceSkinTheme(): Flow<ApplySkinTheme> {
+        return sContext!!.getPreferenceSkinTheme()
     }
+
 
     /**
      * 更新主题
      */
-    suspend fun updateTheme(@androidx.annotation.IntRange(from = 0, to = 100) themeId: Int) {
-        val cacheThemeId = getPreferenceTheme().firstOrNull()
+    internal suspend fun updateTheme(info: ApplySkinTheme) {
+        val cacheSkin = getPreferenceSkinTheme().firstOrNull()
         // 与缓存的themeId比较,相同则不处理
-        if (cacheThemeId == themeId) {
+        if (cacheSkin?.skinPath == info.skinPath) {
             // The same theme
             return
         }
-        sContext!!.setPreferenceTheme(themeId)
+        sContext!!.setPreferenceSkinTheme(info.skinPath)
     }
 
-    interface ThemeInfoFactory {
-        fun create(themeId: Int?): DynamicTheme.Info
+    interface ThemeFactory {
+        fun create(
+            defaultTheme: Resources.Theme,
+            skinPath: String,
+            themePackage: String,
+            themeName: String,
+        ): Resources.Theme
     }
 
+    /**
+     * 皮肤包信息
+     */
+    abstract class ApplySkinTheme(
+        val skinPackage: String, val skinPath: String, @StringRes val name: Int,
+    ) {
+
+        suspend fun applySkinTheme() {
+            updateTheme(this)
+        }
+
+        abstract fun create(
+            defaultTheme: Resources.Theme,
+            themeName: String,
+        ): Resources.Theme?
+
+    }
+}
+
+fun listenerSkinTheme(): Flow<DynamicThemeManager.ApplySkinTheme> {
+    return DynamicThemeManager.getPreferenceSkinTheme()
 }

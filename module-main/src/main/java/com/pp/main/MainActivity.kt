@@ -14,7 +14,7 @@ class MainActivity : MultiRouterFragmentActivity() {
         super.onCreate(savedInstanceState)
 
         mMainBinding.viewModel = ViewModelProvider(this)[MainViewModel::class.java].apply {
-            initDynamicTheme(mTheme)
+            applySkinTheme(this)
             lifecycle.addObserver(this)
         }
         mMainBinding.lifecycleOwner = this

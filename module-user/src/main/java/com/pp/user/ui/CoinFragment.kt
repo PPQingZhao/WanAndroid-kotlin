@@ -6,10 +6,10 @@ import com.alibaba.android.arouter.facade.annotation.Route
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeFragment
 import com.pp.common.util.materialSharedAxis
-import com.pp.user.databinding.FragmentCoinBinding
 import com.pp.router_service.RouterPath
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.attachStateView
+import com.pp.user.databinding.FragmentCoinBinding
 
 @Route(path = RouterPath.User.fragment_coin)
 class CoinFragment : ThemeFragment<FragmentCoinBinding, CoinViewModel>() {

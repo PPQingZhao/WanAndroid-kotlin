@@ -4,7 +4,7 @@ import android.content.res.Resources.Theme
 import androidx.annotation.AttrRes
 import androidx.annotation.ColorInt
 import androidx.lifecycle.MutableLiveData
-import com.pp.theme.DynamicThemeManager.getPreferenceTheme
+import com.pp.theme.DynamicThemeManager.getPreferenceSkinTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.withContext
@@ -28,20 +28,6 @@ abstract class DynamicTheme {
     data class Info(val theme: Theme, val themePackage: String)
 }
 
-suspend fun DynamicTheme.collectTheme(
-    factory: DynamicThemeManager.ThemeInfoFactory,
-) {
-    // 缓存的主题发生变化
-    getPreferenceTheme().collectLatest { themeId ->
-        // 创建 WanAndroidTheme
-        val themeInfo = factory.create(themeId)
-        // 更新 dynamicTheme
-        withContext(Dispatchers.Main) {
-            setInfo(themeInfo)
-        }
-    }
-}
-
 fun Theme.getColor(@AttrRes attrRes: Int, @ColorInt default: Int): Int {
     val typedArray = obtainStyledAttributes(arrayOf(attrRes).toIntArray())
     try {
@@ -52,4 +38,35 @@ fun Theme.getColor(@AttrRes attrRes: Int, @ColorInt default: Int): Int {
         typedArray.recycle()
     }
     return default
+}
+
+/**
+ * 主题切换更新DynamicTheme
+ */
+suspend fun DynamicTheme.applySkinTheme(
+    defaultTheme: Theme,
+    themeName: String = "Theme.Dynamic",
+) {
+    // 缓存的主题发生变化
+    getPreferenceSkinTheme().collectLatest { skinTheme ->
+        val theme = skinTheme.create(defaultTheme, themeName)
+
+        // 更新 dynamicTheme
+        withContext(Dispatchers.Main) {
+            setInfo(DynamicTheme.Info(theme ?: defaultTheme, skinTheme.skinPackage))
+        }
+    }
+}
+
+/**
+ * 主题切换更新DynamicTheme
+ */
+fun DynamicTheme.applySkinTheme(
+    defaultTheme: Theme,
+    themeName: String = "Theme.Dynamic",
+    skinTheme: DynamicThemeManager.ApplySkinTheme,
+) {
+    val theme = skinTheme.create(defaultTheme, themeName)
+    // 更新 dynamicTheme
+    setInfo(DynamicTheme.Info(theme ?: defaultTheme, skinTheme.skinPackage))
 }
