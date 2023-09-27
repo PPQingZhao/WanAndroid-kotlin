@@ -1,7 +1,9 @@
 package com.pp.common.constant
 
+import android.os.Environment
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.stringPreferencesKey
+import java.io.File
 
 
 // 转场动画时长
@@ -29,3 +31,15 @@ fun preferences_key_search_hotkey_history(userId: Long?): Preferences.Key<String
         PREFERENCES_KEY_SEARCH_HOTKEY_HISTORY + userId
     )
 }
+
+/**
+ * 主题包存储路径
+ */
+private val SKIN_PATH =
+    Environment.getExternalStorageDirectory().absolutePath +
+            File.separator + "wanandroid" +
+            File.separator + "theme" +
+            File.separator + "skin" +
+            File.separator
+
+fun getSkin(skinName: String) = SKIN_PATH + skinName

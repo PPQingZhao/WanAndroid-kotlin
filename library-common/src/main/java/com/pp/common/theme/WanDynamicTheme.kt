@@ -1,23 +1,12 @@
 package com.pp.common.theme
 
 import android.content.res.Resources
-import android.os.Environment
 import androidx.annotation.StringRes
+import com.pp.common.constant.getSkin
 import com.pp.theme.DynamicThemeManager
 import com.pp.theme.factory.DefaultThemeInfoFactory
 import com.pp.theme.factory.SkinThemeFactory2
 import com.pp.ui.R
-import java.io.File
-
-/**
- * 主题包存储路径
- */
-var skinPath =
-    Environment.getExternalStorageDirectory().absolutePath +
-            File.separator + "wanandroid" +
-            File.separator + "theme" +
-            File.separator + "skin" +
-            File.separator
 
 sealed class WanDynamicTheme(
     skinPackage: String,
@@ -38,12 +27,12 @@ sealed class WanDynamicTheme(
 
     object Blue :
         WanDynamicTheme(
-            "com.pp.skin", skinPath + "skinBlue.skin", R.string.theme_blue, SkinThemeFactory2()
+            "com.pp.skin", getSkin("skinBlue.skin"), R.string.theme_blue, SkinThemeFactory2()
         )
 
     object Black :
         WanDynamicTheme(
-            "com.pp.skin", skinPath + "skinBlack.skin", R.string.theme_black, SkinThemeFactory2()
+            "com.pp.skin", getSkin("skinBlack.skin"), R.string.theme_black, SkinThemeFactory2()
         )
 }
 
