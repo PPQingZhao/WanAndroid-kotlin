@@ -23,6 +23,7 @@
         android:background="?selectableItemBackground"
         android:onClick="@{viewModel.onItemClick}"
         android:padding="@dimen/dp_8"
+        app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
         app:cardCornerRadius="@dimen/dp_8"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"
@@ -32,7 +33,6 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@{viewModel.theme.colorPrimaryVariant}"
             android:orientation="horizontal"
             android:paddingStart="@dimen/dp_16"
             android:paddingTop="@dimen/dp_8"

@@ -13,8 +13,10 @@ import java.lang.reflect.Method
 /**
  * 皮肤包主题工厂
  */
-class SkinThemeFactory2 : DynamicThemeManager.ThemeFactory {
-    private val assetManager = AssetManager::class.java.newInstance()
+class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
+    companion object {
+        private val assetManager = AssetManager::class.java.newInstance()
+    }
 
     @SuppressLint("DiscouragedPrivateApi")
     private fun addAssetPath(skinPath: String): Method {
@@ -25,14 +27,14 @@ class SkinThemeFactory2 : DynamicThemeManager.ThemeFactory {
         return addAssetPathMethod
     }
 
-    @SuppressLint("DiscouragedPrivateApi", "DiscouragedApi")
+    @SuppressLint("DiscouragedApi")
     override fun create(
-        defaultTheme: Theme,
+        displayMetrics: DisplayMetrics,
+        configuration: Configuration,
         skinPath: String,
         themePackage: String,
         themeName: String,
-    ): Resources.Theme {
-
+    ): Theme? {
         val theme = kotlin.runCatching {
             Log.e(
                 "ThemeFactory",
@@ -41,17 +43,9 @@ class SkinThemeFactory2 : DynamicThemeManager.ThemeFactory {
 
             addAssetPath(skinPath)
 
-            val displayMetrics = DisplayMetrics().apply {
-                setTo(defaultTheme.resources.displayMetrics)
-            }
-            val configuration = Configuration().apply {
-                setTo(defaultTheme.resources.configuration)
-            }
-            val skinResources =
-                Resources(assetManager, displayMetrics, configuration)
+            val skinResources = Resources(assetManager, displayMetrics, configuration)
 
-            val themeId =
-                skinResources.getIdentifier(themeName, "style", themePackage)
+            val themeId = skinResources.getIdentifier(themeName, "style", themePackage)
             Log.e("ThemeFactory", "themeId: $themeId")
             if (themeId > 0) {
                 val skinTheme = skinResources.newTheme()
@@ -60,7 +54,7 @@ class SkinThemeFactory2 : DynamicThemeManager.ThemeFactory {
             } else null
         }.getOrNull()
 
-        return theme ?: defaultTheme
+        return theme
     }
 
 

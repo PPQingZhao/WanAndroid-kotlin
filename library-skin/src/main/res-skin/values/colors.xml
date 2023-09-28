@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#FEFAF8</color>
-    <color name="colorPrimaryDark">#673AB7</color>
+    <color name="colorPrimaryDark">#FEFAF8</color>
     <color name="colorOnPrimary">#FEFAF8</color>
     <color name="colorPrimaryVariant">#FFFAFA</color>
     <color name="colorAccent">#449F47</color>
@@ -19,4 +19,6 @@
     <color name="secondaryProgressTint">#929292</color>
     <color name="boxBackgroundColor">#40929292</color>
     <color name="strokeColor">#000000</color>
+    <color name="windowBackground">#ffffffff</color>
+    <color name="drawable_color_primary">#845305</color>
 </resources>

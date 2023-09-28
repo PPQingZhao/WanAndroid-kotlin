@@ -26,7 +26,7 @@ import kotlinx.coroutines.withContext
 
 object UserRepository {
     private const val TAG = "UserRepository"
-    private val DEBUG = true
+    private val DEBUG = false
 
     private val userApi by lazy { WanAndroidService.userApi }
     private val userDao by lazy {

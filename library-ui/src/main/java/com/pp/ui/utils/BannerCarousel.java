@@ -151,6 +151,8 @@ public class BannerCarousel extends MotionHelper {
         }
     }
 
+    private boolean resumeBanner = true;
+
     public void setAdapter(Adapter adapter) {
         mAdapter = adapter;
         if (mAutoBanner) {
@@ -375,7 +377,7 @@ public class BannerCarousel extends MotionHelper {
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
         mList.clear();
-        cancelBanner();
+        cancelBanner(resumeBanner);
         if (null == mMotionLayout) {
             return;
         }
@@ -442,11 +444,12 @@ public class BannerCarousel extends MotionHelper {
 
     public void startBanner() {
         if (!isInfinite()) return;
-        cancelBanner();
+        cancelBanner(true);
         bannerHandler.postDelayed(bannerRunnable, bannerDuration);
     }
 
-    public void cancelBanner() {
+    public void cancelBanner(boolean resumeBanner) {
+        this.resumeBanner = resumeBanner;
         bannerHandler.removeCallbacks(bannerRunnable);
     }
 
@@ -458,7 +461,7 @@ public class BannerCarousel extends MotionHelper {
 
             switch (motionEvent.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    cancelBanner();
+                    cancelBanner(resumeBanner);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
@@ -482,14 +485,14 @@ public class BannerCarousel extends MotionHelper {
     final DefaultLifecycleObserver mLifecycleObserver = new DefaultLifecycleObserver() {
         @Override
         public void onResume(@NonNull LifecycleOwner owner) {
-            if (getCount() > 1) {
+            if (resumeBanner && getCount() > 1) {
                 startBanner();
             }
         }
 
         @Override
         public void onPause(@NonNull LifecycleOwner owner) {
-            cancelBanner();
+            cancelBanner(resumeBanner);
         }
     };
 

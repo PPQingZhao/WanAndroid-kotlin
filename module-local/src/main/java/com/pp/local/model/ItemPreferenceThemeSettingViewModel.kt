@@ -1,6 +1,5 @@
 package com.pp.local.model
 
-import android.content.res.Resources
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,15 +13,15 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class ItemPreferenceThemeSettingViewModel(
-    private val defaultTheme: Resources.Theme,
     private val skinTheme: DynamicThemeManager.ApplySkinTheme,
-) : ItemThemeSettingViewModel<Any>(AppDynamicTheme()), DefaultLifecycleObserver {
+    theme: AppDynamicTheme,
+) : ItemThemeSettingViewModel<Any>(theme), DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
 
         themeName.set(skinTheme.name)
-        theme.applySkinTheme(defaultTheme, "Theme.Dynamic", skinTheme)
+        theme.applySkinTheme(skinTheme)
 
         //监听主题变化
         owner.lifecycleScope.launch {

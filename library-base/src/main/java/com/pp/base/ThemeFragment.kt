@@ -6,11 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.databinding.ViewDataBinding
-import androidx.lifecycle.lifecycleScope
 import com.pp.mvvm.LifecycleFragment
 import com.pp.theme.ViewTreeAppThemeViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 /**
  * theme fragment
@@ -43,9 +40,6 @@ abstract class ThemeFragment<VB : ViewDataBinding, VM : ThemeViewModel> :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        lifecycleScope.launch(Dispatchers.IO) {
-            mViewModel.applySkinTheme(requireActivity().theme)
-        }
 
         requireActivity().onBackPressedDispatcher
             .addCallback(this, getOnBackPressedCallback())

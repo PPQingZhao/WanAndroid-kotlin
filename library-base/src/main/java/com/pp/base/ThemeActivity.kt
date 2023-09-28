@@ -8,7 +8,8 @@ import android.view.WindowManager
 import androidx.core.graphics.ColorUtils
 import androidx.databinding.ViewDataBinding
 import com.pp.mvvm.LifecycleActivity
-import com.pp.theme.*
+import com.pp.theme.ViewTreeAppThemeViewModel
+import com.pp.theme.init
 
 /**
  * theme activity
@@ -20,8 +21,6 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
         super.onCreate(savedInstanceState)
 
         mViewModel.mTheme.init(this)
-
-        applySkinTheme(mViewModel)
 
         ViewTreeAppThemeViewModel[mBinding.root] = mViewModel.mTheme
 
@@ -36,10 +35,6 @@ abstract class ThemeActivity<VB : ViewDataBinding, VM : ThemeViewModel> :
             requireLightStatusBar(luminance > 0.5)
 
         }
-    }
-
-    fun applySkinTheme(viewModel: ThemeViewModel) {
-        viewModel.applySkinTheme(theme)
     }
 
     override fun onAttachedToWindow() {

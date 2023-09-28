@@ -45,6 +45,7 @@ android {
         }
     }
 
+
     // 方便开发时预览不同皮肤效果
     sourceSets {
         var theme = "default"
@@ -59,9 +60,7 @@ android {
         }
     }
 
-
 /*
-
     applicationVariants.all {
         this@all.outputs.all {
             val apkName = this.baseName.split("-")[0]
@@ -75,15 +74,11 @@ android {
     flavorDimensionList.add("skin")
     productFlavors {
         create("skinBlack") {
-//            defaultConfig.applicationId = "com.pp.skin_black"
-//            android.namespace = "com.pp.skin_black"
             signingConfig = signingConfigs["release"]
             dimension = "skin"
         }
 
         create("skinBlue") {
-//            defaultConfig.applicationId = "com.pp.skin_blue"
-//            android.namespace = "com.pp.skin_blue"
             signingConfig = signingConfigs["release"]
             dimension = "skin"
         }

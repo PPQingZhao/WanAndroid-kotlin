@@ -11,13 +11,13 @@
         android:translateY="150">
 
         <path
-            android:fillColor="#845305"
+            android:fillColor="@color/drawable_color_primary"
             android:pathData="M112.1,284.1a390.8,200.8 0,1 0,799.7 0,390.8 200.8,0 1,0 -799.7,0Z" />
         <path
-            android:fillColor="#845305"
+            android:fillColor="@color/drawable_color_primary"
             android:pathData="M512,551.4c-163.3,0 -303.8,-50.3 -365.9,-122.5 -21.9,25.4 -34,53.5 -34,83 0,113.5 179,205.5 399.9,205.5s399.9,-92 399.9,-205.5c0,-29.6 -12.1,-57.6 -34,-83C815.8,501.1 675.3,551.4 512,551.4z" />
         <path
-            android:fillColor="#845305"
+            android:fillColor="@color/drawable_color_primary"
             android:pathData="M512,785c-165.5,0 -307.5,-51.6 -368.3,-125.3 -20.4,24.6 -31.6,51.8 -31.6,80.2 0,113.5 179,205.5 399.9,205.5s399.9,-92 399.9,-205.5c0,-28.5 -11.3,-55.6 -31.6,-80.2C819.5,733.3 677.5,785 512,785z" />
     </group>
 </vector>

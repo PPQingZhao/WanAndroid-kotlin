@@ -33,7 +33,7 @@ fun preferences_key_search_hotkey_history(userId: Long?): Preferences.Key<String
 }
 
 /**
- * 主题包存储路径
+ * 主题包本地存储路径
  */
 private val SKIN_PATH =
     Environment.getExternalStorageDirectory().absolutePath +
@@ -41,5 +41,10 @@ private val SKIN_PATH =
             File.separator + "theme" +
             File.separator + "skin" +
             File.separator
+
+/**
+ * 主题包asset存储路径
+ */
+private const val SKIN_ASSET_PATH = "file://android_asset/skin/"
 
 fun getSkin(skinName: String) = SKIN_PATH + skinName

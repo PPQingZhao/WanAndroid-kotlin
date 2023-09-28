@@ -17,7 +17,8 @@
         <activity
             android:name=".MainActivity"
             android:configChanges="locale|orientation|keyboardHidden|keyboard"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Dynamic" />
 
     </application>
 

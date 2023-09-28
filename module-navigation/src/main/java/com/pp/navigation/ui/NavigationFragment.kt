@@ -1,7 +1,5 @@
 package com.pp.navigation.ui
 
-import android.os.Bundle
-import android.view.View
 import com.alibaba.android.arouter.facade.annotation.Route
 import com.pp.base.ThemeFragment
 import com.pp.base.helper.TabPagerFragmentHelper
@@ -19,9 +17,7 @@ class NavigationFragment : ThemeFragment<FragmentNavigationBinding, NavigationVi
         return NavigationViewModel::class.java
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onFirstResume() {
         mBinding.viewpager2.offscreenPageLimit = 3
         TabPagerFragmentHelper(childFragmentManager, viewLifecycleOwner.lifecycle)
             .addPagers(getPagers())

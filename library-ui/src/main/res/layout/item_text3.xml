@@ -19,6 +19,7 @@
         android:layout_marginEnd="@dimen/dp_4"
         android:background="?selectableItemBackground"
         android:onClick="@{viewModel.onItemClick}"
+        app:cardBackgroundColor="@color/transparent"
         app:cardCornerRadius="@dimen/dp_16"
         app:cardElevation="0dp"
         app:cardMaxElevation="0dp"

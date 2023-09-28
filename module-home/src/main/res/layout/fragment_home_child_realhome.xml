@@ -13,8 +13,8 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refreshLayout"
         android:layout_width="match_parent"
-        android:attachPagingAdapter="@{viewModel.MArticleAdapter}"
         android:layout_height="match_parent"
+        android:attachPagingAdapter="@{viewModel.MArticleAdapter}"
         android:paddingTop="@dimen/dp_4">
 
         <androidx.constraintlayout.motion.widget.MotionLayout
@@ -158,7 +158,7 @@
                 tools:listitem="@layout/item_article" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
-                android:id="@+id/floating"
+                android:id="@+id/real_home_floating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_large"

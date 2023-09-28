@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import androidx.constraintlayout.motion.widget.MotionLayout
+import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.*
+import androidx.transition.TransitionListenerAdapter
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
@@ -16,8 +19,10 @@ import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.databinding.FragmentHomeChildRealhomeBindingImpl
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.IndicatorTransitionListener
+import com.pp.ui.utils.BannerCarousel
 import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.BannerCarousel.Adapter
+import com.pp.ui.utils.BannerCarousel.TransitionListener
 import com.pp.ui.utils.StateView
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
@@ -122,6 +127,16 @@ class RealHomeFragment :
                 }
             }
         }
+
+        mBinding.contentMotionLayout.addTransitionListener(object : TransitionAdapter() {
+            override fun onTransitionCompleted(motionLayout: MotionLayout?, currentId: Int) {
+                if (motionLayout?.progress == 1f) {
+                    mBinding.carousel.cancelBanner(false)
+                } else {
+                    mBinding.carousel.startBanner()
+                }
+            }
+        })
     }
 
     private fun updateIndicator() {

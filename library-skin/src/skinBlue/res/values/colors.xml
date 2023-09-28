@@ -1,21 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--default theme-->
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorOnPrimary">#3F51B5</color>
-    <color name="colorPrimaryVariant">#3F51B5</color>
-    <color name="colorAccent">#00BCD4</color>
-    <color name="navigationBarColor">@color/colorPrimary</color>
+    <color name="colorPrimary">#2374A8</color>
+    <color name="colorPrimaryDark">#2374A8</color>
+    <color name="colorOnPrimary">#2374A8</color>
+    <color name="colorPrimaryVariant">#2475A8</color>
+    <color name="colorAccent">#34707B</color>
+    <color name="navigationBarColor">#2475A8</color>
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
-    <color name="textColorPrimary">#000000</color>
-    <color name="textColor">#FFFFFF</color>
-    <color name="textColorSecondary">#B5A9A9</color>
-    <color name="textColorTertiary">#929292</color>
-    <color name="hintTextColor">#929292</color>
-    <color name="editTextColor">#323232</color>
+    <color name="colorControlActivated">#2475A8</color>
+    <color name="textColorPrimary">#E3F1FE</color>
+    <color name="textColor">#EAEEF1</color>
+    <color name="textColorSecondary">#D9DEE2</color>
+    <color name="textColorTertiary">#D9DEE2</color>
+    <color name="hintTextColor">#D9DEE2</color>
+    <color name="editTextColor">#EAEEF1</color>
     <color name="progressTint">#2196F3</color>
     <color name="secondaryProgressTint">#929292</color>
-    <color name="strokeColor">#FFFFFFFF</color>
+    <color name="boxBackgroundColor">#40929292</color>
+    <color name="strokeColor">#D9DEE2</color>
+    <color name="windowBackground">#2374A8</color>
+    <color name="drawable_color_primary">#E3F1FE</color>
     <!--end-->
 </resources>
