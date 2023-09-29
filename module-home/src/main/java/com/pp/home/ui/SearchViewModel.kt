@@ -132,7 +132,7 @@ class SearchViewModel(app: Application) : ThemeViewModel(app) {
     override fun onFirstResume(owner: LifecycleOwner) {
         viewModelScope.launch(Dispatchers.IO) {
             async {
-                UserRepository.getPreferenceUser {
+                UserRepository.preferenceUser().collectLatest {
                     updateSearchHistory(it)
                 }
             }

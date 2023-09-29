@@ -21,6 +21,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -37,11 +38,10 @@ object UserRepository {
         return App.getInstance().baseContext.userDataStore
     }
 
-    suspend fun getPreferenceUser(block:suspend (user: User?) -> Unit) {
-        getUserPreferences().collectLatest {
+    fun preferenceUser(): Flow<User?> {
+        return getUserPreferences().map {
             val userName = it[preferences_key_user_name]
-            val user = findUser(userName)
-            block.invoke(user)
+            findUser(userName)
         }
     }
 
@@ -50,10 +50,9 @@ object UserRepository {
         return findUser(userName)
     }
 
-    suspend fun getPreferenceUserName(block: (userName: String?) -> Unit) {
-        getUserPreferences().collectLatest {
-            val userName = it[preferences_key_user_name]
-            block.invoke(userName)
+    fun getPreferenceUserNam(): Flow<String?> {
+        return getUserPreferences().map {
+            it[preferences_key_user_name]
         }
     }
 
@@ -181,7 +180,7 @@ fun UserRepository.getPreferenceUserWhenResume(
         owner.getSingleDataWhenResume(
             getPreferenceUser(),
             getData = { dataFlow ->
-                getPreferenceUser {
+                preferenceUser().collectLatest {
                     dataFlow.emit(it)
                 }
             }).collectLatest {

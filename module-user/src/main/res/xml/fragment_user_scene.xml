@@ -81,6 +81,12 @@
 
         <Constraint
             android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
             app:visibilityMode="ignore" />
     </ConstraintSet>
 
@@ -161,6 +167,12 @@
 
         <Constraint
             android:id="@+id/tv_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_16"
+            app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
+            app:layout_constraintStart_toEndOf="@id/iv_avatar"
+            app:layout_constraintTop_toTopOf="@id/iv_avatar"
             app:visibilityMode="ignore" />
     </ConstraintSet>
 

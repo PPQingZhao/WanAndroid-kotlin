@@ -22,6 +22,7 @@ import com.pp.ui.viewModel.ItemDataViewModel
 import com.pp.ui.viewModel.OnItemListener
 import com.pp.common.repository.UserRepository
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class UserViewModel(app: Application) : ThemeViewModel(app) {
@@ -118,7 +119,7 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
 
     override fun onCreate(owner: LifecycleOwner) {
         viewModelScope.launch(Dispatchers.IO) {
-            UserRepository.getPreferenceUser {
+            UserRepository.preferenceUser().collectLatest {
                 loginEnable.postValue(it == null)
                 _user.postValue(it)
             }

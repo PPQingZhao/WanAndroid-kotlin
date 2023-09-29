@@ -42,11 +42,12 @@
             android:text="@string/user_login"
             android:textColor="@{viewModel.MTheme.textColorSecondary}"
             android:textSize="15sp"
-            android:visibility="@{viewModel.loginEnable ? View.GONE : View.GONE}"
+            android:visibility="@{viewModel.loginEnable ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="@id/iv_avatar"
             app:layout_constraintStart_toEndOf="@id/iv_avatar"
             app:layout_constraintTop_toTopOf="@id/iv_avatar"
-            tools:textColor="?android:textColorSecondary" />
+            tools:textColor="?android:textColorSecondary"
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.utils.widget.ImageFilterView
             android:id="@+id/iv_setting"
