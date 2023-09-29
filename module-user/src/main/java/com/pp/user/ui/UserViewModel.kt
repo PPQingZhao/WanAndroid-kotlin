@@ -2,6 +2,7 @@ package com.pp.user.ui
 
 import android.app.Application
 import android.view.View
+import android.widget.Toast
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +10,6 @@ import androidx.lifecycle.viewModelScope
 import com.google.android.material.transition.MaterialSharedAxis
 import com.pp.base.ThemeViewModel
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.database.user.User
 import com.pp.router_service.RouterPath
@@ -61,7 +61,7 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                         view: View,
                         item: ItemDataViewModel<Any>,
                     ): Boolean {
-                        showFragment(view, RouterPath.User.fragment_coin)
+                        showFragmentWhenLogin(view, RouterPath.User.fragment_coin)
                         return true
                     }
                 })
@@ -77,7 +77,7 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                         view: View,
                         item: ItemDataViewModel<Any>,
                     ): Boolean {
-                        showFragment(view, RouterPath.User.fragment_collected)
+                        showFragmentWhenLogin(view, RouterPath.User.fragment_collected)
                         return true
                     }
                 })
@@ -93,7 +93,13 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                         view: View,
                         item: ItemDataViewModel<Any>,
                     ): Boolean {
-                        showFragment(view, RouterPath.Local.fragment_theme_setting)
+                        MultiRouterFragmentViewModel.showFragment(
+                            view,
+                            RouterPath.Local.fragment_theme_setting,
+                            RouterPath.Local.fragment_theme_setting,
+                            mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
+                            mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+                        )
                         return true
                     }
                 })
@@ -106,15 +112,19 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
         }
     }
 
-    private fun showFragment(view: View, tagFragment: String) {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-            view
-        )?.showFragment(
-            tagFragment,
+    private fun showFragmentWhenLogin(view: View, tagFragment: String) {
+        if (user.value == null) {
+            Toast.makeText(getApplication(), R.string.login_tip, Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        MultiRouterFragmentViewModel.showFragment(
+            view, tagFragment,
             tagFragment,
             mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
             mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
         )
+
     }
 
     override fun onCreate(owner: LifecycleOwner) {
@@ -155,13 +165,13 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
      * 跳转登录界面
      */
     fun onLogin(view: View) {
-        showFragment(view, RouterPath.User.fragment_login)
+        showFragmentWhenLogin(view, RouterPath.User.fragment_login)
     }
 
     /**
      * 跳转设置界面
      */
     fun onSetting(view: View) {
-        showFragment(view, RouterPath.Local.fragment_setting)
+        showFragmentWhenLogin(view, RouterPath.Local.fragment_setting)
     }
 }

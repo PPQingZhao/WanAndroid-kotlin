@@ -46,4 +46,5 @@
     <string name="theme_default">默认</string>
     <string name="theme_black">黑色</string>
     <string name="theme_blue">蓝色</string>
+    <string name="login_tip">用户未登录.</string>
 </resources>

@@ -3,13 +3,14 @@ package com.pp.common.router
 import android.app.Application
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.viewModelScope
 import com.pp.base.ThemeViewModel
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 
 open class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) {
 
@@ -67,4 +68,27 @@ open class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) 
         val mainReenterTransition: Any? = null,
         val sharedElement: View? = null,
     )
+
+    companion object {
+        fun showFragment(
+            view: View,
+            targetFragment: String,
+            tag: String?,
+            arguments: Bundle? = null,
+            mainExitTransition: Any? = null,
+            mainReenterTransition: Any? = null,
+            sharedElement: View? = null,
+        ) {
+            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
+                view
+            )?.showFragment(
+                targetFragment,
+                tag,
+                arguments,
+                mainExitTransition,
+                mainReenterTransition,
+                sharedElement
+            )
+        }
+    }
 }
