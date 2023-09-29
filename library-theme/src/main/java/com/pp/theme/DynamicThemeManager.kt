@@ -128,7 +128,7 @@ object DynamicThemeManager {
     /**
      * 更新主题
      */
-    internal suspend fun updateTheme(info: ApplySkinTheme) {
+    suspend fun applySkinTheme(info: ApplySkinTheme) {
         val cacheSkin = getCurrentApplySkinTheme()
         // 与缓存的themeId比较,相同则不处理
         if (cacheSkin.skinPath == info.skinPath) {
@@ -155,10 +155,6 @@ object DynamicThemeManager {
         val skinPackage: String, val skinPath: String, @StringRes val name: Int,
     ) {
 
-        suspend fun applySkinTheme() {
-            updateTheme(this)
-        }
-
         abstract fun create(
             displayMetrics: DisplayMetrics,
             configuration: Configuration,
@@ -179,18 +175,18 @@ inline fun <reified Theme : DynamicTheme> getDynamicTheme(
     val themeClass = Theme::class.java
 
     // todo: 复用 DynamicTheme 会导致 StateView出现重影bug，待解决
-   /* DynamicThemeManager.getDynamicTheme().apply {
-        Log.e("TAG", "$themeName  getDynamicTheme size: ${size}")
-    }.onEach { dynamicTheme ->
-        if (dynamicTheme::class.java == themeClass
-            && dynamicTheme.getThemeName() == themeName
-            && dynamicTheme.getDisplayMetrics() == displayMetrics
-            && dynamicTheme.getConfiguration() == configuration
-        ) {
-            Log.e("TAG", "getDynamicTheme 1111111111111")
-            return dynamicTheme as Theme
-        }
-    }*/
+    /* DynamicThemeManager.getDynamicTheme().apply {
+         Log.e("TAG", "$themeName  getDynamicTheme size: ${size}")
+     }.onEach { dynamicTheme ->
+         if (dynamicTheme::class.java == themeClass
+             && dynamicTheme.getThemeName() == themeName
+             && dynamicTheme.getDisplayMetrics() == displayMetrics
+             && dynamicTheme.getConfiguration() == configuration
+         ) {
+             Log.e("TAG", "getDynamicTheme 1111111111111")
+             return dynamicTheme as Theme
+         }
+     }*/
     return themeClass.getDeclaredConstructor(
         DisplayMetrics::class.java,
         Configuration::class.java,

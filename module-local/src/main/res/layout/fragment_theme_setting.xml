@@ -24,6 +24,19 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dp_4"
+                android:background="?selectableItemBackground"
+                android:onClick="@{viewModel::onBack}"
+                android:padding="@dimen/dp_8"
+                android:src="@drawable/ic_arrow_back"
+                android:tint="@{viewModel.MTheme.textColor}"
+                app:roundPercent="1"
+                tools:tint="?android:textColor" />
+
             <TextView
                 android:id="@+id/tv_author"
                 android:layout_width="match_parent"

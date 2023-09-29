@@ -20,7 +20,7 @@ import androidx.lifecycle.MutableLiveData
 /**
  * 动态主题
  */
-open class AppDynamicTheme internal constructor(
+open class AppDynamicTheme constructor(
     displayMetrics: DisplayMetrics,
     configuration: Configuration,
     themeName: String,
@@ -29,6 +29,7 @@ open class AppDynamicTheme internal constructor(
     companion object {
         private val drawable = ColorDrawable(Color.TRANSPARENT)
         private val colorState = ColorStateList.valueOf(Color.TRANSPARENT)
+
     }
 
     val windowBackground = MutableLiveData<Drawable>(drawable)

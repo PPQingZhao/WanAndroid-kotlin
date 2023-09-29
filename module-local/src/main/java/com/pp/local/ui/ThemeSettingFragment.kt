@@ -38,13 +38,12 @@ class ThemeSettingFragment : ThemeFragment<FragmentThemeSettingBinding, ThemeSet
         DynamicThemeManager.getSkinTheme().onEach {
             ItemPreferenceThemeSettingViewModel(
                 it,
-                getDynamicTheme<AppDynamicTheme>("Theme.Dynamic",
-                    DisplayMetrics().apply {
-                        setTo(requireActivity().theme.resources.displayMetrics)
-                    },
-                    Configuration().apply {
-                        setTo(requireActivity().theme.resources.configuration)
-                    }),
+                DisplayMetrics().apply {
+                    setTo(requireActivity().theme.resources.displayMetrics)
+                },
+                Configuration().apply {
+                    setTo(requireActivity().theme.resources.configuration)
+                }
             ).apply {
                 viewLifecycleOwner.lifecycle.addObserver(this)
                 dataList.add(this)

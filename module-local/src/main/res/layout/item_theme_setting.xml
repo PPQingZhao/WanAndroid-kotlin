@@ -28,7 +28,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/StyleRoundImageView"
-            app:strokeColor="@{viewModel.theme.strokeColor}"
+            app:strokeColor="@{viewModel.theme.textColor}"
             app:strokeWidth="@{viewModel.isSelected ? @dimen/strokeWidth : @dimen/strokeWidth_small}" />
 
         <TextView

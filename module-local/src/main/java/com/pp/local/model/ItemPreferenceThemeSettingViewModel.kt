@@ -1,5 +1,7 @@
 package com.pp.local.model
 
+import android.content.res.Configuration
+import android.util.DisplayMetrics
 import android.view.View
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
@@ -14,8 +16,10 @@ import kotlinx.coroutines.launch
 
 class ItemPreferenceThemeSettingViewModel(
     private val skinTheme: DynamicThemeManager.ApplySkinTheme,
-    theme: AppDynamicTheme,
-) : ItemThemeSettingViewModel<Any>(theme), DefaultLifecycleObserver {
+    displayMetrics: DisplayMetrics,
+    configuration: Configuration,
+) : ItemThemeSettingViewModel<Any>(AppDynamicTheme(displayMetrics, configuration, "Theme.Dynamic")),
+    DefaultLifecycleObserver {
 
     override fun onCreate(owner: LifecycleOwner) {
         super.onCreate(owner)
@@ -37,7 +41,7 @@ class ItemPreferenceThemeSettingViewModel(
         }
 
         ViewTreeLifecycleOwner.get(view)?.lifecycleScope?.launch {
-            skinTheme.applySkinTheme()
+            DynamicThemeManager.applySkinTheme(skinTheme)
         }
         return super.onItemViewModelClick(view)
     }

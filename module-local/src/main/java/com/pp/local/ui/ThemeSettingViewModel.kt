@@ -1,10 +1,14 @@
 package com.pp.local.ui
 
 import android.app.Application
+import android.view.View
 import com.pp.base.ThemeViewModel
+import com.pp.common.router.MultiRouterFragmentViewModel
+import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.local.R
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
+import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.RecyclerViewBindingAdapter
 import com.pp.ui.adapter.createItemViewModelBinder
 
@@ -22,6 +26,12 @@ class ThemeSettingViewModel(app: Application) : ThemeViewModel(app) {
                     }
 
             }
+    }
+
+    fun onBack(view: View) {
+        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
+            popBackStack(RouterPath.Local.fragment_theme_setting)
+        }
     }
 
 }
