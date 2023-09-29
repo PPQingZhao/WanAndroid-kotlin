@@ -4,17 +4,14 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import com.pp.base.browser.WebViewFragment
-import com.pp.common.app.App
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ShareElementNavigation
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemTextViewModel
 
-class ItemArticleTextViewModel(cidBean:ArticleBean?, theme: AppDynamicTheme) :
+class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
     ItemTextViewModel<ArticleBean>(theme) {
 
     init {
@@ -27,7 +24,7 @@ class ItemArticleTextViewModel(cidBean:ArticleBean?, theme: AppDynamicTheme) :
 
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
-        val data = data?: return false
+        val data = data ?: return false
 
         val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_text)
         shareElement.transitionName = "transitionName${data.id}"
@@ -40,15 +37,14 @@ class ItemArticleTextViewModel(cidBean:ArticleBean?, theme: AppDynamicTheme) :
             )
         }
 
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
+        MultiRouterFragmentViewModel.showFragment(
+            view,
+            targetFragment = RouterPath.Web.fragment_web,
+            tag = RouterPath.Web.fragment_web,
+            arguments = bundle,
+            sharedElement = shareElement
+        )
 
-            showFragment(
-                targetFragment = RouterPath.Web.fragment_web,
-                tag = RouterPath.Web.fragment_web,
-                arguments = bundle,
-                sharedElement = shareElement
-            )
-        }
         return true
     }
 

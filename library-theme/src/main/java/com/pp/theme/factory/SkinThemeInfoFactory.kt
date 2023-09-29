@@ -18,6 +18,8 @@ class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
         private val assetManager = AssetManager::class.java.newInstance()
     }
 
+    private val DEBUG = false
+
     @SuppressLint("DiscouragedPrivateApi")
     private fun addAssetPath(skinPath: String): Method {
         val addAssetPathMethod =
@@ -36,17 +38,21 @@ class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
         themeName: String,
     ): Theme? {
         val theme = kotlin.runCatching {
-            Log.e(
-                "ThemeFactory",
-                "create theme: {skinFile: $skinPath, defPackage: $themePackage themeName:$themeName}"
-            )
+            if (DEBUG) {
+                Log.e(
+                    "ThemeFactory",
+                    "create theme: {skinFile: $skinPath, defPackage: $themePackage themeName:$themeName}"
+                )
+            }
 
             addAssetPath(skinPath)
 
             val skinResources = Resources(assetManager, displayMetrics, configuration)
 
             val themeId = skinResources.getIdentifier(themeName, "style", themePackage)
-            Log.e("ThemeFactory", "themeId: $themeId")
+            if (DEBUG) {
+                Log.e("ThemeFactory", "themeId: $themeId")
+            }
             if (themeId > 0) {
                 val skinTheme = skinResources.newTheme()
                 skinTheme.applyStyle(themeId, true)

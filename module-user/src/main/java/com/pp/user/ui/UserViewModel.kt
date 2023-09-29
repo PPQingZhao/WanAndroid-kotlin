@@ -119,7 +119,8 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
         }
 
         MultiRouterFragmentViewModel.showFragment(
-            view, tagFragment,
+            view,
+            tagFragment,
             tagFragment,
             mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
             mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)

@@ -65,26 +65,25 @@ open class ArticleItemArticleViewModel(
 
     override fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
-            val data = data ?: return false
+        val data = data ?: return false
 
-            val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
-            val bundle = Bundle().also {
-                it.putString(WebViewFragment.WEB_VIEW_TITLE, data.title)
-                it.putString(WebViewFragment.WEB_VIEW_URL, data.link)
-                it.putString(
-                    CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
-                    shareElement.transitionName
-                )
-            }
-
-            showFragment(
-                targetFragment = RouterPath.Web.fragment_web,
-                tag = RouterPath.Web.fragment_web,
-                arguments = bundle,
-                sharedElement = shareElement
+        val shareElement = view.findViewById<TextView>(com.pp.ui.R.id.tv_title)
+        val bundle = Bundle().also {
+            it.putString(WebViewFragment.WEB_VIEW_TITLE, data.title)
+            it.putString(WebViewFragment.WEB_VIEW_URL, data.link)
+            it.putString(
+                CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME,
+                shareElement.transitionName
             )
         }
+
+        MultiRouterFragmentViewModel.showFragment(
+            view,
+            targetFragment = RouterPath.Web.fragment_web,
+            tag = RouterPath.Web.fragment_web,
+            arguments = bundle,
+            sharedElement = shareElement
+        )
         return true
     }
 

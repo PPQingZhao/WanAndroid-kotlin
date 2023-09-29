@@ -79,16 +79,15 @@ open class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) 
             mainReenterTransition: Any? = null,
             sharedElement: View? = null,
         ) {
-            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                view
-            )?.showFragment(
-                targetFragment,
-                tag,
-                arguments,
-                mainExitTransition,
-                mainReenterTransition,
-                sharedElement
-            )
+            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)
+                ?.showFragment(
+                    targetFragment,
+                    tag,
+                    arguments,
+                    mainExitTransition,
+                    mainReenterTransition,
+                    sharedElement
+                )
         }
     }
 }

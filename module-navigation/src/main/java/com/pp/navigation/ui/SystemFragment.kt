@@ -15,7 +15,6 @@ import com.pp.common.paging.itemText3ArticleBinder
 import com.pp.common.repository.UserRepository
 import com.pp.common.repository.getPreferenceUserWhenResume
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.showResponse
 import com.pp.navigation.databinding.FragmentSystemBinding
 import com.pp.router_service.RouterPath
@@ -77,7 +76,7 @@ class SystemFragment private constructor() :
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        UserRepository.getPreferenceUserWhenResume(viewLifecycleOwner){
+        UserRepository.getPreferenceUserWhenResume(viewLifecycleOwner) {
             getSystemList()
         }
         initRecyclerview()
@@ -163,15 +162,14 @@ class SystemFragment private constructor() :
                     putParcelable(TabSystemFragment.SYSTEM_ARTICLE_LIST, systemArticleList)
                     putInt(TabSystemFragment.TARGET_POSITION, targetPosition)
                 }
-                ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                    mBinding.root
-                )?.run {
-                    showFragment(
-                        targetFragment = RouterPath.Navigation.fragment_tab_system,
-                        tag = RouterPath.Navigation.fragment_tab_system,
-                        arguments = bundle
-                    )
-                }
+
+                MultiRouterFragmentViewModel.showFragment(
+                    mBinding.root,
+                    targetFragment = RouterPath.Navigation.fragment_tab_system,
+                    tag = RouterPath.Navigation.fragment_tab_system,
+                    arguments = bundle
+                )
+
                 return true
             }
         }

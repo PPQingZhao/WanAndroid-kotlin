@@ -8,22 +8,18 @@ import androidx.constraintlayout.motion.widget.MotionLayout
 import androidx.constraintlayout.motion.widget.TransitionAdapter
 import androidx.core.view.doOnAttach
 import androidx.lifecycle.*
-import androidx.transition.TransitionListenerAdapter
 import com.pp.base.ThemeFragment
 import com.pp.base.browser.WebViewFragment
 import com.pp.common.browser.CommonWebViewFragment
 import com.pp.common.http.wanandroid.bean.home.BannerBean
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.home.databinding.FragmentHomeChildRealhomeBinding
 import com.pp.home.databinding.FragmentHomeChildRealhomeBindingImpl
 import com.pp.router_service.RouterPath
 import com.pp.ui.adapter.IndicatorTransitionListener
-import com.pp.ui.utils.BannerCarousel
-import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.BannerCarousel.Adapter
-import com.pp.ui.utils.BannerCarousel.TransitionListener
 import com.pp.ui.utils.StateView
+import com.pp.ui.utils.attachStateView
 import com.pp.ui.utils.loadOriginal
 import com.pp.ui.widget.BannerMotionLayoutScrollAbility
 import kotlinx.coroutines.flow.collectLatest
@@ -92,15 +88,14 @@ class RealHomeFragment :
                                 it.putString(WebViewFragment.WEB_VIEW_URL, bannerBean.url)
                                 it.putString(CommonWebViewFragment.WEB_VIEW_TRANSITION_NAME, null)
                             }
-                            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                                mBinding.root
-                            )?.run {
-                                showFragment(
-                                    targetFragment = RouterPath.Web.fragment_web,
-                                    tag = RouterPath.Web.fragment_web,
-                                    arguments = bundle
-                                )
-                            }
+
+                            MultiRouterFragmentViewModel.showFragment(
+                                mBinding.root,
+                                targetFragment = RouterPath.Web.fragment_web,
+                                tag = RouterPath.Web.fragment_web,
+                                arguments = bundle
+                            )
+
                         }
                     }
 

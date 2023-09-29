@@ -33,13 +33,11 @@ class HomeFragment : ThemeFragment<FragmentHomeBinding, HomeViewModel>() {
         }
 
         mBinding.searchView.setOnClickListener {
-            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(mBinding.root)
-                ?.run {
-                    showFragment(
-                        RouterPath.Search.fragment_search,
-                        RouterPath.Search.fragment_search
-                    )
-                }
+            MultiRouterFragmentViewModel.showFragment(
+                view,
+                targetFragment = RouterPath.Search.fragment_search,
+                tag = RouterPath.Search.fragment_search
+            )
         }
     }
 

@@ -5,25 +5,17 @@ import android.view.View
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
 import com.pp.base.ThemeViewModel
-import com.pp.common.http.wanandroid.bean.ArticleBean
 import com.pp.common.http.wanandroid.bean.CoinReasonBean
-import com.pp.common.paging.articleDifferCallback
 import com.pp.common.paging.coinReasonDifferCallback
-import com.pp.common.paging.itemArticleCollectedBinder
 import com.pp.common.paging.itemCoinReasonBinder
 import com.pp.common.repository.CoinRepository
-import com.pp.common.repository.CollectedRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
-import com.pp.ui.viewModel.ItemDataViewModel
-import com.pp.ui.viewModel.OnItemListener
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -80,11 +72,11 @@ class CoinViewModel(app: Application) : ThemeViewModel(app) {
      * 积分排行榜
      */
     fun onCoinRange(view: View) {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-            view
-        )?.run {
-            showFragment(RouterPath.User.fragment_coin_range, RouterPath.User.fragment_coin_range)
-        }
+
+        MultiRouterFragmentViewModel.showFragment(
+            view,
+            RouterPath.User.fragment_coin_range, RouterPath.User.fragment_coin_range
+        )
     }
 
 
