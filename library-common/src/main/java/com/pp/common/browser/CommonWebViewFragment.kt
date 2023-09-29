@@ -66,9 +66,7 @@ class CommonWebViewFragment : WebViewFragment() {
 
     override fun onBack() {
         super.onBack()
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(mBinding.root)?.run {
-            popBackStack(RouterPath.Web.fragment_web)
-        }
+        MultiRouterFragmentViewModel.popBackStack(mBinding.root, RouterPath.Web.fragment_web)
     }
 
     override fun handleOnBackPressed() {

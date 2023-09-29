@@ -45,11 +45,18 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
 
     private fun getItems(): List<ItemAllowRightViewModel> {
         return mutableListOf<ItemAllowRightViewModel>().apply {
-            val itemMessageCenter = ItemAllowRightViewModel(
-                com.pp.skin.R.drawable.ic_message_center,
-                R.string.message_center,
+            val itemBrowsingHistory = ItemAllowRightViewModel(
+                com.pp.skin.R.drawable.ic_browsing_history,
+                R.string.browsing_history,
                 mTheme
-            )
+            ).apply {
+                setOnItemListener(object : OnItemListener<ItemDataViewModel<Any>> {
+                    override fun onItemClick(view: View, item: ItemDataViewModel<Any>): Boolean {
+                        showFragmentWhenLogin(view, RouterPath.Local.fragment_browsing_history)
+                        return true
+                    }
+                })
+            }
 
             val itemCoin = ItemAllowRightViewModel(
                 com.pp.skin.R.drawable.ic_coin,
@@ -105,9 +112,9 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
                 })
             }
 
-            add(itemMessageCenter)
             add(itemCoin)
             add(itemCollected)
+            add(itemBrowsingHistory)
             add(itemSkin)
         }
     }
@@ -166,7 +173,8 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
      * 跳转登录界面
      */
     fun onLogin(view: View) {
-        showFragmentWhenLogin(view, RouterPath.User.fragment_login)
+        MultiRouterFragmentViewModel
+            .showFragment(view, RouterPath.User.fragment_login, RouterPath.User.fragment_login)
     }
 
     /**

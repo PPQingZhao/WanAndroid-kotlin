@@ -11,7 +11,6 @@ import com.pp.common.paging.articleDifferCallback
 import com.pp.common.paging.itemArticleCollectedBinder
 import com.pp.common.repository.CollectedRepository
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -79,10 +78,7 @@ class CollectedViewModel(app: Application) : ThemeViewModel(app) {
      * 返回按钮点击事件
      */
     fun onBack(view: View) {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-            view
-        )?.run {
-            popBackStack(RouterPath.User.fragment_collected)
-        }
+        MultiRouterFragmentViewModel
+            .popBackStack(view, RouterPath.User.fragment_collected)
     }
 }

@@ -10,9 +10,8 @@ import com.pp.common.http.wanandroid.bean.CoinInfoBean
 import com.pp.common.paging.coinRankDifferCallback
 import com.pp.common.paging.itemCoinRankBinder
 import com.pp.common.repository.CoinRepository
-import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.repository.UserRepository
+import com.pp.common.router.MultiRouterFragmentViewModel
 import com.pp.router_service.RouterPath
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -61,11 +60,9 @@ class CoinRankViewModel(app: Application) : ThemeViewModel(app) {
      * 返回按钮点击事件
      */
     fun onBack(view: View) {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-            view
-        )?.run {
-            popBackStack(RouterPath.User.fragment_coin_range)
-        }
+        MultiRouterFragmentViewModel
+            .popBackStack(view, RouterPath.User.fragment_coin_range)
+
     }
 
     fun coinCount(coin: String?): String {

@@ -67,11 +67,8 @@ class TabSystemFragment :
     }
 
     private fun onBackPressed() {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-            mBinding.root
-        )?.run {
-            popBackStack(RouterPath.Navigation.fragment_tab_system)
-        }
+        MultiRouterFragmentViewModel
+            .popBackStack(mBinding.root, RouterPath.Navigation.fragment_tab_system)
     }
 
     override fun onFirstResume() {

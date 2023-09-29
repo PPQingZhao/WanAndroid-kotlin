@@ -89,5 +89,10 @@ open class MultiRouterFragmentViewModel(app: Application) : ThemeViewModel(app) 
                     sharedElement
                 )
         }
+
+        fun popBackStack(view:View,fragmentTag: String){
+            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)
+                ?.popBackStack(fragmentTag)
+        }
     }
 }

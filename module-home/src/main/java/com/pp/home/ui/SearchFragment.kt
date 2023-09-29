@@ -16,7 +16,6 @@ import com.pp.common.paging.articleDifferCallback
 import com.pp.common.paging.collectedListener
 import com.pp.common.paging.itemArticleBinder
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.common.util.materialSharedAxis
 import com.pp.home.databinding.FragmentSearchBinding
 import com.pp.router_service.RouterPath
@@ -132,11 +131,9 @@ class SearchFragment : ThemeFragment<FragmentSearchBinding, SearchViewModel>() {
     private fun initView() {
         mBinding.ivBack.setOnClickListener {
             mBinding.searchView.clearFocus()
-            ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(
-                mBinding.root
-            )?.run {
-                popBackStack(RouterPath.Search.fragment_search)
-            }
+
+            MultiRouterFragmentViewModel.popBackStack(mBinding.root, RouterPath.Search.fragment_search)
+
         }
     }
 

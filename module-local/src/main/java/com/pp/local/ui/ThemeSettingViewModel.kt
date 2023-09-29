@@ -4,7 +4,6 @@ import android.app.Application
 import android.view.View
 import com.pp.base.ThemeViewModel
 import com.pp.common.router.MultiRouterFragmentViewModel
-import com.pp.common.util.ViewTreeMultiRouterFragmentViewModel
 import com.pp.local.R
 import com.pp.local.databinding.ItemThemeSettingBinding
 import com.pp.local.model.ItemPreferenceThemeSettingViewModel
@@ -29,9 +28,7 @@ class ThemeSettingViewModel(app: Application) : ThemeViewModel(app) {
     }
 
     fun onBack(view: View) {
-        ViewTreeMultiRouterFragmentViewModel.get<MultiRouterFragmentViewModel>(view)?.run {
-            popBackStack(RouterPath.Local.fragment_theme_setting)
-        }
+        MultiRouterFragmentViewModel.popBackStack(view, RouterPath.Local.fragment_theme_setting)
     }
 
 }

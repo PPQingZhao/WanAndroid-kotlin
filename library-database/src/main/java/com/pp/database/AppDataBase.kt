@@ -7,7 +7,8 @@ import androidx.lifecycle.*
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.pp.database.details.FeedDetails
+import com.pp.database.browsing.BrowsingHistory
+import com.pp.database.browsing.BrowsingHistoryDao
 import com.pp.database.user.User
 import com.pp.database.user.UserDao
 import kotlinx.coroutines.*
@@ -15,10 +16,12 @@ import kotlinx.coroutines.*
 /**
  * 数据库
  */
-@Database(entities = [User::class, FeedDetails::class], version = 1, exportSchema = true)
+@Database(entities = [User::class, BrowsingHistory::class], version = 1, exportSchema = true)
 abstract class AppDataBase : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
+
+    abstract fun getBrowsingHistoryDao(): BrowsingHistoryDao
 
     companion object {
         private const val TAG = "AppDataBase"
