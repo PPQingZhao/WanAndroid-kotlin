@@ -15,6 +15,9 @@ interface BrowsingHistoryDao {
     @Delete
     fun remove(browsingHistory: BrowsingHistory)
 
+    @Delete
+    fun remove(list: List<BrowsingHistory>)
+
     @Query("SELECT * FROM BrowsingHistory WHERE userId =:userId ORDER BY latestTime DESC")
     fun pagingSource(userId: Long?): PagingSource<Int, BrowsingHistory>
 }

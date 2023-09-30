@@ -38,6 +38,12 @@ object BrowsingHistoryRepository {
         }
     }
 
+    suspend fun remove(list: List<BrowsingHistory>) {
+        withContext(Dispatchers.IO) {
+            browsingHistoryDao.remove(list)
+        }
+    }
+
     fun getPageData(userId: Long?): Flow<PagingData<BrowsingHistory>> {
         return Pager(
             initialKey = 1,

@@ -44,6 +44,18 @@
                 android:gravity="center"
                 android:text="@string/browsing_history"
                 android:textColor="@{viewModel.mTheme.textColor}" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:gravity="center"
+                android:onClick="@{viewModel::onDeleteAll}"
+                android:padding="@dimen/dp_8"
+                android:text="@string/delete_all"
+                android:textColor="@{viewModel.mTheme.textColorPrimary}"
+                tools:textColor="?android:textColorPrimary" />
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView

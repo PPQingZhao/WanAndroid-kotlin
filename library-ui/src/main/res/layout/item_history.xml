@@ -15,6 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="@dimen/dp_4"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_marginEnd="@dimen/dp_4"
         android:background="?selectableItemBackground"
         android:onClick="@{viewModel::onItemClick}"
         app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
@@ -49,12 +51,16 @@
                 android:layout_gravity="end|center_vertical"
                 android:background="?selectableItemBackground"
                 android:onClick="@{viewModel::onItemClick}"
-                android:paddingStart="@dimen/dp_4"
-                android:paddingEnd="@dimen/dp_4"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_4"
+                android:paddingEnd="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_4"
                 android:text="@string/delete"
+                android:textColor="@{viewModel.theme.textColorSecondary}"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_title" />
+                app:layout_constraintTop_toBottomOf="@id/tv_title"
+                tools:textColor="?android:textColorSecondary" />
 
             <TextView
                 android:id="@+id/tv_time"

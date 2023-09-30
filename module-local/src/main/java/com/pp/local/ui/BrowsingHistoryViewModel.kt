@@ -25,6 +25,12 @@ class BrowsingHistoryViewModel(app: Application) : ThemeViewModel(app) {
         MultiRouterFragmentViewModel.popBackStack(view, RouterPath.Local.fragment_browsing_history)
     }
 
+    fun onDeleteAll(view: View) {
+        viewModelScope.launch {
+            BrowsingHistoryRepository.remove(mAdapter.snapshot().items)
+        }
+    }
+
     val mAdapter by lazy {
 
         BindingPagingDataAdapter<BrowsingHistory>(
