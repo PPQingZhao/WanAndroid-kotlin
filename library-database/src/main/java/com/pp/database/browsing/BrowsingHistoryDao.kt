@@ -1,11 +1,7 @@
 package com.pp.database.browsing
 
-import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.paging.PagingSource
+import androidx.room.*
 
 @Dao
 interface BrowsingHistoryDao {
@@ -19,6 +15,6 @@ interface BrowsingHistoryDao {
     @Delete
     fun remove(browsingHistory: BrowsingHistory)
 
-    @Query("SELECT * FROM BrowsingHistory")
-    fun getBrowsingAll(): LiveData<List<BrowsingHistory>>
+    @Query("SELECT * FROM BrowsingHistory WHERE userId =:userId ORDER BY latestTime DESC")
+    fun pagingSource(userId: Long?): PagingSource<Int, BrowsingHistory>
 }

@@ -55,5 +55,6 @@ dependencies {
     api(libs.room.runtime)
     kapt(libs.room.compiler)
 
+    implementation(libs.paging3)
 
 }

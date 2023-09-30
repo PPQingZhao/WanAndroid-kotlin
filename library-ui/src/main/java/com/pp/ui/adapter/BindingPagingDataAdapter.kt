@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.paging.*
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import cn.leo.paging_ktx.SimplePagingAdapter
 import com.pp.common.paging.onePager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest

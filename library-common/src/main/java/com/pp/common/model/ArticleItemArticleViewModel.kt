@@ -63,7 +63,7 @@ open class ArticleItemArticleViewModel(
         }
     }
 
-    override fun onItemViewModelClick(view: View): Boolean {
+    override suspend fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
         val data = data ?: return false
 

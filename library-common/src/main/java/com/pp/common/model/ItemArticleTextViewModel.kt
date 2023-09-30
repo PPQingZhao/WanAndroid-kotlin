@@ -22,7 +22,7 @@ class ItemArticleTextViewModel(cidBean: ArticleBean?, theme: AppDynamicTheme) :
         text.set(data?.title)
     }
 
-    override fun onItemViewModelClick(view: View): Boolean {
+    override suspend fun onItemViewModelClick(view: View): Boolean {
         super.onItemViewModelClick(view)
         val data = data ?: return false
 

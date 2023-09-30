@@ -35,7 +35,7 @@ class ItemPreferenceThemeSettingViewModel(
         }
     }
 
-    override fun onItemViewModelClick(view: View): Boolean {
+    override suspend fun onItemViewModelClick(view: View): Boolean {
         if (isSelected.get()) {
             return true
         }

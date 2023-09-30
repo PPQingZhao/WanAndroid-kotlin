@@ -5,7 +5,7 @@ import com.pp.common.http.wanandroid.bean.HotKeyBean
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.viewModel.ItemDeleteViewModel
 
-class ItemDeleteBarHotkeyViewModel(hotKey:HotKeyBean?, theme: AppDynamicTheme) :
+class ItemDeleteBarHotkeyViewModel(hotKey: HotKeyBean?, theme: AppDynamicTheme) :
     ItemDeleteViewModel<HotKeyBean>(theme) {
 
     init {
@@ -16,7 +16,7 @@ class ItemDeleteBarHotkeyViewModel(hotKey:HotKeyBean?, theme: AppDynamicTheme) :
         text.set(data?.name ?: "")
     }
 
-    override fun onItemViewModelClick(view: View): Boolean {
+    override suspend fun onItemViewModelClick(view: View): Boolean {
         val result = super.onItemViewModelClick(view)
         when (view.id) {
             com.pp.ui.R.id.tv_delete_all,

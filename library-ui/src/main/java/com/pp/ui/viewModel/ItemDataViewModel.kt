@@ -2,7 +2,11 @@ package com.pp.ui.viewModel
 
 import android.view.View
 import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.lifecycle.lifecycleScope
 import com.pp.theme.AppDynamicTheme
+import kotlinx.coroutines.launch
 
 open class ItemDataViewModel<Data : Any>(
     val theme: AppDynamicTheme,
@@ -32,10 +36,12 @@ open class ItemDataViewModel<Data : Any>(
         if (mOnItemListener?.onItemClick(view, this) == true) {
             return
         }
-        onItemViewModelClick(view)
+        ViewTreeLifecycleOwner.get(view)?.lifecycleScope?.launch {
+            onItemViewModelClick(view)
+        }
     }
 
-    open fun onItemViewModelClick(view: View): Boolean {
+    open suspend fun onItemViewModelClick(view: View): Boolean {
         isSelected.set(isSelected.get().not())
         return false
     }

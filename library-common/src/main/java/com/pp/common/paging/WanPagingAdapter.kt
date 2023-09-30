@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 import com.pp.common.http.wanandroid.bean.*
 import com.pp.common.model.*
 import com.pp.common.repository.CollectedRepository
+import com.pp.database.browsing.BrowsingHistory
 import com.pp.theme.AppDynamicTheme
 import com.pp.ui.R
 import com.pp.ui.adapter.BindingPagingDataAdapter
@@ -32,6 +33,22 @@ val hotKeyDifferCallback = object : DiffUtil.ItemCallback<HotKeyBean>() {
     }
 
     override fun areContentsTheSame(oldItem: HotKeyBean, newItem: HotKeyBean): Boolean {
+        return oldItem == newItem
+    }
+}
+
+val browsingDifferCallback = object : DiffUtil.ItemCallback<BrowsingHistory>() {
+    override fun areItemsTheSame(
+        oldItem: BrowsingHistory,
+        newItem: BrowsingHistory,
+    ): Boolean {
+        return oldItem.url == newItem.url
+    }
+
+    override fun areContentsTheSame(
+        oldItem: BrowsingHistory,
+        newItem: BrowsingHistory,
+    ): Boolean {
         return oldItem == newItem
     }
 }
@@ -191,6 +208,11 @@ fun itemCoinRankBinder(
         ItemCoinRankItemViewModel(data, theme)
     }
 )
+
+fun itemBrowsingHistoryBinder(theme: AppDynamicTheme) =
+    createItemDataBinder<ItemHistoryBinding, BrowsingHistory, ItemBrowsingHistoryViewModel>(
+        getItemViewModel = { data -> ItemBrowsingHistoryViewModel(data, theme) },
+    )
 
 /**
  * 收藏监听,刷新adapter对应 item data
