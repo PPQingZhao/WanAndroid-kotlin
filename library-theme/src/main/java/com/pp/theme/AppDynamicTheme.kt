@@ -5,21 +5,17 @@ import android.R
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.content.res.Configuration
-import android.content.res.Resources.Theme
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.util.DisplayMetrics
-import android.util.Log
-import android.util.TypedValue
 import androidx.activity.ComponentActivity
-import androidx.annotation.CallSuper
-import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.MutableLiveData
 
 /**
  * 动态主题
  */
+@SuppressLint("PrivateResource")
 open class AppDynamicTheme constructor(
     displayMetrics: DisplayMetrics,
     configuration: Configuration,
@@ -48,13 +44,18 @@ open class AppDynamicTheme constructor(
     val colorButtonNormal = MutableLiveData<ColorStateList>(colorState)
     val colorControlActivated = MutableLiveData<ColorStateList>(colorState)
     val strokeColor = MutableLiveData<ColorStateList>(colorState)
+    val tabTextColor = MutableLiveData<ColorStateList>(colorState)
 
     init {
 //        windowBackground to R.attr.windowBackground,
         addDrawable(R.attr.windowBackground, windowBackground)
 
-//        colorPrimaryVariant to com.google.android.material.R.attr.colorPrimaryVariant,
+/*
+        colorPrimaryVariant to com.google.android.material.R.attr.colorPrimaryVariant
+        colorPrimaryVariant to com.google.android.material.R.attr.tabTextColor
+        */
         addColorStateList("colorPrimaryVariant", colorPrimaryVariant)
+        addColorStateList("tabTextColor", tabTextColor)
 
         /*
         colorPrimary to R.attr.colorPrimary,
@@ -72,6 +73,7 @@ open class AppDynamicTheme constructor(
         colorControlActivated to R.attr.colorControlActivated,
         strokeColor to R.attr.strokeColor,
         */
+
         addColorStateList(R.attr.colorPrimary, colorPrimary)
         addColorStateList(R.attr.colorAccent, colorAccent)
         addColorStateList(R.attr.navigationBarColor, navigationBarColor)
@@ -87,6 +89,10 @@ open class AppDynamicTheme constructor(
         addColorStateList(R.attr.colorControlActivated, colorControlActivated)
         addColorStateList(R.attr.strokeColor, strokeColor)
 
+    }
+
+    @SuppressLint("DiscouragedApi", "ResourceType")
+    override fun onSetInfo(info: Info) {
     }
 }
 

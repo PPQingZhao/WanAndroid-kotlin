@@ -13,7 +13,7 @@ import java.lang.reflect.Method
 /**
  * 皮肤包主题工厂
  */
-class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
+class SkinThemeInfoFactory: DynamicThemeManager.ThemeFactory {
     companion object {
         private val assetManager = AssetManager::class.java.newInstance()
     }
@@ -29,7 +29,7 @@ class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
         return addAssetPathMethod
     }
 
-    @SuppressLint("DiscouragedApi")
+    @SuppressLint("DiscouragedApi", "DiscouragedPrivateApi")
     override fun create(
         displayMetrics: DisplayMetrics,
         configuration: Configuration,
@@ -44,8 +44,12 @@ class SkinThemeInfoFactory : DynamicThemeManager.ThemeFactory {
                     "create theme: {skinFile: $skinPath, defPackage: $themePackage themeName:$themeName}"
                 )
             }
-
-            addAssetPath(skinPath)
+//            addAssetPath(skinPath)
+            val assetManager = AssetManager::class.java.getDeclaredConstructor().newInstance()
+            val addAssetPathMethod =
+                AssetManager::class.java.getDeclaredMethod("addAssetPath", String::class.java)
+            addAssetPathMethod.isAccessible = true
+            addAssetPathMethod.invoke(assetManager, skinPath)
 
             val skinResources = Resources(assetManager, displayMetrics, configuration)
 

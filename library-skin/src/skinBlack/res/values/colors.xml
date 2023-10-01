@@ -10,7 +10,7 @@
     <color name="colorControlHighlight">#40929292</color>
     <color name="colorControlNormal">#929292</color>
     <color name="colorControlActivated">#2475A8</color>
-    <color name="textColorPrimary">#E3F1FE</color>
+    <color name="textColorPrimary">#2475A8</color>
     <color name="textColor">#EAEEF1</color>
     <color name="textColorSecondary">#D9DEE2</color>
     <color name="textColorTertiary">#D9DEE2</color>

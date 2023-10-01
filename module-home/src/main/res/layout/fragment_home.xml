@@ -36,7 +36,11 @@
                 app:tabIndicator="@drawable/layer_tab_indicator_media"
                 app:tabIndicatorHeight="2dp"
                 app:tabRippleColor="@color/transparent"
-                tools:ignore="SpeakableTextPresentCheck" />
+                app:tabTextColors="@{viewModel.MTheme.tabTextColor}"
+                tools:ignore="SpeakableTextPresentCheck"
+                tools:tabTextColor="?tabTextColor">
+
+            </com.google.android.material.tabs.TabLayout>
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:id="@+id/search_view"

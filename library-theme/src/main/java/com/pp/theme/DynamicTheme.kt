@@ -50,7 +50,7 @@ abstract class DynamicTheme(
     }
 
     internal fun addColorStateList(
-        @AttrRes colorAttr: Int,
+        colorAttr: Int,
         resultColorStateList: MutableLiveData<ColorStateList>,
     ) {
         attrColorStateListMap[colorAttr] = resultColorStateList
@@ -97,6 +97,7 @@ abstract class DynamicTheme(
         typedArray.recycle()
     }
 
+    @SuppressLint("ResourceType")
     private fun updateAttrColorStateList(info: Info) {
         if (info.theme.resources == null) {
             attrColorStateListMap.values.onEach {
@@ -104,10 +105,15 @@ abstract class DynamicTheme(
             }
             return
         }
+
         val typedArray = info.theme.obtainStyledAttributes(attrColorStateListMap.keys.toIntArray())
         attrColorStateListMap.values.forEachIndexed { index, mutableLiveData ->
             try {
-                mutableLiveData.value = typedArray.getColorStateList(index)
+                mutableLiveData.value = typedArray.getColorStateList(index).apply {
+                    if (DEBUG) {
+                        Log.e("TAG", "updateColorStateList index: $index value: $this")
+                    }
+                }
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -115,7 +121,7 @@ abstract class DynamicTheme(
         typedArray.recycle()
     }
 
-    fun onSetInfo(info: Info) {
+    open fun onSetInfo(info: Info) {
 
     }
 
@@ -129,18 +135,31 @@ abstract class DynamicTheme(
             return
         }
         info.theme.resources.run {
-            var attrName: String
-            var resultColorStateList: MutableLiveData<ColorStateList>
-            colorStateListMap.onEach {
-                attrName = it.key
-                val colorId = getIdentifier(attrName, "color", info.themePackage)
+            val attrList = mutableListOf<Int>()
+            colorStateListMap.keys.onEach { attrName ->
+                val colorId = getIdentifier(attrName, "attr", info.themePackage)
                 if (DEBUG) {
                     Log.e("TAG", "updateColorStateList attrName: $attrName  id: $colorId")
                 }
-                resultColorStateList = it.value
-                resultColorStateList.value =
-                    ResourcesCompat.getColorStateList(this, colorId, info.theme)
+
+                attrList.add(colorId)
             }
+
+            val typedArray = info.theme.obtainStyledAttributes(attrList.toIntArray())
+            colorStateListMap.values.onEachIndexed { index, mutableLiveData ->
+                mutableLiveData.value = typedArray.getColorStateList(index).apply {
+                    if (DEBUG) {
+                        Log.e(
+                            "TAG",
+                            "updateColorStateList attrName: ${
+                                colorStateListMap.keys.toList().get(index)
+                            } value:$this "
+                        )
+                    }
+                }
+            }
+
+            typedArray.recycle()
         }
     }
 
@@ -193,9 +212,9 @@ fun Theme.getColor(@AttrRes attrRes: Int, @ColorInt default: Int): Int {
 fun DynamicTheme.applySkinTheme(
     skinTheme: DynamicThemeManager.ApplySkinTheme,
 ) {
-    val theme = skinTheme.create(getDisplayMetrics(), getConfiguration(), getThemeName())
+    val info = skinTheme.create(getDisplayMetrics(), getConfiguration(), getThemeName())
     // 更新 dynamicTheme
-    theme?.run {
-        setInfo(DynamicTheme.Info(skinTheme, this, skinTheme.skinPackage))
+    info?.run {
+        setInfo(this)
     }
 }

@@ -10,7 +10,7 @@ import android.util.Log
 import com.pp.theme.DynamicThemeManager
 
 class DefaultThemeInfoFactory(private val context: Context) : DynamicThemeManager.ThemeFactory {
-
+    private val DEBUG = false
     @SuppressLint("DiscouragedApi")
     override fun create(
         displayMetrics: DisplayMetrics,
@@ -20,15 +20,19 @@ class DefaultThemeInfoFactory(private val context: Context) : DynamicThemeManage
         themeName: String,
     ): Theme? {
         val theme = kotlin.runCatching {
-            Log.e(
-                "ThemeFactory",
-                "create theme: {skinFile: $skinPath, defPackage: $themePackage themeName:$themeName}"
-            )
+            if (DEBUG) {
+                Log.e(
+                    "ThemeFactory",
+                    "create theme: {skinFile: $skinPath, defPackage: $themePackage,themeName:$themeName}"
+                )
+            }
 
             val skinResources = Resources(context.assets, displayMetrics, configuration)
 
             val themeId = skinResources.getIdentifier(themeName, "style", themePackage)
-            Log.e("DefaultThemeInfoFactory", "themeId: $themeId")
+            if (DEBUG) {
+                Log.e("ThemeFactory", "themeId: $themeId")
+            }
             if (themeId > 0) {
                 val skinTheme = skinResources.newTheme()
                 skinTheme.applyStyle(themeId, true)

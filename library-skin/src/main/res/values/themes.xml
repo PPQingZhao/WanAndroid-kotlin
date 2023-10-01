@@ -42,6 +42,7 @@
         <item name="android:secondaryProgressTint">@color/secondaryProgressTint</item>
         <item name="android:windowBackground">@drawable/shape_window_bg</item>
         <item name="android:strokeColor">@color/strokeColor</item>
+        <item name="tabTextColor">@color/tab_text_color</item>
 
         <!-- Customize your theme here. -->
         <item name="windowActionBar">false</item>

@@ -152,14 +152,14 @@ object DynamicThemeManager {
      * 皮肤包信息
      */
     abstract class ApplySkinTheme(
-        val skinPackage: String, val skinPath: String, @StringRes val name: Int,
+        val skinPath: String, @StringRes val name: Int,
     ) {
 
         abstract fun create(
             displayMetrics: DisplayMetrics,
             configuration: Configuration,
             themeName: String,
-        ): Resources.Theme?
+        ): DynamicTheme.Info?
     }
 }
 
