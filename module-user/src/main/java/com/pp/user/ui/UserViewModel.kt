@@ -174,7 +174,13 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
      */
     fun onLogin(view: View) {
         MultiRouterFragmentViewModel
-            .showFragment(view, RouterPath.User.fragment_login, RouterPath.User.fragment_login)
+            .showFragment(
+                view,
+                RouterPath.User.fragment_login,
+                RouterPath.User.fragment_login,
+                mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
+                mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
+            )
     }
 
     /**
@@ -185,7 +191,9 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
             .showFragment(
                 view,
                 RouterPath.Local.fragment_setting,
-                RouterPath.Local.fragment_setting
+                RouterPath.Local.fragment_setting,
+                mainExitTransition = materialSharedAxis(MaterialSharedAxis.X, true),
+                mainReenterTransition = materialSharedAxis(MaterialSharedAxis.X, false)
             )
     }
 }
