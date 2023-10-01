@@ -12,4 +12,5 @@
     <dimen name="margin_large">30dp</dimen>
     <dimen name="strokeWidth">1dp</dimen>
     <dimen name="strokeWidth_small">0.2dp</dimen>
+    <dimen name="sp_title">15sp</dimen>
 </resources>

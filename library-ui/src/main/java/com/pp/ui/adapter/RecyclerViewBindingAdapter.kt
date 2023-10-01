@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.recyclerview.widget.RecyclerView
+import com.pp.ui.viewModel.ItemDataViewModel
 
 class RecyclerViewBindingAdapter<Data : Any>(
     @SuppressLint("SupportAnnotationUsage") @LayoutRes
@@ -109,6 +110,17 @@ class RecyclerViewBindingAdapter<Data : Any>(
         } else {
             null
         }
+    }
+
+    fun remove(item: Data?) {
+        val removePos = dataList.indexOf(item)
+        if (removePos < 0) {
+            return
+        }
+
+        dataList.removeAt(removePos)
+        notifyItemRemoved(removePos)
+
     }
 
 

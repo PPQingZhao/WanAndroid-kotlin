@@ -19,6 +19,7 @@
 
 
     <string name="user_login">用户登录</string>
+    <string name="logout">退出登录</string>
     <string name="user_register">用户注册</string>
     <string name="login">登录</string>
     <string name="register">注册</string>
@@ -48,4 +49,5 @@
     <string name="theme_black">黑色</string>
     <string name="theme_blue">蓝色</string>
     <string name="login_tip">用户未登录.</string>
+    <string name="setting">设置</string>
 </resources>

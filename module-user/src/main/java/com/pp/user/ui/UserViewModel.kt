@@ -181,6 +181,11 @@ class UserViewModel(app: Application) : ThemeViewModel(app) {
      * 跳转设置界面
      */
     fun onSetting(view: View) {
-        showFragmentWhenLogin(view, RouterPath.Local.fragment_setting)
+        MultiRouterFragmentViewModel
+            .showFragment(
+                view,
+                RouterPath.Local.fragment_setting,
+                RouterPath.Local.fragment_setting
+            )
     }
 }

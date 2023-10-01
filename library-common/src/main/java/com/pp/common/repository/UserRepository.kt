@@ -46,11 +46,13 @@ object UserRepository {
     }
 
     suspend fun getPreferenceUser(): User? {
-        val userName = getUserPreferences().first()[preferences_key_user_name]
-        return findUser(userName)
+        return withContext(Dispatchers.IO) {
+            val userName = getUserPreferences().first()[preferences_key_user_name]
+            findUser(userName)
+        }
     }
 
-    fun getPreferenceUserNam(): Flow<String?> {
+    fun getPreferenceUserName(): Flow<String?> {
         return getUserPreferences().map {
             it[preferences_key_user_name]
         }

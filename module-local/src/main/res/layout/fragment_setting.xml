@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.local.ui.SettingViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <FrameLayout
+            android:id="@+id/fl_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@{viewModel.MTheme.colorPrimary}"
+            android:fitsSystemWindows="true"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="?colorPrimary">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize" />
+        </FrameLayout>
+
+        <androidx.constraintlayout.utils.widget.ImageFilterView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:background="?selectableItemBackground"
+            android:onClick="@{viewModel::onBack}"
+            android:padding="@dimen/dp_4"
+            android:src="@drawable/ic_arrow_back"
+            android:tint="@{viewModel.MTheme.textColorPrimary}"
+            app:layout_constraintBottom_toBottomOf="@id/tv_title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_title"
+            app:roundPercent="1"
+            tools:tint="?android:textColorPrimary" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="?actionBarSize"
+            android:gravity="center"
+            android:text="@string/setting"
+            android:textSize="@dimen/sp_title"
+            app:layout_constraintBottom_toBottomOf="@id/fl_title_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:adapter="@{viewModel.MAdapter}"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/fl_title_bar"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
