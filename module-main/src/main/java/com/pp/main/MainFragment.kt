@@ -11,13 +11,13 @@ import com.pp.main.widget.WanAndroidTabImageSwitcher
 import com.pp.router_service.RouterPath
 
 @Route(path = RouterPath.Main.fragment_main)
-class MainFragment : ThemeFragment<FragmentMainBinding, MainViewModel>() {
+class MainFragment : ThemeFragment<FragmentMainBinding, MainFragmentViewModel>() {
     override val mBinding: FragmentMainBinding by lazy {
         FragmentMainBinding.inflate(layoutInflater)
     }
 
-    override fun getModelClazz(): Class<MainViewModel> {
-        return MainViewModel::class.java
+    override fun getModelClazz(): Class<MainFragmentViewModel> {
+        return MainFragmentViewModel::class.java
     }
 
     override fun onFirstResume() {

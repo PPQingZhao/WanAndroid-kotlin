@@ -25,6 +25,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginStart="@dimen/dp_4"
             android:src="@{viewModel.icon}"
+            android:tint="@{viewModel.theme.textColorPrimary}"
+            tools:ignore="UseAppTint"
             tools:src="@drawable/ic_message_center" />
 
         <TextView

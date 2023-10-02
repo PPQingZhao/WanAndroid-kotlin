@@ -105,7 +105,7 @@ fun attachPagingAdapter(
     pagingDataAdapter.attachRefreshView(refreshLayout)
 }
 
-@androidx.databinding.BindingAdapter("android:animateVisibility")
+@androidx.databinding.BindingAdapter("android:translationYVisibility")
 fun animateVisibility(
     view: View,
     show: Boolean,
@@ -120,6 +120,26 @@ fun animateVisibility(
         val start = 0f
         val end = -view.height * 1f
         view.animate().translationY(start).translationY(end).setDuration(200)
+            .setListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    view.visibility = View.GONE
+                }
+            }).start()
+
+    }
+}
+
+@androidx.databinding.BindingAdapter("android:scaleVisibility")
+fun scaleVisibility(
+    view: View,
+    show: Boolean,
+) {
+    if (show) {
+        view.visibility = View.VISIBLE
+        view.animate().scaleX(1f).scaleY(1f).setDuration(200).setListener(null)
+            .start()
+    } else {
+        view.animate().scaleX(0f).scaleY(0f).setDuration(200)
             .setListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
                     view.visibility = View.GONE

@@ -20,10 +20,10 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:animateVisibility="@{viewModel.showNetStateTip}"
             android:background="#EEFADBDB"
             android:clickable="true"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:translationYVisibility="@{viewModel.showNetStateTip}">
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
                 android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_height="50dp"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="150dp"
-            android:animateVisibility="@{viewModel.floatingThemeSettingVisibility}"
+            android:scaleVisibility="@{viewModel.floatingThemeSettingVisibility}"
             app:dragEnable="true"
             app:roundPercent="1"
             tools:background="@color/colorAccent" />

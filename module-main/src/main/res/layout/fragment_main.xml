@@ -5,7 +5,7 @@
 
         <variable
             name="viewModel"
-            type="com.pp.main.MainViewModel" />
+            type="com.pp.main.MainFragmentViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

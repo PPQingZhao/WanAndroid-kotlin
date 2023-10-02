@@ -13,7 +13,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:transitionGroup="true">
 
         <FrameLayout
             android:id="@+id/fl_title_bar"
@@ -51,6 +52,7 @@
             android:layout_height="?actionBarSize"
             android:gravity="center"
             android:text="@string/setting"
+            android:textColor="@{viewModel.MTheme.textColorPrimary}"
             android:textSize="@dimen/sp_title"
             app:layout_constraintBottom_toBottomOf="@id/fl_title_bar"
             app:layout_constraintEnd_toEndOf="parent"
