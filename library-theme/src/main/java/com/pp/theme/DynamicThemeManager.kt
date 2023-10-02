@@ -9,7 +9,9 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ object DynamicThemeManager {
     private val Context.themeDataStore by preferencesDataStore(name = THEME_SETTING)
     private val skinPreferenceKey by lazy { stringPreferencesKey("theme") }
     private var currentApplySkinTheme: ApplySkinTheme? = null
+
     private var defaultApplySkinTheme: ApplySkinTheme? = null
         set(value) {
             check(field == null) { "The default Apply Skin Theme is already set." }
@@ -47,16 +50,22 @@ object DynamicThemeManager {
             return checkNotNull(field) { "you should call DynamicThemeManager.init(context) at first." }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private val skinThemeFlow = channelFlow<ApplySkinTheme> {
+        getPreferenceSkinTheme().collectLatest { applySkinTheme ->
+            currentApplySkinTheme = applySkinTheme
+            send(applySkinTheme)
+        }
+    }
+
     fun init(scope: CoroutineScope, ctx: Context, default: ApplySkinTheme): DynamicThemeManager {
         sContext = ctx
         defaultApplySkinTheme = default
         currentApplySkinTheme = defaultApplySkinTheme
         scope.launch {
-
-            getPreferenceSkinTheme().collectLatest { applySkinTheme ->
-                currentApplySkinTheme = applySkinTheme
+            skinThemeFlow.collectLatest { skinTheme ->
                 dynamicThemeList.onEach {
-                    it.applySkinTheme(applySkinTheme)
+                    it.applySkinTheme(skinTheme)
                 }
             }
         }
@@ -121,21 +130,40 @@ object DynamicThemeManager {
         return sContext!!.getPreferenceSkinTheme()
     }
 
-    fun getCurrentApplySkinTheme(): ApplySkinTheme {
-        return currentApplySkinTheme!!
+    fun getCurrentApplySkinTheme(): Flow<ApplySkinTheme> {
+        return skinThemeFlow
     }
 
     /**
      * 更新主题
      */
     suspend fun applySkinTheme(info: ApplySkinTheme) {
-        val cacheSkin = getCurrentApplySkinTheme()
+        val cacheSkin = currentApplySkinTheme!!
         // 与缓存的themeId比较,相同则不处理
         if (cacheSkin.skinPath == info.skinPath) {
             // The same skin
             return
         }
         sContext!!.setPreferenceSkinTheme(info.skinPath)
+    }
+
+    fun nextSkinTheme(applySkinTheme: ApplySkinTheme): ApplySkinTheme {
+        val skinThemeList = getSkinTheme().toList()
+        val oldSkinThemeIndex = skinThemeList.indexOf(applySkinTheme)
+        var targetSkinThemeIndex = oldSkinThemeIndex + 1
+        targetSkinThemeIndex =
+            if (targetSkinThemeIndex < 0 || targetSkinThemeIndex >= skinThemeList.size) {
+                0
+            } else {
+                targetSkinThemeIndex
+            }
+
+        return skinThemeList.get(targetSkinThemeIndex)
+
+    }
+
+    suspend fun applyNextSkinTheme() {
+        applySkinTheme(nextSkinTheme(currentApplySkinTheme!!))
     }
 
     interface ThemeFactory {

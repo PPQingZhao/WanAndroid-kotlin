@@ -50,4 +50,5 @@
     <string name="theme_blue">蓝色</string>
     <string name="login_tip">用户未登录.</string>
     <string name="setting">设置</string>
+    <string name="setting_floating_theme">显示主题悬浮窗</string>
 </resources>

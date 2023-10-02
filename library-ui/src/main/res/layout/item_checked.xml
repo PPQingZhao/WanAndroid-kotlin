@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.pp.ui.viewModel.ItemCheckedViewModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/dp_4"
+        android:background="?selectableItemBackground"
+        android:paddingTop="@dimen/dp_4"
+        android:paddingBottom="@dimen/dp_4"
+        app:cardBackgroundColor="@{viewModel.theme.colorPrimaryVariant}"
+        app:cardElevation="@dimen/dp_0"
+        app:cardUseCompatPadding="false"
+        tools:cardBackgroundColor="?colorPrimaryVariant">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_16"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="@{viewModel.content}"
+            android:textColor="@{viewModel.theme.textColorSecondary}"
+            android:textSize="15sp"
+            tools:text="@string/setting_floating_theme"
+            tools:textColor="?android:textColorSecondary" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="center_vertical|end"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:checked="@={viewModel.checked}" />
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

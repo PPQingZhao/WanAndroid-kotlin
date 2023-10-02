@@ -2,6 +2,7 @@ package com.pp.common.constant
 
 import android.os.Environment
 import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import java.io.File
 
@@ -17,6 +18,7 @@ const val KEY_SAVE_SEARCH_HOTKEY_HISTORY = ";"
 
 private const val PREFERENCES_KEY_USER_NAME = "user_name"
 private const val PREFERENCES_KEY_SEARCH_HOTKEY_HISTORY = "hotkey_history_"
+private const val PREFERENCES_KEY_FLOATING_THEME_SETTING = "floating_theme_setting"
 
 /**
  * 用户名缓存key
@@ -29,6 +31,15 @@ val preferences_key_user_name by lazy { stringPreferencesKey(PREFERENCES_KEY_USE
 fun preferences_key_search_hotkey_history(userId: Long?): Preferences.Key<String> {
     return stringPreferencesKey(
         PREFERENCES_KEY_SEARCH_HOTKEY_HISTORY + userId
+    )
+}
+
+/**
+ * 主题切换悬浮按钮key
+ */
+val preferences_key_floating_theme_setting by lazy {
+    booleanPreferencesKey(
+        PREFERENCES_KEY_FLOATING_THEME_SETTING
     )
 }
 
