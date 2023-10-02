@@ -30,6 +30,7 @@
             app:tabIndicator="@drawable/layer_tab_indicator_media"
             app:tabIndicatorHeight="2dp"
             app:tabRippleColor="@color/transparent"
+            app:tabTextColors="@{viewModel.MTheme.tabTextColor}"
             tools:background="?attr/colorPrimary"
             tools:ignore="SpeakableTextPresentCheck" />
 

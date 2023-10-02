@@ -83,6 +83,7 @@
             app:tabMode="scrollable"
             app:tabRippleColor="@color/transparent"
             app:tabTextAppearance="@style/StyleTabText"
+            app:tabTextColors="@{viewModel.MTheme.tabTextColor}"
             tools:background="?colorPrimary" />
 
         <androidx.viewpager2.widget.ViewPager2

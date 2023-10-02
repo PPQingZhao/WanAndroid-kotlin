@@ -139,6 +139,7 @@
                 android:background="?android:selectableItemBackground"
                 android:onClick="@{viewModel.onCollect}"
                 android:src="@{viewModel.isCollect ? @drawable/ic_favorite_on:@drawable/ic_favorite}"
+                android:tint="@{viewModel.theme.textColorPrimary}"
                 app:layout_constraintDimensionRatio="1:1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_title"
