@@ -8,6 +8,7 @@ import android.graphics.Typeface
 import android.widget.TextView
 import androidx.databinding.ObservableField
 import com.pp.theme.AppDynamicTheme
+import com.pp.theme.DynamicTheme
 
 open class ItemCoinRankViewModel<Data : Any>(
     theme: AppDynamicTheme,
@@ -18,10 +19,14 @@ open class ItemCoinRankViewModel<Data : Any>(
 
 }
 
-@androidx.databinding.BindingAdapter("android:rankText")
+@androidx.databinding.BindingAdapter(
+    value = ["android:rankText", "android:themeInfo"],
+    requireAll = true
+)
 fun rankText(
     textView: TextView,
     itemCoinRankViewModel: ItemCoinRankViewModel<*>,
+    themeInfo: DynamicTheme.Info?,
 ) {
     val rank = itemCoinRankViewModel.rank.get()
 
@@ -29,10 +34,14 @@ fun rankText(
     setLinearGradient(textView, rank, itemCoinRankViewModel.theme.textColorSecondary.value!!)
 }
 
-@androidx.databinding.BindingAdapter("android:userNameText")
+@androidx.databinding.BindingAdapter(
+    value = ["android:userNameText", "android:themeInfo"],
+    requireAll = true
+)
 fun userNameText(
     textView: TextView,
     itemCoinRankViewModel: ItemCoinRankViewModel<*>,
+    themeInfo: DynamicTheme.Info?,
 ) {
     val username = itemCoinRankViewModel.username.get()
     val rank = itemCoinRankViewModel.rank.get()

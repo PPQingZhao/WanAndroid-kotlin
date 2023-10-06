@@ -26,6 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:rankText="@{viewModel}"
+            android:themeInfo="@{viewModel.theme.themeInfo}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="1" />
@@ -35,6 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
+            android:themeInfo="@{viewModel.theme.themeInfo}"
             android:userNameText="@{viewModel}"
             app:layout_constraintBottom_toBottomOf="@id/tv_rank"
             app:layout_constraintStart_toEndOf="@id/tv_rank"
@@ -49,11 +51,11 @@
             android:text="@{viewModel.coinCount}"
             android:textColor="@{viewModel.theme.textColorPrimary}"
             android:textSize="13sp"
+            android:textStyle="italic"
             app:layout_constraintBottom_toBottomOf="@id/tv_rank"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_rank"
             tools:text="5555"
-            android:textStyle="italic"
             tools:textColor="?android:textColorPrimary" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
