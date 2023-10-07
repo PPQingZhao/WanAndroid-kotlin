@@ -10,7 +10,6 @@
 - 项目采用组件化方式,使用MVVM + AndroidX + jetpack组件为基本架构进行开发
 - 项目采用VERSION_CATALOG方式统一依赖
 
-## 运行截图
-- 黑色主题
+运行截图在项目文件夹 screen
   
 
