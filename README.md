@@ -11,7 +11,7 @@
 - 项目采用VERSION_CATALOG方式统一依赖
 
 ## 运行视频
-https://github.com/PPQingZhao/WanAndroid-kotlin/issues/1#issue-1938701130
+- 运行: https://github.com/PPQingZhao/WanAndroid-kotlin/issues/1#issue-1938701130
 
 ## 运行截图
 
