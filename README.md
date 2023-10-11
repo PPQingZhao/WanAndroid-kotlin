@@ -11,5 +11,6 @@
 - 项目采用VERSION_CATALOG方式统一依赖
 
 运行截图在项目文件夹 screen
-  
+
+<img src="screen/search.webp" width="50%"/>
 
