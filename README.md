@@ -13,4 +13,5 @@
 运行截图在项目文件夹 screen
 
 <img src="screen/search.webp" width="50%"/>
+<img src="screen/默认主题/主题设置.png" width="50%"/>
 
