@@ -12,6 +12,7 @@
 
 ## 运行视频
 - 运行: https://github.com/PPQingZhao/WanAndroid-kotlin/issues/1#issue-1938701130
+- 主题切换: https://github.com/PPQingZhao/WanAndroid-kotlin/assets/44112223/ba636389-f6a4-47f7-8dd1-5d681b3427dd
 
 ## 运行截图
 
