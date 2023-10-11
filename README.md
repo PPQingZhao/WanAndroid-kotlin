@@ -11,6 +11,9 @@
 - 项目采用VERSION_CATALOG方式统一依赖
 
 ## 运行截图
+
+screen/video/运行录制.mp4
+
 ### --默认主题:
 <img src="screen/默认主题/首页.png" width="30%"/> <img src="screen/默认主题/广场.png" width="30%"/> <img src="screen/默认主题/问答.png" width="30%"/>
 
