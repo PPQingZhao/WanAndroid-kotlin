@@ -10,9 +10,10 @@
 - 项目采用组件化方式,使用MVVM + AndroidX + jetpack组件为基本架构进行开发
 - 项目采用VERSION_CATALOG方式统一依赖
 
-## 运行截图
+## 运行视频
+https://github.com/PPQingZhao/WanAndroid-kotlin/issues/1#issue-1938701130
 
-screen/video/运行录制.mp4
+## 运行截图
 
 ### --默认主题:
 <img src="screen/默认主题/首页.png" width="30%"/> <img src="screen/默认主题/广场.png" width="30%"/> <img src="screen/默认主题/问答.png" width="30%"/>
